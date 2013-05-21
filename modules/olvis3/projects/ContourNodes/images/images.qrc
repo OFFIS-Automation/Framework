@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/SimpleNodes">
+        <file>repeat.png</file>
+        <file>colorMode.png</file>
+    </qresource>
+</RCC>

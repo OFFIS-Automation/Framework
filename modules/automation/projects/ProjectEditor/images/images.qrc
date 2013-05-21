@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/ProjectEditor">
+        <file>folder.png</file>
+        <file>application_cascade.png</file>
+        <file>application_tile_horizontal.png</file>
+        <file>disk.png</file>
+        <file>page_add.png</file>
+        <file>tab.png</file>
+        <file>page.png</file>
+        <file>disk_multiple.png</file>
+        <file>folder_add.png</file>
+        <file>folder_save.png</file>
+        <file>bug_go.png</file>
+        <file>folder_delete.png</file>
+        <file>page_delete.png</file>
+        <file>page_edit.png</file>
+        <file>arrow_right.png</file>
+        <file>error.png</file>
+        <file>exclamation.png</file>
+        <file>arrow_down.png</file>
+        <file>serach_next.png</file>
+        <file>serach_prev.png</file>
+        <file>zoom.png</file>
+        <file>folder_table.png</file>
+        <file>information.png</file>
+    </qresource>
+</RCC>

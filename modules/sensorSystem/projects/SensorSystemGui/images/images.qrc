@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/SensorSystemGui">
+        <file>add.png</file>
+        <file>delete.png</file>
+        <file>export.png</file>
+        <file>marker.png</file>
+        <file>page_edit.png</file>
+    </qresource>
+</RCC>

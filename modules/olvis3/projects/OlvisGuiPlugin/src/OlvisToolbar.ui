@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OlvisToolbar</class>
+ <widget class="QToolBar" name="OlvisToolbar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>268</width>
+    <height>34</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>OlvisToolbar</string>
+  </property>
+  <action name="actionCreatePlugin">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisGui/plugin_add.png</normaloff>:/olvisGui/plugin_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create Image Processor Plugin</string>
+   </property>
+   <property name="toolTip">
+    <string>Create Image Processor Plugin</string>
+   </property>
+  </action>
+  <action name="actionReloadPlugins">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisGui/plugin_go.png</normaloff>:/olvisGui/plugin_go.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reload plugins</string>
+   </property>
+  </action>
+  <addaction name="actionCreatePlugin"/>
+  <addaction name="actionReloadPlugins"/>
+ </widget>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

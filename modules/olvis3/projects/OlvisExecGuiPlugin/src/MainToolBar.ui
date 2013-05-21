@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainToolBar</class>
+ <widget class="QToolBar" name="MainToolBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>34</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Vision toolbar</string>
+  </property>
+  <action name="actionRun">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/play.png</normaloff>:/olvisExecGui/play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run configuration</string>
+   </property>
+   <property name="toolTip">
+    <string>Starts or resumes the current configuration</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/stop.png</normaloff>:/olvisExecGui/stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop execution</string>
+   </property>
+   <property name="toolTip">
+    <string>Stops the  current run</string>
+   </property>
+  </action>
+  <action name="actionProblems">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/error.png</normaloff>:/olvisExecGui/error.png</iconset>
+   </property>
+   <property name="text">
+    <string>Problems in the image processing chain</string>
+   </property>
+   <property name="toolTip">
+    <string>Problems in the image processing chain</string>
+   </property>
+  </action>
+  <action name="actionAllOkay">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/accept.png</normaloff>:/olvisExecGui/accept.png</iconset>
+   </property>
+   <property name="text">
+    <string>No problems in the image processing chain</string>
+   </property>
+   <property name="toolTip">
+    <string>No problems in the image processing chain</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/pause.png</normaloff>:/olvisExecGui/pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pause execution</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause vision execution</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/time_go.png</normaloff>:/olvisExecGui/time_go.png</iconset>
+   </property>
+   <property name="text">
+    <string>Full step</string>
+   </property>
+   <property name="toolTip">
+    <string>Execute all filters once on each processor</string>
+   </property>
+  </action>
+  <action name="actionStepSingle">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/time.png</normaloff>:/olvisExecGui/time.png</iconset>
+   </property>
+   <property name="text">
+    <string>Single step</string>
+   </property>
+   <property name="toolTip">
+    <string>Execute one filter on each processor</string>
+   </property>
+  </action>
+  <action name="actionExportTrace">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/convert.png</normaloff>:/olvisExecGui/convert.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export vision time trace</string>
+   </property>
+   <property name="toolTip">
+    <string>Export current trace file to CSV</string>
+   </property>
+  </action>
+  <action name="actionLoadedPlugins">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/plugin_edit.png</normaloff>:/olvisExecGui/plugin_edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Define loaded plugins</string>
+   </property>
+  </action>
+  <action name="actionImageDisplays">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/images.png</normaloff>:/olvisExecGui/images.png</iconset>
+   </property>
+   <property name="text">
+    <string>Image Displays</string>
+   </property>
+   <property name="toolTip">
+    <string>Change the number of image displays</string>
+   </property>
+  </action>
+  <action name="actionRestore">
+   <property name="icon">
+    <iconset resource="../../../../frontend/projects/AmirFrontend/images/images.qrc">
+     <normaloff>:/img/restoreProject.png</normaloff>:/img/restoreProject.png</iconset>
+   </property>
+   <property name="text">
+    <string>Restore</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore the vision configuration from the project</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../../../../frontend/projects/AmirFrontend/images/images.qrc">
+     <normaloff>:/img/saveProjectAs.png</normaloff>:/img/saveProjectAs.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save the vision configuration to the project</string>
+   </property>
+  </action>
+  <addaction name="actionRun"/>
+  <addaction name="actionPause"/>
+  <addaction name="actionStep"/>
+  <addaction name="actionStepSingle"/>
+  <addaction name="actionStop"/>
+  <addaction name="separator"/>
+  <addaction name="actionProblems"/>
+  <addaction name="actionAllOkay"/>
+  <addaction name="separator"/>
+  <addaction name="actionRestore"/>
+  <addaction name="actionSave"/>
+ </widget>
+ <resources>
+  <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
+  <include location="../images/images.qrc"/>
+ </resources>
+ <connections/>
+ <slots>
+  <signal>startRequested()</signal>
+  <signal>stopRequested()</signal>
+ </slots>
+</ui>

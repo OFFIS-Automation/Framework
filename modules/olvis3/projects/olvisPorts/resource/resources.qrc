@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/defaultPorts/images">
+        <file>bool.png</file>
+        <file>file.png</file>
+        <file>folder.png</file>
+        <file>grayimage.png</file>
+        <file>image.png</file>
+        <file>number.png</file>
+        <file>rect.png</file>
+        <file>rgbimage.png</file>
+        <file>string.png</file>
+        <file>pose.png</file>
+        <file>point.png</file>
+        <file>rectList.png</file>
+        <file>shape.png</file>
+        <file>chart_line.png</file>
+        <file>depthMap.png</file>
+        <file>histogram.png</file>
+    </qresource>
+</RCC>

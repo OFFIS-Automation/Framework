@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RcUnitWidget</class>
+ <widget class="QDockWidget" name="RcUnitWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RC-Units</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTreeWidget" name="units">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="tabKeyNavigation">
+       <bool>false</bool>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="dragDropOverwriteMode">
+       <bool>false</bool>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="uniformRowHeights">
+       <bool>true</bool>
+      </property>
+      <property name="headerHidden">
+       <bool>true</bool>
+      </property>
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionAddLolec">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add RC-Unit</string>
+   </property>
+   <property name="toolTip">
+    <string>add a RC-Unit to the current project</string>
+   </property>
+  </action>
+  <action name="actionRemoveLolec">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/removeLolec.png</normaloff>:/hilecGui/removeLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove RC-Unit</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove the selected RC-Unit from the project</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FileTree</class>
+ <widget class="QDockWidget" name="FileTree">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Project navigator</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTreeView" name="treeView">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditKeyPressed</set>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
+      <property name="defaultDropAction">
+       <enum>Qt::MoveAction</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="newFile">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/ProjectEditor/page_add.png</normaloff>:/ProjectEditor/page_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create File</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new file</string>
+   </property>
+  </action>
+  <action name="deleteFile">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/ProjectEditor/page_delete.png</normaloff>:/ProjectEditor/page_delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete file</string>
+   </property>
+  </action>
+  <action name="renameFile">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/ProjectEditor/page_edit.png</normaloff>:/ProjectEditor/page_edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rename file</string>
+   </property>
+  </action>
+  <action name="changeFilter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>File Extension Filter</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

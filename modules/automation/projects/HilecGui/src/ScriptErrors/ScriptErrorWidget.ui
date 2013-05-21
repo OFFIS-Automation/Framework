@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScriptErrorWidget</class>
+ <widget class="QDockWidget" name="ScriptErrorWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>605</width>
+    <height>357</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Script errors</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QTreeWidget" name="treeWidget">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <attribute name="headerVisible">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Message</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">File</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QToolButton" name="enableErrors">
+          <property name="toolTip">
+           <string>Display errors</string>
+          </property>
+          <property name="text">
+           <string>Display Errors</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/exclamation.png</normaloff>:/ProjectEditor/exclamation.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="enableWarnings">
+          <property name="toolTip">
+           <string>Display warnings</string>
+          </property>
+          <property name="text">
+           <string>Display Warnings</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/error.png</normaloff>:/ProjectEditor/error.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="enableInfos">
+          <property name="toolTip">
+           <string>Display bad coding</string>
+          </property>
+          <property name="text">
+           <string>Display Bad Coding</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/information.png</normaloff>:/ProjectEditor/information.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../../ProjectEditor/images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

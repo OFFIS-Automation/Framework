@@ -1,0 +1,42 @@
+<html>
+<head></head>
+<body>
+
+<h1> offis.util python extension</h1>
+<p>
+the util extensions provides different automation helpers
+</p>
+
+<h2>ThreadExecute class</h2>
+<p>Class to execute single methods in a different thread<br />
+<em>Attention:</em>Exceptions are not handled as usual, but printed instead to stderr
+</p>
+
+<h3>class methods</h3>
+<p>
+	<strong>ThreadExecute::ThreadExecute(reference method, list args = (), dict kwargs = {})</strong>
+	<br />
+	Creates a thread execute object that calls method in a different thread.<br />
+	arguments without keyword must be given as tuple (args), arguments with keywords must be given as dict (kwargs)
+	<br />Example: call print("Test", 1, 2, file = sys.stderr) threaded:<br />
+	threadedPrint = ThreadExecute(print, ("Test", 1, 2), {'file' : sys.stderr} )
+	<br />
+	After the construction, status and return values can be queued from the object.
+</p>
+<p>
+	<strong>ThreadExecute::finished()</strong>
+	<br />Returns true if the function is finished, false otherwise
+</p>
+
+<p>
+	<strong>ThreadExecute::wait()</strong>
+	<br />Waits until the function has ended
+</p>
+
+<p>
+	<strong>ThreadExecute::value()</strong>
+	<br />Returns the return value of the function. Waits until the function is finished
+</p>
+
+</body>
+</html>

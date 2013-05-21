@@ -1,0 +1,142 @@
+# OFFIS Automation Framework
+# Copyright (C) 2013 OFFIS e.V.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http:#www.gnu.org/licenses/>.
+
+QT += network
+
+TEMPLATE = lib
+
+include(../../../properties/pathes.pro)
+DESTDIR = $${targetDir}/plugins
+TARGET = Hilec
+
+win32*: DEFINES += _CRT_SECURE_NO_WARNINGS
+
+INCLUDEPATH += ../../../frontend/include
+INCLUDEPATH += ../../../olvis3/include
+INCLUDEPATH += ../../include
+INCLUDEPATH += ../RcUnits/src
+
+# Python
+win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
+win32*: LIBS += -L$$(AmirDevDir)/python3/libs
+unix:!macx: INCLUDEPATH += /usr/include/python3.2 # include stuff
+unix:!macx: LIBS += -L/usr/lib/python3.2/config -lpython3.2 # static library path
+macx: INCLUDEPATH += /opt/local/Library/Frameworks/Python.framework/Versions/3.2/include/python3.2m
+macx: LIBS += /opt/local/Library/Frameworks/Python.framework/Versions/3.2
+
+LIBS += -L$${targetDir}/plugins -lRcUnits
+
+pylibs.path    = $${DESTDIR}/hilec/python
+win32*: pylibs.files += $$(AmirDevDir)/python3/Lib/*
+unix:!macx: pylibs.files += /usr/lib/python3.2/*
+
+INSTALLS       += pylibs
+
+pyDlls.path = $${DESTDIR}
+win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.dll
+win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.exe
+win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.pdb
+unix:!macx :pyDlls.files += /usr/bin/python3
+unix:!macx :pyDlls.files += /usr/bin/python3.2
+unix:!macx :pyDlls.files += /usr/bin/python3.2-dbg
+
+INSTALLS       += pyDlls
+
+amirlibs.path    = $${DESTDIR}/hilec/python
+amirlibs.files  += python/*
+INSTALLS       += amirlibs
+
+lolecfiles.path    = $${DESTDIR}/hilec/include
+lolecfiles.files  += ../../include/lolecs/*
+INSTALLS       += lolecfiles
+
+tcfiles.path    = $${DESTDIR}/hilec/telecontrol
+tcfiles.files  += ../../include/telecontrol/*
+INSTALLS       += tcfiles
+
+
+HEADERS += \
+    HilecPlugin.h \
+    ../../include/core/HilecInterface.h \
+    src/HilecCore.h \
+    src/PythonInterpreter.h \
+    src/UserRequestParser.h \
+    ../../include/core/UserRequest.h \
+    ../../include/core/ScriptException.h \
+    src/RcUnits.h \
+    src/PythonPlugin.h \
+    src/RcUnitInvoker.h \
+    ../../include/core/RcUnitHelp.h \
+    src/OlvisSingleton.h \
+    ../../include/lolecs/LolecInterface.h \
+    ../../include/lolecs/RcStruct.h \
+    ../../include/lolecs/RcRepeatable.h \
+    ../../include/lolecs/RcExceptions.h \
+    ../../include/lolecs/LolecInterface.h \
+    src/PythonDebugger.h \
+    src/UserRequestManager.h \
+    src/PythonTypeConverter.h \
+    src/debugVariables/VariablesModel.h \
+    src/debugVariables/VarTreeItem.h \
+    src/debugVariables/DictVarItem.h \
+    src/debugVariables/AbstractVarItem.h \
+    src/debugVariables/ListVarItem.h \
+    src/debugVariables/TupleVarItem.h \
+    src/debugVariables/InstanceVarItem.h \
+    src/RemoteLolec.h \
+    src/RemoteRcUnit.h \
+    src/CallStackDecoder.h \
+    src/PythonLinter.h \
+    ../../include/lolecs/Pose2d.h \
+    ../../include/telecontrol/GamepadInterface.h \
+    ../../include/telecontrol/HapticInterface.h \
+    ../../include/telecontrol/TcConfig.h
+
+SOURCES += \
+    HilecPlugin.cpp \
+    src/HilecCore.cpp \
+    src/PythonInterpreter.cpp \
+    src/UserRequestParser.cpp \
+    src/RcUnits.cpp \
+    src/PythonPlugin.cpp \
+    src/RcUnitInvoker.cpp \
+    src/OlvisSingleton.cpp \
+    src/PythonDebugger.cpp \
+    src/UserRequestManager.cpp \
+    src/PythonTypeConverter.cpp \
+    src/debugVariables/VariablesModel.cpp \
+    src/debugVariables/VarTreeItem.cpp \
+    src/debugVariables/DictVarItem.cpp \
+    src/debugVariables/AbstractVarItem.cpp \
+    src/debugVariables/ListVarItem.cpp \
+    src/debugVariables/TupleVarItem.cpp \
+    src/debugVariables/InstanceVarItem.cpp \
+    src/RemoteLolec.cpp \
+    src/RemoteRcUnit.cpp \
+    src/CallStackDecoder.cpp \
+    src/PythonLinter.cpp
+
+OTHER_FILES += \
+    python/util.py \
+    python/rc.py \
+    python/io.py \
+    python/init.py \
+    python/__init__.py \
+    python/types.py \
+
+
+
+

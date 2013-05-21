@@ -1,0 +1,181 @@
+<html>
+<head></head>
+<body>
+
+<h1> offis.io python extension</h1>
+<p>
+the io extensions provides methods for user interaction via the automation gui
+</p>
+
+<h2>Methods</h2>
+
+
+<p>
+	<strong>appendInfo(text)</strong>
+	<br />appends a line to the user info box
+</p>
+
+<p>
+	<strong>clearInfo()</strong>
+	<br />clears the user info box
+</p>
+
+<p>
+	<strong>setInfo(text)</strong>
+	<br />clears the user info box and inserts thet text
+</p>
+
+
+<p>
+	<strong>alert(string text, string buttonText = "Ok")</strong>
+	<br /> Shortcut function to display a message using a User Request 
+</p>
+
+<p>
+	<strong>requestYesNo(text, yes = "Yes", no = "No")</strong>
+	<br />Shortcut function to request a Yes/No Choice. Returns 1 for Yes, 0 for No
+</p>
+
+
+<h2>UserRequest class</h2>
+<p>Use this class to construct forms the queue input from the user</p>
+<h3>class methods</h3>
+<p>
+	<strong>UserRequest::UserRequest(string title)</strong>
+	<br />Creates a user request object with the given title
+</p>
+<p>
+	<strong>UserRequest::addString(string desc, string default = "", choices=[])</strong>
+	<br />
+	Adds a string request to the form.
+	if choices are given, an editable drop down list will be shown
+</p>
+<p>
+	<strong>UserRequest::addInteger(string desc, int default = 0, int min = not_defined, int max = not_Defined, int step = 1)</strong>
+	<br />
+	Adds a integer request to the form. If min and max are defined, the user request must be in this range. 
+	step defines the value change if the user uses the input up/down button
+</p>
+<p>
+	<strong>UserRequest::addFloat(string desc, float default = 0.0)</strong>
+	<br />
+	Adds a float request to the form. The float can be entered by the user in scientific mode (8e-6). 
+</p>
+<p>
+	<strong>UserRequest::addBool(string desc, bool default = False, string trueName = 'Yes', string falseName = 'No')</strong>
+	<br />
+	Adds a boolean request to the form. The request is displayed as radio button. The default names (Yes/No) can be changed by providing the string trueName and falseName
+</p>
+
+<p>
+	<strong>UserRequest::addChoice(string desc, list names, list values, mixed defaultValue = None)</strong>
+	<br />
+	Adds a drop-down list to the request. names and values must be a list of convertable types(string,int,float). Default value must match exacly one value in the values list to have an effect.
+</p>
+
+<p>
+	<strong>UserRequest::addInputFile(string desc, string default = "")</strong>
+	<br />
+	Adds an input file request to the form. The gui will show an input file selection button.
+	the return value is a string
+</p>
+
+<p>
+	<strong>UserRequest::addOutputFile(string desc, string default = "")</strong>
+	<br />
+	Adds an output file request to the form. The gui will show an output file selection button.
+	the return value is a string
+</p>
+
+<p>
+	<strong>UserRequest::addDirectory(string desc, string default = "")</strong>
+	<br />
+	Adds an directory request to the form. The gui will show a directory selection button.
+	the return value is a string
+</p>
+
+<p>
+	<strong>UserRequest::addButton(string name, id = 0)</strong>
+	<br />
+	Adds a submit button to the form. The title of the button will be name. An id can be given to differentiate between buttons. The id of the selected button is returned by the execute funtion
+	</p>
+<p>
+	<strong>int UserRequest::execute(string buttonText = None)</strong>
+	<br />
+	Executes the request. If button text is provided, a button with the text and the default id is added.
+	If no buttons were added (either by addButton or by providing a button text) a default button is displayed.
+	<br />The function returns the id of the pressed button
+</p>
+<p>
+	<strong>list UserRequest::values()</strong>
+	<br />
+	Returns the list of the user values. The value order represents the add[What] call sequence.
+	If called prior to execute, an empty list is returned
+</p>
+<p>
+	<strong>UserRequest::abort()</strong>
+	<br />
+	Aborts the user request and closes the input window (for example, after a timeout)
+</p>
+<hr />
+
+<h2>ProgressBar class</h2>
+<p>Use this class to provide progress information to the user</p>
+<h3>class methods</h3>
+<p>
+	<strong>ProgressBar::ProgressBar(string title = 'ProgressBar', int maximum = 100)</strong>
+	<br />
+	Creates a new progress bar with the given title. The progress is initially zero. The maximum can be changed to a different value
+</p>
+
+<p>
+	<strong>ProgressBar::setProgress(int progress)</strong>
+	<br />
+	Updates the progress bar to the given value. progress should be between 0 and maximum
+</p>
+
+<p>
+	<strong>ProgressBar::close()</strong>
+	<br />
+	Removes the progress bar form the user interface
+</p>
+
+<h2>InfoPanel class</h2>
+<p>Use this class to provide information about data to the user</p>
+<h3>class methods</h3>
+<p>
+	<strong>InfoPanel::InfoPanel(string title = 'Info')</strong>
+	<br />
+	Creates a new InfoPanel bar with the given title. call add and show afterwards
+</p>
+
+<p>
+	<strong>InfoPanel::add(string key, mixed value)</strong>
+	<br />
+	Adds a line to the info Panel. Must be called before show to have effect
+</p>
+
+<p>
+	<strong>InfoPanel::show(string key, mixed value)</strong>
+	<br />
+	Finishes the setup of the info panel. The info panel is shown to the user. Afterwards, only update functions should be called
+</p>
+
+<p>
+	<strong>InfoPanel::updateAll(list values)</strong>
+	<br />
+	Updates all values of the panel. list should have the same size as the number of lines in this panel
+</p>
+
+<p>
+	<strong>InfoPanel::updateOne(int position, mixed value)</strong>
+	<br />
+	Updates a single value of the panel. position is the zero based index of the value (same order add was called)
+<p>
+	<strong>InfoPanel::close()</strong>
+	<br />
+	Removes the Info panel bar form the user interface
+</p>
+
+</body>
+</html>

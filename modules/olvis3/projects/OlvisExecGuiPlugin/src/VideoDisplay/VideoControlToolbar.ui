@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VideoControlToolbar</class>
+ <widget class="QToolBar" name="VideoControlToolbar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>391</width>
+    <height>30</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>20</width>
+    <height>20</height>
+   </size>
+  </property>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/delete.png</normaloff>:/olvisExecGui/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+   <property name="toolTip">
+    <string>Clears the current content of this view (including all overlays)</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/arrow_in.png</normaloff>:/olvisExecGui/arrow_in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom100</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit the zoom to 100%</string>
+   </property>
+  </action>
+  <action name="actionZoomFit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/arrow_out.png</normaloff>:/olvisExecGui/arrow_out.png</iconset>
+   </property>
+   <property name="text">
+    <string>ZoomFit</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom to fit</string>
+   </property>
+  </action>
+  <action name="actionSaveImage">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/camera.png</normaloff>:/olvisExecGui/camera.png</iconset>
+   </property>
+   <property name="text">
+    <string>SaveImage</string>
+   </property>
+   <property name="toolTip">
+    <string>Save image as picture (jpg, png, ...)</string>
+   </property>
+  </action>
+  <action name="actionSaveVideo">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/film.png</normaloff>:/olvisExecGui/film.png</iconset>
+   </property>
+   <property name="text">
+    <string>SaveVideo</string>
+   </property>
+   <property name="toolTip">
+    <string>Save a video sequence</string>
+   </property>
+  </action>
+  <action name="actionEditOverlays">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/cursor.png</normaloff>:/olvisExecGui/cursor.png</iconset>
+   </property>
+   <property name="text">
+    <string>EditOverlays</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit the currently visible overlays</string>
+   </property>
+  </action>
+  <action name="actionShowInfo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/information.png</normaloff>:/olvisExecGui/information.png</iconset>
+   </property>
+   <property name="text">
+    <string>ShowInfo</string>
+   </property>
+   <property name="toolTip">
+    <string>Show information about the image data</string>
+   </property>
+  </action>
+  <action name="actionHorizontalFlip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/shape_flip_horizontal.png</normaloff>:/olvisExecGui/shape_flip_horizontal.png</iconset>
+   </property>
+   <property name="text">
+    <string>HorizontalFlip</string>
+   </property>
+   <property name="toolTip">
+    <string>Flip image horizontally</string>
+   </property>
+  </action>
+  <action name="actionVerticalFlip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/olvisExecGui/shape_flip_vertical.png</normaloff>:/olvisExecGui/shape_flip_vertical.png</iconset>
+   </property>
+   <property name="text">
+    <string>VerticalFlip</string>
+   </property>
+   <property name="toolTip">
+    <string>Flip image vertically</string>
+   </property>
+  </action>
+  <addaction name="actionClear"/>
+  <addaction name="actionShowInfo"/>
+  <addaction name="separator"/>
+  <addaction name="actionZoom100"/>
+  <addaction name="actionZoomFit"/>
+  <addaction name="actionHorizontalFlip"/>
+  <addaction name="actionVerticalFlip"/>
+  <addaction name="separator"/>
+  <addaction name="actionSaveImage"/>
+  <addaction name="actionSaveVideo"/>
+  <addaction name="separator"/>
+  <addaction name="actionEditOverlays"/>
+ </widget>
+ <resources>
+  <include location="../../images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

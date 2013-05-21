@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditArea</class>
+ <widget class="QDockWidget" name="EditArea">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>685</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Source editor</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="findBox">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="title">
+       <string>Find &amp;&amp; Replace</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Replace with:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QCheckBox" name="caseSensitive">
+         <property name="text">
+          <string>Match case sensitive</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="replaceValue"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="replaceNext">
+         <property name="text">
+          <string>Replace &amp;&amp; Find</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="replace">
+         <property name="text">
+          <string>Replace</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="searchPrev">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Goto previous finding</string>
+         </property>
+         <property name="text">
+          <string>Next</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../images/images.qrc">
+           <normaloff>:/ProjectEditor/serach_prev.png</normaloff>:/ProjectEditor/serach_prev.png</iconset>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QPushButton" name="replaceAll">
+         <property name="text">
+          <string>Replace all</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="6">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>76</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="7">
+        <widget class="QToolButton" name="hideButton">
+         <property name="toolTip">
+          <string>Cancel search</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../../../../olvis3/projects/OlvisExecGuiPlugin/images/images.qrc">
+           <normaloff>:/olvisExecGui/cancel.png</normaloff>:/olvisExecGui/cancel.png</iconset>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="searchValue"/>
+       </item>
+       <item row="0" column="5">
+        <widget class="QCheckBox" name="wholeWords">
+         <property name="text">
+          <string>Match whole word only</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Find what:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QToolButton" name="searchNext">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Goto next finding</string>
+         </property>
+         <property name="text">
+          <string>Previous</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../images/images.qrc">
+           <normaloff>:/ProjectEditor/serach_next.png</normaloff>:/ProjectEditor/serach_next.png</iconset>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>searchValue</tabstop>
+  <tabstop>searchNext</tabstop>
+  <tabstop>replaceValue</tabstop>
+  <tabstop>replace</tabstop>
+  <tabstop>replaceNext</tabstop>
+  <tabstop>replaceAll</tabstop>
+  <tabstop>wholeWords</tabstop>
+  <tabstop>caseSensitive</tabstop>
+  <tabstop>searchPrev</tabstop>
+  <tabstop>hideButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../images/images.qrc"/>
+  <include location="../../../../../olvis3/projects/OlvisExecGuiPlugin/images/images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>hideButton</sender>
+   <signal>clicked()</signal>
+   <receiver>findBox</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>665</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>669</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>searchValue</sender>
+   <signal>returnPressed()</signal>
+   <receiver>searchNext</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceValue</sender>
+   <signal>returnPressed()</signal>
+   <receiver>replace</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>272</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

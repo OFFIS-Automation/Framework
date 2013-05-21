@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/olvisGui">
+        <file>abort.png</file>
+        <file>arrow_in.png</file>
+        <file>arrow_out.png</file>
+        <file>trash_empty.png</file>
+        <file>delete.png</file>
+        <file>plugin_add.png</file>
+        <file>plugin_go.png</file>
+        <file>rename.png</file>
+        <file>plugin_edit.png</file>
+        <file>database_add.png</file>
+        <file>bullet_wrench.png</file>
+    </qresource>
+</RCC>

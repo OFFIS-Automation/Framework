@@ -1,0 +1,309 @@
+<html>
+<head></head>
+<body>
+
+<h1> offis.types python extension</h1>
+
+<h2 id="Point.class">Point class</h2>
+<p>
+class representing a 2D Point.
+The following operations are supported:<br />
+point1 + point2<br />
+point1 - point2<br />
+point1 == point2<br />
+point1 != point2<br />
+point1 = -point2<br />
+point1 * float<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>
+	float x<br />
+	float y<br />
+</strong>
+<h3>class methods</h3>
+<p>
+	<strong>Point::Point(float x, float y)</strong>
+	<br />
+	Creates a point from coordinates
+</p>
+<p>
+	<strong>float Point::distTo(Point other)</strong>
+	<br />Returns the eclidian norm distance to another point
+</p>
+<p>
+	<strong>dict Point::toDict()</strong>
+	<br />Returns a dict: {'x': x, 'y': y };
+</p>
+
+<h2 id="Size.class">Size class</h2>
+<p>
+class representing a 2D Size.
+The following operations are supported:<br />
+size1 + size2<br />
+size1 - size2<br />
+size1 == size2<br />
+size1 != size2<br />
+size1 = -size2<br />
+size1 * float<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>
+	float width<br />
+	float height<br />
+</strong>
+<h3>class methods</h3>
+<p>
+	<strong>Size::Size(float x, float y)</strong>
+	<br />
+	Creates a size from coordinates
+</p>
+<p>
+	<strong>dict Size::toDict()</strong>
+	<br />Returns a dict: {'wdith': width, 'height': height };
+</p>
+
+
+<h2 id="Pose2d.class">Pose2d class</h2>
+<p>
+class representing a 2D Pose (x,y,phi).
+The angle is usually given in radians.
+The following operations are supported:<br />
+pose1 + pose2<br />
+pose1 - pose2<br />
+pose1 == pose2<br />
+pose1 != pose2<br />
+pose1 = -pose2<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>
+	float x<br />
+	float y<br />
+	float phi<br />
+</strong>
+<h3>class methods</h3>
+<p>
+	<strong>Pose2d::Pose2d(float x, float y, float phi)</strong>
+	<br />
+	Creates a pose from coordinates and angle
+</p>
+<p>
+	<strong>float Pose2d::toPoint()</strong>
+	<br />Returns a point form the x and y values of the pose
+</p>
+<p>
+	<strong>dict Pose2d::toDict()</strong>
+	<br />Returns a dict: {'x': x, 'y': y, 'phi': phi };
+</p>
+
+
+<h2 id="Rect.class">Rect class</h2>
+<p>
+class representing a Rectangle.
+The following operations are supported:<br />
+rect1 != rect2<br />
+rect1 == rect2<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>
+	float x1<br />
+	float y1<br />
+	float x2<br />
+	float y2<br />
+</strong>
+<h3>class methods</h3>
+<p>
+	<strong>Rect::Rect(float x1, float y1, float x2, float y2)</strong>
+	<br />
+	Constructs a rectangle from the given coordinates
+</p>
+<p>
+	<strong>Rect::Rect(Point p1, Point p2)</strong>
+	<br />
+	Constructs a rectangle from the given points
+</p>
+<p>
+	<strong>Rect::Rect(Point topLeft, Size size)</strong>
+	<br />
+	Constructs a rectangle from the given point and size
+</p>
+<p>
+	<strong>Point Rect::firstPoint()</strong>
+	<br />
+	Returns the first point if the rectangle
+</p>
+<p>
+	<strong>Point Rect::secondPoint()</strong>
+	<br />
+	Returns the first point if the rectangle
+</p>
+<p>
+	<strong>Point Rect::topLeft()</strong>
+	<br />
+	Returns the top left point of the rectangle
+</p>
+<p>
+	<strong>Point Rect::bottomRight()</strong>
+	<br />
+	Returns the bottom right point of the rectangle
+</p>
+<p>
+	<strong>Point Rect::center()</strong>
+	<br />
+	Returns the center rectangle
+</p>
+<p>
+	<strong>Size Rect::size()</strong>
+	Returns the rectangles size
+</p>
+<p>
+	<strong>float Rect::width()</strong>
+	<br />
+	Returns the rectangles width
+</p>
+<p>
+	<strong>float Rect::height()</strong>
+	<br />
+	Returns the rectangles height
+</p>
+<p>
+	<strong>float Rect::area()</strong>
+	<br />
+	Returns the rectangles area
+</p>
+<p>
+	<strong>Rect Rect::translate(Point p)</strong>
+	<br />
+	Translates the rectangle by the given vector (given as point)
+</p>
+<p>
+	<strong>Rect Rect::translate(float x, float y)</strong>
+	<br />
+	Translates the rectangle by the given x and y values
+</p>
+<p>
+	<strong>Rect Rect::translateTo(Point p)</strong>
+	<br />
+	Translates the rectangle to the given point. Topleft corner will be at the given point
+</p>
+
+<p>
+	<strong>Rect Rect::translateTo(float x, float y)</strong>
+	<br />
+	Translates the rectangle to the given coordinates. Topleft corner will be at the given coordinates
+</p>
+
+<p>
+	<strong>Rect Rect::intersect(Rect other)</strong>
+	<br />
+	Intersects this rectangle with a second one if possible
+	return an empty rectangle if no intersection exists
+</p>
+<p>
+	<strong>Rect Rect::unite(Rect other)</strong>
+	<br />
+	Unites this rectangle oth a second one. Returns the united rectangle
+</p>
+
+<p>
+	<strong>Rect Rect::normalized()</strong>
+	<br />
+	Returns a normalized rect, where x1 and y1 are top left
+</p>
+
+
+<p>
+	<strong>bool Rect::contains([Point|Vector|Pose2d] point)</strong>
+	<br />
+	Returns whether a point is inside the rect. Works for all objects that have an x and y member such as Vector3d and Pose2d
+</p>
+
+
+<p>
+	<strong>bool Rect::isEmpty()</strong>
+	<br />
+	Returns true if topRight == bottomLeft == Point(0,0)
+</p>
+<p>
+	<strong>dict Rect::toDict()</strong>
+	<br />
+	Returns a dict: {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2 };
+</p>
+
+
+<h2 id="Vector3d.class">Vector3d class</h2>
+<p>
+class representing a 3D Vector (x,y,z).
+The following operations are supported:<br />
+vec1 + vec2<br />
+vec1 - vec2<br />
+vec1 == vec2<br />
+vec1 != vec2<br />
+vec1 = -vec2<br />
+vec1 * float<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>float x<br />
+float y<br />
+float z<br /></strong>
+<h3>class methods</h3>
+<p>
+	<strong>Vector3d::Vector3d(float x, float y, float z)</strong>
+	<br />
+	Creates a vector from coordinates
+</p>
+<p>
+	<strong>Point Vector3d::toPoint()</strong>
+	<br />Returns a point form the x and y values of the vector
+</p>
+<p>
+	<strong>dict Vector3d::toDict()</strong>
+	<br />Returns a dict: {'x': x, 'y': y, 'z': z };
+</p>
+
+<h2 id="Vector4d.class">Vector4d class</h2>
+<p>
+class representing a 4D Vector (x,y,z,w).
+The following operations are supported:<br />
+vec1 + vec2<br />
+vec1 - vec2<br />
+vec1 == vec2<br />
+vec1 != vec2<br />
+vec1 = -vec2<br />
+vec1 * float<br />
+</p>
+<h3>class attributes</h3>
+<br />
+<strong>
+float x<br />
+float y<br />
+float z<br />
+float w<br />
+</strong>
+<h3>class methods</h3>
+<p>
+	<strong>Vector4d::Vector4d(float x, float y, float z, float w)</strong>
+	<br />
+	Creates a vector from coordinates
+</p>
+<p>
+	<strong>Vector3d Vector4d::toVector3d()</strong>
+	<br />Returns a Vector3d form the x, y and z values of the vector
+</p>
+
+<p>
+	<strong>Point Vector4d::toPoint()</strong>
+	<br />Returns a point form the x and y values of the vector
+</p>
+<p>
+	<strong>dict Vector4d::toDict()</strong>
+	<br />Returns a dict: {'x': x, 'y': y, 'z': z, 'w': w };
+</p>
+
+
+</body>
+</html>

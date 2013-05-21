@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MasterWindow</class>
+ <widget class="QMainWindow" name="MasterWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>OFFIS Automation Framework</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen_project"/>
+    <addaction name="actionNew_project"/>
+    <addaction name="actionClose_project"/>
+    <addaction name="actionRecent_projects"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_OFFIS_Automation_Toolbox"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_project">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/loadProject.png</normaloff>:/img/loadProject.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open project</string>
+   </property>
+  </action>
+  <action name="actionNew_project">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/newProject.png</normaloff>:/img/newProject.png</iconset>
+   </property>
+   <property name="text">
+    <string>New project</string>
+   </property>
+  </action>
+  <action name="actionRecent_projects">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/project.png</normaloff>:/img/project.png</iconset>
+   </property>
+   <property name="text">
+    <string>Recent projects</string>
+   </property>
+  </action>
+  <action name="actionClose_project">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/closeProject.png</normaloff>:/img/closeProject.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close project</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/close.png</normaloff>:/img/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit the application</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionSupport">
+   <property name="icon">
+    <iconset resource="../../../../automation/projects/HilecGui/images/images.qrc">
+     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Technical Support</string>
+   </property>
+  </action>
+  <action name="actionReport_errors">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/bug.png</normaloff>:/img/bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>Report errors</string>
+   </property>
+  </action>
+  <action name="actionAbout_OFFIS_Automation_Toolbox">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/icon.ico</normaloff>:/img/icon.ico</iconset>
+   </property>
+   <property name="text">
+    <string>About OFFIS Automation Framework</string>
+   </property>
+  </action>
+  <action name="actionUpdate_components">
+   <property name="icon">
+    <iconset resource="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc">
+     <normaloff>:/olvisGui/bullet_wrench.png</normaloff>:/olvisGui/bullet_wrench.png</iconset>
+   </property>
+   <property name="text">
+    <string>Update components</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../images/images.qrc"/>
+  <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
+  <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MasterWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

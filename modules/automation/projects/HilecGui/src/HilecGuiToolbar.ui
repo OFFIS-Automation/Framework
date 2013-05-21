@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HilecGuiToolbar</class>
+ <widget class="QToolBar" name="HilecGuiToolbar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>34</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Automation toolbar</string>
+  </property>
+  <action name="actionResume">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/resume.png</normaloff>:/hilecGui/resume.png</iconset>
+   </property>
+   <property name="text">
+    <string>Start/Resume script</string>
+   </property>
+   <property name="toolTip">
+    <string>Start/Resume script</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/terminate.png</normaloff>:/hilecGui/terminate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit script</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/pause.png</normaloff>:/hilecGui/pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pause script</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause at the next possible code segment</string>
+   </property>
+  </action>
+  <action name="actionStepInto">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/stepinto.png</normaloff>:/hilecGui/stepinto.png</iconset>
+   </property>
+   <property name="text">
+    <string>Step into</string>
+   </property>
+   <property name="toolTip">
+    <string>Step into the current line</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="actionStepOver">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/stepover.png</normaloff>:/hilecGui/stepover.png</iconset>
+   </property>
+   <property name="text">
+    <string>Step over</string>
+   </property>
+   <property name="toolTip">
+    <string>Step over the current line</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
+  <action name="actionStepOut">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/stepreturn.png</normaloff>:/hilecGui/stepreturn.png</iconset>
+   </property>
+   <property name="text">
+    <string>Step return</string>
+   </property>
+   <property name="toolTip">
+    <string>Step out of the current function</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F11</string>
+   </property>
+  </action>
+  <action name="actionCreateLolec">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/lolec.png</normaloff>:/hilecGui/lolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create automation plugin</string>
+   </property>
+   <property name="toolTip">
+    <string>Create templates to implement your own RC-Unit</string>
+   </property>
+  </action>
+  <action name="actionAddLolec">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add RC-Unit to project</string>
+   </property>
+   <property name="toolTip">
+    <string>add a RC-Unit to the current project</string>
+   </property>
+  </action>
+  <action name="actionLolecHelp">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Automation help</string>
+   </property>
+   <property name="toolTip">
+    <string>show automation and plugin command help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionAutomationRunning">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/flag_green.png</normaloff>:/hilecGui/flag_green.png</iconset>
+   </property>
+   <property name="text">
+    <string>Automation is currently running</string>
+   </property>
+   <property name="toolTip">
+    <string>Automation is currently running</string>
+   </property>
+  </action>
+  <action name="actionAutomationIdle">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/flag_red.png</normaloff>:/hilecGui/flag_red.png</iconset>
+   </property>
+   <property name="text">
+    <string>Automation is idle</string>
+   </property>
+   <property name="toolTip">
+    <string>Automation is idle</string>
+   </property>
+  </action>
+  <addaction name="actionResume"/>
+  <addaction name="actionPause"/>
+  <addaction name="actionQuit"/>
+  <addaction name="separator"/>
+  <addaction name="actionStepInto"/>
+  <addaction name="actionStepOver"/>
+  <addaction name="actionStepOut"/>
+  <addaction name="separator"/>
+  <addaction name="actionAutomationRunning"/>
+  <addaction name="actionAutomationIdle"/>
+ </widget>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

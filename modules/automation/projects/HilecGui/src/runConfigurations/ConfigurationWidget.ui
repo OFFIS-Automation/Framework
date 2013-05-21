@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConfigurationWidget</class>
+ <widget class="QDockWidget" name="ConfigurationWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Run configurations</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="ConfigurationListWidget" name="listWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditKeyPressed</set>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::InternalMove</enum>
+      </property>
+      <property name="defaultDropAction">
+       <enum>Qt::MoveAction</enum>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="executionWidget" native="true">
+      <layout class="QHBoxLayout" name="executionLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="styleSheet">
+          <string notr="true">color: blue;</string>
+         </property>
+         <property name="text">
+          <string>Script is executing</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="quitButton">
+         <property name="text">
+          <string>Quit Script execution</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../images/images.qrc">
+           <normaloff>:/hilecGui/terminate.png</normaloff>:/hilecGui/terminate.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionRun">
+   <property name="icon">
+    <iconset resource="../../../ProjectEditor/images/images.qrc">
+     <normaloff>:/ProjectEditor/bug_go.png</normaloff>:/ProjectEditor/bug_go.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="toolTip">
+    <string>Run this configuration</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="../../../ProjectEditor/images/images.qrc">
+     <normaloff>:/ProjectEditor/page_delete.png</normaloff>:/ProjectEditor/page_delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete (Del)</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete this configuration</string>
+   </property>
+  </action>
+  <action name="actionRename">
+   <property name="icon">
+    <iconset resource="../../../ProjectEditor/images/images.qrc">
+     <normaloff>:/ProjectEditor/page_edit.png</normaloff>:/ProjectEditor/page_edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rename (F2)</string>
+   </property>
+   <property name="toolTip">
+    <string>Rename this configuration</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="icon">
+    <iconset resource="../../../ProjectEditor/images/images.qrc">
+     <normaloff>:/ProjectEditor/page_add.png</normaloff>:/ProjectEditor/page_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+   <property name="toolTip">
+    <string>Add a file</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ConfigurationListWidget</class>
+   <extends>QListWidget</extends>
+   <header>src/runConfigurations/ConfigurationListWidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../images/images.qrc"/>
+  <include location="../../../ProjectEditor/images/images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

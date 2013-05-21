@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/olvisExecGui">
+        <file>pause.png</file>
+        <file>play.png</file>
+        <file>repeat.png</file>
+        <file>stop.png</file>
+        <file>accept.png</file>
+        <file>error.png</file>
+        <file>folder.png</file>
+        <file>save.png</file>
+        <file>saveall.png</file>
+        <file>page.png</file>
+        <file>arrow_in.png</file>
+        <file>arrow_inout.png</file>
+        <file>arrow_out.png</file>
+        <file>delete.png</file>
+        <file>cancel.png</file>
+        <file>camera.png</file>
+        <file>film.png</file>
+        <file>cursor.png</file>
+        <file>information.png</file>
+        <file>time_go.png</file>
+        <file>time.png</file>
+        <file>convert.png</file>
+        <file>shape_flip_horizontal.png</file>
+        <file>shape_flip_vertical.png</file>
+        <file>plugin_edit.png</file>
+        <file>add.png</file>
+        <file>image_edit.png</file>
+        <file>images.png</file>
+        <file>skip.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,106 @@
+// OFFIS Automation Framework
+// Copyright (C) 2013 OFFIS e.V.
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "GamepadAssignmentWidget.h"
+#include "ui_GamepadAssignmentWidget.h"
+
+#include <core/RcUnitHelp.h>
+#include "../HilecSingleton.h"
+
+GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::GamepadAssignmentWidget)
+{
+    ui->setupUi(this);
+
+    // Colors
+    QStringList colors;
+    colors << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
+
+    // get unit
+    RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);
+
+    // Buttons
+    if(!help.tcButtons.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcButtons){
+            QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
+            QLabel *label = this->findChild<QLabel *>(labelName);
+            if(label != NULL){
+                label->setText(buttonMethod.name);
+                label->setStyleSheet("QLabel { color : black; }");
+            }
+
+        }
+    }
+
+    // Joystick
+    if(!help.tcJoysticks.empty()){
+        int colorCounter = 0;
+        foreach(RcUnitHelp::TcJostick joystickMethod, help.tcJoysticks){
+            QString color = colors.value(colorCounter);
+            colorCounter = (colorCounter + 1) % colors.size();
+            // Deadmans button
+            QString labelName = QString("button%1Label").arg(joystickMethod.deadMansButton);
+            QLabel *label = this->findChild<QLabel *>(labelName);
+            if(label != NULL){
+                label->setText(tr("Dead-man's control: ") + joystickMethod.name);
+                label->setStyleSheet(QString("QLabel { color : %1; }").arg(color));
+            }
+            for(int i=0;i < joystickMethod.joysticks.size(); i++){
+                Tc::Joystick joystick = joystickMethod.joysticks[i];
+                QString name = joystickMethod.axeNames.value(i);
+
+                // Append method to joystick
+                labelName = this->labelNameForJoystick(joystick);
+                QLabel *label = this->findChild<QLabel *>(labelName);
+                if(label != NULL){
+                    QString currentText = label->text();
+                    if(currentText.compare("Not assigned") == 0){
+                        // Replace placeholder and set correct color
+                        currentText.clear();
+                        label->setStyleSheet("QLabel { color : black; }");
+                    } else {
+                        if(currentText.length() > 0)
+                            currentText.append("; ");
+                    }
+                    QString text = "<span style='color: %1;'>%2.%3</span>";
+                    currentText.append(text.arg(color, joystickMethod.name, name));
+                    label->setText(currentText);
+                }
+            }
+        }
+    }
+}
+
+GamepadAssignmentWidget::~GamepadAssignmentWidget()
+{
+    delete ui;
+}
+
+QString GamepadAssignmentWidget::labelNameForJoystick(Tc::Joystick joystick)
+{
+    switch (joystick) {
+    case Tc::LeftJoystickX:
+        return QString("leftStickXLabel");
+    case Tc::LeftJoystickY:
+        return QString("leftStickYLabel");
+    case Tc::RightJoystickX:
+        return QString("rightStickXLabel");
+    default:
+        return QString("rightStickYLabel");
+    }
+
+}

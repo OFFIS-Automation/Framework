@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>close.png</file>
+        <file>float.png</file>
+        <file>switchWindow.png</file>
+        <file>makeCentral.png</file>
+        <file>newPerspective.png</file>
+        <file>usePerspective.png</file>
+        <file>SplashScreen.png</file>
+        <file>resetPerspective.png</file>
+        <file>icon.ico</file>
+        <file>loadProject.png</file>
+        <file>newProject.png</file>
+        <file>project.png</file>
+        <file>saveProject.png</file>
+        <file>saveProjectAs.png</file>
+        <file>closeProject.png</file>
+        <file>restoreProject.png</file>
+        <file>bug.png</file>
+    </qresource>
+</RCC>

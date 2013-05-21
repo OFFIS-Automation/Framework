@@ -1,14 +1,15 @@
 # OFFIS-Automation-Framework v0.9
 The OFFIS Automation Framework enables rapid prototyping of such vision-based automation systems, significantly reducing design times. The most common image processing algorithms are supplied with the software. Complex image processing pipelines can be created in just a few minutes. The automation environment allows for interaction with the image processing from automation scripts enabling powerful applications. Additionally, remote-controlled-units can be used providing a high-level access to real hardware components such as stages, axes, robots or tools. 
 
-## Installation
-Soon.
+## Getting started
 
+1. Clone the repo: git clone git://github.com/OFFIS-Automation/Framework.git.
+2. Build and Install using the Guidelines in the [Wiki](https://github.com/OFFIS-Automation/Framework/wiki).
 
 ## Contributing to this project
 
 Anyone and everyone is welcome to contribute. Please take a moment to
-review the [guidelines for contributing](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md), written by [Nicolas Gallagher](https://github.com/necolas/).
+review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/):
 
 * [Bug reports](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#bugs)
 * [Feature requests](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#features)

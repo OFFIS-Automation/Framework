@@ -21,8 +21,6 @@ SUBDIRS += projects/RcUnits
 SUBDIRS += projects/hilec
 SUBDIRS += projects/HilecGui
 SUBDIRS += projects/ProjectEditor
-#SUBDIRS += projects/RemoteLolecServer
-SUBDIRS += projects/Telecontrol
 
 include(../properties/pathes.pro)
 

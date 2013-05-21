@@ -1,5 +1,5 @@
 # OFFIS-Automation-Framework v0.9
-The OFFIS Automation Framework enables rapid prototyping of such vision-based automation systems, significantly reducing design times. The most common image processing algorithms are supplied with the software. Complex image processing pipelines can be created in just a few minutes. The automation environment allows for interaction with the image processing from automation scripts enabling powerful applications. Additionally, remote-controlled-units can be used providing a high-level access to real hardware components such as stages, axes, robots or tools. 
+The OFFIS Automation Framework enables rapid prototyping of vision-based automation systems, significantly reducing design times. The most common image processing algorithms are supplied with the software. Complex image processing pipelines can be created in just a few minutes. The automation environment allows for interaction with the image processing from automation scripts enabling powerful applications. Additionally, remote-controlled-units can be used providing a high-level access to real hardware components such as stages, axes, robots or tools. 
 
 ## Getting started
 

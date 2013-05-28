@@ -15,12 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Gamepad.h"
-/*
-Gamepad* Gamepad::createInstance()
-{
-    return WindowsGamepadFactory::createGamepad();
-}
-*/
 
 Gamepad::~Gamepad()
 {

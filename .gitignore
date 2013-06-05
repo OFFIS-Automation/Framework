@@ -14,3 +14,4 @@
 
 # OFFIS specific files
 *.exe
+modules/version/version.h

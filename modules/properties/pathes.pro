@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
-baseDir = $$quote($${PWD}/..)
+baseDir = $$quote($${PWD}/../../)
 CONFIG(debug, debug|release) {
-    targetDir = $${baseDir}/frontend/bin/debug
+    targetDir = $${baseDir}/bin/debug
 } else {
-    targetDir = $${baseDir}/frontend/bin
+    targetDir = $${baseDir}/bin
     DEFINES += QT_NO_DEBUG_OUTPUT=""
 }
 

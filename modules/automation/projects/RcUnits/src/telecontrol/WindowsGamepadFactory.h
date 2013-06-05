@@ -19,6 +19,9 @@
 
 #include "WindowsGamepad.h"
 
+// Specific gamepad imports
+#include "gamepadTypes/WindowsXBOXGamepad.h"
+
 class WindowsGamepadFactory : public QObject
 {
 public:

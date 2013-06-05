@@ -16,10 +16,8 @@
 
 #include "WindowsGamepad.h"
 
-#include <QMap>
 #include <QDebug>
 #include <QElapsedTimer>
-
 #include <telecontrol/TcConfig.h>
 
 bool WindowsGamepad::initialize()

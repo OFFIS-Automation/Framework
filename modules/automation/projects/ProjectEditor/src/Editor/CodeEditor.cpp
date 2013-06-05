@@ -457,10 +457,13 @@ void CodeEditor::checkCompileError(const ScriptCompileInfo &info)
     update();
 }
 
-void CodeEditor::save()
+bool CodeEditor::save()
 {
     QFile file(filename());
-    file.open(QFile::WriteOnly);
+    bool fileOpenSuccessful = file.open(QFile::WriteOnly  | QIODevice::Text);
+    if(!fileOpenSuccessful)
+        return false;
+
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
     stream.setGenerateByteOrderMark(false);
@@ -468,6 +471,7 @@ void CodeEditor::save()
     file.close();
     mLastModified = QFileInfo(filename()).lastModified();
     emit asyncRemoveChangeFlag();
+    return true;
 }
 
 void CodeEditor::onCheckReload()

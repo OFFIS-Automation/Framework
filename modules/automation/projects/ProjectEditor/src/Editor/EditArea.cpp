@@ -90,11 +90,18 @@ void EditArea::openFile(QString fileName)
     QMdiSubWindow* mdiWindow = new QMdiSubWindow();
     CodeEditor *codeEditor = new CodeEditor(QFileInfo(fileName).absoluteFilePath(), mdiWindow);
     mdiWindow->setWidget(codeEditor);
-    mdiWindow->setWindowTitle(fileName.remove(mBaseDir));
-    //mdiWindow->setWindowState(Qt::WindowMaximized);
+
+    QString title = QString(fileName).remove(mBaseDir).remove("/");
+    if(!QFileInfo(fileName).isWritable())
+        title.append(" (Read-Only)");
+
+    mdiWindow->setWindowTitle(title);
     mdiWindow->setAttribute(Qt::WA_DeleteOnClose);
     ui->mdiArea->addSubWindow(mdiWindow);
     mdiWindow->show();
+
+    // Check permissions of file
+    codeEditor->setReadOnly(!QFileInfo(fileName).isWritable());
 
     connect(codeEditor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
     connect(codeEditor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
@@ -110,8 +117,14 @@ void EditArea::saveFile()
     CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
     if (!codeEditor)
         return;
-    codeEditor->save();
-    emit fileSaved(codeEditor->filename());
+    if(!codeEditor->save()){
+        QMessageBox msgBox;
+        msgBox.setText(tr("File Save Error"));
+        msgBox.setText(tr("There was an error while saving the File %1. Maybe the File is Read-Only.").arg(codeEditor->filename()));
+        msgBox.exec();
+    } else {
+       emit fileSaved(codeEditor->filename());
+    }
 }
 
 void EditArea::saveAll()
@@ -123,8 +136,14 @@ void EditArea::saveAll()
         CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
         if (!codeEditor)
             continue;
-        codeEditor->save();
-        emit fileSaved(codeEditor->filename());
+        if(!codeEditor->save()){
+            QMessageBox msgBox;
+            msgBox.setText(tr("File Save Error"));
+            msgBox.setText(tr("There was an error while saving the File %1. Maybe the File is Read-Only.").arg(codeEditor->filename()));
+            msgBox.exec();
+        } else {
+           emit fileSaved(codeEditor->filename());
+        }
     }
 }
 
@@ -229,13 +248,14 @@ void EditArea::closeFile(QString filename)
 void EditArea::renameFile(QString oldName, QString newName)
 {
     // Check if file is opened ...
-    //@TODO: edito can sty open, just move filename pointer
     foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList())
     {
         if (!mdiWindow)
             continue;
         CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(!codeEditor) continue;
+        if(!codeEditor)
+            continue;
+
         if(QFileInfo(oldName) == QFileInfo(codeEditor->filename()))
         {
             ui->mdiArea->setActiveSubWindow(mdiWindow);

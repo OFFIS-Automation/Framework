@@ -48,6 +48,7 @@ public slots:
 private slots:
     void on_treeView_doubleClicked(const QModelIndex &index);
     void on_treeView_customContextMenuRequested(const QPoint &pos);
+    void on_model_fileRenamed(const QString & path, const QString &oldName, const QString &newName);
     void on_newFile_triggered();
     void on_deleteFile_triggered();
     void on_renameFile_triggered();
@@ -55,7 +56,7 @@ private slots:
 
 private:
     Ui::FileTree *ui;
-    QFileSystemModel model;
+    QFileSystemModel mModel;
     QString mBaseDir;
     bool mFileFilter;
     void keyPressEvent(QKeyEvent *e);

@@ -56,7 +56,12 @@ public slots:
     void focusLine(int line);
     void removeChangedFlag();
     void checkCompileError(const ScriptCompileInfo& err);
-    void save();
+
+    /**
+     * @brief Save the current file inside the code editor.
+     * @return Status, if the current file was saved succesful.
+     */
+    bool save();
     void onCheckReload();
     void reload();
     void search(QString word, int number);

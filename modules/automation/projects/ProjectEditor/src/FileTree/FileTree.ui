@@ -76,6 +76,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/ProjectEditor/zoom.png</normaloff>:/ProjectEditor/zoom.png</iconset>
+   </property>
    <property name="text">
     <string>File Extension Filter</string>
    </property>

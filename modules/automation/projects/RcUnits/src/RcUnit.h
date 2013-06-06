@@ -122,7 +122,7 @@ protected:
     QMap<QString, RcUnitHelp::Struct> mStructDefs;
     QVariantMap mConstantDefs;
     QMap<QString, TcUpdateMethod> mTcMethods;
-    QMap<QString, TcButtonEvent> mTcButtons;
+    QList<TcButtonEvent> mTcButtons;
     QString mHapticName;
     QMetaMethod mHapticMethod;
     QMutex mStartMutex;

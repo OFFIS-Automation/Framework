@@ -125,12 +125,10 @@ RcUnitHelp RcUnit::getHelp()
     {
         help.tcJoysticks << mTcMethods[name];
     }
-    names = mTcButtons.keys();
-    names.sort();
-    foreach(const QString& name, names)
-    {
-        help.tcButtons << mTcButtons[name];
-    }
+
+    foreach(const TcButtonEvent& button, mTcButtons)
+        help.tcButtons << button;
+
     help.constants = mConstantDefs;
     help.hasHaptic = hasHapticInterface();
     help.hapticSensitivity = hapticSensitivity();
@@ -162,16 +160,19 @@ bool RcUnit::initialize(LolecInterface* plugin)
             configureRcMethod(method, sig);
         if(mTcMethods.contains(sig))
             configureTcMethod(method, sig);
-        foreach(QString key, mTcButtons.keys())
+        for(int i=0;i<mTcButtons.size();i++)
         {
-            if(key == sig)
-                configureTcButton(mTcButtons[key], method);
+            TcButtonEvent& buttonEvent = mTcButtons[i];
+            if(buttonEvent.name == sig)
+            {
+                configureTcButton(buttonEvent, method);
+            }
         }
         if(sig == mHapticName)
             configureHapticMethod(method);
     }
     if(mLolec)
-        mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons.values());
+        mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons);
     return true;
 }
 
@@ -414,7 +415,7 @@ void RcUnit::registerButtonEvent(QString name, int defaultMapping)
     TcButtonEvent ev;
     ev.name = name;
     ev.buttonId = defaultMapping;
-    mTcButtons[name] = ev;
+    mTcButtons << ev;
 }
 
 void RcUnit::registerHapticMethod(QString methodName)

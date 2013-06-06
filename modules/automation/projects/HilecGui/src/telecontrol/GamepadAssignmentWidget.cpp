@@ -39,7 +39,12 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
             QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
             QLabel *label = this->findChild<QLabel *>(labelName);
             if(label != NULL){
-                label->setText(buttonMethod.name);
+                QString text = label->text();
+                if(text == "Not assigned")
+                    text.clear();
+                else if(!text.isEmpty())
+                    text += "; ";
+                label->setText(text + buttonMethod.name);
                 label->setStyleSheet("QLabel { color : black; }");
             }
 
@@ -56,8 +61,13 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
             QString labelName = QString("button%1Label").arg(joystickMethod.deadMansButton);
             QLabel *label = this->findChild<QLabel *>(labelName);
             if(label != NULL){
-                label->setText(tr("Dead-man's control: ") + joystickMethod.name);
-                label->setStyleSheet(QString("QLabel { color : %1; }").arg(color));
+                QString currentText = label->text();
+                if(currentText == "Not assigned")
+                    currentText.clear();
+                else if(!currentText.isEmpty())
+                    currentText += "; ";
+                QString text = "<span style='color: %1;'>%2</span>";
+                label->setText(currentText + text.arg(color, tr("Dead-man's control: ") + joystickMethod.name));
             }
             for(int i=0;i < joystickMethod.joysticks.size(); i++){
                 Tc::Joystick joystick = joystickMethod.joysticks[i];

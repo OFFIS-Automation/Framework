@@ -19,6 +19,7 @@
 
 #include <QDockWidget>
 #include <QMdiArea>
+
 class QPlainTextEdit;
 
 namespace Ui {

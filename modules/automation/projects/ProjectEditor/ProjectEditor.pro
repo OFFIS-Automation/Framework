@@ -22,6 +22,8 @@ include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 TARGET = ProjectEditor
 
+LIBS        += -L$$[QT_INSTALL_LIBS] -lqscintilla2
+
 INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../include
 
@@ -37,7 +39,7 @@ HEADERS += \
     src/Editor/SyntaxHighlighter/TxtHighlighter.h \
     src/Editor/SyntaxHighlighter/PyHighlighter.h \
     src/Editor/SyntaxHighlighterFactory.h \
-    src/EditorToolBar.h
+    src/EditorToolBar.h \
 
 SOURCES += \
     src/ProjectEditor.cpp \
@@ -50,7 +52,7 @@ SOURCES += \
     src/Editor/SyntaxHighlighter/TxtHighlighter.cpp \
     src/Editor/SyntaxHighlighter/PyHighlighter.cpp \
     src/Editor/SyntaxHighlighterFactory.cpp \
-    src/EditorToolBar.cpp
+    src/EditorToolBar.cpp \
 
 FORMS += \
     src/FileTree/FileTree.ui \

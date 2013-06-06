@@ -20,6 +20,8 @@
 
 #include "SyntaxHighlighterFactory.h"
 
+#include <Qsci/qsciscintilla.h>
+
 #include <QMessageBox>
 #include <QDebug>
 #include <QFileInfo>
@@ -30,7 +32,7 @@
 #include <core/ScriptException.h>
 
 CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
-    QPlainTextEdit(parent), mFilename(filename)
+    QsciScintilla(parent), mFilename(filename)
 {
     mErrorImages[ScriptCompileProblem::Error] = QImage(":/ProjectEditor/exclamation.png");
     mErrorImages[ScriptCompileProblem::Warning] = QImage(":/ProjectEditor/error.png");
@@ -57,7 +59,7 @@ CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
     //setCenterOnScroll(true);
     highlightCurrentLine();
 
-    setLineWrapMode(NoWrap);
+    /*setLineWrapMode(NoWrap);
     QFont font("Courier");
     font.setStyleHint(QFont::TypeWriter);
     setFont(font);
@@ -70,14 +72,14 @@ CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
     SyntaxHighlighterFactory::create(filename, document());
 
     reload();
-    new QShortcut(Qt::Key_F9, this, SLOT(toggleBreakpoint()));
+    new QShortcut(Qt::Key_F9, this, SLOT(toggleBreakpoint()));*/
 
 }
 
 
 void CodeEditor::focusLine(int line)
 {
-    if(line < 0)
+/*    if(line < 0)
     {
         mExtraSelection.remove("focus");
         mCurrentBreakpoint = -1;
@@ -100,12 +102,12 @@ void CodeEditor::focusLine(int line)
         selection.cursor.clearSelection();
         mCurrentBreakpoint = line;
     }
-    setExtraSelections(mErrorSelections + mExtraSelection.values());
+    setExtraSelections(mErrorSelections + mExtraSelection.values());*/
 }
 
 int CodeEditor::lineNumberAreaWidth()
 {
-    int digits = 1;
+  /*  int digits = 1;
     int max = qMax(1, blockCount());
     while (max >= 10) {
         max /= 10;
@@ -114,7 +116,8 @@ int CodeEditor::lineNumberAreaWidth()
 
     int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
 
-    return space + 12;
+    return space + 12;*/
+    return 0;
 }
 
 void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
@@ -135,15 +138,15 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 
 void CodeEditor::resizeEvent(QResizeEvent *e)
 {
-    QPlainTextEdit::resizeEvent(e);
+ /*   QPlainTextEdit::resizeEvent(e);
 
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));*/
 }
 
 void CodeEditor::highlightCurrentLine()
 {
-    if (!isReadOnly()) {
+    /*if (!isReadOnly()) {
         QTextEdit::ExtraSelection& selection = mExtraSelection["currentLine"];
 
         QColor lineColor = QColor(Qt::yellow).lighter(160);
@@ -154,12 +157,12 @@ void CodeEditor::highlightCurrentLine()
         selection.cursor.clearSelection();
     }
 
-    setExtraSelections(mErrorSelections + mExtraSelection.values());
+    setExtraSelections(mErrorSelections + mExtraSelection.values());*/
 }
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-    QPainter painter(lineNumberArea);
+    /*QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), Qt::lightGray);
 
     QTextBlock block = firstVisibleBlock();
@@ -192,7 +195,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         top = bottom;
         bottom = top + (int) blockBoundingRect(block).height();
         ++blockNumber;
-    }
+    }*/
 
 }
 
@@ -214,7 +217,7 @@ void CodeEditor::lineNumberAreaMoveEvent(QMouseEvent *e)
 
 void CodeEditor::lineNumberAreaPressEvent(QMouseEvent *e)
 {
-    if(e->button() == Qt::LeftButton)
+   /* if(e->button() == Qt::LeftButton)
     {
         e->accept();
         int y = e->y();
@@ -248,12 +251,12 @@ void CodeEditor::lineNumberAreaPressEvent(QMouseEvent *e)
         }
     }
 
-    repaint();
+    repaint();*/
 }
 void CodeEditor::keyPressEvent(QKeyEvent *e)
 {
 
-    if(isReadOnly())
+/*    if(isReadOnly())
     {
         QPlainTextEdit::keyPressEvent(e);
         return;
@@ -278,12 +281,12 @@ void CodeEditor::keyPressEvent(QKeyEvent *e)
         QPlainTextEdit::keyPressEvent(e);
         if (e->key()==Qt::Key_Return)
             formatNewLine();
-    }
+    }*/
 }
 
 void CodeEditor::wheelEvent(QWheelEvent *e)
 {
-    if (e->modifiers() & Qt::ControlModifier)
+    /*if (e->modifiers() & Qt::ControlModifier)
     {
         int numDegrees = e->delta() / 8;
         if (numDegrees > 0)
@@ -293,12 +296,12 @@ void CodeEditor::wheelEvent(QWheelEvent *e)
         e->accept();
     }
     else
-        QPlainTextEdit::wheelEvent(e);
+        QPlainTextEdit::wheelEvent(e);*/
 }
 
 void CodeEditor::formatNewLine()
 {
-    QTextCursor currentCursor = textCursor();
+    /*QTextCursor currentCursor = textCursor();
 
     currentCursor.movePosition(QTextCursor::PreviousBlock);
     currentCursor.movePosition(QTextCursor::StartOfLine);
@@ -315,12 +318,12 @@ void CodeEditor::formatNewLine()
         }
         pos = i+1;
     }
-    insertPlainText(str.mid(0,pos)+add);
+    insertPlainText(str.mid(0,pos)+add);*/
 }
 
 void CodeEditor::prependStringToSelection(const QString& text)
 {
-    QTextCursor c = textCursor();
+   /* QTextCursor c = textCursor();
     if(!c.hasSelection())
         c.select(QTextCursor::LineUnderCursor);
 
@@ -341,12 +344,12 @@ void CodeEditor::prependStringToSelection(const QString& text)
             break;
         c.movePosition(QTextCursor::StartOfLine);
     }
-    c.endEditBlock();
+    c.endEditBlock();*/
 }
 
 void CodeEditor::deleteStringInSelection(const QString &text)
 {
-    QTextCursor c = textCursor();
+  /*  QTextCursor c = textCursor();
     if(!c.hasSelection())
         c.select(QTextCursor::LineUnderCursor);
     int start = c.selectionStart();
@@ -370,7 +373,7 @@ void CodeEditor::deleteStringInSelection(const QString &text)
         c.movePosition(QTextCursor::StartOfLine);
         current = c.position();
     }
-    c.endEditBlock();
+    c.endEditBlock();*/
 }
 
 void CodeEditor::setTextChanged()
@@ -419,7 +422,7 @@ void CodeEditor::closeEvent(QCloseEvent *event)
 
 void CodeEditor::checkCompileError(const ScriptCompileInfo &info)
 {
-    if(info.file != mFilename)
+/*    if(info.file != mFilename)
         return;
     mErrorSelections.clear();
     mErrors.clear();
@@ -454,12 +457,12 @@ void CodeEditor::checkCompileError(const ScriptCompileInfo &info)
         }
     }
     setExtraSelections(mErrorSelections + mExtraSelection.values());
-    update();
+    update();*/
 }
 
 bool CodeEditor::save()
 {
-    QFile file(filename());
+    /*QFile file(filename());
     bool fileOpenSuccessful = file.open(QFile::WriteOnly  | QIODevice::Text);
     if(!fileOpenSuccessful)
         return false;
@@ -470,7 +473,7 @@ bool CodeEditor::save()
     stream << toPlainText();
     file.close();
     mLastModified = QFileInfo(filename()).lastModified();
-    emit asyncRemoveChangeFlag();
+    emit asyncRemoveChangeFlag();*/
     return true;
 }
 
@@ -490,30 +493,30 @@ void CodeEditor::onCheckReload()
 
 void CodeEditor::reload()
 {
-    mLastModified = QFileInfo(filename()).lastModified();
+    /*mLastModified = QFileInfo(filename()).lastModified();
     QFile file(filename());
     file.open(QFile::ReadOnly);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
     setPlainText(stream.readAll());
     file.close();
-    emit asyncRemoveChangeFlag();
+    emit asyncRemoveChangeFlag();*/
 }
 
 void CodeEditor::focusInEvent(QFocusEvent* e)
 {
-    if(!mFocusRecursion)
+    /*if(!mFocusRecursion)
     {
         mFocusRecursion = true;
         emit checkReload();
         mFocusRecursion = false;
     }
-    QPlainTextEdit::focusInEvent(e);
+    QPlainTextEdit::focusInEvent(e);*/
 }
 
 void CodeEditor::search(QString word, int number)
 {
-    if (toPlainText().contains(word))
+    /*if (toPlainText().contains(word))
     {
         int pos = 0;
         for (int i = 0; i < number; i++)
@@ -533,24 +536,24 @@ void CodeEditor::search(QString word, int number)
         selection.cursor = c;
         setTextCursor(c);
         setExtraSelections(mErrorSelections + mExtraSelection.values());
-    }
+    }*/
 }
 
 void CodeEditor::replace(QString word)
 {
-    QTextCursor c = textCursor();
+   /* QTextCursor c = textCursor();
     if (c.hasSelection())
     {
         c.removeSelectedText();
         c.clearSelection();
         c.insertText(word);
         setTextCursor(c);
-    }
+    }*/
 }
 
 void CodeEditor::toggleBreakpoint()
 {
-    int line = textCursor().blockNumber()+1;
+    /*int line = textCursor().blockNumber()+1;
     if(!mBreakpoints.contains(line))
     {
         mBreakpoints << line;
@@ -561,13 +564,13 @@ void CodeEditor::toggleBreakpoint()
         mBreakpoints.removeAll(line);
         emit removeBreakpoint(filename(), line);
     }
-    repaint();
+    repaint();*/
 }
 
 void CodeEditor::setFontSize(int fontSize)
 {
-    QFont f = font();
+    /*QFont f = font();
     f.setPointSize(fontSize);
     setFont(f);
-    setTabStopWidth(fontMetrics().width(QChar('0'))*3);
+    setTabStopWidth(fontMetrics().width(QChar('0'))*3);*/
 }

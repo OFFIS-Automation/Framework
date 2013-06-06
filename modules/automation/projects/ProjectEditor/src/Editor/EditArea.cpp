@@ -25,6 +25,9 @@
 #include "ui_EditArea.h"
 #include "CodeEditor.h"
 
+#define QSCINTILLA_DLL
+#include <Qsci/qsciscintilla.h>
+
 EditArea::EditArea(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::EditArea)
@@ -88,6 +91,8 @@ void EditArea::openFile(QString fileName)
     }
     // not open, create
     QMdiSubWindow* mdiWindow = new QMdiSubWindow();
+    QsciScintilla *textEdit = new QsciScintilla;
+
     CodeEditor *codeEditor = new CodeEditor(QFileInfo(fileName).absoluteFilePath(), mdiWindow);
     mdiWindow->setWidget(codeEditor);
 

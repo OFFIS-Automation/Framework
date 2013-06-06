@@ -25,9 +25,12 @@
 #include <QDateTime>
 #include <QSyntaxHighlighter>
 
+#define QSCINTILLA_DLL
+#include <Qsci/qsciscintilla.h>
+
 struct ScriptCompileInfo;
 
-class CodeEditor : public QPlainTextEdit
+class CodeEditor : public QsciScintilla
 {
     Q_OBJECT
 

@@ -45,7 +45,7 @@ public:
     virtual void addConstant(const QString name, const QVariant& constant);
 
     void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0);
-    void registerButtonEvent(QString methodName, int defaultMapping);
+    void registerButtonEvent(QString methodName, int defaultMapping, bool hideFromUser = false);
     void registerHapticMethod(QString methodName);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
@@ -102,6 +102,7 @@ public:
     struct TcButtonEvent : RcUnitHelp::TcButton
     {
         QMetaMethod method;
+        bool hideFromUser;
     };
 
 protected:

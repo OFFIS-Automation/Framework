@@ -127,8 +127,10 @@ RcUnitHelp RcUnit::getHelp()
     }
 
     foreach(const TcButtonEvent& button, mTcButtons)
-        help.tcButtons << button;
-
+    {
+        if(!button.hideFromUser)
+            help.tcButtons << button;
+    }
     help.constants = mConstantDefs;
     help.hasHaptic = hasHapticInterface();
     help.hapticSensitivity = hapticSensitivity();
@@ -410,11 +412,12 @@ void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Joystick> &defa
     mTcMethods[name] = method;
 }
 
-void RcUnit::registerButtonEvent(QString name, int defaultMapping)
+void RcUnit::registerButtonEvent(QString name, int defaultMapping, bool hideFromUser)
 {
     TcButtonEvent ev;
     ev.name = name;
     ev.buttonId = defaultMapping;
+    ev.hideFromUser = hideFromUser;
     mTcButtons << ev;
 }
 

@@ -69,8 +69,9 @@ public:
      * The signature can be methodName() -- method is called when the button is "clicked" (pressed and released)
      * The signature can be methodName(bool toggled) -- method is called when the button is pressed or released
      * @param defaultMapping the sensitive button
+     * @param hiddenToUser this button assingment is hidden from the user, it is not displayed in the GUI
      */
-    virtual void registerButtonEvent(QString methodName, int defaultMapping) = 0;
+    virtual void registerButtonEvent(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
 
     /**
      * @brief registers a method that is used with the haptic interface
@@ -179,7 +180,7 @@ public:
      */
     virtual void deleteInstance(QObject* instance) { delete instance; }
 };
-#define LolecInterface_iid "offis.automation.RcInterface/2.2"
+#define LolecInterface_iid "offis.automation.RcInterface/2.3"
 Q_DECLARE_INTERFACE(LolecInterface, LolecInterface_iid)
 
 #if QT_VERSION < 0x050000

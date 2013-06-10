@@ -33,7 +33,7 @@ CreatePluginDialog::CreatePluginDialog(QWidget *parent) :
     ui->setupUi(this);
     mSourceDir = QCoreApplication::applicationDirPath() + "/plugins/olvis/templates/filter";
     QSettings settings;
-    QString path = settings.value("olvisGuiPlugin/userPluginDir").toString();
+    QString path = settings.value("olvisGuiPlugin/userPluginDir", QDir::homePath()).toString();
     QString pluginName = settings.value("olvisGuiPlugin/userPluginName", QString("CustomPlugin")).toString();
     QDir dir(path);
     ui->destination->setText(dir.canonicalPath());
@@ -98,9 +98,14 @@ void CreatePluginDialog::createPlugin()
         data.replace("CustomFilter", filter);
         writeFile(targetProject, data);
 
-        data = readFile(mSourceDir + "/src/main.cpp");
+        data = readFile(mSourceDir + "/template.h");
+        data.replace(QString("CustomPlugin").toUpper()+ "_H", project.toUpper()+ "_H");
         data.replace("CustomPlugin", project);
-        writeFile(srcDir.absoluteFilePath("main.cpp"), data);
+        writeFile(srcDir.absoluteFilePath(project + ".h"), data);
+
+        data = readFile(mSourceDir + "/template.cpp");
+        data.replace("CustomPlugin", project);
+        writeFile(srcDir.absoluteFilePath(project + ".cpp"), data);
     }
     else
     {
@@ -145,14 +150,29 @@ void CreatePluginDialog::on_filterName_textChanged(const QString &)
 
 void CreatePluginDialog::check()
 {
+    QString filterName = ui->filterName->text();
+    QString pluginName = ui->pluginName->text();
+    QStringList errors;
+
+    QRegExp rx("[A-Za-z][A-Za-z0-9_]+");
+    if(!rx.exactMatch(pluginName))
+        errors << tr("The plugin name must be a correct c++ class name");
+    if(!rx.exactMatch(filterName))
+        errors << tr("The filter name must be a correct c++ class name");
+
+    // check if the filter name is different form the
+    if(pluginName.compare(filterName, Qt::CaseInsensitive) == 0)
+        errors << tr("The filter and the plugin can not have the same name");
+
+    // check if the target filter exists
     QDir dir(ui->destination->text());
     QString path = dir.absoluteFilePath(ui->pluginName->text() + "/src/" + ui->filterName->text());
-    bool exists = QFileInfo(path + ".h").exists() || QFileInfo(path + ".cpp").exists();
-    QPushButton* b = ui->buttonBox->button(QDialogButtonBox::Ok);
-    if(b) b->setEnabled(!exists);
-    QString errStr;
-    if(exists)
-        errStr = tr("A filter with the given name exists for the chosen plugin name in the chosen directory");
-    ui->errorText->setText(errStr);
+    if(QFileInfo(path + ".h").exists() || QFileInfo(path + ".cpp").exists())
+    {
+        errors << tr("A filter with the given name exists for the chosen plugin name in the chosen directory");
+    }
 
+    QPushButton* b = ui->buttonBox->button(QDialogButtonBox::Ok);
+    if(b) b->setEnabled(errors.empty());
+    ui->errorText->setText(errors.join("\n"));
 }

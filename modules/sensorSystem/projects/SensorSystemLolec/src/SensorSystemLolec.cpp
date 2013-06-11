@@ -67,6 +67,14 @@ void SensorSystemLolec::setExportSensors(const QList<QString> &items)
         mExporter.addElement(item, true);
 }
 
+void SensorSystemLolec::setExportSensors2(const QList<QString> &items, const QString &sensitiveSensor)
+{
+    QMutexLocker lock(&mMutex);
+    mExporter.clearElements();
+    foreach(QString item, items)
+        mExporter.addElement(item, item == sensitiveSensor);
+}
+
 void SensorSystemLolec::exportTrace(const QString& filename)
 {
     QMutexLocker lock(&mMutex);

@@ -38,6 +38,7 @@ public slots:
     QString addMarker(const QString& markerName);
     void setSeperator(const QString& seperator);
     void setExportSensors(const QList<QString>& items);
+    void setExportSensors2(const QList<QString> &items, const QString &sensitiveSensor);
     void setExportRange(const QString& startMarker, const QString& endMarker);
     void exportTrace(const QString &filename);
     void setStartAtZero(bool startTraceAtZero);
@@ -45,6 +46,7 @@ private:
     SensorDataWriter& mWriter;
     QMutex mMutex;
     SensorTraceExport mExporter;
+    QString mExportSensors;
 
 };
 

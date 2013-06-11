@@ -41,6 +41,7 @@ QObject *SensorSystemLolecInterface::instance(RcBase &rc, const QString &, const
     rc.addMethod("setStartAtZero", "Sets this attribute for export", "If startAtZero is set to true, every export will start at the time 0. If it is false (the default), it will be the seconds since the system start.");
     rc.addMethod("setExportRange", "Sets the range for the export", "Sets the range using markers. You can give a marker name for start and/or end, or a empty string. An empty string as startMArker means start at beginning of trace; An empty string as aned marker means end of trace.");
     rc.addMethod("setExportSensors", "Sets the sensor for the next export", "Only the given sensors will be included in the next export.");
+    rc.addMethod("setExportSensors2", "Sets the sensor for the next export", "Only the given sensors will be included in the next export. A new line will be written only for the sensitiveSensor");
     rc.addMethod("exportTrace", "Exports a trace to a file", "Exports a trace to the given file. Use setSeperator, setStartAtZero, setExportRange and setExportSensors to define the trace.");
     return new SensorSystemLolec();
 }

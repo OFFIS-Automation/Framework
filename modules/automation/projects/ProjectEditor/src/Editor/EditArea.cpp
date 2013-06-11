@@ -23,15 +23,14 @@
 
 #include "EditArea.h"
 #include "ui_EditArea.h"
-#include "CodeEditor.h"
+#include "FileEditor.h"
 
-#define QSCINTILLA_DLL
-#include <Qsci/qsciscintilla.h>
-
-EditArea::EditArea(QWidget *parent) :
-    QDockWidget(parent),
-    ui(new Ui::EditArea)
+EditArea::EditArea(QWidget *parent) : QDockWidget(parent), ui(new Ui::EditArea)
 {
+    mForwardSearch = true;
+    mFoundFirst = false;
+
+    // Set up UI
     ui->setupUi(this);
     ui->findBox->hide();
     QSettings settings;
@@ -39,6 +38,8 @@ EditArea::EditArea(QWidget *parent) :
     bool tabbed = settings.value("ProjectEditor/tabbed", true).toBool();
     if(tabbed)
         setTabView();
+
+
 }
 
 EditArea::~EditArea()
@@ -58,8 +59,9 @@ void EditArea::focusLine(const QString &filename, int line)
 {
     foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList())
     {
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(codeEditor) codeEditor->focusLine(-1);
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if(editor)
+            editor->focusLine(-1);
     }
     if(line == -1 || filename.isEmpty())
         return;
@@ -68,10 +70,10 @@ void EditArea::focusLine(const QString &filename, int line)
     if (!mdiWindow)
         return;
 
-    CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-    if (!codeEditor)
+    FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+    if (!editor)
         return;
-    codeEditor->focusLine(line);
+    editor->focusLine(line);
 }
 
 void EditArea::openFile(QString fileName)
@@ -81,22 +83,21 @@ void EditArea::openFile(QString fileName)
     {
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(!codeEditor) continue;
-        if(QFileInfo(fileName) == QFileInfo(codeEditor->filename()))
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if(!editor) continue;
+        if(QFileInfo(fileName) == QFileInfo(editor->filename()))
         {
             ui->mdiArea->setActiveSubWindow(mdiWindow);
             return;
         }
     }
+
     // not open, create
     QMdiSubWindow* mdiWindow = new QMdiSubWindow();
-    QsciScintilla *textEdit = new QsciScintilla;
+    FileEditor *editor = new FileEditor(fileName, mdiWindow);
+    mdiWindow->setWidget(editor);
 
-    CodeEditor *codeEditor = new CodeEditor(QFileInfo(fileName).absoluteFilePath(), mdiWindow);
-    mdiWindow->setWidget(codeEditor);
-
-    QString title = QString(fileName).remove(mBaseDir).remove("/");
+    QString title = QString(fileName).remove(QString("%1/").arg(mBaseDir));
     if(!QFileInfo(fileName).isWritable())
         title.append(" (Read-Only)");
 
@@ -106,12 +107,13 @@ void EditArea::openFile(QString fileName)
     mdiWindow->show();
 
     // Check permissions of file
-    codeEditor->setReadOnly(!QFileInfo(fileName).isWritable());
+    editor->setReadOnly(!QFileInfo(fileName).isWritable());
 
-    connect(codeEditor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
-    connect(codeEditor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
-    connect(codeEditor, SIGNAL(decreaseFontSizeRequested()), this, SLOT(decreaseFontSize()));
-    emit fileOpened(codeEditor->filename());
+
+    connect(editor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
+    connect(editor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
+    connect(editor, SIGNAL(decreaseFontSizeRequested()), this, SLOT(decreaseFontSize()));
+    emit fileOpened(fileName);
 }
 
 void EditArea::saveFile()
@@ -119,16 +121,16 @@ void EditArea::saveFile()
     QMdiSubWindow* mdiWindow = ui->mdiArea->activeSubWindow();
     if (!mdiWindow)
         return;
-    CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-    if (!codeEditor)
+    FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+    if (!editor)
         return;
-    if(!codeEditor->save()){
+    if(!editor->saveContent()){
         QMessageBox msgBox;
         msgBox.setText(tr("File Save Error"));
-        msgBox.setText(tr("There was an error while saving the File %1. Maybe the File is Read-Only.").arg(codeEditor->filename()));
+        msgBox.setText(tr("There was an error while saving the file %1. Maybe the file is read-only.").arg(editor->filename()));
         msgBox.exec();
     } else {
-       emit fileSaved(codeEditor->filename());
+       emit fileSaved(editor->filename());
     }
 }
 
@@ -138,16 +140,16 @@ void EditArea::saveAll()
     {
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if (!codeEditor)
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if (!editor)
             continue;
-        if(!codeEditor->save()){
+        if(!editor->saveContent()){
             QMessageBox msgBox;
             msgBox.setText(tr("File Save Error"));
-            msgBox.setText(tr("There was an error while saving the File %1. Maybe the File is Read-Only.").arg(codeEditor->filename()));
+            msgBox.setText(tr("There was an error while saving the file %1. Maybe the file is read-only.").arg(editor->filename()));
             msgBox.exec();
         } else {
-           emit fileSaved(codeEditor->filename());
+           emit fileSaved(editor->filename());
         }
     }
 }
@@ -213,10 +215,10 @@ void EditArea::changeFontSize(int changePoints)
     {
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if (!codeEditor)
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if (!editor)
             continue;
-        codeEditor->setFontSize(size);
+        editor->setFontSize(size);
     }
 }
 
@@ -227,9 +229,9 @@ void EditArea::on_mdiArea_subWindowActivated(QMdiSubWindow *mdiWindow)
         emit currentFileChanged(QString());
         return;
     }
-    CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-    if(codeEditor)
-        emit currentFileChanged(codeEditor->filename());
+    FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+    if(editor)
+        emit currentFileChanged(editor->filename());
 }
 
 void EditArea::closeFile(QString filename)
@@ -239,9 +241,10 @@ void EditArea::closeFile(QString filename)
     {
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(!codeEditor) continue;
-        if(QFileInfo(filename) == QFileInfo(codeEditor->filename()))
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if(!editor)
+            continue;
+        if(QFileInfo(filename) == QFileInfo(editor->filename()))
         {
             ui->mdiArea->setActiveSubWindow(mdiWindow);
             ui->mdiArea->closeActiveSubWindow();
@@ -257,11 +260,11 @@ void EditArea::renameFile(QString oldName, QString newName)
     {
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(!codeEditor)
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if(!editor)
             continue;
 
-        if(QFileInfo(oldName) == QFileInfo(codeEditor->filename()))
+        if(QFileInfo(oldName) == QFileInfo(editor->filename()))
         {
             ui->mdiArea->setActiveSubWindow(mdiWindow);
             ui->mdiArea->closeActiveSubWindow();
@@ -275,14 +278,13 @@ void EditArea::renameDir(QString oldName, QString newName)
 {
     // Check if dir is opened ...
     // @TODO: just move the filesystem pointer
-    foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList())
-    {
+    foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList()){
         if (!mdiWindow)
             continue;
-        CodeEditor *codeEditor = qobject_cast<CodeEditor*>(mdiWindow->widget());
-        if(!codeEditor) continue;
-        if(QFileInfo(oldName).absolutePath() == QFileInfo(codeEditor->filename()).absolutePath())
-        {
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if(!editor)
+            continue;
+        if(QFileInfo(oldName).absolutePath() == QFileInfo(editor->filename()).absolutePath()){
             ui->mdiArea->setActiveSubWindow(mdiWindow);
             ui->mdiArea->closeActiveSubWindow();
             continue;
@@ -290,87 +292,90 @@ void EditArea::renameDir(QString oldName, QString newName)
     }
 }
 
-void EditArea::search(QString word, int number)
+void EditArea::search(QString word)
 {
     if (!ui->mdiArea->activeSubWindow())
         return;
-    CodeEditor *codeEditor = qobject_cast<CodeEditor*>(ui->mdiArea->activeSubWindow()->widget());
-    codeEditor->search(word, number);
+
+    // Get current editor to perform search
+    FileEditor *editor = qobject_cast<FileEditor*>(ui->mdiArea->activeSubWindow()->widget());
+    editor->findFirstOccurence(word, false, false, true, editor->currentLine());
 }
 
 void EditArea::replace(QString word)
 {
     if (!ui->mdiArea->activeSubWindow())
         return;
-    CodeEditor *codeEditor = qobject_cast<CodeEditor*>(ui->mdiArea->activeSubWindow()->widget());
-    codeEditor->replace(word);
+    FileEditor *editor = qobject_cast<FileEditor*>(ui->mdiArea->activeSubWindow()->widget());
+    editor->replace(word);
 }
 
-QPlainTextEdit* EditArea::currentEditor()
+FileEditor *EditArea::currentEditor()
 {
     if (!ui->mdiArea->activeSubWindow())
         return 0;
-    return qobject_cast<QPlainTextEdit*>(ui->mdiArea->activeSubWindow()->widget());
+    return qobject_cast<FileEditor*>(ui->mdiArea->activeSubWindow()->widget());
 }
 
-bool EditArea::search(bool back)
+bool EditArea::search(bool forwardSearch)
 {
-    QTextDocument::FindFlags flags = 0;
-    if(back)
-        flags |= QTextDocument::FindBackward;
-    if(ui->caseSensitive->isChecked())
-        flags |= QTextDocument::FindCaseSensitively;
-    if(ui->wholeWords->isChecked())
-        flags |= QTextDocument::FindWholeWords;
-    QPlainTextEdit* edit = currentEditor();
-    if(!edit) return false;
-    QTextCursor c = edit->document()->find(ui->searchValue->text(), edit->textCursor(), flags);
-    if(!c.isNull())
-    {
-        edit->setTextCursor(c);
-        return true;
+    if (!ui->mdiArea->activeSubWindow())
+         return false;
+
+    // Get current editor to perform search
+    FileEditor* editor = currentEditor();
+
+    if(forwardSearch != mForwardSearch){
+        // Search direction has changed, find first wirh new direction
+        mForwardSearch = forwardSearch;
+        mFoundFirst = false;
     }
-    return false;
+
+    // Search for word
+    if(!mFoundFirst)
+        mFoundFirst = editor->findFirstOccurence(ui->searchValue->text(), ui->caseSensitive->isChecked(), ui->wholeWords->isChecked(), mForwardSearch, editor->currentLine());
+    else
+        mFoundFirst = editor->findNextOccurence();
+
+    return mFoundFirst;
 }
 
 
 void EditArea::replace()
 {
-    QPlainTextEdit* edit = currentEditor();
-    if(!edit) return;
+    /* edit = currentEditor();
+    if(!edit)
+        return;
     QTextCursor current = edit->textCursor();
     if(current.selectedText().compare(ui->searchValue->text(), Qt::CaseInsensitive) != 0)
         return;
     current.insertText(ui->replaceValue->text());
-    edit->setTextCursor(current);
+    edit->setTextCursor(current);*/
 }
 
 void EditArea::showFind()
 {
-    if (!ui->mdiArea->activeSubWindow())
+   if (!ui->mdiArea->activeSubWindow())
         return;
 
-    ui->findBox->show();
-    QPlainTextEdit* edit = currentEditor();
+   // Show box
+   ui->findBox->show();
 
-    if(edit)
-    {
-        QString current = edit->textCursor().selectedText();
-        if(!current.isEmpty())
-            ui->searchValue->setText(current);
-
-    }
-    ui->searchValue->setFocus();
+   // Get current selection as initial value for search
+   FileEditor* editor = currentEditor();
+   if(editor->hasSelectedText())
+       ui->searchValue->setText(editor->selectedText());
+   ui->searchValue->setFocus();
 }
 
 void EditArea::on_searchNext_clicked()
 {
-    search();
+    search(true);
 }
 
 void EditArea::on_searchPrev_clicked()
 {
-    search(true);
+    search(false);
 }
 
 
@@ -387,9 +392,9 @@ void EditArea::on_replaceNext_clicked()
 
 void EditArea::on_replaceAll_clicked()
 {
-    QPlainTextEdit* edit = currentEditor();
-    if(!edit) return;
-    edit->setTextCursor(QTextCursor());
+    FileEditor* editor = currentEditor();
+    if(!editor)
+        return;
     while(search())
         replace();
 }
@@ -406,3 +411,8 @@ void EditArea::tile()
     ui->mdiArea->tileSubWindows();
 }
 
+
+void EditArea::on_searchValue_textChanged(const QString &arg1)
+{
+    mFoundFirst = false;
+}

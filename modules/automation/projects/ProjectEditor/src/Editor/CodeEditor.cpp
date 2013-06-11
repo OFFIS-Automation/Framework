@@ -21,6 +21,7 @@
 #include "SyntaxHighlighterFactory.h"
 
 #include <Qsci/qsciscintilla.h>
+#include <Qsci/qscilexerpython.h>
 
 #include <QMessageBox>
 #include <QDebug>
@@ -28,26 +29,27 @@
 #include <QSettings>
 #include <QToolTip>
 #include <QShortcut>
+#include <QApplication>
 
 #include <core/ScriptException.h>
 
 CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
     QsciScintilla(parent), mFilename(filename)
 {
-    mErrorImages[ScriptCompileProblem::Error] = QImage(":/ProjectEditor/exclamation.png");
+    /*mErrorImages[ScriptCompileProblem::Error] = QImage(":/ProjectEditor/exclamation.png");
     mErrorImages[ScriptCompileProblem::Warning] = QImage(":/ProjectEditor/error.png");
     mErrorImages[ScriptCompileProblem::Info] = QImage(":/ProjectEditor/information.png");
     mFocusRecursion = false;
     mChanged = false;
-    mCurrentBreakpoint = -1;
+    mCurrentBreakpoint = -1;*/
     mdiWindow = parent;
-    lineNumberArea = new LineNumberArea(this);
+    //lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+    /*connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
     connect(this, SIGNAL(textChanged()), SLOT(setTextChanged()));
-    connect(this, SIGNAL(checkReload()), SLOT(onCheckReload()), Qt::QueuedConnection);
+    connect(this, SIGNAL(checkReload()), SLOT(onCheckReload()), Qt::QueuedConnection);*/
 
     connect(this, SIGNAL(createBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(addBreakpoint(QString,int)));
     connect(this, SIGNAL(removeBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(removeBreakpoint(QString,int)));
@@ -55,9 +57,20 @@ CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
     connect(HilecSingleton::hilec(), SIGNAL(compileError(ScriptCompileInfo)), SLOT(checkCompileError(ScriptCompileInfo)));
 
     connect(this, SIGNAL(asyncRemoveChangeFlag()), SLOT(removeChangedFlag()), Qt::QueuedConnection);
-    updateLineNumberAreaWidth(0);
-    //setCenterOnScroll(true);
-    highlightCurrentLine();
+    //updateLineNumberAreaWidth(0);
+    //highlightCurrentLine();
+
+
+    reload();
+    new QShortcut(Qt::Key_F9, this, SLOT(toggleBreakpoint()));
+
+    ensureCursorVisible();
+
+    QsciLexer *lexer = new QsciLexerPython();
+    setLexer(lexer);
+    indicatorDefine(TTIndicator);
+
+
 
     /*setLineWrapMode(NoWrap);
     QFont font("Courier");
@@ -69,11 +82,7 @@ CodeEditor::CodeEditor(const QString &filename, QMdiSubWindow *parent) :
     setPalette(p);
     QSettings settings;
     setFontSize(settings.value("ProjectEditor/fontsize", 12).toInt());
-    SyntaxHighlighterFactory::create(filename, document());
-
-    reload();
-    new QShortcut(Qt::Key_F9, this, SLOT(toggleBreakpoint()));*/
-
+    SyntaxHighlighterFactory::create(filename, document());*/
 }
 
 
@@ -493,14 +502,17 @@ void CodeEditor::onCheckReload()
 
 void CodeEditor::reload()
 {
-    /*mLastModified = QFileInfo(filename()).lastModified();
+    mLastModified = QFileInfo(filename()).lastModified();
     QFile file(filename());
     file.open(QFile::ReadOnly);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
-    setPlainText(stream.readAll());
+    setText(stream.readAll());
     file.close();
-    emit asyncRemoveChangeFlag();*/
+    setModified(false);
+    QApplication::restoreOverrideCursor();
+
+    emit asyncRemoveChangeFlag();
 }
 
 void CodeEditor::focusInEvent(QFocusEvent* e)

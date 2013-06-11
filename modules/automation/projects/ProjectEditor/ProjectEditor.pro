@@ -40,6 +40,7 @@ HEADERS += \
     src/Editor/SyntaxHighlighter/PyHighlighter.h \
     src/Editor/SyntaxHighlighterFactory.h \
     src/EditorToolBar.h \
+    src/Editor/FileEditor.h
 
 SOURCES += \
     src/ProjectEditor.cpp \
@@ -53,6 +54,7 @@ SOURCES += \
     src/Editor/SyntaxHighlighter/PyHighlighter.cpp \
     src/Editor/SyntaxHighlighterFactory.cpp \
     src/EditorToolBar.cpp \
+    src/Editor/FileEditor.cpp
 
 FORMS += \
     src/FileTree/FileTree.ui \

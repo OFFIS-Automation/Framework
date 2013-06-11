@@ -20,6 +20,7 @@
 #include <filter/PluginInterface.h>
 #include <ports/DirectoryPort.h>
 #include <ports/FilePort.h>
+#include <ports/IntegerPort.h>
 #include <ports/StringPort.h>
 
 
@@ -33,6 +34,8 @@ protected:
     in::String mPrefix;
     in::String mExtension;
     out::File mOut;
+    out::String mFileName;
+    out::Integer mFileId;
 
     int mNumber;
 };

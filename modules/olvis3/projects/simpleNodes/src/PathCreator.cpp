@@ -40,6 +40,14 @@ PathCreator::PathCreator()
     mExtension.setDefault("png");
     addInputPort(mExtension);
 
+    mFileName.setName("fileName");
+    mFileName.setDesc("The file name as string without the directory");
+    addOutputPort(mFileName);
+
+    mFileId.setName("fileId");
+    mFileId.setDesc("The assigned number");
+    addOutputPort(mFileId);
+
     mOut.setName("outFile");
     mOut.setDesc("The constructed filename");
     addOutputPort(mOut);
@@ -50,6 +58,8 @@ void PathCreator::execute()
     QDir dir = mDir;
     QString prefix = mPrefix;
     QString ext = mExtension;
+    mFileId.send(mNumber);
     QString filename = prefix + QString::number(mNumber++) + "." + ext;
+    mFileName.send(filename);
     mOut.send(QFileInfo(dir, filename));
 }

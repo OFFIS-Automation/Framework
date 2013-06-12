@@ -108,7 +108,7 @@ void FileEditor::reloadContent()
 
 void FileEditor::focusLine(int line)
 {
-    if(line < 0){
+    if(line < 1){
         // Line is invalid, remove focus
         mCurrentBreakpoint = -1;
         markerDeleteAll(CURRENT_BREAKPOINTMARKER_NUMBER);
@@ -117,7 +117,7 @@ void FileEditor::focusLine(int line)
         mCurrentBreakpoint = line;
         markerAdd(line-1, CURRENT_BREAKPOINTMARKER_NUMBER);
         // Set focus of cursor
-        setCursorPosition(line, 0);
+        setCursorPosition(line-1, 0);
     }
 }
 

@@ -20,6 +20,7 @@ CONFIG += ordered
 SUBDIRS += projects/RcUnits
 SUBDIRS += projects/hilec
 SUBDIRS += projects/HilecGui
+SUBDIRS += projects/QScintilla
 SUBDIRS += projects/ProjectEditor
 
 include(../properties/pathes.pro)

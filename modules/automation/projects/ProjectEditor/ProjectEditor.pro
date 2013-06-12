@@ -35,11 +35,6 @@ HEADERS += \
     src/FileTree/FileTree.h \
     src/Editor/LineNumberArea.h \
     src/Editor/EditArea.h \
-    src/Editor/CodeEditor.h \
-    src/Editor/SyntaxHighlighter/XmlHighlighter.h \
-    src/Editor/SyntaxHighlighter/TxtHighlighter.h \
-    src/Editor/SyntaxHighlighter/PyHighlighter.h \
-    src/Editor/SyntaxHighlighterFactory.h \
     src/EditorToolBar.h \
     src/Editor/FileEditor.h
 
@@ -49,11 +44,6 @@ SOURCES += \
     src/FileTree/FileTree.cpp \
     src/Editor/LineNumberArea.cpp \
     src/Editor/EditArea.cpp \
-    src/Editor/CodeEditor.cpp \
-    src/Editor/SyntaxHighlighter/XmlHighlighter.cpp \
-    src/Editor/SyntaxHighlighter/TxtHighlighter.cpp \
-    src/Editor/SyntaxHighlighter/PyHighlighter.cpp \
-    src/Editor/SyntaxHighlighterFactory.cpp \
     src/EditorToolBar.cpp \
     src/Editor/FileEditor.cpp
 

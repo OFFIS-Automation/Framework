@@ -343,14 +343,13 @@ bool EditArea::search(bool forwardSearch)
 
 void EditArea::replace()
 {
-    /* edit = currentEditor();
-    if(!edit)
-        return;
-    QTextCursor current = edit->textCursor();
-    if(current.selectedText().compare(ui->searchValue->text(), Qt::CaseInsensitive) != 0)
-        return;
-    current.insertText(ui->replaceValue->text());
-    edit->setTextCursor(current);*/
+    if (!ui->mdiArea->activeSubWindow())
+         return;
+
+    // Get current editor to perform replace
+    FileEditor* editor = currentEditor();
+    if(editor->hasSelectedText() && editor->selectedText().compare(ui->searchValue->text(), Qt::CaseInsensitive) == 0)
+        editor->replaceSelectedText(ui->replaceValue->text());
 }
 
 void EditArea::showFind()

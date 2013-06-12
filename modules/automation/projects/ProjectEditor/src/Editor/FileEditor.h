@@ -21,6 +21,8 @@
 #include <QDateTime>
 #include <QMap>
 
+#include "core/ScriptException.h"
+
 #define QSCINTILLA_DLL
 #include <Qsci/qsciscintilla.h>
 
@@ -67,6 +69,7 @@ protected:
 
 private slots:
     void updateLexer();
+    void updateLines();
     void setupEditor();
     void toggleBreakpoint();
 
@@ -80,12 +83,7 @@ private:
     QString mFilename;
     QDateTime mLastModified;
     QList<int> mBreakpoints;
-
-    struct CompileInfo{
-        QString msg;
-        int priority;
-    };
-    QMap<int, CompileInfo> mErrors;
+    QMap<int, ScriptCompileProblem> mErrors;
 
     int mCurrentBreakpoint;
     bool mChanged;

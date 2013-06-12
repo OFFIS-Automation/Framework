@@ -33,7 +33,6 @@
 #include <Qsci/qsciapis.h>
 
 #include "../HilecSingleton.h"
-#include "core/ScriptException.h"
 
 #define BREAKPOINT_MARGIN 0
 #define LINENUMBER_MARGIN 1
@@ -118,7 +117,9 @@ void FileEditor::focusLine(int line)
         markerAdd(line-1, CURRENT_BREAKPOINTMARKER_NUMBER);
         // Set focus of cursor
         setCursorPosition(line-1, 0);
-    }
+        // Unfold line if it is folded
+        ensureLineVisible(line-1);
+   }
 }
 
 void FileEditor::setFontSize(int fontSize)
@@ -284,6 +285,13 @@ void FileEditor::updateLexer()
     }
 }
 
+void FileEditor::updateLines()
+{
+    clearAnnotations();
+    foreach(ScriptCompileProblem problem, mErrors)
+        annotate(problem.line-1, problem.msg, 0);
+}
+
 void FileEditor::setupEditor()
 {
     // Line numbers
@@ -311,8 +319,12 @@ void FileEditor::setupEditor()
     setBraceMatching(SloppyBraceMatch);
     setAutoIndent(true);
     setUtf8(true);
-    setFolding(CircledTreeFoldStyle, 2);
     setWrapMode(WrapWord);
+    setTabWidth(4);
+
+    // Folding
+    setFolding(BoxedTreeFoldStyle, 3);
+    setMarginWidth(3, 12);
 
     // Clickable margins for breakpoints
     setMarginMarkerMask(0, 2);
@@ -404,25 +416,24 @@ void FileEditor::on_check_compile_error(const ScriptCompileInfo &info)
 
     // Create "error memory"
     foreach(ScriptCompileProblem problem, info.problems){
-        // Generate info
-        CompileInfo compileInfo;
-        compileInfo.msg = problem.msg;
-        compileInfo.priority = problem.mode;
         bool insert = true;
         if(mErrors.contains(problem.line)){
-            if(mErrors[problem.line].priority <= problem.mode)
+            if(mErrors[problem.line].mode <= problem.mode)
                 insert = false;
             else
                 // Problem has higher priority, remove current marker
-                markerDelete(problem.line-1, ERRORMARKER_NUMBER + mErrors[problem.line].priority);
+                markerDelete(problem.line-1, ERRORMARKER_NUMBER + mErrors[problem.line].mode);
         }
 
-        if(insert)
-            mErrors.insert(problem.line, compileInfo);
-
-        // Remove eventually current marker
-        markerAdd(problem.line-1, ERRORMARKER_NUMBER + compileInfo.priority);
+        if(insert){
+            mErrors.insert(problem.line, problem);
+            // Remove eventually current marker
+            markerAdd(problem.line-1, ERRORMARKER_NUMBER + problem.mode);
+        }
     }
+
+    // Update lines
+    updateLines();
 }
 
 

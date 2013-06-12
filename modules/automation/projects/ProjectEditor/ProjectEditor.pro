@@ -22,9 +22,10 @@ include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 TARGET = ProjectEditor
 
-LIBS        += -L$$[QT_INSTALL_LIBS] -lqscintilla2
+LIBS        += -L$${targetDir}/plugins -lqscintilla2
 
 INCLUDEPATH += ../../../frontend/include
+INCLUDEPATH += ../QScintilla/Qt4Qt5
 INCLUDEPATH += ../../include
 
 

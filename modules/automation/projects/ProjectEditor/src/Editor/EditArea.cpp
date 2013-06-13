@@ -109,10 +109,10 @@ void EditArea::openFile(QString fileName)
     // Check permissions of file
     editor->setReadOnly(!QFileInfo(fileName).isWritable());
 
-
     connect(editor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
     connect(editor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
     connect(editor, SIGNAL(decreaseFontSizeRequested()), this, SLOT(decreaseFontSize()));
+    connect(editor, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
     emit fileOpened(fileName);
 }
 
@@ -411,7 +411,7 @@ void EditArea::tile()
 }
 
 
-void EditArea::on_searchValue_textChanged(const QString &arg1)
+void EditArea::on_searchValue_textChanged(const QString &)
 {
     mFoundFirst = false;
 }

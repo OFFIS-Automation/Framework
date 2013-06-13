@@ -87,6 +87,7 @@ void HilecGui::setGuiInterface(const QString& name, QObject* obj)
         toolbar->connect(obj, SIGNAL(activeFileChanged(QString)),SLOT(setCurrentFile(QString)));
         connect(obj ,SIGNAL(fileSaved(QString)), SLOT(checkFile(QString)));
         connect(obj ,SIGNAL(fileOpened(QString)), SLOT(checkFile(QString)));
+        connect(obj, SIGNAL(clickedProblem(QString,int)), errors, SLOT(selectProblem(QString,int)));
     }
 }
 

@@ -21,6 +21,7 @@
 
 #include <QDir>
 #include <QDebug>
+#include <QAbstractItemView>
 
 ScriptErrorWidget::ScriptErrorWidget(QWidget *parent) :
     QDockWidget(parent),
@@ -28,6 +29,7 @@ ScriptErrorWidget::ScriptErrorWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(HilecSingleton::hilec(), SIGNAL(compileError(ScriptCompileInfo)), SLOT(updateCompileError(ScriptCompileInfo)));
+
     mErrorIcons[ScriptCompileProblem::Error] = QIcon(":/ProjectEditor/exclamation.png");
     mErrorIcons[ScriptCompileProblem::Warning] = QIcon(":/ProjectEditor/error.png");
     mErrorIcons[ScriptCompileProblem::Info] = QIcon(":/ProjectEditor/information.png");
@@ -75,6 +77,20 @@ void ScriptErrorWidget::updateCompileError(const ScriptCompileInfo &info)
         mItems[file].append(item);
     }
     ui->treeWidget->invisibleRootItem()->sortChildren(3, Qt::AscendingOrder);
+}
+
+void ScriptErrorWidget::selectProblem(const QString &file, int line)
+{
+    if(mBaseDir.isEmpty())
+        return;
+    QString filePath = QDir(mBaseDir).relativeFilePath(file);
+    if(filePath.startsWith("..")) return; // is not a project file
+
+    foreach(QTreeWidgetItem *item, mItems[filePath]){
+        // Select each item which is from file and the same line
+        if(item->data(0, Qt::UserRole+1) == line)
+            item->setSelected(true);
+    }
 }
 
 void ScriptErrorWidget::setProjectFile(const QString &path)

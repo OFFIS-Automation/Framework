@@ -41,6 +41,7 @@ public:
 signals:
     void createBreakpoint(QString file, int line);
     void removeBreakpoint(QString file, int line);
+    void clickedProblem(QString file, int line);
     void checkReloadContent();
     void saveFileRequested();
     void increaseFontSizeRequested();
@@ -69,7 +70,6 @@ protected:
 
 private slots:
     void updateLexer();
-    void updateLines();
     void setupEditor();
     void toggleBreakpoint();
 

@@ -80,6 +80,7 @@ void ProjectEditor::initialize(const QString&)
     connect(mEditArea, SIGNAL(currentFileChanged(QString)), SIGNAL(activeFileChanged(QString)));
     connect(mEditArea, SIGNAL(fileSaved(QString)), SIGNAL(fileSaved(QString)));
     connect(mEditArea, SIGNAL(fileOpened(QString)), SIGNAL(fileOpened(QString)));
+    connect(mEditArea, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
     closeProject();
 
 }
@@ -90,6 +91,7 @@ void ProjectEditor::deinitialize()
 
 void ProjectEditor::setGuiInterface(const QString& , QObject*)
 {
+
 }
 
 

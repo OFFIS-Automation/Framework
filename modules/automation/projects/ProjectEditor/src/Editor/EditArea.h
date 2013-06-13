@@ -40,6 +40,7 @@ signals:
     void currentFileChanged(const QString& filename);
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
+    void clickedProblem(const QString& file, int line);
 
 public slots:
     void openFile(QString fileName);

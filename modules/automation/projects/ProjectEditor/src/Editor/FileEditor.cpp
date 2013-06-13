@@ -285,13 +285,6 @@ void FileEditor::updateLexer()
     }
 }
 
-void FileEditor::updateLines()
-{
-    clearAnnotations();
-    foreach(ScriptCompileProblem problem, mErrors)
-        annotate(problem.line-1, problem.msg, 0);
-}
-
 void FileEditor::setupEditor()
 {
     // Line numbers
@@ -342,7 +335,7 @@ void FileEditor::setupEditor()
 
     // Error, warning, ... margins and marker
     setMarginWidth(INFO_MARGIN, 20);
-    setMarginType(INFO_MARGIN, SymbolMargin);
+    setMarginSensitivity(INFO_MARGIN, true);
     markerDefine(QImage(":/ProjectEditor/exclamation.png"), ERRORMARKER_NUMBER);
     markerDefine(QImage(":/ProjectEditor/error.png"), EXCLAMATIONMARKER_NUMBER);
     markerDefine(QImage(":/ProjectEditor/information.png"), INFORMATIONMARKER_NUMBER);
@@ -358,7 +351,7 @@ void FileEditor::toggleBreakpoint()
     on_margin_clicked(BREAKPOINT_MARGIN, line, 0);
 }
 
-void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers modifiers)
+void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers )
 {
     if(margin == BREAKPOINT_MARGIN || margin == LINENUMBER_MARGIN){
         if(!mBreakpoints.contains(line)){
@@ -370,10 +363,13 @@ void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers m
         } else {
             // Remove line from breakpoints and emit signal
             mBreakpoints.removeAll(line);
-            emit removeBreakpoint(filename(), line);
+            emit removeBreakpoint(mFilename, line);
             // Remove marker from margin
             markerDelete(line, BREAKPOINTMARKER_NUMBER);
         }
+    } else if(margin == INFO_MARGIN){
+         if(mErrors.contains(line+1))
+            emit clickedProblem(mFilename,line+1);
     }
 }
 
@@ -431,9 +427,6 @@ void FileEditor::on_check_compile_error(const ScriptCompileInfo &info)
             markerAdd(problem.line-1, ERRORMARKER_NUMBER + problem.mode);
         }
     }
-
-    // Update lines
-    updateLines();
 }
 
 

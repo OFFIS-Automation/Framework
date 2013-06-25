@@ -30,6 +30,9 @@ CreateLolecDialog::CreateLolecDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateLolecDialog)
 {
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     ui->setupUi(this);
     mSourceDir = QCoreApplication::applicationDirPath() + "/plugins/hilec/template";
     QSettings settings;

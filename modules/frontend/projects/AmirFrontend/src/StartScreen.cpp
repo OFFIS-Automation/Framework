@@ -31,6 +31,9 @@ StartScreen::StartScreen(QWidget *parent) :
 
     QString versionString = tr("Version: %1.%2 (Build %3, %4)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD).arg(Version::DATE);
     ui->versionLabel->setText(versionString);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 StartScreen::~StartScreen()

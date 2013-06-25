@@ -23,6 +23,7 @@ CreateProjectDialog::CreateProjectDialog(QString startDir, QWidget *parent) :
     QWizard(parent),
     ui(new Ui::CreateProjectDialog)
 {
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
     ui->wizardPage1->init(ui->name, ui->destination);
     ui->destination->setText(startDir);

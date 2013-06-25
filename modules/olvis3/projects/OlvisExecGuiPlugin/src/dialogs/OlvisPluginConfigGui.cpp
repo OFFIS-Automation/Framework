@@ -46,6 +46,9 @@ OlvisPluginConfigGui::OlvisPluginConfigGui(QWidget *parent) :
     }
     plugins.removeDuplicates();
     ui->comboBox->addItems(plugins);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 OlvisPluginConfigGui::~OlvisPluginConfigGui()

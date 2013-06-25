@@ -44,6 +44,9 @@ CreatePluginDialog::CreatePluginDialog(QWidget *parent) :
         tpl.chop(2);
         ui->templateSelect->addItem(tpl);
     }
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 CreatePluginDialog::~CreatePluginDialog()

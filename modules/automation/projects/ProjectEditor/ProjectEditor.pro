@@ -33,7 +33,6 @@ HEADERS += \
     src/ProjectEditor.h \
     src/HilecSingleton.h \
     src/FileTree/FileTree.h \
-    src/Editor/LineNumberArea.h \
     src/Editor/EditArea.h \
     src/EditorToolBar.h \
     src/Editor/FileEditor.h
@@ -42,7 +41,6 @@ SOURCES += \
     src/ProjectEditor.cpp \
     src/HilecSingleton.cpp \
     src/FileTree/FileTree.cpp \
-    src/Editor/LineNumberArea.cpp \
     src/Editor/EditArea.cpp \
     src/EditorToolBar.cpp \
     src/Editor/FileEditor.cpp

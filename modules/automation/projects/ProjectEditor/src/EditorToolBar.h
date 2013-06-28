@@ -45,6 +45,13 @@ signals:
     void closeCurrentFileRequested();
     void closeAllFilesRequested();
     void findRequested();
+    void undoRequested();
+    void redoRequested();
+    void cutRequested();
+    void copyRequested();
+    void pasteRequested();
+    void zoomInRequested();
+    void zoomOutRequested();
 
 private slots:
     void on_actionOpen_triggered();
@@ -57,6 +64,17 @@ private slots:
     void on_actionClose_current_file_triggered();
     void on_actionClose_all_files_triggered();
     void on_actionFind_triggered();
+    void on_actionUndo_triggered();
+    void on_actionRedo_triggered();
+    void on_actionZoomIn_triggered();
+    void on_actionZoomOut_triggered();
+    void on_actionCut_triggered();
+    void on_actionCopy_triggered();
+    void on_actionPaste_triggered();
+
+    void onUndoStatusChanged(bool undoAvailable);
+    void onRedoStatusChanged(bool redoAvailable);
+    void onCutCopyStatusChanged(bool cutCopyAvailable);
 
 private:
     Ui::EditorToolBar *ui;

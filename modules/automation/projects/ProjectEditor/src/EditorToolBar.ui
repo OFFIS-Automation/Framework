@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>199</width>
+    <width>516</width>
     <height>34</height>
    </rect>
   </property>
@@ -142,6 +142,90 @@
     <string>Ctrl+F</string>
    </property>
   </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/zoom_in.png</normaloff>:/ProjectEditor/zoom_in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom in (Ctrl+ Mouse Wheel Up )</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/zoom_out.png</normaloff>:/ProjectEditor/zoom_out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom in (Ctrl- Mouse Wheel Down )</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/arrow_undo.png</normaloff>:/ProjectEditor/arrow_undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="toolTip">
+    <string>Undo the last action</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/arrow_redo.png</normaloff>:/ProjectEditor/arrow_redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>Redo the last action</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/cut.png</normaloff>:/ProjectEditor/cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="toolTip">
+    <string>Cut the current text</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/copy.png</normaloff>:/ProjectEditor/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy the selected text</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/paste.png</normaloff>:/ProjectEditor/paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste the copied or cut text</string>
+   </property>
+  </action>
   <addaction name="actionNew"/>
   <addaction name="actionSave"/>
   <addaction name="actionSaveAll"/>
@@ -149,6 +233,16 @@
   <addaction name="actionCascade"/>
   <addaction name="actionTile"/>
   <addaction name="actionTab"/>
+  <addaction name="separator"/>
+  <addaction name="actionCut"/>
+  <addaction name="actionCopy"/>
+  <addaction name="actionPaste"/>
+  <addaction name="separator"/>
+  <addaction name="actionUndo"/>
+  <addaction name="actionRedo"/>
+  <addaction name="separator"/>
+  <addaction name="actionZoomOut"/>
+  <addaction name="actionZoomIn"/>
  </widget>
  <resources>
   <include location="../images/images.qrc"/>

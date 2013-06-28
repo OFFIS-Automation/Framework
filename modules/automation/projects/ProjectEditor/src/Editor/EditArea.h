@@ -41,6 +41,9 @@ signals:
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
     void clickedProblem(const QString& file, int line);
+    void undoStatusChanged(bool undoAvailable);
+    void redoStatusChanged(bool redoAvailable);
+    void cutCopyStatusChanged(bool cutCopyAvailable);
 
 public slots:
     void openFile(QString fileName);
@@ -60,14 +63,20 @@ public slots:
     void showFind();
     void cascade();
     void tile();
+    void textChanged();
+    void selectionChanged();
 
 private slots:
     void closeTab(int i);
     void increaseFontSize();
     void decreaseFontSize();
-    void changeFontSize(int changePoints);
     bool search(bool forwardSearch = false);
     void replace();
+    void undo();
+    void redo();
+    void cut();
+    void copy();
+    void paste();
 
     void on_searchNext_clicked();
     void on_searchPrev_clicked();

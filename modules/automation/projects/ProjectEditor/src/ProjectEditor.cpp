@@ -71,6 +71,15 @@ void ProjectEditor::initialize(const QString&)
     connect(mToolbar, SIGNAL(closeAllFilesRequested()), mEditArea, SLOT(closeAll()));
     connect(mToolbar, SIGNAL(findRequested()), mEditArea, SLOT(showFind()));
 
+    connect(mToolbar, SIGNAL(undoRequested()), mEditArea, SLOT(undo()));
+    connect(mToolbar, SIGNAL(redoRequested()), mEditArea, SLOT(redo()));
+
+    connect(mToolbar, SIGNAL(zoomInRequested()), mEditArea, SLOT(increaseFontSize()));
+    connect(mToolbar, SIGNAL(zoomOutRequested()), mEditArea, SLOT(decreaseFontSize()));
+    connect(mToolbar, SIGNAL(copyRequested()), mEditArea, SLOT(copy()));
+    connect(mToolbar, SIGNAL(cutRequested()), mEditArea, SLOT(cut()));
+    connect(mToolbar, SIGNAL(pasteRequested()), mEditArea, SLOT(paste()));
+
     connect(mFileTree, SIGNAL(openFileRequested(QString)), mEditArea, SLOT(openFile(QString)));
     connect(mFileTree, SIGNAL(newFileRequested(QString)), mEditArea, SLOT(newFile(QString)));
     connect(mFileTree, SIGNAL(closeFileRequested(QString)), mEditArea, SLOT(closeFile(QString)));
@@ -81,6 +90,11 @@ void ProjectEditor::initialize(const QString&)
     connect(mEditArea, SIGNAL(fileSaved(QString)), SIGNAL(fileSaved(QString)));
     connect(mEditArea, SIGNAL(fileOpened(QString)), SIGNAL(fileOpened(QString)));
     connect(mEditArea, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
+
+    connect(mEditArea, SIGNAL(undoStatusChanged(bool)), mToolbar, SLOT(onUndoStatusChanged(bool)));
+    connect(mEditArea, SIGNAL(redoStatusChanged(bool)), mToolbar, SLOT(onRedoStatusChanged(bool)));
+    connect(mEditArea, SIGNAL(cutCopyStatusChanged(bool)), mToolbar, SLOT(onCutCopyStatusChanged(bool)));
+
     closeProject();
 
 }

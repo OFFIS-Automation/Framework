@@ -38,8 +38,6 @@ EditArea::EditArea(QWidget *parent) : QDockWidget(parent), ui(new Ui::EditArea)
     bool tabbed = settings.value("ProjectEditor/tabbed", true).toBool();
     if(tabbed)
         setTabView();
-
-
 }
 
 EditArea::~EditArea()
@@ -109,10 +107,14 @@ void EditArea::openFile(QString fileName)
     // Check permissions of file
     editor->setReadOnly(!QFileInfo(fileName).isWritable());
 
+    // Connect user interaction
     connect(editor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
     connect(editor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
     connect(editor, SIGNAL(decreaseFontSizeRequested()), this, SLOT(decreaseFontSize()));
     connect(editor, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
+    connect(editor, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(editor, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+
     emit fileOpened(fileName);
 }
 
@@ -198,28 +200,17 @@ void EditArea::setBaseDir(QString baseDir)
 
 void EditArea::increaseFontSize()
 {
-    changeFontSize(1);
+    FileEditor *editor = currentEditor();
+    if (editor)
+        editor->zoomIn();
+
 }
 
 void EditArea::decreaseFontSize()
 {
-    changeFontSize(-1);
-}
-void EditArea::changeFontSize(int changePoints)
-{
-    QSettings settings;
-    int size = settings.value("ProjectEditor/fontsize", 12).toInt();
-    size = qBound(5, size + changePoints, 40);
-    settings.setValue("ProjectEditor/fontsize", size);
-    foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList())
-    {
-        if (!mdiWindow)
-            continue;
-        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
-        if (!editor)
-            continue;
-        editor->setFontSize(size);
-    }
+    FileEditor *editor = currentEditor();
+    if (editor)
+        editor->zoomOut();
 }
 
 void EditArea::on_mdiArea_subWindowActivated(QMdiSubWindow *mdiWindow)
@@ -294,20 +285,18 @@ void EditArea::renameDir(QString oldName, QString newName)
 
 void EditArea::search(QString word)
 {
-    if (!ui->mdiArea->activeSubWindow())
-        return;
-
     // Get current editor to perform search
-    FileEditor *editor = qobject_cast<FileEditor*>(ui->mdiArea->activeSubWindow()->widget());
-    editor->findFirstOccurence(word, false, false, true, editor->currentLine());
+    FileEditor* editor = currentEditor();
+    if(editor)
+        editor->findFirstOccurence(word, false, false, true, editor->currentLine());
 }
 
 void EditArea::replace(QString word)
 {
-    if (!ui->mdiArea->activeSubWindow())
-        return;
-    FileEditor *editor = qobject_cast<FileEditor*>(ui->mdiArea->activeSubWindow()->widget());
-    editor->replace(word);
+    // Get current editor to perform replace
+    FileEditor* editor = currentEditor();
+    if (editor)
+        editor->replace(word);
 }
 
 FileEditor *EditArea::currentEditor()
@@ -319,11 +308,10 @@ FileEditor *EditArea::currentEditor()
 
 bool EditArea::search(bool forwardSearch)
 {
-    if (!ui->mdiArea->activeSubWindow())
-         return false;
-
     // Get current editor to perform search
     FileEditor* editor = currentEditor();
+    if (!editor)
+        return false;
 
     if(forwardSearch != mForwardSearch){
         // Search direction has changed, find first wirh new direction
@@ -343,25 +331,66 @@ bool EditArea::search(bool forwardSearch)
 
 void EditArea::replace()
 {
-    if (!ui->mdiArea->activeSubWindow())
-         return;
-
     // Get current editor to perform replace
     FileEditor* editor = currentEditor();
+    if (!editor)
+        return;
+
     if(editor->hasSelectedText() && editor->selectedText().compare(ui->searchValue->text(), Qt::CaseInsensitive) == 0)
         editor->replaceSelectedText(ui->replaceValue->text());
 }
 
+void EditArea::undo()
+{
+    // Get current editor to perform undo
+    FileEditor* editor = currentEditor();
+    if (editor && editor->isUndoAvailable())
+        editor->undo();
+}
+
+
+void EditArea::redo()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (editor && editor->isRedoAvailable())
+        editor->redo();
+}
+
+void EditArea::cut()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (editor && editor->hasSelectedText())
+        editor->cut();
+}
+
+void EditArea::copy()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (editor && editor->hasSelectedText())
+        editor->copy();
+}
+
+void EditArea::paste()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (editor)
+        editor->paste();
+}
+
 void EditArea::showFind()
 {
-   if (!ui->mdiArea->activeSubWindow())
-        return;
-
    // Show box
    ui->findBox->show();
 
    // Get current selection as initial value for search
    FileEditor* editor = currentEditor();
+   if(!editor)
+       return;
+
    if(editor->hasSelectedText())
        ui->searchValue->setText(editor->selectedText());
    ui->searchValue->setFocus();
@@ -410,6 +439,28 @@ void EditArea::tile()
     ui->mdiArea->tileSubWindows();
 }
 
+void EditArea::textChanged()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (!editor)
+        return;
+
+    // Emit status
+    emit redoStatusChanged(editor->isRedoAvailable());
+    emit undoStatusChanged(editor->isUndoAvailable());
+}
+
+void EditArea::selectionChanged()
+{
+    // Get current editor to perform redo
+    FileEditor* editor = currentEditor();
+    if (!editor)
+        return;
+
+    // Get status
+    emit cutCopyStatusChanged(editor->hasSelectedText());
+}
 
 void EditArea::on_searchValue_textChanged(const QString &)
 {

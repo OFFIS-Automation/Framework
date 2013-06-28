@@ -123,3 +123,55 @@ void EditorToolBar::on_actionFind_triggered()
 {
     emit findRequested();
 }
+
+void EditorToolBar::on_actionUndo_triggered()
+{
+    emit undoRequested();
+}
+
+void EditorToolBar::on_actionRedo_triggered()
+{
+    emit redoRequested();
+}
+
+void EditorToolBar::on_actionZoomIn_triggered()
+{
+    emit zoomInRequested();
+}
+
+void EditorToolBar::on_actionZoomOut_triggered()
+{
+    emit zoomOutRequested();
+}
+
+void EditorToolBar::on_actionCut_triggered()
+{
+    emit cutRequested();
+}
+
+void EditorToolBar::on_actionCopy_triggered()
+{
+    emit copyRequested();
+}
+
+void EditorToolBar::on_actionPaste_triggered()
+{
+    emit pasteRequested();
+}
+
+void EditorToolBar::onUndoStatusChanged(bool undoAvailable)
+{
+    ui->actionUndo->setEnabled(undoAvailable);
+}
+
+void EditorToolBar::onRedoStatusChanged(bool redoAvailable)
+{
+    ui->actionRedo->setEnabled(redoAvailable);
+}
+
+void EditorToolBar::onCutCopyStatusChanged(bool cutCopyAvailable)
+{
+    ui->actionCut->setEnabled(cutCopyAvailable);
+    ui->actionCopy->setEnabled(cutCopyAvailable);
+}
+

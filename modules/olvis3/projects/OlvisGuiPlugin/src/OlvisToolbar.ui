@@ -22,10 +22,10 @@
      <normaloff>:/olvisGui/plugin_add.png</normaloff>:/olvisGui/plugin_add.png</iconset>
    </property>
    <property name="text">
-    <string>Create Image Processor Plugin</string>
+    <string>Create image processor plugin</string>
    </property>
    <property name="toolTip">
-    <string>Create Image Processor Plugin</string>
+    <string>Create image processor plugin</string>
    </property>
   </action>
   <action name="actionReloadPlugins">

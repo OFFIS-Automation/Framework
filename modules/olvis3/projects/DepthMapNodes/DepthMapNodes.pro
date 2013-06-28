@@ -23,7 +23,7 @@ INCLUDEPATH += ../../include
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins/olvisPlugins
-TARGET = ContourNodes
+TARGET = DepthMapNodes
 LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts  -lolvisPlugin
 
 INCLUDEPATH += ../../../sensorSystem/include

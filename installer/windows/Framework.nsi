@@ -9,7 +9,7 @@
 
 
 ;General
-!define VERSION "1.0-beta"
+!define VERSION "nightly-build"
 !define REGKEY "OFFIS_Automation_Toolbox"
 !define NAME "OFFIS Automation Toolbox-${VERSION}"
 

@@ -85,6 +85,7 @@ Section "!OFFIS Automation Toolbox" SecToolbox
 	File "..\..\bin\plugins\Hilec*.dll"
 	File "..\..\bin\plugins\RcUnit*.dll"
 	File "..\..\bin\plugins\ProjectEditor.dll"
+	File "..\..\bin\plugins\qscintilla2.dll"
 	File "..\..\bin\plugins\python32.dll"
 	File "..\..\bin\plugins\python.exe"
 	
@@ -134,6 +135,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\plugins\Hilec*.dll"
 	File "..\..\bin\debug\plugins\RcUnit*.dll"
 	File "..\..\bin\debug\plugins\ProjectEditor.dll"
+	File "..\..\bin\debug\plugins\qscintilla2.dll"
 	File "..\..\bin\debug\plugins\python32.dll"
 	File "..\..\bin\debug\plugins\python32_d.dll"
 	File "..\..\bin\debug\plugins\python.exe"

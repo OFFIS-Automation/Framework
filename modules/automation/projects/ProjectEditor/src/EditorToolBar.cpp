@@ -144,6 +144,11 @@ void EditorToolBar::on_actionZoomOut_triggered()
     emit zoomOutRequested();
 }
 
+void EditorToolBar::on_actionZoomToNormal_triggered()
+{
+    emit zoomNormalRequested();
+}
+
 void EditorToolBar::on_actionCut_triggered()
 {
     emit cutRequested();
@@ -174,4 +179,3 @@ void EditorToolBar::onCutCopyStatusChanged(bool cutCopyAvailable)
     ui->actionCut->setEnabled(cutCopyAvailable);
     ui->actionCopy->setEnabled(cutCopyAvailable);
 }
-

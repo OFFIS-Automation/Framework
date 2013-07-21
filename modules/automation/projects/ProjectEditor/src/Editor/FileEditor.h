@@ -46,6 +46,7 @@ signals:
     void saveFileRequested();
     void increaseFontSizeRequested();
     void decreaseFontSizeRequested();
+    void normalizeFontSizeRequested();
     void asyncRemoveChangeFlag();
 
 public slots:

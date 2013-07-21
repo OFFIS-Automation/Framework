@@ -52,6 +52,7 @@ signals:
     void pasteRequested();
     void zoomInRequested();
     void zoomOutRequested();
+    void zoomNormalRequested();
 
 private slots:
     void on_actionOpen_triggered();
@@ -75,6 +76,8 @@ private slots:
     void onUndoStatusChanged(bool undoAvailable);
     void onRedoStatusChanged(bool redoAvailable);
     void onCutCopyStatusChanged(bool cutCopyAvailable);
+
+    void on_actionZoomToNormal_triggered();
 
 private:
     Ui::EditorToolBar *ui;

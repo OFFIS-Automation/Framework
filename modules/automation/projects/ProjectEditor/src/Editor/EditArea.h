@@ -70,6 +70,7 @@ private slots:
     void closeTab(int i);
     void increaseFontSize();
     void decreaseFontSize();
+    void setFontSize(int size = 0);
     bool search(bool forwardSearch = false);
     void replace();
     void undo();
@@ -88,6 +89,7 @@ private slots:
     void on_searchValue_textChanged(const QString &arg1);
 
 private:
+    int currentFontSize();
     FileEditor* currentEditor();
     Ui::EditArea *ui;
     QString mBaseDir;

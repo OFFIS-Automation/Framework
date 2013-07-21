@@ -148,7 +148,10 @@
      <normaloff>:/ProjectEditor/zoom_in.png</normaloff>:/ProjectEditor/zoom_in.png</iconset>
    </property>
    <property name="text">
-    <string>Zoom in (Ctrl+ Mouse Wheel Up )</string>
+    <string>Zoom in </string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
    </property>
   </action>
   <action name="actionZoomOut">
@@ -157,7 +160,13 @@
      <normaloff>:/ProjectEditor/zoom_out.png</normaloff>:/ProjectEditor/zoom_out.png</iconset>
    </property>
    <property name="text">
-    <string>Zoom in (Ctrl- Mouse Wheel Down )</string>
+    <string>Zoom out</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom out (Ctrl- Mouse Wheel Down)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -226,6 +235,21 @@
     <string>Paste the copied or cut text</string>
    </property>
   </action>
+  <action name="actionZoomToNormal">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/ProjectEditor/zoom.png</normaloff>:/ProjectEditor/zoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom to normal</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WidgetShortcut</enum>
+   </property>
+  </action>
   <addaction name="actionNew"/>
   <addaction name="actionSave"/>
   <addaction name="actionSaveAll"/>
@@ -243,6 +267,7 @@
   <addaction name="separator"/>
   <addaction name="actionZoomOut"/>
   <addaction name="actionZoomIn"/>
+  <addaction name="actionZoomToNormal"/>
  </widget>
  <resources>
   <include location="../images/images.qrc"/>

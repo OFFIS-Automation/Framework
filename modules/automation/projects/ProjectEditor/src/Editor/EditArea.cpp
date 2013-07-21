@@ -20,6 +20,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QShortcut>
 
 #include "EditArea.h"
 #include "ui_EditArea.h"
@@ -104,6 +105,7 @@ void EditArea::openFile(QString fileName)
     ui->mdiArea->addSubWindow(mdiWindow);
     mdiWindow->show();
 
+    editor->zoomTo(currentFontSize());
     // Check permissions of file
     editor->setReadOnly(!QFileInfo(fileName).isWritable());
 
@@ -111,6 +113,7 @@ void EditArea::openFile(QString fileName)
     connect(editor, SIGNAL(saveFileRequested()), this, SLOT(saveFile()));
     connect(editor, SIGNAL(increaseFontSizeRequested()), this, SLOT(increaseFontSize()));
     connect(editor, SIGNAL(decreaseFontSizeRequested()), this, SLOT(decreaseFontSize()));
+    connect(editor, SIGNAL(normalizeFontSizeRequested()), this, SLOT(setFontSize()));
     connect(editor, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
     connect(editor, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(editor, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
@@ -200,17 +203,31 @@ void EditArea::setBaseDir(QString baseDir)
 
 void EditArea::increaseFontSize()
 {
-    FileEditor *editor = currentEditor();
-    if (editor)
-        editor->zoomIn();
-
+    setFontSize(currentFontSize() + 1);
 }
 
 void EditArea::decreaseFontSize()
 {
-    FileEditor *editor = currentEditor();
-    if (editor)
-        editor->zoomOut();
+    setFontSize(currentFontSize() - 1);
+}
+
+int EditArea::currentFontSize()
+{
+    return QSettings().value("ProjectEditor/zoom", 0).toInt();
+}
+
+void EditArea::setFontSize(int size)
+{
+    foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList())
+    {
+        if (!mdiWindow)
+            continue;
+        FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
+        if (!editor)
+            continue;
+        editor->zoomTo(size);
+        QSettings().setValue("ProjectEditor/zoom", size);
+    }
 }
 
 void EditArea::on_mdiArea_subWindowActivated(QMdiSubWindow *mdiWindow)

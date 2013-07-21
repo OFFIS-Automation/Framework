@@ -214,6 +214,8 @@ void FileEditor::keyPressEvent(QKeyEvent *event)
             emit increaseFontSizeRequested();
         else if (event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier))
             emit decreaseFontSizeRequested();
+        else if (event->key() == Qt::Key_0 && (event->modifiers() & Qt::ControlModifier))
+            emit normalizeFontSizeRequested();
         else if (event->key() == Qt::Key_7 && (event->modifiers() & Qt::ControlModifier))
             prependStringToSelection("#");
         else if (event->key() == Qt::Key_8 && (event->modifiers() & Qt::ControlModifier))

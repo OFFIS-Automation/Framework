@@ -76,6 +76,7 @@ void ProjectEditor::initialize(const QString&)
 
     connect(mToolbar, SIGNAL(zoomInRequested()), mEditArea, SLOT(increaseFontSize()));
     connect(mToolbar, SIGNAL(zoomOutRequested()), mEditArea, SLOT(decreaseFontSize()));
+    connect(mToolbar, SIGNAL(zoomNormalRequested()), mEditArea, SLOT(setFontSize()));
     connect(mToolbar, SIGNAL(copyRequested()), mEditArea, SLOT(copy()));
     connect(mToolbar, SIGNAL(cutRequested()), mEditArea, SLOT(cut()));
     connect(mToolbar, SIGNAL(pasteRequested()), mEditArea, SLOT(paste()));

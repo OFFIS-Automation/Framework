@@ -107,6 +107,13 @@ void PythonInterpreter::removeBreakpoint(const QString &file, int line)
     mDebugger->removeBreakpoint(file, line);
 }
 
+QList<QPair<QString, int> > PythonInterpreter::breakpoints() const
+{
+    return mDebugger->breakpoints();
+}
+
+
+
 void PythonInterpreter::resume()
 {
     mDebugger->step(PythonDebugger::Resume);

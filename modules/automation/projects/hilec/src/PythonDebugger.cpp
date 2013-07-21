@@ -134,6 +134,19 @@ void PythonDebugger::removeBreakpoint(const QString &file, int line)
         mBreakpoints.remove(line);
 }
 
+QList<QPair<QString, int> > PythonDebugger::breakpoints() const
+{
+    QList<QPair<QString, int> > list;
+    foreach(int line, mBreakpoints.keys())
+    {
+        foreach(QString file, mBreakpoints[line])
+        {
+            list << QPair<QString,int>(file, line);
+        }
+    }
+    return list;
+}
+
 void PythonDebugger::step(StepMode stepMode)
 {
     QMutexLocker lock(&mMutex);

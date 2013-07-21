@@ -37,8 +37,10 @@ public:
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
+    virtual QList<QPair<QString, int> > breakpoints() const = 0;
     virtual bool waitForStop(uint timeout = ULONG_MAX) = 0;
 public slots:
+
     virtual void runFile(const QString& filename) = 0;
     virtual void compileFile(const QString& filename) = 0;
     virtual void userInput(int uid, int buttonId, const QList<QVariant>& data) = 0;

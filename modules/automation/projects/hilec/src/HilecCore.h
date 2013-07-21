@@ -36,7 +36,7 @@ public:
     static HilecCore& instance() { return *mInstance; }
     virtual ~HilecCore();
     virtual bool waitForStop(uint timeout = ULONG_MAX);
-
+    QList<QPair<QString, int> > breakpoints() const;
     RcUnitHelp getUnitHelp(const QString& name);
     virtual QStringList lolecs();
     virtual QWidget* createLolecWidget(const QString& lolec);

@@ -101,6 +101,11 @@ void HilecCore::removeBreakpoint(QString file, int line)
     mPython.removeBreakpoint(file, line);
 }
 
+QList<QPair<QString, int> > HilecCore::breakpoints() const
+{
+    return mPython.breakpoints();
+}
+
 void HilecCore::resume()
 {
     mPython.resume();

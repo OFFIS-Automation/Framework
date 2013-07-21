@@ -43,6 +43,7 @@
 #define EXCLAMATIONMARKER_NUMBER 4
 #define INFORMATIONMARKER_NUMBER 5
 
+typedef QPair<QString, int> BreakPointPair;
 
 FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
     mFilename(filename), mdiWindow(parent)
@@ -55,6 +56,12 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
     setupEditor();
     updateLexer();
 
+    foreach(BreakPointPair breakpoint, HilecSingleton::hilec()->breakpoints())
+    {
+        if(breakpoint.first == mFilename)
+            toggleBreakpoint(breakpoint.second-1);
+    }
+
     // Connections
     connect(this, SIGNAL(checkReloadContent()), SLOT(on_check_reload_content()), Qt::QueuedConnection);
     connect(this, SIGNAL(textChanged()), SLOT(on_text_changed()));
@@ -64,6 +71,8 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
     connect(this, SIGNAL(marginClicked(int,int,Qt::KeyboardModifiers)), SLOT(on_margin_clicked(int,int,Qt::KeyboardModifiers)));
     connect(this, SIGNAL(createBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(addBreakpoint(QString,int)));
     connect(this, SIGNAL(removeBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(removeBreakpoint(QString,int)));
+
+    connect(this, SIGNAL(linesChanged()), SLOT(updateMargins()));
 
     // Compile error
     connect(HilecSingleton::hilec(), SIGNAL(compileError(ScriptCompileInfo)), SLOT(on_check_compile_error(ScriptCompileInfo)));
@@ -87,6 +96,7 @@ bool FileEditor::saveContent()
     file.close();
     mLastModified = QFileInfo(filename()).lastModified();
     emit asyncRemoveChangeFlag();
+    checkBreakpoints();
     return true;
 }
 
@@ -199,9 +209,6 @@ void FileEditor::focusInEvent(QFocusEvent *event)
 void FileEditor::keyPressEvent(QKeyEvent *event)
 {
     if(!isReadOnly()){
-        // Check for new line
-        setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines()) + 6);
-
         // Modifier stuff
         if (event->key() == Qt::Key_Plus && (event->modifiers() & Qt::ControlModifier))
             emit increaseFontSizeRequested();
@@ -259,6 +266,11 @@ void FileEditor::deleteStringInSelection(const QString &t)
     }
 }
 
+void FileEditor::updateMargins()
+{
+    setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines() + 6));
+}
+
 void FileEditor::updateLexer()
 {
     // Choose lexer depending on content type
@@ -312,9 +324,8 @@ void FileEditor::setupEditor()
     setBraceMatching(SloppyBraceMatch);
     setAutoIndent(true);
     setUtf8(true);
-    setWrapMode(WrapWord);
-    setTabWidth(4);
-
+    setWrapMode(WrapNone);
+    setTabWidth(2);
     // Folding
     setFolding(BoxedTreeFoldStyle, 3);
     setMarginWidth(3, 12);
@@ -342,33 +353,66 @@ void FileEditor::setupEditor()
 
     int marginMaskParse = (1 << ERRORMARKER_NUMBER) | (1 << EXCLAMATIONMARKER_NUMBER) | (1 << INFORMATIONMARKER_NUMBER);
     setMarginMarkerMask(INFO_MARGIN, marginMaskParse);
+
+
 }
 
 void FileEditor::toggleBreakpoint()
 {
     int line, index;
     getCursorPosition(&line, &index);
-    on_margin_clicked(BREAKPOINT_MARGIN, line, 0);
+    toggleBreakpoint(line);
+}
+
+void FileEditor::toggleBreakpoint(int line)
+{
+    bool breakpointFound = false;
+    foreach(int markerHandle, mBreakpointMarkers.keys())
+    {
+        if(markerLine(markerHandle) == line)
+        {
+            // there is a breakpoint here
+            mBreakpointMarkers.remove(markerHandle);
+            markerDeleteHandle(markerHandle);
+            emit removeBreakpoint(mFilename, line+1); // python line starts at 1
+            breakpointFound = true;
+        }
+    }
+    if(!breakpointFound)
+    {
+        int markerId = markerAdd(line, BREAKPOINTMARKER_NUMBER);
+        mBreakpointMarkers.insert(markerId, line);
+        emit createBreakpoint(mFilename, line+1);  // python line starts at 1
+    }
+}
+
+void FileEditor::checkBreakpoints()
+{
+    foreach(int markerId, mBreakpointMarkers.keys())
+    {
+        int lastLine = mBreakpointMarkers.value(markerId);
+        int currentLine = markerLine(markerId);
+        if(lastLine != currentLine)
+        {
+            removeBreakpoint(mFilename, lastLine + 1);
+            if(currentLine < 0) // the marker is not valid anymore
+                mBreakpointMarkers.remove(markerId);
+            else
+            {
+                mBreakpointMarkers[markerId] = currentLine;
+                emit createBreakpoint(mFilename, currentLine + 1);
+            }
+        }
+    }
 }
 
 void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers )
 {
+    // editor count starts at 0, python lien cout starts at 1
     if(margin == BREAKPOINT_MARGIN || margin == LINENUMBER_MARGIN){
-        if(!mBreakpoints.contains(line)){
-            // Add line to breakpoints and emit signal
-            mBreakpoints << line;
-            emit createBreakpoint(mFilename, line);
-            // Add marker to margin
-            markerAdd(line, BREAKPOINTMARKER_NUMBER);
-        } else {
-            // Remove line from breakpoints and emit signal
-            mBreakpoints.removeAll(line);
-            emit removeBreakpoint(mFilename, line);
-            // Remove marker from margin
-            markerDelete(line, BREAKPOINTMARKER_NUMBER);
-        }
+        toggleBreakpoint(line);
     } else if(margin == INFO_MARGIN){
-         if(mErrors.contains(line+1))
+         if(mErrors.contains(line+1))  // python line starts at 1
             emit clickedProblem(mFilename,line+1);
     }
 }

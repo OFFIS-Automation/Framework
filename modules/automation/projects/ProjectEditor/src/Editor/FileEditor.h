@@ -69,9 +69,12 @@ protected:
     void deleteStringInSelection(const QString& t);
 
 private slots:
+    void updateMargins();
+    void checkBreakpoints();
     void updateLexer();
     void setupEditor();
     void toggleBreakpoint();
+    void toggleBreakpoint(int line);
 
     void on_margin_clicked(int margin, int line, Qt::KeyboardModifiers modifiers);
     void on_check_reload_content();
@@ -82,7 +85,7 @@ private:
     QMdiSubWindow* mdiWindow;
     QString mFilename;
     QDateTime mLastModified;
-    QList<int> mBreakpoints;
+    QMap<int, int> mBreakpointMarkers;
     QMap<int, ScriptCompileProblem> mErrors;
 
     int mCurrentBreakpoint;

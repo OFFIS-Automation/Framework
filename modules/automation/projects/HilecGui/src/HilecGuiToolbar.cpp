@@ -48,6 +48,8 @@ HilecGuiToolbar::~HilecGuiToolbar()
 
 void HilecGuiToolbar::on_actionResume_triggered()
 {
+    if(!mRunning)
+        emit aboutToRunFile(mFile);
     emit runFile(mFile);
 }
 
@@ -85,12 +87,14 @@ void HilecGuiToolbar::on_actionLolecHelp_triggered()
 
 void HilecGuiToolbar::onScriptExecutionStarted()
 {
+    mRunning = true;
     ui->actionAutomationIdle->setVisible(false);
     ui->actionAutomationRunning->setVisible(true);
 }
 
 void HilecGuiToolbar::onScriptExecutionFinished()
 {
+    mRunning = false;
     ui->actionAutomationIdle->setVisible(true);
     ui->actionAutomationRunning->setVisible(false);
 }

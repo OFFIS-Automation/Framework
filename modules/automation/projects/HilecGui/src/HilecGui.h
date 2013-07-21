@@ -54,6 +54,7 @@ public:
     void closeProject();
 
 signals:
+    void aboutToRunFile(const QString& filename);
     void focusLine(const QString& file, int line);
     void compileFile(const QString& filename);
 

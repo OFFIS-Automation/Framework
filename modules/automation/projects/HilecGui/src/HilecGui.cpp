@@ -63,6 +63,7 @@ void HilecGui::initialize(const QString&)
     telecontrol = new TelecontrolWidget();
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
+    connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
     connect(callStack, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
@@ -83,7 +84,6 @@ void HilecGui::setGuiInterface(const QString& name, QObject* obj)
 {
     if(name == "ProjectEditor")
     {
-        obj->connect(this, SIGNAL(focusLine(QString, int)), SLOT(focusLine(QString, int)));
         toolbar->connect(obj, SIGNAL(activeFileChanged(QString)),SLOT(setCurrentFile(QString)));
         connect(obj ,SIGNAL(fileSaved(QString)), SLOT(checkFile(QString)));
         connect(obj ,SIGNAL(fileOpened(QString)), SLOT(checkFile(QString)));

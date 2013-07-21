@@ -34,6 +34,7 @@ public:
     void createMenu(QMenu* menu);
 
 signals:
+    void aboutToRunFile(QString);
     void runFile(QString);
     void showHelpWidget();
 
@@ -57,6 +58,7 @@ private:
     Ui::HilecGuiToolbar *ui;
     QString mFile;
     QString mConfigFile;
+    bool mRunning;
 };
 
 #endif // TOOLBAR_H

@@ -103,9 +103,12 @@ void ProjectEditor::deinitialize()
 {
 }
 
-void ProjectEditor::setGuiInterface(const QString& , QObject*)
+void ProjectEditor::setGuiInterface(const QString& name, QObject* obj)
 {
-
+    if(name == "HilecGui")
+    {
+        mEditArea->connect(obj, SIGNAL(focusLine(QString, int)), SLOT(focusLine(QString, int)));
+    }
 }
 
 
@@ -145,10 +148,6 @@ void ProjectEditor::start()
 {
 }
 
-void ProjectEditor::focusLine(const QString &file, int line)
-{
-    mEditArea->focusLine(file, line);
-}
 
 void ProjectEditor::loadProject(const QString &projectName)
 {

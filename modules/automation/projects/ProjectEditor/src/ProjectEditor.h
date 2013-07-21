@@ -49,8 +49,6 @@ signals:
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
     void clickedProblem(const QString& string, int line);
-public slots:
-    void focusLine(const QString& file, int line);
 
 protected:
     // add window objects here

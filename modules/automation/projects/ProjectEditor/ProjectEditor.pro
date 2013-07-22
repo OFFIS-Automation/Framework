@@ -35,7 +35,8 @@ HEADERS += \
     src/FileTree/FileTree.h \
     src/Editor/EditArea.h \
     src/EditorToolBar.h \
-    src/Editor/FileEditor.h
+    src/Editor/FileEditor.h \
+    src/FileTree/FileModelFilterProxy.h
 
 SOURCES += \
     src/ProjectEditor.cpp \
@@ -43,7 +44,8 @@ SOURCES += \
     src/FileTree/FileTree.cpp \
     src/Editor/EditArea.cpp \
     src/EditorToolBar.cpp \
-    src/Editor/FileEditor.cpp
+    src/Editor/FileEditor.cpp \
+    src/FileTree/FileModelFilterProxy.cpp
 
 FORMS += \
     src/FileTree/FileTree.ui \

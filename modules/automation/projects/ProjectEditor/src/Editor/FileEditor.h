@@ -48,7 +48,7 @@ signals:
     void decreaseFontSizeRequested();
     void normalizeFontSizeRequested();
     void asyncRemoveChangeFlag();
-
+    void close(const QString& filename);
 public slots:
     bool saveContent();
     void reloadContent();
@@ -92,6 +92,7 @@ private:
     int mCurrentBreakpoint;
     bool mChanged;
     bool mFocusRecursion;
+    bool mOmitReloadChecks;
 };
 
 #endif // FILEEDITOR_H

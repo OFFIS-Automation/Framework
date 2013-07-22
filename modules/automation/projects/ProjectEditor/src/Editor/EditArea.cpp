@@ -117,7 +117,7 @@ void EditArea::openFile(QString fileName)
     connect(editor, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
     connect(editor, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(editor, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
-
+    connect(editor, SIGNAL(close(QString)), SLOT(closeFile(QString)));
     emit fileOpened(fileName);
 }
 

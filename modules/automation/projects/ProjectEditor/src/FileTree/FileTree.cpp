@@ -17,6 +17,7 @@
 #include "FileTree.h"
 #include "ui_FileTree.h"
 
+
 #include <QMouseEvent>
 #include <QDebug>
 #include <QMenu>
@@ -33,21 +34,9 @@ FileTree::FileTree(QWidget *parent) :
     mModel.setReadOnly(false);
     ui->treeView->setAnimated(false);
     ui->treeView->setIndentation(20);
-    ui->treeView->setSortingEnabled(true);
+    ui->treeView->setSortingEnabled(false);
     ui->treeView->setWindowTitle(QObject::tr("Directory View"));
     ui->treeView->show();
-    QSettings settings;
-    mFileFilter = settings.value("ProjectEditor/filefilter", false).toBool();
-    if (mFileFilter){
-        QStringList files;
-        mModel.setNameFilterDisables(false);
-        files << "*.py" << "*.xml" << "*.pro";
-        mModel.setNameFilters(files);
-    } else {
-        QStringList files;
-        mModel.setNameFilters(files);
-    }
-
     // Connect to Model to get notified when a File is renamed
     connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(on_model_fileRenamed(QString,QString,QString)));
 }
@@ -61,8 +50,9 @@ void FileTree::updateTree(QString directoryName)
 {
     mBaseDir = directoryName;
     mModel.setRootPath(directoryName);
-    ui->treeView->setModel(&mModel);
-    ui->treeView->setRootIndex(mModel.index(directoryName));
+    mFilteredModel.setSourceModel(&mModel);
+    ui->treeView->setModel(&mFilteredModel);
+    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(directoryName)));
     ui->treeView->hideColumn(1);
     ui->treeView->hideColumn(2);
     ui->treeView->hideColumn(3);
@@ -75,12 +65,13 @@ void FileTree::clear()
 
 void FileTree::on_treeView_doubleClicked(const QModelIndex &index)
 {
-    if (mModel.fileInfo(index).absoluteFilePath().isEmpty())
+    QModelIndex realIndex = mFilteredModel.mapToSource(index);
+    if (mModel.fileInfo(realIndex).absoluteFilePath().isEmpty())
         return;
-    if (mModel.fileInfo(index).isDir())
+    if (mModel.fileInfo(realIndex).isDir())
         return;
 
-    emit openFileRequested(mModel.fileInfo(index).absoluteFilePath());
+    emit openFileRequested(mModel.fileInfo(realIndex).absoluteFilePath());
 }
 
 void FileTree::keyPressEvent(QKeyEvent *)
@@ -92,12 +83,11 @@ void FileTree::on_treeView_customContextMenuRequested(const QPoint &pos)
 {
     QMenu menu;
     menu.addAction(ui->newFile);
-    if (!mModel.fileInfo(ui->treeView->currentIndex()).isDir() && ui->treeView->indexAt(pos).isValid())
+    QModelIndex realCurrentIndex = mFilteredModel.mapToSource(ui->treeView->currentIndex());
+    if (!mModel.fileInfo(realCurrentIndex).isDir() && ui->treeView->indexAt(pos).isValid())
         menu.addAction(ui->deleteFile);
     if (ui->treeView->indexAt(pos).isValid())
         menu.addAction(ui->renameFile);
-    menu.addAction(ui->changeFilter);
-    ui->changeFilter->setChecked(mFileFilter);
     menu.exec(mapToGlobal(pos));
 }
 
@@ -111,7 +101,8 @@ void FileTree::on_newFile_triggered()
     QString dir = mBaseDir;
     if(ui->treeView->currentIndex().isValid())
     {
-        QFileInfo fileInfo = mModel.fileInfo(ui->treeView->currentIndex());
+        QModelIndex realCurrentIndex = mFilteredModel.mapToSource(ui->treeView->currentIndex());
+        QFileInfo fileInfo = mModel.fileInfo(realCurrentIndex);
         if(fileInfo.isDir())
             dir = fileInfo.absoluteFilePath();
         else
@@ -148,8 +139,9 @@ void FileTree::on_deleteFile_triggered()
     int ret = msgBox.exec();
     if (ret == QMessageBox::Cancel)
         return;
-    mModel.remove(ui->treeView->currentIndex());
-    emit closeFileRequested(mModel.fileInfo(ui->treeView->currentIndex()).absoluteFilePath());
+    QModelIndex realCurrentIndex = mFilteredModel.mapToSource(ui->treeView->currentIndex());
+    mModel.remove(realCurrentIndex);
+    emit closeFileRequested(mModel.fileInfo(realCurrentIndex).absoluteFilePath());
 }
 
 void FileTree::on_renameFile_triggered()
@@ -157,21 +149,3 @@ void FileTree::on_renameFile_triggered()
     ui->treeView->edit(ui->treeView->currentIndex());
 }
 
-void FileTree::on_changeFilter_triggered()
-{
-    mFileFilter = !mFileFilter;
-    QSettings settings;
-    if (mFileFilter)
-    {
-        QStringList files;
-        mModel.setNameFilterDisables(false);
-        files << "*.py" << "*.xml" << "*.pro" << "*.ini";
-        mModel.setNameFilters(files);
-    }
-    else
-    {
-        QStringList files;
-        mModel.setNameFilters(files);
-    }
-    settings.setValue("ProjectEditor/filefilter", mFileFilter);
-}

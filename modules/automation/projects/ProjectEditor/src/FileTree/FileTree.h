@@ -21,6 +21,7 @@
 #include <QTreeView>
 #include <QToolButton>
 #include <QFileSystemModel>
+#include "FileModelFilterProxy.h"
 
 namespace Ui {
     class FileTree;
@@ -52,11 +53,11 @@ private slots:
     void on_newFile_triggered();
     void on_deleteFile_triggered();
     void on_renameFile_triggered();
-    void on_changeFilter_triggered();
 
 private:
     Ui::FileTree *ui;
     QFileSystemModel mModel;
+    FileModelFilterProxy mFilteredModel;
     QString mBaseDir;
     bool mFileFilter;
     void keyPressEvent(QKeyEvent *e);

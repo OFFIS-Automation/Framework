@@ -288,7 +288,6 @@ void EditArea::renameFile(QString oldName, QString newName)
 void EditArea::renameDir(QString oldName, QString newName)
 {
     // Check if dir is opened ...
-    // @TODO: just move the filesystem pointer
     foreach (QMdiSubWindow* mdiWindow, ui->mdiArea->subWindowList()){
         if (!mdiWindow)
             continue;
@@ -299,6 +298,15 @@ void EditArea::renameDir(QString oldName, QString newName)
         if(QFileInfo(oldName).absoluteFilePath() == fileInfo.absolutePath()){
             QString newFullPath = QDir(newName).absoluteFilePath(fileInfo.fileName());
             editor->fileRenamed(newFullPath);
+        }
+    }
+    typedef QPair<QString, int> BreakpointPair;
+    foreach(BreakpointPair breakpoint, HilecSingleton::hilec()->breakpoints())
+    {
+        QFileInfo fileInfo(breakpoint.first);
+        if(QFileInfo(oldName).absoluteFilePath() == fileInfo.absolutePath()){
+            emit removeBreakpoint(breakpoint.first, breakpoint.second);
+            emit addBreakpoint(QDir(newName).absoluteFilePath(fileInfo.fileName()), breakpoint.second);
         }
     }
 }

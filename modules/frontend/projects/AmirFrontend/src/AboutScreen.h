@@ -36,6 +36,8 @@ private slots:
     void on_supportButton_clicked();
     void on_reportProblem_clicked();
 
+    void on_aboutQT_clicked();
+
 private:
     Ui::AboutScreen *ui;
 };

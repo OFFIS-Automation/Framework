@@ -37,6 +37,7 @@ public:
     virtual ~HilecCore();
     virtual bool waitForStop(uint timeout = ULONG_MAX);
     QList<QPair<QString, int> > breakpoints() const;
+    QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     virtual QStringList lolecs();
     virtual QWidget* createLolecWidget(const QString& lolec);

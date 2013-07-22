@@ -106,6 +106,18 @@ QList<QPair<QString, int> > HilecCore::breakpoints() const
     return mPython.breakpoints();
 }
 
+QList<int> HilecCore::breakpoints(const QString &filename) const
+{
+    typedef QPair<QString, int> BreakpointPair;
+    QList<int> lines;
+    foreach(BreakpointPair breakpoint, breakpoints())
+    {
+        if(QFileInfo(breakpoint.first) == QFileInfo(filename))
+            lines << breakpoint.second;
+    }
+    return lines;
+}
+
 void HilecCore::resume()
 {
     mPython.resume();

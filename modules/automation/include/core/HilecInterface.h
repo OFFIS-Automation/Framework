@@ -38,6 +38,7 @@ public:
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
     virtual QList<QPair<QString, int> > breakpoints() const = 0;
+    virtual QList<int> breakpoints(const QString& fileName) const = 0;
     virtual bool waitForStop(uint timeout = ULONG_MAX) = 0;
 public slots:
 

@@ -110,7 +110,13 @@ void FileTree::on_newFile_triggered()
 {
     QString dir = mBaseDir;
     if(ui->treeView->currentIndex().isValid())
-    dir = mModel.fileInfo(ui->treeView->currentIndex()).absolutePath();
+    {
+        QFileInfo fileInfo = mModel.fileInfo(ui->treeView->currentIndex());
+        if(fileInfo.isDir())
+            dir = fileInfo.absoluteFilePath();
+        else
+            dir = fileInfo.absolutePath();
+    }
     QString fileName = QFileDialog::getSaveFileName(this,
                                  tr("New File"), dir,
                                  tr("Automation Files (*.py)"));

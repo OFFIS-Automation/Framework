@@ -38,8 +38,8 @@ public:
 signals:
     void openFileRequested(QString filename);
     void newFileRequested(QString filename);
-    void renameFileRequested(QString oldName, QString newName);
-    void renameDirRequested(QString oldName, QString newName);
+    void fileRenamed(QString oldName, QString newName);
+    void directoryRenamed(QString oldName, QString newName);
     void closeFileRequested(QString filename);
 
 public slots:
@@ -49,7 +49,7 @@ public slots:
 private slots:
     void on_treeView_doubleClicked(const QModelIndex &index);
     void on_treeView_customContextMenuRequested(const QPoint &pos);
-    void on_model_fileRenamed(const QString & path, const QString &oldName, const QString &newName);
+    void onFileRenamed(const QString & path, const QString &oldName, const QString &newName);
     void on_newFile_triggered();
     void on_deleteFile_triggered();
     void on_renameFile_triggered();

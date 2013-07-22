@@ -38,7 +38,7 @@ FileTree::FileTree(QWidget *parent) :
     ui->treeView->setWindowTitle(QObject::tr("Directory View"));
     ui->treeView->show();
     // Connect to Model to get notified when a File is renamed
-    connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(on_model_fileRenamed(QString,QString,QString)));
+    connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(onFileRenamed(QString,QString,QString)));
 }
 
 FileTree::~FileTree()
@@ -91,9 +91,14 @@ void FileTree::on_treeView_customContextMenuRequested(const QPoint &pos)
     menu.exec(mapToGlobal(pos));
 }
 
-void FileTree::on_model_fileRenamed(const QString &path, const QString &oldName, const QString &newName)
+void FileTree::onFileRenamed(const QString &path, const QString &oldName, const QString &newName)
 {
-    emit renameFileRequested(QString("%1/%2").arg(path).arg(oldName), QString("%1/%2").arg(path).arg(newName));
+    QString newFullPath = QString("%1/%2").arg(path).arg(newName);
+    QString oldFullPath = QString("%1/%2").arg(path).arg(oldName);
+    if(QFileInfo(newFullPath).isDir())
+        emit directoryRenamed(oldFullPath, newFullPath);
+    else
+        emit fileRenamed(oldFullPath, newFullPath);
 }
 
 void FileTree::on_newFile_triggered()

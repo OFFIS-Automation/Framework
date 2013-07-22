@@ -34,12 +34,12 @@ class FileEditor : public QsciScintilla
     Q_OBJECT
 
 public:
-    FileEditor(const QString& filename, QMdiSubWindow *parent = 0);
+    FileEditor(const QString& filename, QMdiSubWindow *parent, const QString& baseDir);
     QString filename() { return mFilename; }
-
+    void fileRenamed(const QString& newName);
 
 signals:
-    void createBreakpoint(QString file, int line);
+    void addBreakpoint(QString file, int line);
     void removeBreakpoint(QString file, int line);
     void clickedProblem(QString file, int line);
     void checkReloadContent();
@@ -70,6 +70,7 @@ protected:
     void deleteStringInSelection(const QString& t);
 
 private slots:
+    void updateWindowTitle();
     void updateMargins();
     void checkBreakpoints();
     void updateLexer();
@@ -84,7 +85,7 @@ private slots:
 
 private:
     QMdiSubWindow* mdiWindow;
-    QString mFilename;
+    QString mFilename, mBaseDir;
     QDateTime mLastModified;
     QMap<int, int> mBreakpointMarkers;
     QMap<int, ScriptCompileProblem> mErrors;

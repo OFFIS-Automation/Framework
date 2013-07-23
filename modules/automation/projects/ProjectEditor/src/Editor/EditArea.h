@@ -69,7 +69,6 @@ public slots:
     void selectionChanged();
 
 private slots:
-    void closeTab(int i);
     void increaseFontSize();
     void decreaseFontSize();
     void setFontSize(int size = 0);

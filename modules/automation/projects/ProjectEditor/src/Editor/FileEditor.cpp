@@ -291,7 +291,7 @@ void FileEditor::updateWindowTitle()
 
 void FileEditor::updateMargins()
 {
-    setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines() + 6));
+    setMarginWidth(LINENUMBER_MARGIN, QString(" %1").arg(lines()));
 }
 
 void FileEditor::updateLexer()

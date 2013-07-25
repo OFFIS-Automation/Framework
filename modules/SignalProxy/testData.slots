@@ -1,0 +1,8 @@
+# a # starts a comment
+# use simple types, no const, reference or pointer.
+# all used types must be possible to useable QDataStream
+logMessage(QString data)
+logError(QString data)
+userRequest(uint id, QString name)
+# a - in front means it is a reverse function Server->Client
+-userRequestAnswer(uint id, QVariant button, QVariant result)

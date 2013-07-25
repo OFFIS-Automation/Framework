@@ -45,21 +45,20 @@
 
 typedef QPair<QString, int> BreakPointPair;
 
-FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
-    mFilename(filename), mdiWindow(parent)
+FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent, const QString &baseDir) :
+    mFilename(filename), mdiWindow(parent), mBaseDir(baseDir)
 {
-    mFocusRecursion = mChanged = false;
+    mFocusRecursion = mChanged = mOmitReloadChecks = false;
     mCurrentBreakpoint = -1;
 
     // Update GUI and content
     reloadContent();
     setupEditor();
     updateLexer();
-
-    foreach(BreakPointPair breakpoint, HilecSingleton::hilec()->breakpoints())
+    updateWindowTitle();
+    foreach(int line, HilecSingleton::hilec()->breakpoints(mFilename))
     {
-        if(breakpoint.first == mFilename)
-            toggleBreakpoint(breakpoint.second-1);
+        toggleBreakpoint(line-1);
     }
 
     // Connections
@@ -69,7 +68,7 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
 
     // Breakpoint
     connect(this, SIGNAL(marginClicked(int,int,Qt::KeyboardModifiers)), SLOT(on_margin_clicked(int,int,Qt::KeyboardModifiers)));
-    connect(this, SIGNAL(createBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(addBreakpoint(QString,int)));
+    connect(this, SIGNAL(addBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(addBreakpoint(QString,int)));
     connect(this, SIGNAL(removeBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(removeBreakpoint(QString,int)));
 
     connect(this, SIGNAL(linesChanged()), SLOT(updateMargins()));
@@ -79,6 +78,19 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent) :
 
     // Keyboard Shortcurts
     new QShortcut(Qt::Key_F9, this, SLOT(toggleBreakpoint()));
+}
+
+void FileEditor::fileRenamed(const QString &newName)
+{
+    foreach(int key, mBreakpointMarkers.keys())
+    {
+        emit removeBreakpoint(mFilename, mBreakpointMarkers[key]);
+        emit addBreakpoint(newName, mBreakpointMarkers[key]);
+    }
+    mFilename = newName;
+    updateWindowTitle();
+    mLastModified = QFileInfo(filename()).lastModified();
+    mOmitReloadChecks = false;
 }
 
 bool FileEditor::saveContent()
@@ -95,6 +107,7 @@ bool FileEditor::saveContent()
     stream << text().replace("\r\n", "\n"); // LineMode brings no differnce
     file.close();
     mLastModified = QFileInfo(filename()).lastModified();
+    mOmitReloadChecks = false;
     emit asyncRemoveChangeFlag();
     checkBreakpoints();
     return true;
@@ -145,10 +158,7 @@ void FileEditor::removeChangedFlag()
     // Reset title and flag
     if (mChanged){
         mChanged = false;
-        QString title = mdiWindow->windowTitle();
-        if(title.endsWith("*"))
-            title.chop(1);
-        mdiWindow->setWindowTitle(title);
+        updateWindowTitle();
     }
 }
 
@@ -197,7 +207,7 @@ void FileEditor::closeEvent(QCloseEvent *event)
 void FileEditor::focusInEvent(QFocusEvent *event)
 {
     // Prevent focus recursion
-    if(!mFocusRecursion){
+    if(!mFocusRecursion && !mOmitReloadChecks){
         mFocusRecursion = true;
         emit checkReloadContent();
         mFocusRecursion = false;
@@ -268,9 +278,20 @@ void FileEditor::deleteStringInSelection(const QString &t)
     }
 }
 
+void FileEditor::updateWindowTitle()
+{
+    QString title = QString(filename()).remove(QString("%1/").arg(mBaseDir));
+    if(!QFileInfo(filename()).isWritable())
+        title.append(" (Read-Only)");
+    else if(mChanged)
+        title.append("*");
+    mdiWindow->setWindowTitle(title);
+
+}
+
 void FileEditor::updateMargins()
 {
-    setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines() + 6));
+    setMarginWidth(LINENUMBER_MARGIN, QString(" %1").arg(lines()));
 }
 
 void FileEditor::updateLexer()
@@ -384,7 +405,7 @@ void FileEditor::toggleBreakpoint(int line)
     {
         int markerId = markerAdd(line, BREAKPOINTMARKER_NUMBER);
         mBreakpointMarkers.insert(markerId, line);
-        emit createBreakpoint(mFilename, line+1);  // python line starts at 1
+        emit addBreakpoint(mFilename, line+1);  // python line starts at 1
     }
 }
 
@@ -402,7 +423,7 @@ void FileEditor::checkBreakpoints()
             else
             {
                 mBreakpointMarkers[markerId] = currentLine;
-                emit createBreakpoint(mFilename, currentLine + 1);
+                emit addBreakpoint(mFilename, currentLine + 1);
             }
         }
     }
@@ -421,7 +442,22 @@ void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers )
 
 void FileEditor::on_check_reload_content()
 {
-    QDateTime lastModified = QFileInfo(filename()).lastModified();
+    if(mOmitReloadChecks)
+        return;
+
+    QFileInfo info(filename());
+    if(!info.exists()) // this file was deleted or moved
+    {
+        mOmitReloadChecks = true;
+        QString msg = tr("The file %1 was does not exist anymore.\nKeep this file in the editor?").arg(filename());
+        int button = QMessageBox::question(this, tr("Keep non existing file"), msg, QMessageBox::Yes | QMessageBox::No);
+        if(button == QMessageBox::Yes)
+           on_text_changed();
+        else
+           emit close(filename());
+        return;
+    }
+    QDateTime lastModified = info.lastModified();
     if(mLastModified != lastModified){
         QString msg = tr("The file %1 was changed outside the editor.\nDo you want to reload it?").arg(filename());
         int button = QMessageBox::question(this, tr("File was changed outside Editor"), msg, QMessageBox::Yes | QMessageBox::No);
@@ -439,7 +475,7 @@ void FileEditor::on_text_changed()
     // Set flag and window title
     if (!mChanged){
         mChanged = true;
-        mdiWindow->setWindowTitle(mdiWindow->windowTitle().append("*"));
+        updateWindowTitle();
     }
 }
 

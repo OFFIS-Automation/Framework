@@ -99,13 +99,13 @@
   <customwidget>
    <class>CreateProjectPage1</class>
    <extends>QWizardPage</extends>
-   <header>src/newProjectWizard/CreateProjectPage1.h</header>
+   <header location="global">src/newProjectWizard/CreateProjectPage1.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>CreateProjectPage2</class>
    <extends>QWizardPage</extends>
-   <header>src/newProjectWizard/CreateProjectPage2.h</header>
+   <header location="global">src/newProjectWizard/CreateProjectPage2.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -47,9 +47,9 @@ static int getSubversionRevision()
         const int pos = str.indexOf(':');
 
         if (pos != -1){
-            revision = atoi(str.mid(pos + 1).toAscii().constData());
+            revision = str.mid(pos + 1).toInt();
         } else {
-            revision = atoi(str.toAscii().constData());
+            revision = str.toInt();
         }
         process.waitForFinished();
     }

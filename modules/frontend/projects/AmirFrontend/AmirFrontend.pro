@@ -25,6 +25,7 @@ QT       += core gui widgets
 
 TARGET = Toolbox
 TEMPLATE = app
+INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 INCLUDEPATH += ../../../version

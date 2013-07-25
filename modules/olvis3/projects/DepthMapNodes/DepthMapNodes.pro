@@ -32,10 +32,11 @@ LIBS += -L$${targetDir}/plugins/ -lSensorSystem
 include(../../../properties/opencv.pro)
 
 HEADERS += \
-    src/DepthMap2Image.h
+    src/DepthMap2Image.h \
+    src/DepthMapNodes.h
 
 SOURCES += \
     src/DepthMap2Image.cpp \
-    src/main.cpp
+    src/DepthMapNodes.cpp
 HEADERS += src/DepthMapWriter.h
 SOURCES += src/DepthMapWriter.cpp

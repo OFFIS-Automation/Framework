@@ -44,6 +44,8 @@ signals:
     void undoStatusChanged(bool undoAvailable);
     void redoStatusChanged(bool redoAvailable);
     void cutCopyStatusChanged(bool cutCopyAvailable);
+    void addBreakpoint(const QString& filename, int line);
+    void removeBreakpoint(const QString& filename, int line);
 
 public slots:
     void openFile(QString fileName);
@@ -67,7 +69,6 @@ public slots:
     void selectionChanged();
 
 private slots:
-    void closeTab(int i);
     void increaseFontSize();
     void decreaseFontSize();
     void setFontSize(int size = 0);

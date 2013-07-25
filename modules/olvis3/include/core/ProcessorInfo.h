@@ -54,7 +54,8 @@ struct ProcessorInfo : FilterGroupInfo
 {
     QThread::Priority priority;
     bool pausedStartup;
-    ProcessorInfo() : priority(QThread::NormalPriority), pausedStartup(false) {}
+    bool ignoreTrigger;
+    ProcessorInfo() : priority(QThread::NormalPriority), pausedStartup(false), ignoreTrigger(false) {}
 };
 
 struct BufferInfo

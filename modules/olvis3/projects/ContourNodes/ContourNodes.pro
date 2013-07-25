@@ -40,7 +40,6 @@ LIBS += -L$${targetDir}/plugins/ -lSensorSystem
 include(../../../properties/opencv.pro)
 
 SOURCES += \
-    src/main.cpp \
     src/ConvexHull.cpp \
     src/BoundingRect.cpp \
     src/ContourNodes.cpp

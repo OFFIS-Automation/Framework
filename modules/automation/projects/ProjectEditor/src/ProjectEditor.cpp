@@ -84,8 +84,8 @@ void ProjectEditor::initialize(const QString&)
     connect(mFileTree, SIGNAL(openFileRequested(QString)), mEditArea, SLOT(openFile(QString)));
     connect(mFileTree, SIGNAL(newFileRequested(QString)), mEditArea, SLOT(newFile(QString)));
     connect(mFileTree, SIGNAL(closeFileRequested(QString)), mEditArea, SLOT(closeFile(QString)));
-    connect(mFileTree, SIGNAL(renameFileRequested(QString, QString)), mEditArea, SLOT(renameFile(QString, QString)));
-    connect(mFileTree, SIGNAL(renameDirRequested(QString,QString)), mEditArea, SLOT(renameDir(QString, QString)));
+    connect(mFileTree, SIGNAL(fileRenamed(QString,QString)), mEditArea, SLOT(renameFile(QString, QString)));
+    connect(mFileTree, SIGNAL(directoryRenamed(QString,QString)), mEditArea, SLOT(renameDir(QString, QString)));
 
     connect(mEditArea, SIGNAL(currentFileChanged(QString)), SIGNAL(activeFileChanged(QString)));
     connect(mEditArea, SIGNAL(fileSaved(QString)), SIGNAL(fileSaved(QString)));

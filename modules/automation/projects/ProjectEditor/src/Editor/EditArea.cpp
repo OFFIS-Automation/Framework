@@ -25,6 +25,7 @@
 #include "EditArea.h"
 #include "ui_EditArea.h"
 #include "FileEditor.h"
+#include "../HilecSingleton.h"
 
 EditArea::EditArea(QWidget *parent) : QDockWidget(parent), ui(new Ui::EditArea)
 {
@@ -39,6 +40,9 @@ EditArea::EditArea(QWidget *parent) : QDockWidget(parent), ui(new Ui::EditArea)
     bool tabbed = settings.value("ProjectEditor/tabbed", true).toBool();
     if(tabbed)
         setTabView();
+
+    connect(this, SIGNAL(addBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(addBreakpoint(QString,int)));
+    connect(this, SIGNAL(removeBreakpoint(QString,int)), HilecSingleton::hilec(), SLOT(removeBreakpoint(QString,int)));
 }
 
 EditArea::~EditArea()
@@ -93,14 +97,8 @@ void EditArea::openFile(QString fileName)
 
     // not open, create
     QMdiSubWindow* mdiWindow = new QMdiSubWindow();
-    FileEditor *editor = new FileEditor(fileName, mdiWindow);
+    FileEditor *editor = new FileEditor(fileName, mdiWindow, mBaseDir);
     mdiWindow->setWidget(editor);
-
-    QString title = QString(fileName).remove(QString("%1/").arg(mBaseDir));
-    if(!QFileInfo(fileName).isWritable())
-        title.append(" (Read-Only)");
-
-    mdiWindow->setWindowTitle(title);
     mdiWindow->setAttribute(Qt::WA_DeleteOnClose);
     ui->mdiArea->addSubWindow(mdiWindow);
     mdiWindow->show();
@@ -117,7 +115,7 @@ void EditArea::openFile(QString fileName)
     connect(editor, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
     connect(editor, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(editor, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
-
+    connect(editor, SIGNAL(close(QString)), SLOT(closeFile(QString)));
     emit fileOpened(fileName);
 }
 
@@ -177,7 +175,6 @@ void EditArea::setTabView()
     ui->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = findChild<QTabBar*>();
     tab->setTabsClosable(true);
-    connect(tab, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
 
 void EditArea::setSubView()
@@ -185,15 +182,6 @@ void EditArea::setSubView()
     QSettings settings;
     settings.setValue("ProjectEditor/tabbed", false);
     ui->mdiArea->setViewMode(QMdiArea::SubWindowView);
-}
-
-void EditArea::closeTab(int i)
-{
-    QList<QMdiSubWindow*> sub = ui->mdiArea->subWindowList();
-    if(sub.count() <= i)
-        return;
-    ui->mdiArea->setActiveSubWindow(sub.at(i));
-    ui->mdiArea->closeActiveSubWindow();
 }
 
 void EditArea::setBaseDir(QString baseDir)
@@ -274,12 +262,17 @@ void EditArea::renameFile(QString oldName, QString newName)
 
         if(QFileInfo(oldName) == QFileInfo(editor->filename()))
         {
-            ui->mdiArea->setActiveSubWindow(mdiWindow);
-            ui->mdiArea->closeActiveSubWindow();
-            openFile(newName);
+            editor->fileRenamed(newName);
             return;
         }
     }
+    // if no editor is open, check all breakpoints
+    foreach(int line, HilecSingleton::hilec()->breakpoints(oldName))
+    {
+        emit removeBreakpoint(oldName, line);
+        emit addBreakpoint(newName, line);
+    }
+
 }
 
 void EditArea::renameDir(QString oldName, QString newName)
@@ -292,10 +285,10 @@ void EditArea::renameDir(QString oldName, QString newName)
         FileEditor *editor = qobject_cast<FileEditor*>(mdiWindow->widget());
         if(!editor)
             continue;
-        if(QFileInfo(oldName).absolutePath() == QFileInfo(editor->filename()).absolutePath()){
-            ui->mdiArea->setActiveSubWindow(mdiWindow);
-            ui->mdiArea->closeActiveSubWindow();
-            continue;
+        QFileInfo fileInfo(editor->filename());
+        if(QFileInfo(oldName).absoluteFilePath() == fileInfo.absolutePath()){
+            QString newFullPath = QDir(newName).absoluteFilePath(fileInfo.fileName());
+            editor->fileRenamed(newFullPath);
         }
     }
 }

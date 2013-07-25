@@ -19,7 +19,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include "version.h"
-
+#include <QMessageBox>
 
 AboutScreen::AboutScreen(QWidget *parent) :
     QDialog(parent),
@@ -53,4 +53,9 @@ void AboutScreen::on_reportProblem_clicked()
     QString versionString = QString("%1.%2 (Build %3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD);
     QString mailto = QString("mailto:claas.diederichs@uni-oldenburg.de?subject=Error report OFFIS Automation Toolbox (%1)").arg(versionString);
     QDesktopServices::openUrl(QUrl(mailto));
+}
+
+void AboutScreen::on_aboutQT_clicked()
+{
+    QMessageBox::aboutQt(this);
 }

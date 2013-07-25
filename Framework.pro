@@ -19,6 +19,7 @@ CONFIG += ordered
 
 # Do all the other stuff
 SUBDIRS +=  modules/version \
+            modules/SignalProxy \
             modules/frontend/projects/LogWidget \
             modules/sensorSystem \
             modules/frontend/projects/AmirFrontend \

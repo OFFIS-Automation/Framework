@@ -1,0 +1,4 @@
+logMessage(QString data)
+logError(QString data)
+userRequest(uint id, QString name)
+-userRequestAnswer(uint id, QVariant button, QVariant result)

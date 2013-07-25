@@ -32,15 +32,20 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
     connect(this, SIGNAL(disconnectProcessor(int,int)), &olvis, SLOT(disconnectProcessor(int,int)), Qt::QueuedConnection);
     connect(this, SIGNAL(setPriority(int,int)), &olvis, SLOT(setProcessorPriority(int,int)), Qt::QueuedConnection);
     connect(this, SIGNAL(setStartupMode(int,bool)), &olvis, SLOT(setProcessorStartupBehavior(int,bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTriggerMode(int,bool)), &olvis, SLOT(setProcessorTriggerBehavior(int,bool)), Qt::QueuedConnection);
     if(!mInfo.isValid())
         mInfo.name = "newProcessor";
     ui->name->setText(mInfo.name);
     ui->priorityComboBox->setCurrentIndex(mInfo.priority);
-    ui->startBehavior->addItem(tr("Normal start"), 0);
-    ui->startBehavior->addItem(tr("Start paused"), -1);
+    ui->triggerBox->addItem(tr("No trigger"), 0);
     if(mInfo.pausedStartup)
-        ui->startBehavior->setCurrentIndex(1);
-
+        ui->pausedStart->setChecked(true);
+    else
+        ui->normalStart->setChecked(true);
+    if(mInfo.ignoreTrigger)
+        ui->ignoreTrigger->setChecked(true);
+    else
+        ui->waitForTrigger->setChecked(true);
     mTriggerId = -1;
     // is this processor triggered by another?
     foreach(ProcessingElementConnection conn, olvis.processingElementConnections())
@@ -57,9 +62,9 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
         if(info.id == mInfo.id)
             continue;
         QString text = tr("Triggered by <%1>").arg(info.name);
-        ui->startBehavior->addItem(text, info.id);
+        ui->triggerBox->addItem(text, info.id);
         if(info.id == mTriggerId)
-            ui->startBehavior->setCurrentIndex(ui->startBehavior->count()-1);
+            ui->triggerBox->setCurrentIndex(ui->triggerBox->count()-1);
     }
 
 }
@@ -80,10 +85,13 @@ void ChangeProcessorDialog::updateProcessor()
     else
         emit renameProcessor(mInfo.id, ui->name->text());
 
-    int trigger = ui->startBehavior->itemData(ui->startBehavior->currentIndex()).toInt();
-    bool pausedStartup = trigger == -1;
+    int trigger = ui->triggerBox->itemData(ui->triggerBox->currentIndex()).toInt();
+    bool pausedStartup = ui->pausedStart->isChecked();
     if(pausedStartup != mInfo.pausedStartup)
         emit setStartupMode(mInfo.id, pausedStartup);
+    bool ignoreTrigger = ui->ignoreTrigger->isChecked();
+    if(ignoreTrigger != mInfo.ignoreTrigger)
+        emit setTriggerMode(mInfo.id, ignoreTrigger);
     QThread::Priority newPriority = static_cast<QThread::Priority>(ui->priorityComboBox->currentIndex());
     if(newPriority != mInfo.priority)
         emit setPriority(mInfo.id, newPriority);

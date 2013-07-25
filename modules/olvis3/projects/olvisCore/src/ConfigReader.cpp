@@ -105,9 +105,11 @@ void ConfigReader::createProcessor()
     QString prioString = attributes().value("priority").toString();
     QThread::Priority prio = (QThread::Priority)prioString.toInt();
     bool pausedStartup = attributes().value("pausedStartup").toString().toInt() != 0;
+    bool ignoreTrigger = attributes().value("ignoreTrigger").toString().toInt() != 0;
     mCurrentProcessor = mInterface.createProcessor(name);
     mInterface.setProcessorPriority(mCurrentProcessor, prio);
     mInterface.setProcessorStartupBehavior(mCurrentProcessor, pausedStartup);
+    mInterface.setProcessorTriggerBehavior(mCurrentProcessor, ignoreTrigger);
     mProcessingElementIds[name] =  mCurrentProcessor;
 }
 

@@ -239,6 +239,9 @@ public slots:
     virtual void setProcessorStartupBehavior(int id, bool pausedStartup) = 0;
     virtual void setProcessorStartupBehavior(const QString& processorName , bool pausedStartup) = 0;
 
+    virtual void setProcessorTriggerBehavior(int id, bool ignoreTrigger) = 0;
+    virtual void setProcessorTriggerBehavior(const QString& processorName , bool ignoreTrigger) = 0;
+
 
     /**
     * creates a data buffer to buffer data between processors

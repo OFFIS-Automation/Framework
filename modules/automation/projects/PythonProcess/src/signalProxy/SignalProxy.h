@@ -22,29 +22,32 @@
 #include <QDataStream>
 #include <QStringList>
 #include <QVariant>
+#include <QMutex>
 
 class SignalProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit SignalProxy(quint64 gid, QIODevice& readDevice, QIODevice& writeDevice);
+    explicit SignalProxy(quint64 gid1, quint64 gid2, QIODevice& readDevice, QIODevice& writeDevice);
 
 protected slots:
     void transmitSignal(const QByteArray& msgData);
 
 protected:
-    quint64 globalId() { return mGlobalId; }
+    quint64 gid1() { return mGlobalId1; }
+    quint64 gid2() { return mGlobalId2; }
     void handleError(int id);
-    void checkId(quint64 globalId);
+    void checkId(quint64 globalId1, quint64 globalId2);
     virtual void processRemoteInputs(const QByteArray& data) = 0;
 private slots:
     void onReadyRead();
 
 private:
     int mReadSize;
-    const quint64 mGlobalId;
+    const quint64 mGlobalId1, mGlobalId2;
     QIODevice& mReadDevice;
     QIODevice& mWriteDevice;
+    QMutex mMutex;
 };
 
 #endif // SIGNALPROXY_H

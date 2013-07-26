@@ -12,30 +12,19 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http:#www.gnu.org/licenses/>.
-
-#include <QCoreApplication>
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDebug>
-#include <QBuffer>
-#include <QFile>
+#include "TestClient.h"
 
-#include "EchoService.h"
-#include <QLocalServer>
-#include <QLocalSocket>
-
-int main(int argc, char *argv[])
+TestClient::TestClient(QIODevice &readDevice, QIODevice &writeDevice) :
+    PythonProcessClient(readDevice, writeDevice)
 {
-    QCoreApplication a(argc, argv);
-    QStringList args = a.arguments();
-    if(args.size()<2) return 1;
-    QString socketName = args[1];
-    QLocalServer localServer;
-    localServer.listen(socketName);
-    if(localServer.waitForNewConnection(3000))
-    {
-        QLocalSocket* socket = localServer.nextPendingConnection();
-        EchoService server(*socket, *socket);
-        return a.exec();
-    }
+    connect(this, SIGNAL(echo(QString,int)), SLOT(onEcho(QString,int)));
+}
+
+void TestClient::onEcho(const QString &text, int id)
+{
+    qDebug() << text << id;
+
 }

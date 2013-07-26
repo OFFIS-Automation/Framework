@@ -2,14 +2,24 @@
 #include "PythonProcessServer.h"
 
 PythonProcessServer::PythonProcessServer(QIODevice& readDevice, QIODevice& writeDevice)
-	: SignalProxy(Q_UINT64_C(0xced9a518f7085b3),Q_UINT64_C(0x141de42d96433750), readDevice, writeDevice)
+	: SignalProxy(Q_UINT64_C(0xdd89e4eb77ff1df),Q_UINT64_C(0xc8b1ef4247070a2a), readDevice, writeDevice)
 {}
+
+void PythonProcessServer::echo(const QString& text, int number)
+{
+	QByteArray msgData;
+	QDataStream stream(&msgData, QIODevice::WriteOnly);
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)3;
+	stream << text;
+	stream << number;
+	transmitSignal(msgData);
+}
 
 void PythonProcessServer::scriptPaused(const QString& file, int line)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)9;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)12;
 	stream << file;
 	stream << line;
 	transmitSignal(msgData);
@@ -19,7 +29,7 @@ void PythonProcessServer::printText(const QString& message)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)10;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)13;
 	stream << message;
 	transmitSignal(msgData);
 }
@@ -28,7 +38,7 @@ void PythonProcessServer::printError(const QString& error)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)11;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)14;
 	stream << error;
 	transmitSignal(msgData);
 }
@@ -37,7 +47,7 @@ void PythonProcessServer::createProgress(int id, const QString& name, int maximu
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)12;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)15;
 	stream << id;
 	stream << name;
 	stream << maximum;
@@ -48,7 +58,7 @@ void PythonProcessServer::updateProgress(int id, int progress)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)13;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)16;
 	stream << id;
 	stream << progress;
 	transmitSignal(msgData);
@@ -58,7 +68,7 @@ void PythonProcessServer::removeProgress(int id)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)14;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)17;
 	stream << id;
 	transmitSignal(msgData);
 }
@@ -67,7 +77,7 @@ void PythonProcessServer::createInfoPanel(int id, const QString& title, const QS
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)15;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)18;
 	stream << id;
 	stream << title;
 	stream << names;
@@ -78,7 +88,7 @@ void PythonProcessServer::updateInfoPanel(int id, const QStringList& values)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)16;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)19;
 	stream << id;
 	stream << values;
 	transmitSignal(msgData);
@@ -88,7 +98,7 @@ void PythonProcessServer::removeInfoPanel(int id)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)17;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)20;
 	stream << id;
 	transmitSignal(msgData);
 }
@@ -97,7 +107,7 @@ void PythonProcessServer::clearInfo()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)18;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)21;
 	transmitSignal(msgData);
 }
 
@@ -105,7 +115,7 @@ void PythonProcessServer::appendInfo(const QString& infoStr)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)19;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)22;
 	stream << infoStr;
 	transmitSignal(msgData);
 }
@@ -114,7 +124,7 @@ void PythonProcessServer::userRequest(const UserRequest& request)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)20;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)23;
 	stream << request;
 	transmitSignal(msgData);
 }
@@ -129,6 +139,16 @@ void PythonProcessServer::processRemoteInputs(const QByteArray& data)
 	SignalProxy::checkId(signalProxyGid1, signalProxyGid2);
 
 	if(signalProxyMethodId == 1) {
+		emit exit();
+		return;
+	}
+	if(signalProxyMethodId == 2) {
+		QString text;
+		stream >> text;
+		emit echoService(text);
+		return;
+	}
+	if(signalProxyMethodId == 4) {
 		QString fileName;
 		QString baseDir;
 		stream >> fileName;
@@ -136,7 +156,7 @@ void PythonProcessServer::processRemoteInputs(const QByteArray& data)
 		emit start(fileName, baseDir);
 		return;
 	}
-	if(signalProxyMethodId == 2) {
+	if(signalProxyMethodId == 5) {
 		QString file;
 		uint line;
 		stream >> file;
@@ -144,7 +164,7 @@ void PythonProcessServer::processRemoteInputs(const QByteArray& data)
 		emit addBreakpoint(file, line);
 		return;
 	}
-	if(signalProxyMethodId == 3) {
+	if(signalProxyMethodId == 6) {
 		QString file;
 		int line;
 		stream >> file;
@@ -152,23 +172,23 @@ void PythonProcessServer::processRemoteInputs(const QByteArray& data)
 		emit removeBreakpoint(file, line);
 		return;
 	}
-	if(signalProxyMethodId == 4) {
+	if(signalProxyMethodId == 7) {
 		emit resume();
 		return;
 	}
-	if(signalProxyMethodId == 5) {
+	if(signalProxyMethodId == 8) {
 		emit stepOver();
 		return;
 	}
-	if(signalProxyMethodId == 6) {
+	if(signalProxyMethodId == 9) {
 		emit stepInto();
 		return;
 	}
-	if(signalProxyMethodId == 7) {
+	if(signalProxyMethodId == 10) {
 		emit stepReturn();
 		return;
 	}
-	if(signalProxyMethodId == 8) {
+	if(signalProxyMethodId == 11) {
 		emit quit();
 		return;
 	}

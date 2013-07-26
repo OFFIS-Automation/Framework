@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
 
+QT += network
+
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 
@@ -47,11 +49,13 @@ TEMPLATE = app
 SOURCES += \
     src/main.cpp \
     src/signalProxy/SignalProxy.cpp \
-    src/signalProxy/PythonProcessServer.cpp
+    src/signalProxy/PythonProcessServer.cpp \
+    src/EchoService.cpp
 
 HEADERS += \
     src/signalProxy/SignalProxy.h \
-    src/signalProxy/PythonProcessServer.h
+    src/signalProxy/PythonProcessServer.h \
+    src/EchoService.h
 
 OTHER_FILES += \
     signalProxy/PythonProcess.slots

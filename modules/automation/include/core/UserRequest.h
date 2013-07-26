@@ -50,11 +50,26 @@ inline QDataStream& operator<<(QDataStream& stream, const UserRequestButton& req
     return stream;
 }
 
+inline QDataStream& operator>>(QDataStream& stream, UserRequestButton& requestButton)
+{
+    stream >> requestButton.id;
+    stream >> requestButton.name;
+    return stream;
+}
+
 inline QDataStream& operator<<(QDataStream& stream, const UserRequestItem& requestItem)
 {
     stream << requestItem.desc;
     stream << requestItem.value;
     stream << requestItem.constraints;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, UserRequestItem& requestItem)
+{
+    stream >> requestItem.desc;
+    stream >> requestItem.value;
+    stream >> requestItem.constraints;
     return stream;
 }
 
@@ -64,6 +79,15 @@ inline QDataStream& operator<<(QDataStream& stream, const UserRequest& request)
     stream << request.title;
     stream << request.items;
     stream << request.buttons;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, UserRequest& request)
+{
+    stream >> request.uid;
+    stream >> request.title;
+    stream >> request.items;
+    stream >> request.buttons;
     return stream;
 }
 

@@ -17,7 +17,6 @@
 #include "SignalProxy.h"
 #include <QtEndian>
 #include <QDebug>
-#include <QFile>
 
 SignalProxy::SignalProxy(quint64 gid1, quint64 gid2, QIODevice &readDevice, QIODevice &writeDevice) :
     mGlobalId1(gid1),
@@ -36,12 +35,10 @@ void SignalProxy::transmitSignal(const QByteArray &msgData)
     QMutexLocker lock(&mMutex);
     mWriteDevice.write(sizeData);
     mWriteDevice.write(msgData);
-    QFile* file = qobject_cast<QFile*>(&mWriteDevice);
-    if(file) file->flush();
+
 }
 void SignalProxy::onReadyRead()
 {
-    qWarning() << "onReadyRead";
     while(true)
     {
         qint64 bytes = mReadDevice.bytesAvailable();

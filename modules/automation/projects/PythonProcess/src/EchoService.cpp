@@ -12,30 +12,21 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http:#www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <QCoreApplication>
-
-#include <QDebug>
-#include <QBuffer>
-#include <QFile>
 
 #include "EchoService.h"
-#include <QLocalServer>
-#include <QLocalSocket>
+#include <QCoreApplication>
 
-int main(int argc, char *argv[])
+EchoService::EchoService(QIODevice &readDevice, QIODevice &writeDevice) :
+    PythonProcessServer(readDevice, writeDevice)
 {
-    QCoreApplication a(argc, argv);
-    QStringList args = a.arguments();
-    if(args.size()<2) return 1;
-    QString socketName = args[1];
-    QLocalServer localServer;
-    localServer.listen(socketName);
-    if(localServer.waitForNewConnection(3000))
-    {
-        QLocalSocket* socket = localServer.nextPendingConnection();
-        EchoService server(*socket, *socket);
-        return a.exec();
-    }
+    mId = 1;
+    connect(this,SIGNAL(echoService(QString)), SLOT(onEchoRequest(QString)));
+    connect(this, SIGNAL(exit()), QCoreApplication::instance(), SLOT(quit()));
+}
+
+void EchoService::onEchoRequest(const QString &echoStr)
+{
+    echo("Answer: " +echoStr, mId++);
 }

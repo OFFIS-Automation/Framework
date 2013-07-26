@@ -1,4 +1,7 @@
 #include <core/UserRequest.h>
+exit()
+echoService(QString text)
+-echo(QString text, int number)
 start(QString fileName, QString baseDir)
 addBreakpoint(QString file, unsigned int line)
 removeBreakpoint(QString file, int line)

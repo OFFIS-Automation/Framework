@@ -18,8 +18,9 @@
 #include <QtEndian>
 #include <QDebug>
 
-SignalProxy::SignalProxy(quint64 gid, QIODevice &readDevice, QIODevice &writeDevice) :
-    mGlobalId(gid),
+SignalProxy::SignalProxy(quint64 gid1, quint64 gid2, QIODevice &readDevice, QIODevice &writeDevice) :
+    mGlobalId1(gid1),
+    mGlobalId2(gid2),
     mReadDevice(readDevice),
     mWriteDevice(writeDevice)
 {
@@ -63,8 +64,8 @@ void SignalProxy::handleError(int id)
     qFatal("A signal id was not found, this is a critical failure! Maybe Client and Server are out of sync?");
 }
 
-void SignalProxy::checkId(quint64 id)
+void SignalProxy::checkId(quint64 id1, quint64 id2)
 {
-    if(id != globalId())
+    if(id1 != gid1() || id2 != gid2())
         qFatal("The global id of the sender did not match the id of the receiver. Client and Server  are out of sync.");
 }

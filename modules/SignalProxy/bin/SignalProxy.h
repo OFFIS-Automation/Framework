@@ -27,19 +27,22 @@ class SignalProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit SignalProxy(QIODevice& readDevice, QIODevice& writeDevice);
+    explicit SignalProxy(quint64 gid, QIODevice& readDevice, QIODevice& writeDevice);
 
 protected slots:
     void transmitSignal(const QByteArray& msgData);
 
 protected:
-    void handleError(const QUuid id);
+    quint64 globalId() { return mGlobalId; }
+    void handleError(int id);
+    void checkId(quint64 globalId);
     virtual void processRemoteInputs(const QByteArray& data) = 0;
 private slots:
     void onReadyRead();
 
 private:
     int mReadSize;
+    const quint64 mGlobalId;
     QIODevice& mReadDevice;
     QIODevice& mWriteDevice;
 };

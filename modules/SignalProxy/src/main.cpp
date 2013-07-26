@@ -19,11 +19,16 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
-#include <QUuid>
+#include <QCryptographicHash>
 #include <QDateTime>
 #include <QFileInfo>
 #include <QDir>
 
+struct ID
+{
+    quint64 id1;
+    quint64 id2;
+};
 
 struct Parameter
 {
@@ -126,7 +131,7 @@ void writeMethod(QTextStream& stream, Method method, QString ns)
     stream << "{" << endl;
     stream << "\tQByteArray msgData;" << endl;
     stream << "\tQDataStream stream(&msgData, QIODevice::WriteOnly);" << endl;
-    stream << "\tstream << SignalProxy::globalId() << (int)" << QString::number(method.id) << ";" << endl;
+    stream << "\tstream << SignalProxy::gid1() << SignalProxy::gid2() << (int)" << QString::number(method.id) << ";" << endl;
     foreach(const Parameter& param, method.params)
         stream << "\tstream << " << param.name << ";" << endl;
     stream << "\ttransmitSignal(msgData);" << endl;
@@ -147,7 +152,7 @@ void writeMethodParsing(QTextStream& stream, Method method)
 }
 
 
-void writeImplementation(quint64 id, const QList<Method>& methods, QDir dir, const QString& className, bool reverse)
+void writeImplementation(ID id, const QList<Method>& methods, QDir dir, const QString& className, bool reverse)
 {
     QString ns = className + "::";
     QFile file(dir.absoluteFilePath(QString("%1.cpp").arg(className)));
@@ -158,7 +163,7 @@ void writeImplementation(quint64 id, const QList<Method>& methods, QDir dir, con
     stream << "#include \"" << className << ".h\"" << endl;
     stream << endl;
     stream << ns << className << "(QIODevice& readDevice, QIODevice& writeDevice)" << endl;
-    stream << "\t: SignalProxy(Q_UINT64_C(0x" + QString::number(id, 16) + "), readDevice, writeDevice)"  << endl;
+    stream << "\t: SignalProxy(Q_UINT64_C(0x" + QString::number(id.id1, 16) + "),Q_UINT64_C(0x" + QString::number(id.id2, 16) + "), readDevice, writeDevice)"  << endl;
     stream << "{}" << endl << endl;
 
     foreach(const Method& method, methods)
@@ -169,10 +174,11 @@ void writeImplementation(quint64 id, const QList<Method>& methods, QDir dir, con
     stream << "void " << ns << "processRemoteInputs(const QByteArray& data)" << endl;
     stream << "{" << endl;
     stream << "\tQDataStream stream(data);" << endl;
-    stream << "\tquint64 signalProxyGlobalId = 0;" << endl;
+    stream << "\tquint64 signalProxyGid1 = 0;" << endl;
+    stream << "\tquint64 signalProxyGid2 = 0;" << endl;
     stream << "\tint signalProxyMethodId = 0;" << endl;
-    stream << "\tstream >> signalProxyGlobalId >> signalProxyMethodId;" << endl;
-    stream << "\tSignalProxy::checkId(signalProxyGlobalId);" << endl << endl;
+    stream << "\tstream >> signalProxyGid1 >> signalProxyGid2 >> signalProxyMethodId;" << endl;
+    stream << "\tSignalProxy::checkId(signalProxyGid1, signalProxyGid2);" << endl << endl;
     foreach(const Method& method, methods)
     {
         if(method.isReverse == reverse)
@@ -222,7 +228,7 @@ void writeHeader(const QList<QString>& includes, const QList<Method>& methods, Q
     stream << "#endif //" << className.toUpper() << "_H" << endl;
 
 }
-void writeClass(quint64 id, const QList<Method>& methods, const QList<QString>& includes, QDir dir, const QString& className, bool reverse)
+void writeClass(ID id, const QList<Method>& methods, const QList<QString>& includes, QDir dir, const QString& className, bool reverse)
 {
     writeHeader(includes, methods, dir, className, reverse);
     writeImplementation(id, methods, dir, className, reverse);
@@ -249,12 +255,14 @@ int main(int argc, char *argv[])
     QTextStream stream(&file);
     QList<Method> methods;
     QList<QString> includes;
+    QByteArray hashData;
     while(!stream.atEnd())
     {
         QString line = stream.readLine().trimmed();
         if(line.isEmpty() || line.startsWith('/'))
             continue;
-        else if(line.startsWith("#include"))
+        hashData.append(line.toLocal8Bit());
+        if(line.startsWith("#include"))
         {
             line.replace("#include", "");
             includes << line.trimmed();
@@ -263,13 +271,16 @@ int main(int argc, char *argv[])
             methods << parseLine(line);
 
     }
-    quint64 id = createId(methods);
-    qWarning() << "Found " << methods.size() << " methods. ID: 0x" << QString::number(id, 16);
+    QByteArray hash = QCryptographicHash::hash(hashData, QCryptographicHash::Md5).toHex();
+    ID id;
+    id.id1 = hash.mid(0,15).toULongLong(0, 16);
+    id.id2 = hash.mid(16).toULongLong(0, 16);
+    qWarning() << "Found " << methods.size() << " methods. ID: 0x" << QString("0x%1%2").arg(id.id1, 16).arg(id.id2, 16);
     file.close();
     if(!params.contains("--server-only"))
         writeClass(id, methods, includes, targetDir, className + "Client", true);
     else if(!params.contains("--client-only"))
-    writeClass(id, methods, includes, targetDir, className + "Server", false);
+        writeClass(id, methods, includes, targetDir, className + "Server", false);
     QDir srcDir(a.applicationDirPath());
     QFile::copy(srcDir.absoluteFilePath("SignalProxy.h"), targetDir.absoluteFilePath("SignalProxy.h"));
     QFile::copy(srcDir.absoluteFilePath("SignalProxy.cpp"), targetDir.absoluteFilePath("SignalProxy.cpp"));

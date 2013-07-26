@@ -24,12 +24,14 @@ SignalProxy::SignalProxy(quint64 gid, QIODevice &readDevice, QIODevice &writeDev
     mWriteDevice(writeDevice)
 {
     mReadSize = 0;
+    connect(&mReadDevice, SIGNAL(readyRead()), SLOT(onReadyRead()), Qt::DirectConnection);
 }
 
 void SignalProxy::transmitSignal(const QByteArray &msgData)
 {
     QByteArray sizeData(4,0);
     qToLittleEndian<int>(msgData.size(), (uchar*)sizeData.data());
+    QMutexLocker lock(&mMutex);
     mWriteDevice.write(sizeData);
     mWriteDevice.write(msgData);
 }

@@ -20,8 +20,9 @@
 #include <QObject>
 #include <QIODevice>
 #include <QDataStream>
-#include <QUuid>
+#include <QStringList>
 #include <QVariant>
+#include <QMutex>
 
 class SignalProxy : public QObject
 {
@@ -45,6 +46,7 @@ private:
     const quint64 mGlobalId;
     QIODevice& mReadDevice;
     QIODevice& mWriteDevice;
+    QMutex mMutex;
 };
 
 #endif // SIGNALPROXY_H

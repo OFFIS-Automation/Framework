@@ -41,6 +41,31 @@ public:
     QString title;
     QList<UserRequestItem> items;
     QList<UserRequestButton> buttons;
+
 };
+inline QDataStream& operator<<(QDataStream& stream, const UserRequestButton& requestButton)
+{
+    stream << requestButton.id;
+    stream << requestButton.name;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const UserRequestItem& requestItem)
+{
+    stream << requestItem.desc;
+    stream << requestItem.value;
+    stream << requestItem.constraints;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const UserRequest& request)
+{
+    stream << request.uid;
+    stream << request.title;
+    stream << request.items;
+    stream << request.buttons;
+    return stream;
+}
+
 
 #endif // USERREQUEST_H

@@ -22,16 +22,17 @@ INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../include
 
 SIGNALDEFS = $${PWD}/signalProxy/PythonProcess.slots
-createSignalProxy.target = $$SIGNALDEFS
+createSignalProxy.target = $$PWD/src/signalProxy/PythonProcessServer.h
+
 
 win32-msvc*{
-    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy.exe $$SIGNALDEFS $$PWD/src/signalProxy
+    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy.exe $$SIGNALDEFS $$PWD/src/signalProxy --server-only
 } else {
-    createSignalProxy.commands = $${PWD}/../../../version/version $$MAJOR $$MINOR $$VERSION_HEADER
+    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy $$SIGNALDEFS $$PWD/src/signalProxy --server-only
 }
 createSignalProxy.depends = FORCE
 QMAKE_EXTRA_TARGETS += createSignalProxy
-PRE_TARGETDEPS += $$SIGNALDEFS
+PRE_TARGETDEPS += $$PWD/src/signalProxy/PythonProcessServer.h
 
 
 DEFINES += PYEXEC_LIBRARY
@@ -49,8 +50,6 @@ SOURCES += \
     src/signalProxy/PythonProcessServer.cpp
 
 HEADERS += \
-    src/MyServer.h \
-    src/MyClient.h \
     src/signalProxy/SignalProxy.h \
     src/signalProxy/PythonProcessServer.h
 

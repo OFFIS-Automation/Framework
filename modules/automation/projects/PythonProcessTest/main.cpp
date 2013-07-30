@@ -37,12 +37,6 @@ int main(int argc, char *argv[])
     if(socket.waitForConnected(2000))
     {
         TestClient client(socket, socket);
-        client.echoService("TEST");
-        client.echoService("Hallo");
-        a.processEvents();
-        a.processEvents();
-        a.processEvents();
-        client.exit();
         return a.exec();
     }
 }

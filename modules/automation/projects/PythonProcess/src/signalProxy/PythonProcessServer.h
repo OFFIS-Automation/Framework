@@ -11,8 +11,6 @@ public:
 	PythonProcessServer(QIODevice& readDevice, QIODevice& writeDevice);
 
 signals:
-	void exit();
-	void echoService(const QString& text);
 	void start(const QString& fileName, const QString& baseDir);
 	void addBreakpoint(const QString& file, uint line);
 	void removeBreakpoint(const QString& file, int line);
@@ -23,7 +21,6 @@ signals:
 	void quit();
 
 public slots:
-	void echo(const QString& text, int number);
 	void scriptPaused(const QString& file, int line);
 	void printText(const QString& message);
 	void printError(const QString& error);

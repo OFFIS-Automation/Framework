@@ -50,12 +50,14 @@ SOURCES += \
     src/main.cpp \
     src/signalProxy/SignalProxy.cpp \
     src/signalProxy/PythonProcessServer.cpp \
-    src/EchoService.cpp
+    src/PythonInterpreter.cpp \
+    src/PythonDebugger.cpp
 
 HEADERS += \
     src/signalProxy/SignalProxy.h \
     src/signalProxy/PythonProcessServer.h \
-    src/EchoService.h
+    src/PythonInterpreter.h \
+    src/PythonDebugger.h
 
 OTHER_FILES += \
     signalProxy/PythonProcess.slots

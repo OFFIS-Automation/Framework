@@ -2,31 +2,14 @@
 #include "PythonProcessClient.h"
 
 PythonProcessClient::PythonProcessClient(QIODevice& readDevice, QIODevice& writeDevice)
-	: SignalProxy(Q_UINT64_C(0xdd89e4eb77ff1df),Q_UINT64_C(0xc8b1ef4247070a2a), readDevice, writeDevice)
+	: SignalProxy(Q_UINT64_C(0xced9a518f7085b3),Q_UINT64_C(0x141de42d96433750), readDevice, writeDevice)
 {}
-
-void PythonProcessClient::exit()
-{
-	QByteArray msgData;
-	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)1;
-	transmitSignal(msgData);
-}
-
-void PythonProcessClient::echoService(const QString& text)
-{
-	QByteArray msgData;
-	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)2;
-	stream << text;
-	transmitSignal(msgData);
-}
 
 void PythonProcessClient::start(const QString& fileName, const QString& baseDir)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)4;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)1;
 	stream << fileName;
 	stream << baseDir;
 	transmitSignal(msgData);
@@ -36,7 +19,7 @@ void PythonProcessClient::addBreakpoint(const QString& file, uint line)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)5;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)2;
 	stream << file;
 	stream << line;
 	transmitSignal(msgData);
@@ -46,7 +29,7 @@ void PythonProcessClient::removeBreakpoint(const QString& file, int line)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)6;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)3;
 	stream << file;
 	stream << line;
 	transmitSignal(msgData);
@@ -56,7 +39,7 @@ void PythonProcessClient::resume()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)7;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)4;
 	transmitSignal(msgData);
 }
 
@@ -64,7 +47,7 @@ void PythonProcessClient::stepOver()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)8;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)5;
 	transmitSignal(msgData);
 }
 
@@ -72,7 +55,7 @@ void PythonProcessClient::stepInto()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)9;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)6;
 	transmitSignal(msgData);
 }
 
@@ -80,7 +63,7 @@ void PythonProcessClient::stepReturn()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)10;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)7;
 	transmitSignal(msgData);
 }
 
@@ -88,7 +71,7 @@ void PythonProcessClient::quit()
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
-	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)11;
+	stream << SignalProxy::gid1() << SignalProxy::gid2() << (int)8;
 	transmitSignal(msgData);
 }
 
@@ -101,15 +84,7 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 	stream >> signalProxyGid1 >> signalProxyGid2 >> signalProxyMethodId;
 	SignalProxy::checkId(signalProxyGid1, signalProxyGid2);
 
-	if(signalProxyMethodId == 3) {
-		QString text;
-		int number;
-		stream >> text;
-		stream >> number;
-		emit echo(text, number);
-		return;
-	}
-	if(signalProxyMethodId == 12) {
+	if(signalProxyMethodId == 9) {
 		QString file;
 		int line;
 		stream >> file;
@@ -117,19 +92,19 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 		emit scriptPaused(file, line);
 		return;
 	}
-	if(signalProxyMethodId == 13) {
+	if(signalProxyMethodId == 10) {
 		QString message;
 		stream >> message;
 		emit printText(message);
 		return;
 	}
-	if(signalProxyMethodId == 14) {
+	if(signalProxyMethodId == 11) {
 		QString error;
 		stream >> error;
 		emit printError(error);
 		return;
 	}
-	if(signalProxyMethodId == 15) {
+	if(signalProxyMethodId == 12) {
 		int id;
 		QString name;
 		int maximum;
@@ -139,7 +114,7 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 		emit createProgress(id, name, maximum);
 		return;
 	}
-	if(signalProxyMethodId == 16) {
+	if(signalProxyMethodId == 13) {
 		int id;
 		int progress;
 		stream >> id;
@@ -147,13 +122,13 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 		emit updateProgress(id, progress);
 		return;
 	}
-	if(signalProxyMethodId == 17) {
+	if(signalProxyMethodId == 14) {
 		int id;
 		stream >> id;
 		emit removeProgress(id);
 		return;
 	}
-	if(signalProxyMethodId == 18) {
+	if(signalProxyMethodId == 15) {
 		int id;
 		QString title;
 		QStringList names;
@@ -163,7 +138,7 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 		emit createInfoPanel(id, title, names);
 		return;
 	}
-	if(signalProxyMethodId == 19) {
+	if(signalProxyMethodId == 16) {
 		int id;
 		QStringList values;
 		stream >> id;
@@ -171,23 +146,23 @@ void PythonProcessClient::processRemoteInputs(const QByteArray& data)
 		emit updateInfoPanel(id, values);
 		return;
 	}
-	if(signalProxyMethodId == 20) {
+	if(signalProxyMethodId == 17) {
 		int id;
 		stream >> id;
 		emit removeInfoPanel(id);
 		return;
 	}
-	if(signalProxyMethodId == 21) {
+	if(signalProxyMethodId == 18) {
 		emit clearInfo();
 		return;
 	}
-	if(signalProxyMethodId == 22) {
+	if(signalProxyMethodId == 19) {
 		QString infoStr;
 		stream >> infoStr;
 		emit appendInfo(infoStr);
 		return;
 	}
-	if(signalProxyMethodId == 23) {
+	if(signalProxyMethodId == 20) {
 		UserRequest request;
 		stream >> request;
 		emit userRequest(request);

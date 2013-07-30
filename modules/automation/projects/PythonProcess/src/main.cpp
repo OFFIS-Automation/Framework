@@ -20,7 +20,7 @@
 #include <QBuffer>
 #include <QFile>
 
-#include "EchoService.h"
+#include "signalProxy/PythonProcessServer.h"
 #include <QLocalServer>
 #include <QLocalSocket>
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     if(localServer.waitForNewConnection(3000))
     {
         QLocalSocket* socket = localServer.nextPendingConnection();
-        EchoService server(*socket, *socket);
+        PythonProcessServer server(*socket, *socket);
         return a.exec();
     }
 }

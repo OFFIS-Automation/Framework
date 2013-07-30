@@ -400,7 +400,22 @@ void OlvisCoreInterface::setProcessorStartupBehavior(int id, bool pausedStartup)
 
 void OlvisCoreInterface::setProcessorStartupBehavior(const QString &processorName, bool pausedStartup)
 {
-       setProcessorStartupBehavior(getProcessor(processorName).id, pausedStartup);
+    setProcessorStartupBehavior(getProcessor(processorName).id, pausedStartup);
+}
+
+void OlvisCoreInterface::setProcessorTriggerBehavior(int id, bool ignoreTrigger)
+{
+    Processor* processor = mProcessors.value(id);
+    if(!processor)
+        return;
+    processor->setTriggerMode(ignoreTrigger);
+    mChanged = true;
+    emit processorUpdated(processor->info());
+}
+
+void OlvisCoreInterface::setProcessorTriggerBehavior(const QString &processorName, bool ignoreTrigger)
+{
+    setProcessorTriggerBehavior(getProcessor(processorName).id, ignoreTrigger);
 }
 
 int OlvisCoreInterface::createDataBuffer(int size, const QString &nameIn)

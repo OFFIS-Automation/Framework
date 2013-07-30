@@ -175,7 +175,6 @@ void EditArea::setTabView()
     ui->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = findChild<QTabBar*>();
     tab->setTabsClosable(true);
-    connect(tab, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
 
 void EditArea::setSubView()
@@ -183,15 +182,6 @@ void EditArea::setSubView()
     QSettings settings;
     settings.setValue("ProjectEditor/tabbed", false);
     ui->mdiArea->setViewMode(QMdiArea::SubWindowView);
-}
-
-void EditArea::closeTab(int i)
-{
-    QList<QMdiSubWindow*> sub = ui->mdiArea->subWindowList();
-    if(sub.count() <= i)
-        return;
-    ui->mdiArea->setActiveSubWindow(sub.at(i));
-    ui->mdiArea->closeActiveSubWindow();
 }
 
 void EditArea::setBaseDir(QString baseDir)

@@ -41,6 +41,7 @@ public:
     void step(bool singleStep);
     void setProcessorPriority(Priority priority);
     void setStartupMode(bool pausedStartup);
+    void setTriggerMode(bool ignoreTrigger);
 
     /* function to avoid race condition between finished() signal and isFinished() of qthread */
     bool isExecutionFinished() const { return !mRunning; }
@@ -96,7 +97,7 @@ protected:
     QWaitCondition mPauseWait, mTriggerWait;
     bool mPaused, mPauseOnStart;
     QSet<ProcessingElement*> mTargets;
-    bool mTriggeredExecution;
+    bool mHasSource;
     int mRunId, mLoopId;
     QSet<Filter*> mFilterWithErrors;
 };

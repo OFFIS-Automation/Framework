@@ -2,30 +2,18 @@
 
 #include <telecontrol/TcConfig.h>
 
-WindowsXBOXGamepad::WindowsXBOXGamepad(const QString &name) : WindowsGamepad(name){}
+WindowsXBOXGamepad::WindowsXBOXGamepad(const QString &name) : WindowsGamepad(name, ""){}
 
 void WindowsXBOXGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &buttons)
 {
     // Axis
     DIJOYSTATE2& status = mState;
-    joysticks[Tc::XAxisLeft] = correctedValue(float(status.lX));
-    joysticks[Tc::YAxisLeft] = correctedValue(-float(status.lY));
-    buttons[Tc::LeftAxisPush] = status.rgbButtons[8] != 0;
-    joysticks[Tc::XAxisRight] = correctedValue(float(status.lRx));
-    joysticks[Tc::YAxisRight] = correctedValue(-float(status.lRy));
-    buttons[Tc::RightAxisPush] = status.rgbButtons[9] != 0;
+    joysticks[Tc::LeftJoystickX] = correctedValue(float(status.lX));
+    joysticks[Tc::LeftJoystickY] = correctedValue(-float(status.lY));
+    joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRx));
+    joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRy));
 
-    // Buttons
-    buttons[Tc::Button1] = status.rgbButtons[2] != 0;
-    buttons[Tc::Button2] = status.rgbButtons[0] != 0;
-    buttons[Tc::Button3] = status.rgbButtons[1] != 0;
-    buttons[Tc::Button4] = status.rgbButtons[3] != 0;
-    buttons[Tc::Button5] = status.rgbButtons[4] != 0;
-    buttons[Tc::Button6] = status.rgbButtons[5] != 0;
-    buttons[Tc::Button7] = status.lZ > 0;
-    buttons[Tc::Button8] = status.lZ < 0;
-    buttons[Tc::Button9] = status.rgbButtons[6] != 0;
-    buttons[Tc::Button10] = status.rgbButtons[7] != 0;
+
 
     // D-Pad
     bool up = false, down = false, left = false, right = false;

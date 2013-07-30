@@ -67,6 +67,10 @@ tcfiles.path    = $${DESTDIR}/hilec/telecontrol
 tcfiles.files  += ../../include/telecontrol/*
 INSTALLS       += tcfiles
 
+tcConfig.path    = $${targetDir}
+tcConfig.files  += ../../data/gamepads.ini
+INSTALLS       += tcConfig
+
 
 HEADERS += \
     HilecPlugin.h \

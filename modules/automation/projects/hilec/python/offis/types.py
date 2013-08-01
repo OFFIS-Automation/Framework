@@ -20,8 +20,12 @@ class Point:
 	def __init__(self, x, y):
 		self.x = x;
 		self.y = y;
-	def __repr__(self):
-		return "Point(%.2f, %.2f)" % (self.x, self.y);
+	
+	def __str__(self):
+		return "Point(%f, %f)" % (self.x, self.y);
+	
+	def __repr__(self):	
+		return str(self);
 		
 	def __add__(self, v):
 		return Point(self.x + v.x, self.y + v.y);
@@ -61,8 +65,11 @@ class Pose2d:
 		self.y = y;
 		self.phi = phi;
 	
-	def __repr__(self):
+	def __str__(self):
 		return "Pose2d(%f, %f, %f)" % (self.x, self.y, self.phi);
+	
+	def __repr__(self):	
+		return str(self);
 		
 	def __add__(self, v):
 		return Pose2d(self.x + v.x, self.y + v.y, self.phi + v.phi);
@@ -233,7 +240,7 @@ class Rect:
 		return (p.x >= p1.x) and (p.x <= p2.x) and (p.y >= p1.y) and (p.y <= p2.y);
 	
 	def __str__(self):
-		return  "Rect[" + self.topLeft() + "," + self.size() + "]";
+		return  "Rect[" + str(self.topLeft()) + "," + str(self.size()) + "]";
 	
 	def __repr__(self):
 		return str(self);

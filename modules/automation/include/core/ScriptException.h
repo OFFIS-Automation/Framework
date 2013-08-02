@@ -19,6 +19,7 @@
 
 #include <QString>
 #include <QList>
+#include <QDataStream>
 
 struct TraceLine
 {
@@ -53,5 +54,22 @@ struct ScriptCompileInfo
     QString file;
     QList<ScriptCompileProblem> problems;
 };
+
+inline QDataStream& operator <<(QDataStream& stream, const TraceLine& trace)
+{
+    stream << trace.file;
+    stream << trace.line;
+    stream << trace.module;
+    stream << trace.method;
+    return stream;
+}
+
+inline QDataStream& operator <<(QDataStream& stream, const ScriptException& error)
+{
+    stream << error.name;
+    stream << error.baseDir;
+    stream << error.trace;
+    return stream;
+}
 
 #endif // SCRIPTEXCEPTION_H

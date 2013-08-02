@@ -32,5 +32,5 @@ ShowAssignmentButton::~ShowAssignmentButton()
 
 void ShowAssignmentButton::on_pushButton_clicked()
 {
-    emit openButtonAssignment();
+    emit openButtonAssignment(mUnit);
 }

@@ -17,9 +17,7 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS += projects/PythonProcess \
-    projects/PythonProcessTest \
-    projects/PythonPlugin
+SUBDIRS += projects/PythonPlugin
 SUBDIRS += projects/RcUnits
 SUBDIRS += projects/hilec
 SUBDIRS += projects/HilecGui

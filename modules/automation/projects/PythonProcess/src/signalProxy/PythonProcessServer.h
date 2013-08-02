@@ -4,6 +4,7 @@
 
 #include "SignalProxy.h"
 #include <core/UserRequest.h>
+
 class PythonProcessServer : public SignalProxy
 {
 	Q_OBJECT

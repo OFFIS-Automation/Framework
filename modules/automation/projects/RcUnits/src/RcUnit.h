@@ -28,8 +28,6 @@
 #include <lolecs/LolecInterface.h>
 #include <lolecs/Pose2d.h>
 
-Q_DECLARE_METATYPE(Pose2d)
-
 #include "RcUnitBase.h"
 
 class TcInvoker;

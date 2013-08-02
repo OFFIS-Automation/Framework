@@ -91,9 +91,9 @@ void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
     checkHAL();
     QMutexLocker waitLock(&mWaitMutex);
     emit moveRel(QPointF(xAxis*20.0, yAxis*-20.0), 20);
-    mWait.wait(&mWaitMutex, 1000);
+    mWait.wait(&mWaitMutex, 20);
     emit rotateRel(phi*20, 1);
-    mWait.wait(&mWaitMutex, 1000);
+    mWait.wait(&mWaitMutex, 20);
 }
 
 void TutorialUnit::resetSetup()

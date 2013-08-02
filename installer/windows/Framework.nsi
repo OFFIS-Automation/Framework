@@ -63,6 +63,7 @@ SectionEnd
 Section "!OFFIS Automation Toolbox" SecToolbox
 	SectionIn RO
 	SetOutPath "$INSTDIR"
+	File "..\..\bin\gamepads.ini"
 	File /x "opencv*d.dll" "..\..\bin\opencv*.dll"
 	SetOutPath "$INSTDIR\plugins"
 	File "..\..\bin\plugins\olvis*.dll"
@@ -113,6 +114,7 @@ SectionEnd
 
 Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug"
+	File "..\..\bin\debug\gamepads.ini"
 	File "..\..\bin\debug\opencv*.dll"
 	SetOutPath "$INSTDIR\debug\plugins"
 	File "..\..\bin\debug\plugins\olvis*.dll"

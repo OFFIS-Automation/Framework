@@ -20,8 +20,12 @@ class Point:
 	def __init__(self, x, y):
 		self.x = x;
 		self.y = y;
-	def __repr__(self):
-		return "Point(%.2f, %.2f)" % (self.x, self.y);
+	
+	def __str__(self):
+		return "Point(%f, %f)" % (self.x, self.y);
+	
+	def __repr__(self):	
+		return str(self);
 		
 	def __add__(self, v):
 		return Point(self.x + v.x, self.y + v.y);
@@ -32,6 +36,9 @@ class Point:
 	# 	@param number arbitrary real number
 	def __mul__(self, number):
 		return Point(self.x * number, self.y * number);
+	
+	def __truediv__(self, number):
+		return Point(self.x / number, self.y / number);
 		
 	def __neg__(self):
 		return Point(-self.x, -self.y)
@@ -61,8 +68,11 @@ class Pose2d:
 		self.y = y;
 		self.phi = phi;
 	
-	def __repr__(self):
+	def __str__(self):
 		return "Pose2d(%f, %f, %f)" % (self.x, self.y, self.phi);
+	
+	def __repr__(self):	
+		return str(self);
 		
 	def __add__(self, v):
 		return Pose2d(self.x + v.x, self.y + v.y, self.phi + v.phi);
@@ -104,6 +114,9 @@ class Size:
 	# 	@param number arbitrarheight real number
 	def __mul__(self, number):
 		return Size(self.width * number, self.height * number);
+	
+	def __truediv__(self, number):
+		return Size(self.width / number, self.height / number);
 		
 	def __neg__(self):
 		return Size(-self.width, -self.height)
@@ -146,6 +159,18 @@ class Rect:
 		self.y1 = min(y1, y2);
 		self.x2 = max(x1, x2);
 		self.y2 = max(y1, y2);
+	
+	def left(self):
+		return self.x1;
+	
+	def right(self):
+		return self.x2;
+	
+	def top(self):
+		return self.y1;
+		
+	def bottom(self):
+		return self.y2;
 	
 	def firstPoint(self):
 		return Point(self.x1, self.y1)
@@ -233,7 +258,7 @@ class Rect:
 		return (p.x >= p1.x) and (p.x <= p2.x) and (p.y >= p1.y) and (p.y <= p2.y);
 	
 	def __str__(self):
-		return  "Rect[" + self.topLeft() + "," + self.size() + "]";
+		return  "Rect[" + str(self.topLeft()) + "," + str(self.size()) + "]";
 	
 	def __repr__(self):
 		return str(self);
@@ -279,6 +304,9 @@ class Vector3d:
 	# 	@param number arbitrary real number
 	def __mul__(self, number):
 		return Vector3d(self.x * number, self.y * number, self.z * number);
+	
+	def __truediv__(self, number):
+		return Vector3d(self.x / number, self.y / number, self.z / number);
 		
 	def __neg__(self):
 		return Vector3d(-self.x, -self.y, - self.z)

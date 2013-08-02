@@ -41,7 +41,10 @@ void MomentFilter::execute()
     {
         std::vector<cv::Point> contour = mIn;
         cv::Moments mom = cv::moments(contour, true);
-        mNumPixelsOut.send(mom.m00);
-        mCogOut.send(QPointF(mom.m10/mom.m00, mom.m01 / mom.m00));
+        if(mom.m00 > 0)
+        {
+            mNumPixelsOut.send(mom.m00);
+            mCogOut.send(QPointF(mom.m10/mom.m00, mom.m01 / mom.m00));
+        }
     }
 }

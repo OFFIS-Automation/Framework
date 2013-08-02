@@ -32,6 +32,7 @@ FileTree::FileTree(QWidget *parent) :
 {
     ui->setupUi(this);
     mModel.setReadOnly(false);
+    mFilteredModel.setDynamicSortFilter(true);
     ui->treeView->setAnimated(false);
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(false);

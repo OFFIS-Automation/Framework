@@ -62,7 +62,7 @@ QObject* CustomLolecInterface::instance(RcBase &rc, const QString &configFile, c
 
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
-    //rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::XAxisLeft, Tc::YAxisLeft), Tc::Button5);
+    //rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY), Tc::LeftShoulderUpperButton);
 
     return lolec;
 }

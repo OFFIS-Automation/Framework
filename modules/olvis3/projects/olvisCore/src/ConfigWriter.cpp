@@ -96,8 +96,8 @@ void ConfigWriter::addProcessors()
         stream->writeStartElement("processor");
         stream->writeAttribute("name", processor.name);
         stream->writeAttribute("priority", QString::number(processor.priority));
-        stream->writeAttribute("pausedStartup", processor.pausedStartup ? "1" : " 0");
-        stream->writeAttribute("ignoreTrigger", processor.ignoreTrigger ? "1" : " 0");
+        stream->writeAttribute("pausedStartup", processor.pausedStartup ? "1" : "0");
+        stream->writeAttribute("ignoreTrigger", processor.ignoreTrigger ? "1" : "0");
         foreach(FilterInfo filter, mInterface.getFilters(processor.id))
         {
             stream->writeStartElement("filter");

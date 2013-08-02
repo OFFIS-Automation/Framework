@@ -84,8 +84,8 @@ void FileEditor::fileRenamed(const QString &newName)
 {
     foreach(int key, mBreakpointMarkers.keys())
     {
-        emit removeBreakpoint(mFilename, mBreakpointMarkers[key]);
-        emit addBreakpoint(newName, mBreakpointMarkers[key]);
+        emit removeBreakpoint(mFilename, mBreakpointMarkers[key]+1);
+        emit addBreakpoint(newName, mBreakpointMarkers[key]+1);
     }
     mFilename = newName;
     updateWindowTitle();

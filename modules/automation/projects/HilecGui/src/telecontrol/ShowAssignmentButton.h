@@ -35,7 +35,7 @@ private slots:
     void on_pushButton_clicked();
 
 signals:
-    void openButtonAssignment();
+    void openButtonAssignment(QString unit);
 
 private:
     QString mUnit;

@@ -53,7 +53,7 @@ private slots:
     void on_activateHaptic_clicked(bool checked);
     void on_hapticTabWidget_currentChanged(int index);
 
-    void on_openButtonAssignment_clicked();
+    void on_openButtonAssignment_clicked(QString unit);
 
 private:
     static const int sHapticIndexOffset = 1024;

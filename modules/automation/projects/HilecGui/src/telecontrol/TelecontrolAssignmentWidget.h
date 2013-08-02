@@ -37,6 +37,7 @@ public:
 public slots:
     void clear();
     void updateUnits(bool partialReload);
+    void switchToUnit(QString unit);
     void onTelecontrolUpdated(bool active, const QString& activeUnit);
 
 private:

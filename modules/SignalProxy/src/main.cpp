@@ -201,7 +201,7 @@ void writeHeader(const QList<QString>& includes, const QList<Method>& methods, Q
     stream << "#define " << className.toUpper() << "_H" << endl << endl;
     stream << "#include \"SignalProxy.h\"" << endl;
     foreach(const QString& includeStr, includes)
-        stream << "#include " << includeStr;
+        stream << "#include " << includeStr << endl;
     stream << endl;
     stream << "class " << className << " : public SignalProxy" << endl;
     stream << "{" << endl;

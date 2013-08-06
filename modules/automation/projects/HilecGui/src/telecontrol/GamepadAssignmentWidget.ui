@@ -57,7 +57,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button5Label">
+      <widget class="QLabel" name="button4Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -91,7 +91,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button7Label">
+      <widget class="QLabel" name="button5Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -471,7 +471,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button8Label">
+      <widget class="QLabel" name="button7Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -505,7 +505,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button4Label">
+      <widget class="QLabel" name="button0Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -539,7 +539,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button1Label">
+      <widget class="QLabel" name="button2Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -607,7 +607,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="button2Label">
+      <widget class="QLabel" name="button1Label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>

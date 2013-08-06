@@ -48,11 +48,7 @@ public slots:
 
 private slots:
     void on_gamepadTabWidget_currentChanged(int index);
-    void on_activate_clicked(bool checked);
-
-    void on_activateHaptic_clicked(bool checked);
     void on_hapticTabWidget_currentChanged(int index);
-
     void on_openButtonAssignment_clicked(QString unit);
 
 private:

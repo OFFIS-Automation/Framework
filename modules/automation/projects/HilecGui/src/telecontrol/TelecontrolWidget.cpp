@@ -163,38 +163,6 @@ void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
     }
 }
 
-void TelecontrolWidget::on_activate_clicked(bool checked)
-{
-    /*
-    if(mInUpdate)
-        return;
-    ui->activate->setEnabled(false);
-    if(checked)
-    {
-        QString unit = mUnitIndexes.value(ui->gamepadTabWidget->currentIndex());
-        emit activateTelecontrol(unit);
-    }
-    else
-        emit deactivateTelecontrol();
-        */
-}
-
-void TelecontrolWidget::on_activateHaptic_clicked(bool checked)
-{
-    /*
-    if(mInUpdate)
-        return;
-    ui->activateHaptic->setEnabled(false);
-    if(checked)
-    {
-        QString unit = mUnitIndexes.value(sHapticIndexOffset + ui->hapticgamepadTabWidget->currentIndex());
-        emit activateHaptic(unit);
-    }
-    else
-        emit deactivateHaptic();
-    */
-}
-
 void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
 {
     if(mInUpdate)

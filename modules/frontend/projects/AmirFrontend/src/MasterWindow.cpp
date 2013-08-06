@@ -213,6 +213,11 @@ void MasterWindow::on_actionAbout_OFFIS_Automation_Toolbox_triggered()
     emit showAboutScreen();
 }
 
+void MasterWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this);
+}
+
 void MasterWindow::setVisible(bool visible)
 {
     QMainWindow::setVisible(visible);

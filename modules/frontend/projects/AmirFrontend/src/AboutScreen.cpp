@@ -54,8 +54,3 @@ void AboutScreen::on_reportProblem_clicked()
     QString mailto = QString("mailto:claas.diederichs@uni-oldenburg.de?subject=Error report OFFIS Automation Toolbox (%1)").arg(versionString);
     QDesktopServices::openUrl(QUrl(mailto));
 }
-
-void AboutScreen::on_aboutQT_clicked()
-{
-    QMessageBox::aboutQt(this);
-}

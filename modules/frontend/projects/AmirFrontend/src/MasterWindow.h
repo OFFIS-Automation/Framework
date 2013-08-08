@@ -50,6 +50,8 @@ private slots:
 
     void on_actionAbout_OFFIS_Automation_Toolbox_triggered();
 
+    void on_actionAbout_Qt_triggered();
+
 private:
     bool mStarted;
     void updateRecentProjects(const QString& mostRecent = QString());

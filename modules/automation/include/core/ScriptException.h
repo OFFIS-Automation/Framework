@@ -64,11 +64,29 @@ inline QDataStream& operator <<(QDataStream& stream, const TraceLine& trace)
     return stream;
 }
 
+inline QDataStream& operator >>(QDataStream& stream, TraceLine& trace)
+{
+    stream >> trace.file;
+    stream >> trace.line;
+    stream >> trace.module;
+    stream >> trace.method;
+    return stream;
+}
+
+
 inline QDataStream& operator <<(QDataStream& stream, const ScriptException& error)
 {
     stream << error.name;
     stream << error.baseDir;
     stream << error.trace;
+    return stream;
+}
+
+inline QDataStream& operator >>(QDataStream& stream, ScriptException& error)
+{
+    stream >> error.name;
+    stream >> error.baseDir;
+    stream >> error.trace;
     return stream;
 }
 

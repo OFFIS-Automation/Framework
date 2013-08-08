@@ -29,13 +29,22 @@ INCLUDEPATH += ../../../olvis3/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../RcUnits/src
 
-# Python
-win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
-win32*: LIBS += -L$$(AmirDevDir)/python3/libs
-unix:!macx: INCLUDEPATH += /usr/include/python3.2 # include stuff
-unix:!macx: LIBS += -L/usr/lib/python3.2/config -lpython3.2 # static library path
-macx: INCLUDEPATH += /opt/local/Library/Frameworks/Python.framework/Versions/3.2/include/python3.2m
-macx: LIBS += /opt/local/Library/Frameworks/Python.framework/Versions/3.2
+SIGNALDEFS = $${PWD}/../PythonPlugin/signalProxy/PythonProcess.signals
+SIGNALTARGET = $${PWD}/src/signalProxy/
+SIGNALHEADER = PythonProcessClient.h
+SIGNALSOURCE= PythonProcessClient.cpp
+createSignalProxy.target = $${SIGNALTARGET}$${SIGNALHEADER}
+
+
+win32-msvc*{
+    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy.exe $$SIGNALDEFS $$SIGNALTARGET --client-only
+} else {
+    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy $$SIGNALDEFS $$SIGNALTARGET --client-only
+}
+createSignalProxy.depends = FORCE
+QMAKE_EXTRA_TARGETS += createSignalProxy
+PRE_TARGETDEPS += $${SIGNALTARGET}$${SIGNALHEADER}
+
 
 LIBS += -L$${targetDir}/plugins -lRcUnits
 
@@ -77,12 +86,9 @@ HEADERS += \
     ../../include/core/HilecInterface.h \
     src/HilecCore.h \
     src/PythonInterpreter.h \
-    src/UserRequestParser.h \
     ../../include/core/UserRequest.h \
     ../../include/core/ScriptException.h \
     src/RcUnits.h \
-    src/PythonPlugin.h \
-    src/RcUnitInvoker.h \
     ../../include/core/RcUnitHelp.h \
     src/OlvisSingleton.h \
     ../../include/lolecs/LolecInterface.h \
@@ -90,48 +96,29 @@ HEADERS += \
     ../../include/lolecs/RcRepeatable.h \
     ../../include/lolecs/RcExceptions.h \
     ../../include/lolecs/LolecInterface.h \
-    src/PythonDebugger.h \
-    src/UserRequestManager.h \
-    src/PythonTypeConverter.h \
-    src/debugVariables/VariablesModel.h \
-    src/debugVariables/VarTreeItem.h \
-    src/debugVariables/DictVarItem.h \
-    src/debugVariables/AbstractVarItem.h \
-    src/debugVariables/ListVarItem.h \
-    src/debugVariables/TupleVarItem.h \
-    src/debugVariables/InstanceVarItem.h \
     src/RemoteLolec.h \
     src/RemoteRcUnit.h \
-    src/CallStackDecoder.h \
     src/PythonLinter.h \
     ../../include/lolecs/Pose2d.h \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
-    ../../include/telecontrol/TcConfig.h
+    ../../include/telecontrol/TcConfig.h \
+    src/signalProxy/PythonProcessClient.h \
+    src/signalProxy/SignalProxy.h \
+    src/PythonProcessControl.h
 
 SOURCES += \
     HilecPlugin.cpp \
     src/HilecCore.cpp \
     src/PythonInterpreter.cpp \
-    src/UserRequestParser.cpp \
     src/RcUnits.cpp \
-    src/PythonPlugin.cpp \
-    src/RcUnitInvoker.cpp \
     src/OlvisSingleton.cpp \
-    src/PythonDebugger.cpp \
-    src/UserRequestManager.cpp \
-    src/PythonTypeConverter.cpp \
-    src/debugVariables/VariablesModel.cpp \
-    src/debugVariables/VarTreeItem.cpp \
-    src/debugVariables/DictVarItem.cpp \
-    src/debugVariables/AbstractVarItem.cpp \
-    src/debugVariables/ListVarItem.cpp \
-    src/debugVariables/TupleVarItem.cpp \
-    src/debugVariables/InstanceVarItem.cpp \
     src/RemoteLolec.cpp \
     src/RemoteRcUnit.cpp \
-    src/CallStackDecoder.cpp \
-    src/PythonLinter.cpp
+    src/PythonLinter.cpp \
+    src/signalProxy/SignalProxy.cpp \
+    src/signalProxy/PythonProcessClient.cpp \
+    src/PythonProcessControl.cpp
 
 OTHER_FILES += \
     python/util.py \

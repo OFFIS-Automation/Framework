@@ -16,19 +16,54 @@
 
 
 #include "PythonProcessSingleton.h"
+#include <QCoreApplication>
 
-PythonProcessSingleton &PythonProcessSingleton::instance()
+#include <lolecs/Pose2d.h>
+
+PythonProcessServer *PythonProcessSingleton::serverInstance()
+{
+    PythonProcessSingleton& inst = instance();
+    QMutexLocker lock(&inst.mMutex);
+    return inst.mServer;
+}
+
+PythonProcessSingleton& PythonProcessSingleton::instance()
 {
     static PythonProcessSingleton inst;
     return inst;
 }
 
-void PythonProcessSingleton::connectToServer(const QString &socketName)
+bool PythonProcessSingleton::connectToServer(const QString &socketName)
 {
-    mSocket.connectToServer(socketName);
+    QMutexLocker lock(&mMutex);
+    mSocketName = "OffisFrameworkPythonSocket";
+    mConnectWait.wakeAll();
+    mStartupWait.wait(&mMutex);
+    return mConnected;
 }
 
-PythonProcessSingleton::PythonProcessSingleton() :
-    PythonProcessServer(mSocket, mSocket)
+void PythonProcessSingleton::run()
 {
+    QLocalSocket socket;
+    PythonProcessServer server(socket, socket);
+    {
+        QMutexLocker lock(&mMutex);
+        mServer = &server;
+        mStartupWait.wakeAll();
+        mConnectWait.wait(&mMutex);
+        socket.connectToServer(mSocketName);
+        mConnected = socket.waitForConnected(500);
+        server.initialize();
+        mStartupWait.wakeAll();
+    }
+    QThread::exec();
+}
+
+PythonProcessSingleton::PythonProcessSingleton()
+{
+    qRegisterMetaType<Pose2d>("Pose2d");
+    qRegisterMetaTypeStreamOperators<Pose2d>("Pose2d");
+    QMutexLocker lock(&mMutex);
+    start();
+    mStartupWait.wait(&mMutex);
 }

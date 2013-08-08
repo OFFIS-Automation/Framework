@@ -24,17 +24,20 @@
 
 #include "PythonProcessSingleton.h"
 #include "PythonDebugger.h"
-
+#include <QCoreApplication>
 extern "C"
 {
     PyObject* apy_startup(PyObject*, PyObject* args)
     {
+        int numParams = 0;
+        static QCoreApplication app(numParams, 0);
         PyObject* str = 0;
         PyArg_ParseTuple(args,"O",&str);
-        PythonDebugger::instance()->stepInto();
-        comm().connectToServer(PythonTypeConverter::toString(str));
+        PythonDebugger::instance()->resume();
+        if(!PythonProcessSingleton::instance().connectToServer(PythonTypeConverter::toString(str)))
+            Py_RETURN_FALSE;
         PyEval_SetTrace(PythonDebugger_Trace, 0);
-        Py_RETURN_NONE;
+        Py_RETURN_TRUE;
     }
 
     PyObject* apy_print(PyObject* , PyObject* args)
@@ -42,7 +45,7 @@ extern "C"
         PyObject* str = 0;
         PyArg_ParseTuple(args,"O",&str);
 
-        comm().printText(PythonTypeConverter::toString(str));
+        comm()->printText(PythonTypeConverter::toString(str));
         Py_RETURN_NONE;
     }
 
@@ -50,20 +53,20 @@ extern "C"
     {
         PyObject* str = 0;
         PyArg_ParseTuple(args,"O",&str);
-        comm().printError(PythonTypeConverter::toString(str));
+        comm()->printError(PythonTypeConverter::toString(str));
         Py_RETURN_NONE;
     }
 
     PyObject* apy_userRequest(PyObject* , PyObject* args)
     {
-        return UserRequestManager::instance()->execute(args);
+        return UserRequestManager::instance().execute(args);
     }
 
     PyObject* apy_abortUserRequest(PyObject* , PyObject* args)
     {
         PyObject* elem = 0;
         PyArg_ParseTuple(args, "O", &elem);
-        UserRequestManager::instance()->abort(elem);
+        UserRequestManager::instance().abort(elem);
         Py_RETURN_NONE;
     }
 
@@ -72,8 +75,8 @@ extern "C"
         PyObject* str = 0;
         long maximum;
         PyArg_ParseTuple(args,"Ol",&str, &maximum);
-        int id = UserRequestManager::instance()->uniqueId();
-        comm().createProgress(id, PythonTypeConverter::toString(str), maximum);
+        int id = UserRequestManager::instance().uniqueId();
+        comm()->createProgress(id, PythonTypeConverter::toString(str), maximum);
         return PyLong_FromLong(id);
     }
 
@@ -81,7 +84,7 @@ extern "C"
     {
         long id, progress = 0;
         PyArg_ParseTuple(args,"ll",&id, &progress);
-        comm().updateProgress(id, progress);
+        comm()->updateProgress(id, progress);
         Py_RETURN_NONE;
     }
 
@@ -89,7 +92,7 @@ extern "C"
     {
         long id;
         PyArg_ParseTuple(args,"l",&id);
-        comm().removeProgress(id);
+        comm()->removeProgress(id);
         Py_RETURN_NONE;
     }
 
@@ -99,8 +102,8 @@ extern "C"
         PyArg_ParseTuple(args, "OO", &title, &nameList);
         QStringList names = PythonTypeConverter::toVariant(nameList).toStringList();
         QString name = PythonTypeConverter::toString(title);
-        int id = UserRequestManager::instance()->uniqueId();
-        comm().createInfoPanel(id, name, names);
+        int id = UserRequestManager::instance().uniqueId();
+        comm()->createInfoPanel(id, name, names);
         return PyLong_FromLong(id);
     }
 
@@ -111,7 +114,7 @@ extern "C"
         if(!PyArg_ParseTuple(args, "lO", &id, &valueList))
             Py_RETURN_NONE;
         QStringList values = PythonTypeConverter::toVariant(valueList).toStringList();
-        comm().updateInfoPanel(id, values);
+        comm()->updateInfoPanel(id, values);
         Py_RETURN_NONE;
     }
 
@@ -119,7 +122,7 @@ extern "C"
     {
         long id;
         PyArg_ParseTuple(args,"l",&id);
-        comm().removeInfoPanel(id);
+        comm()->removeInfoPanel(id);
         Py_RETURN_NONE;
     }
 
@@ -127,13 +130,13 @@ extern "C"
     {
         PyObject* str;
         PyArg_ParseTuple(args,"O",&str);
-        comm().appendInfo(PythonTypeConverter::toString(str));
+        comm()->appendInfo(PythonTypeConverter::toString(str));
         Py_RETURN_NONE;
     }
 
     PyObject* apy_clearInfo(PyObject*, PyObject*)
     {
-        comm().clearInfo();
+        comm()->clearInfo();
         Py_RETURN_NONE;
     }
 
@@ -164,7 +167,7 @@ extern "C"
             trace.method = method;
             err.trace.append(trace);
         }
-        comm().raiseException(err);
+        comm()->raiseException(err);
         Py_RETURN_NONE;
     }
 
@@ -179,6 +182,7 @@ extern "C"
     }
 
     static PyMethodDef io_methods[] = {
+            {"startup", apy_startup, METH_VARARGS,""},
             {"log",apy_print, METH_VARARGS,""},
             {"logErr",apy_printErr, METH_VARARGS,""},
             {"userRequest",apy_userRequest, METH_VARARGS,""},
@@ -203,11 +207,11 @@ extern "C"
        "offisio",   /* name of module */
        0, /* module documentation, may be NULL */
        -1,       /* size of per-interpreter state of the module,
-                    or -1 if the module keeps state in global variables. */
+                    or -1 ilogf the module keeps state in global variables. */
        io_methods
     };
 }
-PyMODINIT_FUNC initIoModule()
+PyMODINIT_FUNC PyInit_offisio()
 {
    return PyModule_Create(&offisio);
 }

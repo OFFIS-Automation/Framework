@@ -25,8 +25,9 @@
 
 struct _object;
 
-class RcUnitInvoker : QObject
+class RcUnitInvoker : public QObject
 {
+    Q_OBJECT
 public:
     static RcUnitInvoker& instance();
     _object* execute(_object* args);

@@ -162,8 +162,8 @@ void writeImplementation(ID id, const QList<Method>& methods, QDir dir, const QS
     //stream << "//created at:" << QDateTime::currentDateTime().toString() << endl << endl;
     stream << "#include \"" << className << ".h\"" << endl;
     stream << endl;
-    stream << ns << className << "(QIODevice& readDevice, QIODevice& writeDevice)" << endl;
-    stream << "\t: SignalProxy(Q_UINT64_C(0x" + QString::number(id.id1, 16) + "),Q_UINT64_C(0x" + QString::number(id.id2, 16) + "), readDevice, writeDevice)"  << endl;
+    stream << ns << className << "(QIODevice& readDevice, QIODevice& writeDevice, bool initialize)" << endl;
+    stream << "\t: SignalProxy(Q_UINT64_C(0x" + QString::number(id.id1, 16) + "),Q_UINT64_C(0x" + QString::number(id.id2, 16) + "), readDevice, writeDevice, initialize)"  << endl;
     stream << "{}" << endl << endl;
 
     foreach(const Method& method, methods)
@@ -207,7 +207,7 @@ void writeHeader(const QList<QString>& includes, const QList<Method>& methods, Q
     stream << "{" << endl;
     stream << "\tQ_OBJECT" << endl;
     stream << "public:" << endl;
-    stream << "\t" << className << "(QIODevice& readDevice, QIODevice& writeDevice);" << endl << endl;
+    stream << "\t" << className << "(QIODevice& readDevice, QIODevice& writeDevice, bool initialize = false);" << endl;
     stream << "signals:" << endl;
     foreach(const Method& method, methods)
     {
@@ -275,13 +275,15 @@ int main(int argc, char *argv[])
     ID id;
     id.id1 = hash.mid(0,15).toULongLong(0, 16);
     id.id2 = hash.mid(16).toULongLong(0, 16);
-    qWarning() << "Found " << methods.size() << " methods. ID: 0x" << QString("0x%1%2").arg(id.id1, 16).arg(id.id2, 16);
+    qWarning() << "Found " << methods.size() << " methods. ID:" << QString("0x%1%2").arg(id.id1, 16).arg(id.id2, 16);
     file.close();
     if(!params.contains("--server-only"))
         writeClass(id, methods, includes, targetDir, className + "Client", true);
     else if(!params.contains("--client-only"))
         writeClass(id, methods, includes, targetDir, className + "Server", false);
     QDir srcDir(a.applicationDirPath());
+    QFile::remove(targetDir.absoluteFilePath("SignalProxy.h"));
+    QFile::remove(targetDir.absoluteFilePath("SignalProxy.cpp"));
     QFile::copy(srcDir.absoluteFilePath("SignalProxy.h"), targetDir.absoluteFilePath("SignalProxy.h"));
     QFile::copy(srcDir.absoluteFilePath("SignalProxy.cpp"), targetDir.absoluteFilePath("SignalProxy.cpp"));
     return 0;

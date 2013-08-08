@@ -19,133 +19,109 @@
 #include <QDebug>
 #include <QDir>
 #include <core/ScriptException.h>
-
-#include "PythonDebugger.h"
-#include "PythonTypeConverter.h"
-
-#undef slots
-#include "Python.h"
-#include "PythonPlugin.h"
-
-
+#include <lolecs/Pose2d.h>
+#include "HilecCore.h"
 
 PythonInterpreter::PythonInterpreter(const QString &configDir)
-    : mDebugger(new PythonDebugger())
 {
+    qRegisterMetaType<Pose2d>("Pose2d");
+    qRegisterMetaTypeStreamOperators<Pose2d>("Pose2d");
+    mPythonProcess = 0;
     mConfigDir = configDir;
-
-    PyImport_AppendInittab("offisio", initIoModule);
+    connect(&mServer, SIGNAL(newConnection()), SLOT(connectScript()));
+    mServer.listen("OffisFrameworkPythonSocket");
 }
 
 PythonInterpreter::~PythonInterpreter()
 {
-    mDebugger->step(PythonDebugger::Quit);
-    wait();
-    delete mDebugger;
 }
 
 void PythonInterpreter::start(const QString &filename, const QString &baseDir)
 {
-    if(filename.isEmpty())
-        return;
-    mBaseDir = baseDir;
-    mFilename = filename;
-    QThread::start();
-}
-
-void PythonInterpreter::run()
-{
-    qDebug() << "Python: Executing" << mFilename;
-    mDebugger->step();
+    qDebug() << "Python: Executing" << filename;
     QString last = QDir::currentPath();
     QDir::setCurrent(mBaseDir);
-    wchar_t path[2048], pName[2048];
-    memset(path, 0, sizeof(path));
-    memset(pName, 0, sizeof(pName));
-    wchar_t* pNamePtr = pName;
-    mFilename.toWCharArray(pName);
-    Py_SetProgramName(pName);
-
-#ifdef Q_WS_WIN
-    QString(mBaseDir + ";" + mConfigDir + "/python").toWCharArray(path);
-#else
-    QString(mBaseDir + ":" + mConfigDir + "/python").toWCharArray(path);
-#endif
-
-
-    Py_SetPath(path);
-    mDebugger->initialize();
-    Py_Initialize();
-    PySys_SetArgvEx(1,&pNamePtr, 0);
-    PyEval_SetTrace(PythonDebugger_Trace, 0);
-    runFile(mConfigDir + "/python/offis/init.py");
-    runFile(mFilename);
-    UserRequestManager::instance()->abortAll();
-    Py_Finalize();
-    mDebugger->deinitialize();
+    //TODO: EXECUTE Script
     QDir::setCurrent(last);
-    qDebug() << "Python: Execution finished" << mFilename;
+    qDebug() << "Python: Execution finished" << filename;
     HilecCore::instance().scriptPaused(QString(), -1);
-}
-
-void PythonInterpreter::runFile(const QString &filename)
-{
-    FILE* file = fopen(qPrintable(filename), "r");
-    if(!file)
-        return;
-    PyRun_SimpleFile(file, qPrintable(filename));
-    fclose(file);
 }
 
 void PythonInterpreter::addBreakpoint(const QString &file, int line)
 {
-    mDebugger->addBreakpoint(file, line);
+    //TODO
 }
 
 void PythonInterpreter::removeBreakpoint(const QString &file, int line)
 {
-    mDebugger->removeBreakpoint(file, line);
+    //TODO
 }
 
 QList<QPair<QString, int> > PythonInterpreter::breakpoints() const
 {
-    return mDebugger->breakpoints();
+    return mBreakpoints;
+}
+
+bool PythonInterpreter::wait(int timeout)
+{
+    //TODO
+    return true;
+}
+
+bool PythonInterpreter::userInput(int uid, int buttonId, const QList<QVariant> &data)
+{
+    //TODO
+    return true;
 }
 
 
 
 void PythonInterpreter::resume()
 {
-    mDebugger->step(PythonDebugger::Resume);
+    //TODOmDebugger->step(PythonDebugger::Resume);
 }
 
 void PythonInterpreter::stepInto()
 {
-    mDebugger->step(PythonDebugger::StepInto);
+    //TODOmDebugger->step(PythonDebugger::StepInto);
 }
 
 void PythonInterpreter::stepOver()
 {
-    mDebugger->step(PythonDebugger::StepOver);
+    //TODOmDebugger->step(PythonDebugger::StepOver);
 }
 
 void PythonInterpreter::stepReturn()
 {
-    mDebugger->step(PythonDebugger::StepReturn);
+    //TODOmDebugger->step(PythonDebugger::StepReturn);
 }
 
 void PythonInterpreter::quit()
 {
-    UserRequestManager::instance()->abortAll();
-    mDebugger->step(PythonDebugger::Quit);
+    //TODOUserRequestManager::instance()->abortAll();
+    //TODOmDebugger->step(PythonDebugger::Quit);
 }
 
 QAbstractItemModel* PythonInterpreter::debugVars(int frameDepth)
 {
-    return mDebugger->variables(frameDepth);
+    //TODOreturn mDebugger->variables(frameDepth);
+    return 0;
 }
 
 QList<TraceLine> PythonInterpreter::getStackTrace()
 {
-    return mDebugger->callStack();
+    //TODOreturn mDebugger->callStack();
+    QList<TraceLine> trace;
+    return trace;
+}
+
+void PythonInterpreter::connectScript()
+{
+    QMutexLocker lock(&mMutex);
+    QLocalSocket* socket = mServer.nextPendingConnection();
+    if(socket)
+    {
+        mPythonProcess = new PythonProcessControl(socket);
+        HilecCore& hilec = HilecCore::instance();
+    }
 }

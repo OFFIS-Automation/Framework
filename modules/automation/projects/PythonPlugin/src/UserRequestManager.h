@@ -30,8 +30,7 @@ class UserRequestManager : public QObject
 {
     Q_OBJECT
 public:
-    UserRequestManager();
-    static UserRequestManager* instance() { return sInstance; }
+    static UserRequestManager& instance();
     int uniqueId();
     _object* execute(_object* args);
 signals:
@@ -44,6 +43,7 @@ public slots:
     void answer(int id, int button, const QList<QVariant>& data);
 
 protected:
+    explicit UserRequestManager();
     static UserRequestManager* sInstance;
     QMutex mMutex;
     QMap<int, UserRequestParser*> mRequests;

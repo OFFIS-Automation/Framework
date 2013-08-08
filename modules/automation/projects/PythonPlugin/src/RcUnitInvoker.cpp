@@ -23,8 +23,8 @@
 RcUnitInvoker::RcUnitInvoker()
 {
     mNextId = 0;
-    connect(&comm(), SIGNAL(rcUnitException(int,QString)), SLOT(onRcUnitException(int, QString)), Qt::DirectConnection);
-    connect(&comm(), SIGNAL(rcUnitResult(int,QVariant)), SLOT(onRcUnitResult(int, QVariant)), Qt::DirectConnection);
+    connect(comm(), SIGNAL(rcUnitException(int,QString)), this, SLOT(onRcUnitException(int, QString)), Qt::DirectConnection);
+    connect(comm(), SIGNAL(rcUnitResult(int,QVariant)), this, SLOT(onRcUnitResult(int, QVariant)), Qt::DirectConnection);
 }
 
 RcUnitInvoker &RcUnitInvoker::instance()
@@ -119,7 +119,7 @@ QVariant RcUnitInvoker::invokeRcUnit(const QByteArray &unit, const QByteArray &n
 {
     QMutexLocker lock(&mMutex);
     int id = mNextId++;
-    comm().callRcUnit(id, unit, name, params);
+    comm()->callRcUnit(id, unit, name, params);
     RcUnitCallState state;
     mActiveCalls[id] = &state;
     state.waiter.wait(&mMutex);

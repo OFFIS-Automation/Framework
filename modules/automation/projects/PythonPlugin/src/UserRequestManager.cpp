@@ -28,6 +28,12 @@ UserRequestManager::UserRequestManager() : mNextId(0)
     sInstance = this;
 }
 
+UserRequestManager &UserRequestManager::instance()
+{
+    static UserRequestManager inst;
+    return inst;
+}
+
 int UserRequestManager::uniqueId()
 {
     QMutexLocker lock(&mMutex);

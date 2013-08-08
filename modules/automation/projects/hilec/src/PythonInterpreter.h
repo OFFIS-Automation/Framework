@@ -22,11 +22,13 @@
 #include <QStringList>
 #include <QAbstractItemModel>
 #include <core/ScriptException.h>
+#include <QLocalServer>
+#include "PythonProcessControl.h"
 
-class PythonDebugger;
 
-class PythonInterpreter : public QThread
+class PythonInterpreter : public QObject
 {
+    Q_OBJECT
 public:
     PythonInterpreter(const QString& configDir);
     virtual ~PythonInterpreter();
@@ -34,6 +36,10 @@ public:
     void addBreakpoint(const QString& file, int line);
     void removeBreakpoint(const QString& file, int line);
     QList<QPair<QString, int> >  breakpoints() const;
+    bool wait(int timeout);
+    bool isRunning() { return true;  }//TODO
+
+    bool userInput (int uid, int buttonId, const QList<QVariant> &data);
     void resume();
     void stepInto();
     void stepOver();
@@ -41,15 +47,15 @@ public:
     void quit();
     QAbstractItemModel* debugVars(int frameDepth);
     QList<TraceLine> getStackTrace();
+private slots:
+    void connectScript();
 protected:
-    virtual void run();
-    void runFile(const QString& filename);
-    QString mFilename;
-    QStringList mFilesToParse;
+    QLocalServer mServer;
+    QList<QPair<QString, int> > mBreakpoints;
     QMutex mMutex;
     QString mConfigDir;
     QString mBaseDir;
-    PythonDebugger* mDebugger;
+    PythonProcessControl* mPythonProcess;
 };
 
 #endif // PYTHONINTERPRETER_H

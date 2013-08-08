@@ -28,10 +28,13 @@ class SignalProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit SignalProxy(quint64 gid1, quint64 gid2, QIODevice& readDevice, QIODevice& writeDevice);
+    explicit SignalProxy(quint64 gid1, quint64 gid2, QIODevice& readDevice, QIODevice& writeDevice, bool initialize = false);
+    void initialize();
 
-protected slots:
-    void transmitSignal(const QByteArray& msgData);
+signals:
+	void transmitSignal(const QByteArray& msgData);
+private slots:
+    void transmitSignalAsync(const QByteArray& msgData);
 
 protected:
     quint64 gid1() { return mGlobalId1; }

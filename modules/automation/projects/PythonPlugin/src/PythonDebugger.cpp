@@ -38,14 +38,14 @@ extern "C" int PythonDebugger_Trace(PyObject*, PyFrameObject* frame, int what, P
 
 PythonDebugger::PythonDebugger()
 {
-    connect(&comm(), SIGNAL(addBreakpoint(QString,int)), SLOT(addBreakpoint(QString,int)));
-    connect(&comm(), SIGNAL(removeBreakpoint(QString,int)), SLOT(removeBreakpoint(QString,int)));
-    connect(&comm(), SIGNAL(resume()), SLOT(resume()));
-    connect(&comm(), SIGNAL(quit()), SLOT(quit()));
-    connect(&comm(), SIGNAL(stepInto()), SLOT(stepInto()));
-    connect(&comm(), SIGNAL(stepOver()), SLOT(stepOver()));
-    connect(&comm(), SIGNAL(stepReturn()), SLOT(stepReturn()));
-    connect(&comm(), SIGNAL(requestCallStack()), SLOT(sendCallStack()));
+    connect(comm(), SIGNAL(addBreakpoint(QString,int)), SLOT(addBreakpoint(QString,int)));
+    connect(comm(), SIGNAL(removeBreakpoint(QString,int)), SLOT(removeBreakpoint(QString,int)));
+    connect(comm(), SIGNAL(resume()), SLOT(resume()));
+    connect(comm(), SIGNAL(quit()), SLOT(quit()));
+    connect(comm(), SIGNAL(stepInto()), SLOT(stepInto()));
+    connect(comm(), SIGNAL(stepOver()), SLOT(stepOver()));
+    connect(comm(), SIGNAL(stepReturn()), SLOT(stepReturn()));
+    connect(comm(), SIGNAL(requestCallStack()), SLOT(sendCallStack()));
 }
 
 PythonDebugger::~PythonDebugger()
@@ -91,7 +91,7 @@ int PythonDebugger::trace(PyFrameObject *frame, int what, PyObject *)
         if(pause || mBreakpoints[line].contains(filename))
         {
             mCallStackDecoder.decode(frame);
-            comm().scriptPaused(filename, line);
+            comm()->scriptPaused(filename, line);
             mWait.wait(&mMutex);
             mCallStackDecoder.prepareResume();
             PyFrame_LocalsToFast(frame, 0);
@@ -139,7 +139,7 @@ void PythonDebugger::sendCallStack()
 {
     QMutexLocker lock(&mMutex);
     QList<TraceLine> trace = mCallStackDecoder.trace();
-    comm().updateCallStack(trace);
+    comm()->updateCallStack(trace);
 }
 
 void PythonDebugger::step(StepMode stepMode)

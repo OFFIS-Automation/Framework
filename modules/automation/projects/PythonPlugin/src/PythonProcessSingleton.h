@@ -21,25 +21,32 @@
 #include "signalProxy/PythonProcessServer.h"
 
 #include <QLocalSocket>
+#include <QMutex>
+#include <QThread>
+#include <QWaitCondition>
 
-class PythonProcessSingleton : public PythonProcessServer
+class PythonProcessSingleton : public QThread
 {
     Q_OBJECT
 public:
-    static PythonProcessSingleton* instancePtr() { return &instance(); }
+    static PythonProcessServer* serverInstance();
     static PythonProcessSingleton& instance();
 
-    void connectToServer(const QString& socketName);
+    bool connectToServer(const QString& socketName);
 
 private:
+    void run();
     explicit PythonProcessSingleton();
-
-    QLocalSocket mSocket;
+    PythonProcessServer* mServer;
+    QString mSocketName;
+    QMutex mMutex;
+    bool mConnected;
+    QWaitCondition mStartupWait, mConnectWait;
 };
 
-inline PythonProcessSingleton& comm()
+inline PythonProcessServer* comm()
 {
-    return PythonProcessSingleton::instance();
+    return PythonProcessSingleton::serverInstance();
 }
 
 

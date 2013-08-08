@@ -30,8 +30,6 @@ HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
     mInstance = this;
     qRegisterMetaType< QList<bool> >("QList<bool>");
     qRegisterMetaType<ScriptCompileInfo>("ScriptCompileInfo");
-    connect(&mRequests, SIGNAL(newUserRequest(UserRequest)), SIGNAL(userInputRequested(UserRequest)));
-    connect(&mRequests, SIGNAL(requestAborted(int)), SIGNAL(userInputAborted(int)));
     connect(&mPython, SIGNAL(finished()), SIGNAL(scriptExecutionFinished()));
     connect(&mPython, SIGNAL(started()), SIGNAL(scriptExecutionStarted()));
     connect(RcUnits::instance(), SIGNAL(unitListUpdated(bool)), SIGNAL(rcUnitsChanged(bool)));
@@ -88,7 +86,7 @@ QWidget* HilecCore::createLolecWidget(const QString &lolec)
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)
 {
-    mRequests.answer(uid, buttonId, data);
+    mPython.userInput(uid, buttonId, data);
 }
 
 void HilecCore::addBreakpoint(QString file, int line)

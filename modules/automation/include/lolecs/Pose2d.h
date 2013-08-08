@@ -42,6 +42,16 @@ inline const Pose2d operator-(const Pose2d& p1, const Pose2d& p2)
     return Pose2d(p1.x - p2.x, p1.y - p2.y, p1.phi - p2.phi);
 }
 
+inline QDataStream& operator<<(QDataStream &stream, const Pose2d &pose)
+{
+    stream << pose.x << pose.y << pose.phi;
+    return stream;
+}
+inline QDataStream& operator>>(QDataStream &stream, Pose2d &pose)
+{
+    stream >> pose.x >> pose.y >> pose.phi;
+    return stream;
+}
 
 
 #endif // HILEC_POSE2D_H

@@ -22,6 +22,7 @@ quit()
 -clearInfo()
 -appendInfo(QString infoStr)
 -userRequest(UserRequest request)
+-userRequestAbort(int id)
 -raiseException(ScriptException error)
 
 -callRcUnit(int id, QByteArray unit, QByteArray method, QVariantList params)

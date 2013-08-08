@@ -10,8 +10,7 @@ class PythonProcessServer : public SignalProxy
 {
 	Q_OBJECT
 public:
-	PythonProcessServer(QIODevice& readDevice, QIODevice& writeDevice);
-
+	PythonProcessServer(QIODevice& readDevice, QIODevice& writeDevice, bool initialize = false);
 signals:
 	void addBreakpoint(const QString& file, int line);
 	void removeBreakpoint(const QString& file, int line);
@@ -37,6 +36,7 @@ public slots:
 	void clearInfo();
 	void appendInfo(const QString& infoStr);
 	void userRequest(const UserRequest& request);
+	void userRequestAbort(int id);
 	void raiseException(const ScriptException& error);
 	void callRcUnit(int id, const QByteArray& unit, const QByteArray& method, const QVariantList& params);
 	void updateCallStack(const QList<TraceLine>& trace);

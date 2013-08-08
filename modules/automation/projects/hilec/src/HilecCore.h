@@ -26,7 +26,7 @@
 
 #include "PythonInterpreter.h"
 #include "PythonLinter.h"
-#include "UserRequestManager.h"
+
 
 class HilecCore : public HilecInterface
 {
@@ -62,8 +62,6 @@ public:
     void scriptPaused(const QString& file, int line) { emit breakpointHit(file, line); }
     QString baseDir() const { return mBaseDir; }
 
-
-
 public slots:
     void runFile(const QString &filename);
     void compileFile(const QString& filename);
@@ -91,7 +89,6 @@ public slots:
 protected:
     PythonInterpreter mPython;
     PythonLinter mLint;
-    UserRequestManager mRequests;
     static HilecCore* mInstance;
     QString mBaseDir;
 

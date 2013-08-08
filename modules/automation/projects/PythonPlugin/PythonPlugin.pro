@@ -23,7 +23,7 @@ include(../../../properties/pathes.pro)
 INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../include
 DESTDIR = $${targetDir}/plugins/hilec/python
-TARGET = offisio
+TARGET = offisio_d
 QMAKE_EXTENSION_SHLIB = pyd
 TEMPLATE = lib
 
@@ -49,6 +49,10 @@ PRE_TARGETDEPS += $${SIGNALTARGET}$${SIGNALHEADER}
 
 win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
 win32*: LIBS += -L$$(AmirDevDir)/python3/libs
+unix:!macx: INCLUDEPATH += /usr/include/python3.2 # include stuff
+unix:!macx: LIBS += -L/usr/lib/python3.2/config -lpython3.2 # static library path
+macx: INCLUDEPATH += /opt/local/Library/Frameworks/Python.framework/Versions/3.2/include/python3.2m
+macx: LIBS += /opt/local/Library/Frameworks/Python.framework/Versions/3.2
 
 
 HEADERS += \
@@ -62,7 +66,8 @@ HEADERS += \
     src/signalProxy/SignalProxy.h \
     src/PythonProcessSingleton.h \
     src/RcUnitInvoker.h \
-    src/CallStackDecoder.h
+    src/CallStackDecoder.h \
+    signalProxy/PythonProcess.signals
 
 SOURCES += \
     src/PythonTypeConverter.cpp \

@@ -18,17 +18,26 @@
 #include <QtEndian>
 #include <QDebug>
 
-SignalProxy::SignalProxy(quint64 gid1, quint64 gid2, QIODevice &readDevice, QIODevice &writeDevice) :
+SignalProxy::SignalProxy(quint64 gid1, quint64 gid2, QIODevice &readDevice, QIODevice &writeDevice, bool init) :
     mGlobalId1(gid1),
     mGlobalId2(gid2),
     mReadDevice(readDevice),
     mWriteDevice(writeDevice)
 {
     mReadSize = 0;
-    connect(&mReadDevice, SIGNAL(readyRead()), SLOT(onReadyRead()), Qt::DirectConnection);
+    connect(this, SIGNAL(transmitSignal(QByteArray)), SLOT(transmitSignalAsync(QByteArray)));
+    if(init)
+        initialize();
 }
 
-void SignalProxy::transmitSignal(const QByteArray &msgData)
+void SignalProxy::initialize()
+{
+    connect(&mReadDevice, SIGNAL(readyRead()), SLOT(onReadyRead()), Qt::DirectConnection);
+    if(mReadDevice.bytesAvailable())
+        onReadyRead();
+}
+
+void SignalProxy::transmitSignalAsync(const QByteArray &msgData)
 {
     QByteArray sizeData(4,0);
     qToLittleEndian<int>(msgData.size(), (uchar*)sizeData.data());

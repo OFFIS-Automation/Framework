@@ -19,7 +19,7 @@
 #include <core/PortInfo.h>
 
 
-port::Integer::Integer() : Port(QMetaType::Int, "Integer")
+port::Integer::Integer() : OverlayPort(QMetaType::Int, "Integer")
 {
     setIcon(QImage(":/defaultPorts/images/number.png"));
     setRange(INT_MIN, INT_MAX);

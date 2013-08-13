@@ -20,7 +20,7 @@
 
 #include <cfloat>
 
-port::Real::Real() : Port(QMetaType::Double, "Real")
+port::Real::Real() : OverlayPort(QMetaType::Double, "Real")
 {
     setIcon(QImage(":/defaultPorts/images/number.png"));
     setRange(-DBL_MAX, DBL_MAX);

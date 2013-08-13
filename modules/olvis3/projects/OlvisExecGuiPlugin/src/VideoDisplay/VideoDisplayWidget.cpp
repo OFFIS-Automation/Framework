@@ -470,7 +470,8 @@ void VideoDisplayWidget::setMainOverlay(MainOverlay* overlay)
     int filterId = mMainOverlay->portId().filter;
     QList<PortInfo> ports = OlvisSingleton::instance().getFilter(filterId).typeInfo.inputs;
     foreach (PortInfo p, ports) {
-        mToolbar->addPortAction(PortId(filterId, p.name));
+        if(p.constraints.value("displayVisibility", true).toBool())
+            mToolbar->addPortAction(PortId(filterId, p.name));
     }
 
     // Enable the toolbar
@@ -483,9 +484,19 @@ void VideoDisplayWidget::removeOverlay(Overlay *overlay)
         mActiveOverlay = 0;
 
     // Remove action from toolbar, if it is not an input of the main overlay
-    if (!overlay->isOutput() && mMainOverlay->portId().filter != overlay->portId().filter)
-        mToolbar->removePortAction(overlay->portId());
-
+    if (!overlay->isOutput())
+    {
+        PortId id = overlay->portId();
+        if(id.filter == mMainOverlay->portId().filter) // this port belongs to the same filter as the main image
+        {
+            PortInfo info = OlvisSingleton::instance().getPortInfo(id);
+            // check the user hint on displaying it ...
+            if(!info.constraints.value("displayVisibility", true).toBool())
+                mToolbar->removePortAction(id);
+        }
+        else // this is form a different filter, remove it
+            mToolbar->removePortAction(id);
+    }
     // Remove the overlay
     mOverlays.removeAll(overlay);
     delete overlay;

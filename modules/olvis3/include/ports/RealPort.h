@@ -22,7 +22,7 @@
 
 namespace port
 {
-    class DEFAULTPORTSSHARED_EXPORT Real : public Port
+    class DEFAULTPORTSSHARED_EXPORT Real : public OverlayPort
     {
     public:
         void setDefault(double value);

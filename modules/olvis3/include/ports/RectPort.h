@@ -25,7 +25,7 @@
 
 namespace port
 {
-    class DEFAULTPORTSSHARED_EXPORT Rect : public Port
+    class DEFAULTPORTSSHARED_EXPORT Rect : public OverlayPort
     {
     public:
         static QRectF qrect(const cv::Rect& r);

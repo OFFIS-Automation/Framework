@@ -25,7 +25,7 @@ public:
     RectPortOverlay(QString name);
 
     virtual void setInitialPos(const QPoint &pos);
-
+    virtual bool isReadOnly() { return isOutput(); }
     virtual void mouseMoveEvent(QMouseEvent* event, QList<QPoint> snapPoints);
     virtual void mouseReleaseEvent(QMouseEvent* event);
 

@@ -23,7 +23,7 @@
 typedef QList<int> IntList;
 namespace port
 {
-    class DEFAULTPORTSSHARED_EXPORT Integer : public Port
+    class DEFAULTPORTSSHARED_EXPORT Integer : public OverlayPort
     {
     public:
         void setDefault(int value);

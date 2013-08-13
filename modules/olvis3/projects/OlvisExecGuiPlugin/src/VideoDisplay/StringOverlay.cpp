@@ -31,7 +31,6 @@ StringOverlay::StringOverlay(QString name)
         mFormatString("%1: %2"),
         mFont("Arial")
 {
-    mLastValue = OlvisSingleton::instance().getPortValue(mPortId);
 }
 
 void StringOverlay::paintContent(QPainter &p)
@@ -69,10 +68,26 @@ void StringOverlay::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void StringOverlay::setPortId(const PortId &portId, bool output)
+{
+    RectOverlay::setPortId(portId, output);
+    PortInfo info = OlvisSingleton::instance().getPortInfo(portId);
+    QVariantList values = info.constraints.value("choices").toList();
+    QStringList names = info.constraints.value("choiceNames").toStringList();
+    for(int i=0;i<values.size(); i++)
+    {
+        QVariant value = values[i];
+        QString valAsString = OlvisSingleton::instance().portValueString(portId, value);
+        QString name = names.value(i, valAsString);
+        mPreDefinedStrings.insert(valAsString, name);
+    }
+}
+
 QString StringOverlay::format(QVariant value)
 {
     QString str = mFormatString;
     QString val = OlvisSingleton::instance().portValueString(mPortId, value);
+    val = mPreDefinedStrings.value(val, val);
     if (str.contains("%1"))
         str = str.arg(mPortId.port);
     if (str.contains("%2"))

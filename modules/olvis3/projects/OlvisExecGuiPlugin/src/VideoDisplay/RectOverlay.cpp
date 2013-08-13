@@ -106,7 +106,7 @@ void RectOverlay::paint(QPainter& p, bool showControls)
         p.drawRect(handle.translated(realRect.bottomRight()));
         // Draw cancel / delete button
         p.drawPixmap(realRect.topLeft() - QPoint(7, 7), QPixmap(":/olvisExecGui/cancel.png"));
-        if (!mIsOutput)
+        if (!isReadOnly())
             p.drawPixmap(realRect.topLeft() + QPoint(9, -7), QPixmap(":/olvisExecGui/delete.png"));
     }
 
@@ -189,9 +189,10 @@ void RectOverlay::mousePressEvent(QMouseEvent *event)
     if (mActive) {
         if (equals(event->pos(), visibleRect.topLeft(), 8)) {
             emit removeClicked(this);
-        } else if (!mIsOutput && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
+        } else if (!isReadOnly() && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
             emit valueChanged(mPortId, QVariant());
-            emit removeClicked(this);
+            setActive(false);
+            //emit removeClicked(this, false);
         } else if (equals(event->pos(), visibleRect.bottomRight(), 3)) {
             mState = Scaling;
             mOrgRect = mRect;

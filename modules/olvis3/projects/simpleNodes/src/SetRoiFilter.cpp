@@ -29,6 +29,7 @@ SetRoiFilter::SetRoiFilter()
     mRoiIn.setName("roi");
     mRoiIn.setDesc("The selected region of interest");
     mRoiIn.setMode(OptionalPortMode);
+    mRoiIn.setDisplayVisibility(false);
     addInputPort(mRoiIn);
     mImageOut.setName("imageOut");
     mImageOut.setDesc("image output");

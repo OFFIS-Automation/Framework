@@ -157,7 +157,12 @@ private:
     VideoControlToolbar* mToolbar;
     QPoint mMouseDownAt;
     QVariant mStartValue;
-    bool mDragging;
+    enum
+    {
+        NoNumberDrag = 0,
+        CoarseNumberDrag,
+        FineNumberDrag
+    } mNumberDragInput;
 
     cv::Mat lastScreenShot;
 

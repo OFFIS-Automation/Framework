@@ -33,6 +33,7 @@ namespace port
         inline void setOnlyEven(bool roundDown = true) { setDivConstraint(2, 0, roundDown); }
         inline void setOnlyOdd(bool roundDown = true) { setDivConstraint(2, 1, roundDown); }
         void setDivConstraint(int divisor, int result = 0, bool roundDown = true);
+
     protected:
         Integer();
         QString toString(const QVariant &var) const;
@@ -57,6 +58,7 @@ namespace in
     class DEFAULTPORTSSHARED_EXPORT Integer : public port::Integer
     {
     public:
+        void setInputSensitivity(double sensitivity = 1.0);
         int getValue();
         inline operator int() { return getValue(); }
     };

@@ -55,6 +55,7 @@ namespace in
     class DEFAULTPORTSSHARED_EXPORT Real : public port::Real
     {
     public:
+        void setInputSensitivity(double sensitivity = 1.0);
         double getValue();
         inline operator double() { return getValue(); }
     };

@@ -102,6 +102,10 @@ int in::Integer::getValue()
     return getRawValue().toInt();
 }
 
+void in::Integer::setInputSensitivity(double sensitivity)
+{
+    setConstraint("sensitivity", sensitivity);
+}
 
 void out::Integer::send(int value)
 {

@@ -59,7 +59,7 @@ VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
     QWidget(parent),
 #endif
     mModel(OlvisSingleton::instance()), mScaleToFit(false), mHorizontalFlip(false), mVerticalFlip(false), mScale(1.0), mOffset(0, 0),
-    mIncrementScaler(1.0), mRecorder(this), mMainOverlay(0), mActiveOverlay(0), mFont(font()), mDragging(false)
+    mIncrementScaler(1.0), mRecorder(this), mMainOverlay(0), mActiveOverlay(0), mFont(font()), mNumberDragInput(NoNumberDrag)
 {
     //setAttribute(Qt::WA_OpaquePaintEvent, true);
     setAutoFillBackground(false);
@@ -534,7 +534,7 @@ void VideoDisplayWidget::editChanged(QAction*)
     if (p.typeName == "Rect" || p.typeName == "Point")
         setCursor(Qt::CrossCursor);
     else if (p.typeName == "Integer" || p.typeName == "Real") {
-        mIncrementScaler = 1.0;
+        mIncrementScaler = p.constraints.value("sensitivity", 1.0).toDouble();
         setCursor(Qt::SplitHCursor);
     } else
         setCursor(Qt::ArrowCursor);
@@ -562,7 +562,10 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
         if (mToolbar->currentPortInfo().typeName == "Integer" || mToolbar->currentPortInfo().typeName == "Real") {
             mStartValue = OlvisSingleton::instance().getPortValue(mToolbar->currentPortId());
             mMouseDownAt = event->pos();
-            mDragging = true;
+            if(event->button() == Qt::LeftButton)
+                mNumberDragInput = CoarseNumberDrag;
+            else
+                mNumberDragInput = FineNumberDrag;
         } else if (mToolbar->currentPortInfo().typeName == "Rect" || mToolbar->currentPortInfo().typeName == "Point") {
             Overlay* overlay = getOverlay(mToolbar->currentPortId());
             if (overlay == 0) {
@@ -597,7 +600,7 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
 
 void VideoDisplayWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    mDragging = false;
+    mNumberDragInput = NoNumberDrag;
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
         Overlay* overlay = getOverlay(mToolbar->currentPortId());
@@ -615,11 +618,13 @@ void VideoDisplayWidget::mouseMoveEvent(QMouseEvent *event)
         PortInfo p = mToolbar->currentPortInfo();
         if (p.typeName == "Rect" || p.typeName == "Point") {
             overlay = getOverlay(mToolbar->currentPortId());
-        } else if (mDragging) {
+        } else if (mNumberDragInput != NoNumberDrag) {
             PortId portId = mToolbar->currentPortId();
             PortInfo pInfo = mModel.getPortInfo(portId);
-            float range = pInfo.constraints.value("max").toFloat() - pInfo.constraints.value("min").toFloat();
+            double range = pInfo.constraints.value("max").toFloat() - pInfo.constraints.value("min").toFloat();
             range = range * mIncrementScaler;
+            if(mNumberDragInput == FineNumberDrag)
+                range *= 0.1;
             int dist = mMouseDownAt.x() - event->pos().x();
             QVariant newValue;
             if (p.typeName == "Integer") {

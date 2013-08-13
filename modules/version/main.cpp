@@ -65,7 +65,7 @@ static QByteArray readFile(const QString& fileName)
     return file.readAll();
 }
 
-static int writeFile(const QString& fileName, const int major, const int minor, const int revision, const int build)
+static int writeFile(const QString& fileName, const int major, const int minor, const int /* revision */, const int build)
 {
     // Create a temp file containing the version info and
     // only replace the existing one if they are different

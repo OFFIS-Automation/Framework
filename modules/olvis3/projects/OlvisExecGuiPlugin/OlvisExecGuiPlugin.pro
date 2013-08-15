@@ -71,7 +71,8 @@ SOURCES += \
     src/VideoDisplay/PointPortOverlay.cpp \
     src/dialogs/OlvisPluginConfigGui.cpp \
     src/VideoDisplay/MainOverlay.cpp \
-    src/VideoDisplay/HistogramOverlay.cpp
+    src/VideoDisplay/HistogramOverlay.cpp \
+    src/VideoDisplay/GraphOverlay.cpp
 
 
 HEADERS +=  \
@@ -96,7 +97,8 @@ HEADERS +=  \
     src/VideoDisplay/PointPortOverlay.h \
     src/dialogs/OlvisPluginConfigGui.h \
     src/VideoDisplay/MainOverlay.h \
-    src/VideoDisplay/HistogramOverlay.h
+    src/VideoDisplay/HistogramOverlay.h \
+    src/VideoDisplay/GraphOverlay.h
        
 
 FORMS += \

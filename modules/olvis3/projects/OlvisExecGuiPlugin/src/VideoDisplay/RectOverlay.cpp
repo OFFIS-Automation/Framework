@@ -106,7 +106,7 @@ void RectOverlay::paint(QPainter& p, bool showControls)
         p.drawRect(handle.translated(realRect.bottomRight()));
         // Draw cancel / delete button
         p.drawPixmap(realRect.topLeft() - QPoint(7, 7), QPixmap(":/olvisExecGui/cancel.png"));
-        if (!isReadOnly())
+        if (showClear())
             p.drawPixmap(realRect.topLeft() + QPoint(9, -7), QPixmap(":/olvisExecGui/delete.png"));
     }
 
@@ -189,10 +189,8 @@ void RectOverlay::mousePressEvent(QMouseEvent *event)
     if (mActive) {
         if (equals(event->pos(), visibleRect.topLeft(), 8)) {
             emit removeClicked(this);
-        } else if (!isReadOnly() && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
-            emit valueChanged(mPortId, QVariant());
-            setActive(false);
-            //emit removeClicked(this, false);
+        } else if (showClear() && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
+            emit clearClicked();
         } else if (equals(event->pos(), visibleRect.bottomRight(), 3)) {
             mState = Scaling;
             mOrgRect = mRect;
@@ -225,7 +223,7 @@ void RectOverlay::mouseMoveEvent(QMouseEvent *event, QList<QPoint> snapPoints)
         if (mActive) {
             if (equals(event->pos(), visibleRect.topLeft(), 8)) {
                 mWidget->setCursor(Qt::ArrowCursor);
-            }  else if (!mIsOutput && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
+            }  else if (showClear() && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
                 mWidget->setCursor(Qt::ArrowCursor);
             } else if (equals(event->pos(), visibleRect.bottomRight(), 3)) {
                 mWidget->setCursor(Qt::SizeFDiagCursor);

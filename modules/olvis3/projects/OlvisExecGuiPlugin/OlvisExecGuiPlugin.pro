@@ -72,7 +72,8 @@ SOURCES += \
     src/dialogs/OlvisPluginConfigGui.cpp \
     src/VideoDisplay/MainOverlay.cpp \
     src/VideoDisplay/HistogramOverlay.cpp \
-    src/VideoDisplay/GraphOverlay.cpp
+    src/VideoDisplay/GraphOverlay.cpp \
+    src/dialogs/GraphOverlayOptions.cpp
 
 
 HEADERS +=  \
@@ -98,7 +99,8 @@ HEADERS +=  \
     src/dialogs/OlvisPluginConfigGui.h \
     src/VideoDisplay/MainOverlay.h \
     src/VideoDisplay/HistogramOverlay.h \
-    src/VideoDisplay/GraphOverlay.h
+    src/VideoDisplay/GraphOverlay.h \
+    src/dialogs/GraphOverlayOptions.h
        
 
 FORMS += \
@@ -106,7 +108,8 @@ FORMS += \
     src/VideoDisplay/VideoWidget.ui \
     src/VideoDisplay/VideoControlToolbar.ui \
     src/dialogs/ExportTraceDialog.ui \
-    src/dialogs/OlvisPluginConfigGui.ui
+    src/dialogs/OlvisPluginConfigGui.ui \
+    src/dialogs/GraphOverlayOptions.ui
 
 RESOURCES += \
     images/images.qrc

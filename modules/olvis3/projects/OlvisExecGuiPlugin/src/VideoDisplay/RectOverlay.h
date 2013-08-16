@@ -31,10 +31,11 @@ class QXmlStreamWriter;
 
 class RectOverlay : public Overlay
 {
+    Q_OBJECT
 public:
     RectOverlay(QString name);
     virtual ~RectOverlay();
-
+    virtual bool showClear() { return false; }
     virtual void writeCurrentConfig(QXmlStreamWriter& writer);
     virtual void readElement(QXmlStreamReader& reader);
 
@@ -56,7 +57,8 @@ public:
     // helper for drawing text without viewport effects
     virtual void drawText(QPainter& painter, QString text, int flags = Qt::AlignCenter);
     virtual QRect getVisibleRect();
-
+signals:
+    void clearClicked();
 protected:
     virtual bool equals(const QPoint& a, const QPoint& b, int dist);
     virtual void ensureRectSize(int minWidth, int minHeight);

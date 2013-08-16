@@ -45,7 +45,6 @@ public:
     virtual PortId portId();
     virtual void setPortId(const PortId& portId, bool output);
     virtual bool isOutput();
-    virtual bool isReadOnly() { return true; }
 
     virtual void setValue(const QVariant &value);
     virtual void setInitialPos(const QPoint& pos) = 0;

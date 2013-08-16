@@ -15,31 +15,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#ifndef GRAPHOVERLAY_H
-#define GRAPHOVERLAY_H
+#ifndef GRAPHOVERLAYOPTIONS_H
+#define GRAPHOVERLAYOPTIONS_H
 
-#include "StringOverlay.h"
+#include <QDialog>
 
-class GraphOverlay : public StringOverlay
+namespace Ui {
+class GraphOverlayOptions;
+}
+
+class GraphOverlayOptions : public QDialog
 {
     Q_OBJECT
+    
 public:
-    bool showClear() { return mShowHistory; }
-    explicit GraphOverlay(const QString& name);
-    void paintContent(QPainter &p);
-    void setInitialPos(const QPoint &pos);
-protected slots:
-    void onClearClicked();
-protected:
-    bool mShowAsGraph;
-    void mousePressEvent(QMouseEvent *event);
-    QList<double> mValues;
-    double mMin, mMax;
-    QPolygonF mCurve;
-    double mCurrentValue;
-    QFont mFont;
-    bool mShowHistory, mLimitedValues;
-    int mMaxValues;
+    explicit GraphOverlayOptions(bool showHistory, bool limitedSmaples, int numSamples, QWidget *parent = 0);
+    ~GraphOverlayOptions();
+    
+    bool showHistory();
+    bool limitedValues();
+    int maxValues();
+private:
+    Ui::GraphOverlayOptions *ui;
 };
 
-#endif // GRAPHOVERLAY_H
+#endif // GRAPHOVERLAYOPTIONS_H

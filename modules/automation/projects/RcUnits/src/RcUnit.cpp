@@ -441,6 +441,12 @@ void RcUnit::updateSensitivity(const QString &unitName, double sensitivity, cons
 {
     if(mTcInvoker)
         mTcInvoker->setSensitivity(unitName, sensitivity, inverts);
+    if(mTcMethods.contains(unitName))
+    {
+        TcUpdateMethod& method = mTcMethods[unitName];
+        method.sensitivity = sensitivity;
+        method.inverts = inverts;
+    }
 }
 
 

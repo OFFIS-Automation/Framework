@@ -21,6 +21,8 @@
 #include "ImagePortOverlay.h"
 #include "DataOverlay.h"
 #include "src/OlvisSingleton.h"
+#include "SensorSystemOverlay.h"
+
 #include <core/FilterInfo.h>
 #include <QScrollArea>
 
@@ -417,46 +419,77 @@ void VideoDisplayWidget::portValueChanged(int filterId, const QString& portId, Q
 
 void VideoDisplayWidget::dropEvent(QDropEvent* event)
 {
-    QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
-    PortId portId(parts[1].toInt(), parts[2]);
-    //const OlvisInterface& model = OlvisSingleton::instance();
-    //int type = parts[3].toInt();
-    Overlay* overlay = OverlayFactory::instance().createOverlay(portId, parts[0] == "output", mMainOverlay == 0);
-    if(!overlay)
-        return;
-    if(!mMainOverlay)
+    if (event->mimeData()->hasFormat("application/x-olvis-port"))
     {
-        MainOverlay* mo = qobject_cast<MainOverlay*>(overlay);
-        if(!mo)
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        PortId portId(parts[1].toInt(), parts[2]);
+        //const OlvisInterface& model = OlvisSingleton::instance();
+        //int type = parts[3].toInt();
+        Overlay* overlay = OverlayFactory::instance().createOverlay(portId, parts[0] == "output", mMainOverlay == 0);
+        if(!overlay)
             return;
-        setMainOverlay(mo);
-    }
-    else
-    {
-        foreach (Overlay* o, mOverlays) {
-            if (o->portId() == portId)
-                removeOverlay(o);
+        if(!mMainOverlay)
+        {
+            MainOverlay* mo = qobject_cast<MainOverlay*>(overlay);
+            if(!mo)
+            {
+                delete overlay;
+                return;
+            }
+            setMainOverlay(mo);
         }
-        addOverlay(overlay);
-        overlay->setInitialPos(mTransform.inverted().map(event->pos()));
+        else
+        {
+            foreach (Overlay* o, mOverlays) {
+                if (o->portId() == portId)
+                    removeOverlay(o);
+            }
+            addOverlay(overlay);
+            overlay->setInitialPos(mTransform.inverted().map(event->pos()));
+        }
+    }
+    else if (event->mimeData()->hasFormat("application/x-sensorSystem-value"))
+    {
+        if(!mMainOverlay)
+            return;
+        Overlay* overlay = OverlayFactory::instance().createOverlay("SensorSystemOverlay");
+        if(overlay)
+        {
+            SensorSystemOverlay* sensorOverlay = qobject_cast<SensorSystemOverlay*>(overlay);
+            if(!sensorOverlay)
+            {
+                delete overlay;
+                return;
+            }
+            addOverlay(sensorOverlay);
+            QString sensorId = event->mimeData()->data("application/x-sensorSystem-value");
+            sensorOverlay->setSensorId(sensorId);
+            sensorOverlay->setInitialPos(mTransform.inverted().map(event->pos()));
+        }
     }
     update();
 }
 
 void VideoDisplayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (!event->mimeData()->hasFormat("application/x-olvis-port"))
-        return;
-    QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
-    if (parts.size() != 4) {
-        qCritical() << "mimetype application/x-olvis-port not used according to specification";
-        return;
+    if (event->mimeData()->hasFormat("application/x-olvis-port"))
+    {
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        if (parts.size() != 4) {
+            qCritical() << "mimetype application/x-olvis-port not used according to specification";
+            return;
+        }
+        PortId portId(parts[1].toInt(), parts[2]);
+        Overlay* overlay = OverlayFactory::instance().createOverlay(portId, parts[0] == "output", mMainOverlay == 0);
+        if (overlay) {
+            delete overlay;
+            event->acceptProposedAction();
+        }
     }
-    PortId portId(parts[1].toInt(), parts[2]);
-    Overlay* overlay = OverlayFactory::instance().createOverlay(portId, parts[0] == "output", mMainOverlay == 0);
-    if (overlay) {
-        delete overlay;
-        event->acceptProposedAction();
+    else if (event->mimeData()->hasFormat("application/x-sensorSystem-value"))
+    {
+        if(mMainOverlay)
+            event->acceptProposedAction();
     }
 }
 

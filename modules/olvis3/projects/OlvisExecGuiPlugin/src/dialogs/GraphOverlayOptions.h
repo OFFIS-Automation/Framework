@@ -29,12 +29,13 @@ class GraphOverlayOptions : public QDialog
     Q_OBJECT
     
 public:
-    explicit GraphOverlayOptions(bool showHistory, bool limitedSmaples, int numSamples, QWidget *parent = 0);
+    explicit GraphOverlayOptions(bool showHistory, bool limitedSmaples, int numSamples, int listId, QWidget *parent = 0);
     ~GraphOverlayOptions();
     
     bool showHistory();
     bool limitedValues();
     int maxValues();
+    int listId();
 private:
     Ui::GraphOverlayOptions *ui;
 };

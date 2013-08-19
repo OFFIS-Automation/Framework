@@ -23,6 +23,8 @@
 #include "SimpleShapeOverlay.h"
 #include "HistogramOverlay.h"
 #include "GraphOverlay.h"
+#include "SensorSystemOverlay.h"
+
 #include "src/OlvisSingleton.h"
 
 #include <QDebug>
@@ -61,6 +63,8 @@ Overlay* OverlayFactory::createOverlay(const QString &name)
         return new HistogramOverlay(name);
     else if (name == "GraphOverlay")
         return new GraphOverlay(name);
+    else if (name == "SensorSystemOverlay")
+        return new SensorSystemOverlay(name);
     qCritical() << tr("found unknown overlay type");
     return 0;
 }

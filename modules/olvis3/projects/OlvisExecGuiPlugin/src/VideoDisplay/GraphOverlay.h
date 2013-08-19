@@ -20,7 +20,7 @@
 
 #include "StringOverlay.h"
 
-class GraphOverlay : public StringOverlay
+class GraphOverlay : public RectOverlay
 {
     Q_OBJECT
 public:
@@ -40,7 +40,7 @@ protected:
     double mCurrentValue;
     QFont mFont;
     bool mShowHistory, mLimitedValues;
-    int mMaxValues;
+    int mMaxValues, mListId;
 };
 
 #endif // GRAPHOVERLAY_H

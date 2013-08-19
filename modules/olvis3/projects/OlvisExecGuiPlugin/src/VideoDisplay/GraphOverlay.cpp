@@ -19,26 +19,30 @@
 
 #include "../dialogs/GraphOverlayOptions.h"
 
+#include "VideoDisplayWidget.h"
+
 #include <QMouseEvent>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 GraphOverlay::GraphOverlay(const QString &name) :
-    StringOverlay(name)
+    RectOverlay(name)
 {
     onClearClicked();
     mShowHistory = false;
     mLimitedValues = true;
     mMaxValues = 100;
+    mListId = 0;
     connect(this, SIGNAL(clearClicked()), SLOT(onClearClicked()));
 }
 
 void GraphOverlay::writeCurrentConfig(QXmlStreamWriter &writer)
 {
-    StringOverlay::writeCurrentConfig(writer);
+    RectOverlay::writeCurrentConfig(writer);
     writer.writeTextElement("showHistory", mShowHistory ? "1" : "0");
     writer.writeTextElement("limitedValuesOnly", mLimitedValues ? "1" : "0");
     writer.writeTextElement("limitedValuesMax", QString::number(mMaxValues));
+    writer.writeTextElement("valueListId", QString::number(mListId));
 }
 
 void GraphOverlay::readElement(QXmlStreamReader &reader)
@@ -49,21 +53,26 @@ void GraphOverlay::readElement(QXmlStreamReader &reader)
         mLimitedValues = reader.readElementText().trimmed() == "1";
     else if(reader.name() == "limitedValuesMax")
         mMaxValues = qMax(10, reader.readElementText().trimmed().toInt());
+    else if(reader.name() == "valueListId")
+        mListId = reader.readElementText().trimmed().toInt();
     else
-        StringOverlay::readElement(reader);
+        RectOverlay::readElement(reader);
 }
 
 void GraphOverlay::paintContent(QPainter &p)
 {
+    QVariant value;
+    {
+        QMutexLocker lock(&mMutex);
+        value = mLastValue;
+        mLastValue = QVariant();
+        if(value.type() == QVariant::List)
+            value = value.toList().value(mListId, QVariant());
+        if(value.canConvert(QVariant::Double))
+            mCurrentValue = value.toDouble();
+    }
     if(mShowHistory)
     {
-
-        QVariant value;
-        {
-            QMutexLocker lock(&mMutex);
-            value = mLastValue;
-            mLastValue = QVariant();
-        }
         if(value.canConvert(QVariant::Double))
         {
             double val = value.toDouble();
@@ -74,6 +83,8 @@ void GraphOverlay::paintContent(QPainter &p)
                 mMin = val;
             if(val > mMax)
                 mMax = val;
+            if(mMax == mMin)
+                mMax = mMin + 1;
             mValues << val;
             while(mLimitedValues && mValues.size() > mMaxValues)
                 mValues.pop_front();
@@ -90,15 +101,12 @@ void GraphOverlay::paintContent(QPainter &p)
             mCurve = poly;
 
         }
-        p.setPen(QColor(Qt::black));
-        if (mCurve.isEmpty())
-            p.setBrush(QColor(0, 0, 0, 128));
-        else if(mShowHistory)
-            p.setBrush(QColor(0, 0, 0, 160));
-        else
-            p.setBrush(QColor(0, 0, 0, 0));
-        p.drawRect(mRect);
-
+    }
+    p.setPen(QColor(Qt::black));
+    p.setBrush(QColor(0, 0, 0, 160));
+    p.drawRect(mRect);
+    if(mShowHistory)
+    {
         QColor c = QColor(255, 0, 0);
         p.setPen(c);
         p.drawPolyline(mCurve);
@@ -109,17 +117,12 @@ void GraphOverlay::paintContent(QPainter &p)
         p.drawText(textRect, QString::number(mMin));
         textRect = QRect(mRect.topLeft() + QPoint(5, 0), mRect.topRight() + QPoint(0, 20));
         p.drawText(textRect, QString::number(mMax));
-        p.setPen(QColor(Qt::green));
-        textRect = QRect(mRect.bottomLeft() - QPoint(-5, 30), mRect.bottomRight() - QPoint(5,0));
-        mFont.setPixelSize(textRect.height() * 6/8);
-        p.setFont(mFont);
-        p.drawText(textRect, Qt::AlignRight, QString::number(mCurrentValue));
-
-
     }
-    else
-        StringOverlay::paintContent(p);
-
+    p.setPen(QColor(Qt::green));
+    QRect textRect = QRect(mRect.bottomLeft() - QPoint(-5, 30), mRect.bottomRight() - QPoint(5,0));
+    mFont.setPixelSize(textRect.height() * 6/8);
+    p.setFont(mFont);
+    p.drawText(textRect, Qt::AlignRight, QString::number(mCurrentValue));
 }
 
 void GraphOverlay::setInitialPos(const QPoint &pos)
@@ -138,7 +141,7 @@ void GraphOverlay::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
         event->accept();
-        GraphOverlayOptions dialog(mShowHistory, mLimitedValues, mMaxValues);
+        GraphOverlayOptions dialog(mShowHistory, mLimitedValues, mMaxValues, mListId, mWidget);
         if(dialog.exec())
         {
             mShowHistory = dialog.showHistory();
@@ -146,9 +149,12 @@ void GraphOverlay::mousePressEvent(QMouseEvent *event)
                 onClearClicked();
             mLimitedValues = dialog.limitedValues();
             mMaxValues = dialog.maxValues();
+            if(mListId != dialog.listId())
+                onClearClicked();
+            mListId = dialog.listId();
         }
     } else {
-        StringOverlay::mousePressEvent(event);
+        RectOverlay::mousePressEvent(event);
     }
 }
 

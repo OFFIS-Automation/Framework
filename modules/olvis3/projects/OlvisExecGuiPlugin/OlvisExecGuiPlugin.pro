@@ -46,7 +46,8 @@ INCLUDEPATH += ../../include
 INCLUDEPATH += ../../../frontend/include
 
 INCLUDEPATH += ../../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
+INCLUDEPATH += ../../../sensorSystem/projects/SensorTracer/src
+LIBS += -L$${targetDir}/plugins/ -lSensorSystem -lSensorTracer
 
 
 SOURCES += \  
@@ -73,7 +74,8 @@ SOURCES += \
     src/VideoDisplay/MainOverlay.cpp \
     src/VideoDisplay/HistogramOverlay.cpp \
     src/VideoDisplay/GraphOverlay.cpp \
-    src/dialogs/GraphOverlayOptions.cpp
+    src/dialogs/GraphOverlayOptions.cpp \
+    src/VideoDisplay/SensorSystemOverlay.cpp
 
 
 HEADERS +=  \
@@ -100,7 +102,8 @@ HEADERS +=  \
     src/VideoDisplay/MainOverlay.h \
     src/VideoDisplay/HistogramOverlay.h \
     src/VideoDisplay/GraphOverlay.h \
-    src/dialogs/GraphOverlayOptions.h
+    src/dialogs/GraphOverlayOptions.h \
+    src/VideoDisplay/SensorSystemOverlay.h
        
 
 FORMS += \

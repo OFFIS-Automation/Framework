@@ -125,14 +125,14 @@ void SensorTraceExport::exportTrace(const QString &filename)
         output << timestamp-offset;
         foreach(int id, mIds)
         {
-            output << mSeperator << convert(mLastElements[id]);
+            output << mSeperator << convertToString(mLastElements[id], mSeperator);
         }
         output << endl;
     }
 }
 
 
-QString SensorTraceExport::convert(const QVariant &var)
+QString SensorTraceExport::convertToString(const QVariant &var, const QString& seperator)
 {
     QStringList strList;
     switch(var.type())
@@ -144,34 +144,91 @@ QString SensorTraceExport::convert(const QVariant &var)
         return var.toChar();
     case QVariant::Line:
     case QVariant::LineF:
-        return QString("%2%1%3").arg(mSeperator).arg(convert(var.toLineF().p1()))
-                .arg(convert(var.toLineF().p2()));
+        return QString("%2%1%3").arg(seperator).arg(convertToString(var.toLineF().p1(), seperator))
+                .arg(convertToString(var.toLineF().p2(), seperator));
     case QVariant::Point:
     case QVariant::PointF:
-        return QString("%2%1%3").arg(mSeperator).arg(var.toPointF().x()).arg(var.toPointF().y());
+        return QString("%2%1%3").arg(seperator).arg(var.toPointF().x()).arg(var.toPointF().y());
     case QVariant::Size:
     case QVariant::SizeF:
-        return QString("%2%1%3").arg(mSeperator).arg(var.toSizeF().width()).arg(var.toSizeF().height());
+        return QString("%2%1%3").arg(seperator).arg(var.toSizeF().width()).arg(var.toSizeF().height());
     case QVariant::Vector2D:
-        return QString("%2%1%3").arg(mSeperator).arg(var.value<QVector2D>().x()).arg(var.value<QVector2D>().y());
+        return QString("%2%1%3").arg(seperator).arg(var.value<QVector2D>().x()).arg(var.value<QVector2D>().y());
     case QVariant::Vector3D:
-        return QString("%2%1%3%1%4").arg(mSeperator).arg(var.value<QVector3D>().x())
+        return QString("%2%1%3%1%4").arg(seperator).arg(var.value<QVector3D>().x())
                 .arg(var.value<QVector3D>().y()).arg(var.value<QVector3D>().z());
     case QVariant::Vector4D:
-        return QString("%2%1%3%1%4%1%5").arg(mSeperator).arg(var.value<QVector4D>().x())
+        return QString("%2%1%3%1%4%1%5").arg(seperator).arg(var.value<QVector4D>().x())
                 .arg(var.value<QVector4D>().y()).arg(var.value<QVector4D>().z()).arg(var.value<QVector4D>().w());
     case QVariant::Rect:
     case QVariant::RectF:
-        return QString("%1%2%1%3%1%4%1%5").arg(mSeperator)
+        return QString("%1%2%1%3%1%4%1%5").arg(seperator)
                 .arg(var.toRectF().x()).arg(var.toRectF().y())
                 .arg(var.toRectF().width()).arg(var.toRectF().height());
     case QVariant::List:
     case QVariant::StringList:
         foreach(QVariant elem, var.toList())
-            strList << convert(elem);
-        return strList.join(mSeperator);
+            strList << convertToString(elem, seperator);
+        return strList.join(seperator);
     default:
         return var.toString();
     }
 }
 
+QList<QVariant> SensorTraceExport::convertToDouble(const QVariant &var)
+{
+    QList<QVariant> dblList;
+    switch(var.type())
+    {
+    case QVariant::String:
+    case QVariant::ByteArray:
+    case QVariant::Bool:
+        dblList << var.toDouble();
+        break;
+    case QVariant::Line:
+    case QVariant::LineF:
+        dblList << convertToDouble(var.toLineF().p1());
+        dblList << convertToDouble(var.toLineF().p2());
+        break;
+    case QVariant::Point:
+    case QVariant::PointF:
+        dblList << var.toPointF().x();
+        dblList << var.toPointF().y();
+        break;
+    case QVariant::Size:
+    case QVariant::SizeF:
+        dblList << var.toSizeF().width();
+        dblList << var.toSizeF().height();
+        break;
+    case QVariant::Vector2D:
+        dblList << var.value<QVector2D>().x();
+        dblList << var.value<QVector2D>().y();
+        break;
+    case QVariant::Vector3D:
+        dblList << var.value<QVector3D>().x();
+        dblList << var.value<QVector3D>().y();
+        dblList << var.value<QVector3D>().z();
+        break;
+    case QVariant::Vector4D:
+        dblList << var.value<QVector4D>().x();
+        dblList << var.value<QVector4D>().y();
+        dblList << var.value<QVector4D>().z();
+        dblList << var.value<QVector4D>().w();
+        break;
+    case QVariant::Rect:
+    case QVariant::RectF:
+        dblList << convertToDouble(var.toRectF().topLeft());
+        dblList << convertToDouble(var.toRectF().bottomRight());
+        dblList << convertToDouble(var.toSizeF());
+        break;
+    case QVariant::List:
+    case QVariant::StringList:
+        foreach(QVariant elem, var.toList())
+            dblList << convertToDouble(elem);
+        break;
+    default:
+        dblList << var.toDouble();
+        break;
+    }
+    return dblList;
+}

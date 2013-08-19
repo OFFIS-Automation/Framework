@@ -18,7 +18,7 @@
 #include "GraphOverlayOptions.h"
 #include "ui_GraphOverlayOptions.h"
 
-GraphOverlayOptions::GraphOverlayOptions(bool showHistory, bool limitedSamples, int numSamples, QWidget *parent) :
+GraphOverlayOptions::GraphOverlayOptions(bool showHistory, bool limitedSamples, int numSamples, int listId, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GraphOverlayOptions)
 {
@@ -26,6 +26,7 @@ GraphOverlayOptions::GraphOverlayOptions(bool showHistory, bool limitedSamples, 
     ui->numEntries->setValue(numSamples);
     ui->newEntries->setChecked(limitedSamples);
     ui->showHistory->setChecked(showHistory);
+    ui->listId->setValue(listId);
 
 
 }
@@ -48,4 +49,9 @@ bool GraphOverlayOptions::limitedValues()
 int GraphOverlayOptions::maxValues()
 {
     return ui->numEntries->value();
+}
+
+int GraphOverlayOptions::listId()
+{
+    return ui->listId->value();
 }

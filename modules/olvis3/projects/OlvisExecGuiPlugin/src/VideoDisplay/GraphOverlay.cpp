@@ -20,6 +20,9 @@
 #include "../dialogs/GraphOverlayOptions.h"
 
 #include <QMouseEvent>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+
 GraphOverlay::GraphOverlay(const QString &name) :
     StringOverlay(name)
 {
@@ -30,6 +33,25 @@ GraphOverlay::GraphOverlay(const QString &name) :
     connect(this, SIGNAL(clearClicked()), SLOT(onClearClicked()));
 }
 
+void GraphOverlay::writeCurrentConfig(QXmlStreamWriter &writer)
+{
+    StringOverlay::writeCurrentConfig(writer);
+    writer.writeTextElement("showHistory", mShowHistory ? "1" : "0");
+    writer.writeTextElement("limitedValuesOnly", mLimitedValues ? "1" : "0");
+    writer.writeTextElement("limitedValuesMax", QString::number(mMaxValues));
+}
+
+void GraphOverlay::readElement(QXmlStreamReader &reader)
+{
+    if(reader.name() == "showHistory")
+        mShowHistory = reader.readElementText().trimmed() == "1";
+    else if(reader.name() == "limitedValuesOnly")
+        mLimitedValues = reader.readElementText().trimmed() == "1";
+    else if(reader.name() == "limitedValuesMax")
+        mMaxValues = qMax(10, reader.readElementText().trimmed().toInt());
+    else
+        StringOverlay::readElement(reader);
+}
 
 void GraphOverlay::paintContent(QPainter &p)
 {
@@ -53,6 +75,9 @@ void GraphOverlay::paintContent(QPainter &p)
             if(val > mMax)
                 mMax = val;
             mValues << val;
+            while(mLimitedValues && mValues.size() > mMaxValues)
+                mValues.pop_front();
+
             double xStep = (double)rect.size().width() / qMax(10, mValues.size());
             double yFactor = -(rect.size().height()/(mMax-mMin));
             QPolygonF poly;
@@ -65,7 +90,16 @@ void GraphOverlay::paintContent(QPainter &p)
             mCurve = poly;
 
         }
-        QColor c = Qt::red;
+        p.setPen(QColor(Qt::black));
+        if (mCurve.isEmpty())
+            p.setBrush(QColor(0, 0, 0, 128));
+        else if(mShowHistory)
+            p.setBrush(QColor(0, 0, 0, 160));
+        else
+            p.setBrush(QColor(0, 0, 0, 0));
+        p.drawRect(mRect);
+
+        QColor c = QColor(255, 0, 0);
         p.setPen(c);
         p.drawPolyline(mCurve);
         p.setPen(QColor(Qt::green));
@@ -80,14 +114,8 @@ void GraphOverlay::paintContent(QPainter &p)
         mFont.setPixelSize(textRect.height() * 6/8);
         p.setFont(mFont);
         p.drawText(textRect, Qt::AlignRight, QString::number(mCurrentValue));
-        p.setPen(QColor(Qt::black));
-        if (mCurve.isEmpty())
-            p.setBrush(QColor(0, 0, 0, 128));
-        else if(mShowHistory)
-            p.setBrush(QColor(255, 255, 255, 80));
-        else
-            p.setBrush(QColor(0, 0, 0, 0));
-        p.drawRect(mRect);
+
+
     }
     else
         StringOverlay::paintContent(p);

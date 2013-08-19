@@ -24,14 +24,15 @@ class GraphOverlay : public StringOverlay
 {
     Q_OBJECT
 public:
-    bool showClear() { return mShowHistory; }
     explicit GraphOverlay(const QString& name);
+    void writeCurrentConfig(QXmlStreamWriter &writer);
+    void readElement(QXmlStreamReader &reader);
+    bool showClear() { return mShowHistory; }
     void paintContent(QPainter &p);
     void setInitialPos(const QPoint &pos);
 protected slots:
     void onClearClicked();
 protected:
-    bool mShowAsGraph;
     void mousePressEvent(QMouseEvent *event);
     QList<double> mValues;
     double mMin, mMax;

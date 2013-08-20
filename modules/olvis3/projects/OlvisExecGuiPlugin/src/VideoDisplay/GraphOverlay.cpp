@@ -84,7 +84,7 @@ void GraphOverlay::paintContent(QPainter &p)
             if(val > mMax)
                 mMax = val;
             if(mMax == mMin)
-                mMax = mMin + 1;
+                mMax = mMin + 0.00000001;
             mValues << val;
             while(mLimitedValues && mValues.size() > mMaxValues)
                 mValues.pop_front();

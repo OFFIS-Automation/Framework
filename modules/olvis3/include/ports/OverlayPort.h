@@ -33,7 +33,7 @@ public:
      * it should not be directly drawn on the output and therefore not visible
     **/
     void setDisplayVisibility(bool visible){ setConstraint("displayVisibility", visible); }
-
+    void setIsPysicalPixelSize(bool set) { setConstraint("isPhysicalPixelSize", set); }
 protected:
     OverlayPort(int id, const QString& name, bool isMain = false) : Port(id, name, isMain) {}
 

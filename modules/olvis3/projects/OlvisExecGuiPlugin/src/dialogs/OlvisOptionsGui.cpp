@@ -49,6 +49,7 @@ OlvisOptionsGui::OlvisOptionsGui(QWidget *parent) :
 
     // Hide help button
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    ui->frameRate->setValue(QSettings().value("videoCapture/fps", 0).toInt());
 }
 
 OlvisOptionsGui::~OlvisOptionsGui()

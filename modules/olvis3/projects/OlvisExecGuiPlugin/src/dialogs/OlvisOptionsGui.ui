@@ -163,32 +163,32 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>OlvisPluginConfigGui</receiver>
+   <receiver>OlvisOptionsGui</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>227</x>
-     <y>282</y>
+     <x>156</x>
+     <y>277</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
+     <x>6</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>OlvisPluginConfigGui</receiver>
+   <receiver>OlvisOptionsGui</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>295</x>
-     <y>288</y>
+     <x>212</x>
+     <y>278</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>395</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>

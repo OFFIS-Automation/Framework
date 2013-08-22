@@ -75,7 +75,8 @@ SOURCES += \
     src/VideoDisplay/HistogramOverlay.cpp \
     src/VideoDisplay/GraphOverlay.cpp \
     src/dialogs/GraphOverlayOptions.cpp \
-    src/VideoDisplay/SensorSystemOverlay.cpp
+    src/VideoDisplay/SensorSystemOverlay.cpp \
+    src/VideoDisplay/ScaleBarOverlay.cpp
 
 
 HEADERS +=  \
@@ -103,7 +104,8 @@ HEADERS +=  \
     src/VideoDisplay/HistogramOverlay.h \
     src/VideoDisplay/GraphOverlay.h \
     src/dialogs/GraphOverlayOptions.h \
-    src/VideoDisplay/SensorSystemOverlay.h
+    src/VideoDisplay/SensorSystemOverlay.h \
+    src/VideoDisplay/ScaleBarOverlay.h
        
 
 FORMS += \

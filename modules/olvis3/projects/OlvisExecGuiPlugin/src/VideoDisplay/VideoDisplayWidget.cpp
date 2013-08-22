@@ -437,6 +437,15 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
                 return;
             }
             setMainOverlay(mo);
+            QList<PortInfo> ports = OlvisSingleton::instance().getFilter(mo->portId().filter).typeInfo.outputs;
+            foreach (PortInfo p, ports) {
+                if(p.constraints.value("isPhysicalPixelSize", false).toBool())
+                {
+                    Overlay* overlay = OverlayFactory::instance().createOverlay(PortId(mo->portId().filter, p.name), true, false);
+                    addOverlay(overlay);
+                    overlay->setInitialPos(QPoint(15,15));
+                }
+            }
         }
         else
         {
@@ -506,7 +515,6 @@ void VideoDisplayWidget::setMainOverlay(MainOverlay* overlay)
         if(p.constraints.value("displayVisibility", true).toBool())
             mToolbar->addPortAction(PortId(filterId, p.name));
     }
-
     // Enable the toolbar
     mToolbar->setEnabled(true);
 }

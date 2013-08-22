@@ -70,13 +70,13 @@ SOURCES += \
     src/VideoDisplay/SimpleShapeOverlay.cpp \
     src/dialogs/ExportTraceDialog.cpp \
     src/VideoDisplay/PointPortOverlay.cpp \
-    src/dialogs/OlvisPluginConfigGui.cpp \
     src/VideoDisplay/MainOverlay.cpp \
     src/VideoDisplay/HistogramOverlay.cpp \
     src/VideoDisplay/GraphOverlay.cpp \
     src/dialogs/GraphOverlayOptions.cpp \
     src/VideoDisplay/SensorSystemOverlay.cpp \
-    src/VideoDisplay/ScaleBarOverlay.cpp
+    src/VideoDisplay/ScaleBarOverlay.cpp \
+    src/dialogs/OlvisOptionsGui.cpp
 
 
 HEADERS +=  \
@@ -99,13 +99,13 @@ HEADERS +=  \
     src/VideoDisplay/SimpleShapeOverlay.h \
     src/dialogs/ExportTraceDialog.h \
     src/VideoDisplay/PointPortOverlay.h \
-    src/dialogs/OlvisPluginConfigGui.h \
     src/VideoDisplay/MainOverlay.h \
     src/VideoDisplay/HistogramOverlay.h \
     src/VideoDisplay/GraphOverlay.h \
     src/dialogs/GraphOverlayOptions.h \
     src/VideoDisplay/SensorSystemOverlay.h \
-    src/VideoDisplay/ScaleBarOverlay.h
+    src/VideoDisplay/ScaleBarOverlay.h \
+    src/dialogs/OlvisOptionsGui.h
        
 
 FORMS += \
@@ -113,8 +113,8 @@ FORMS += \
     src/VideoDisplay/VideoWidget.ui \
     src/VideoDisplay/VideoControlToolbar.ui \
     src/dialogs/ExportTraceDialog.ui \
-    src/dialogs/OlvisPluginConfigGui.ui \
-    src/dialogs/GraphOverlayOptions.ui
+    src/dialogs/GraphOverlayOptions.ui \
+    src/dialogs/OlvisOptionsGui.ui
 
 RESOURCES += \
     images/images.qrc

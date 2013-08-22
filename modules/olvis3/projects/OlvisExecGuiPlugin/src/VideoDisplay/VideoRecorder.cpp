@@ -81,9 +81,19 @@ void VideoRecorder::startVideo(QRect rect)
     mTempFile = QCoreApplication::applicationDirPath() + "/temp%1.avi";
 
     mTempFile = mTempFile.arg((long) mWidget);
-    mFps = 1000.0/mWidget->imageRate();
-    if (mRate > 0)
-        mFps = 1000.0/mRate;
+    mFps = QSettings().value("videoCapture/fps", 0).toInt();
+    if(mFps == 0)
+    {
+        // auto fps
+        mFps = 1000.0/mWidget->imageRate();
+        mRate = 0;
+    }
+    else
+    {
+        mRate = 1000.0/mFps;
+        mTimer.start(mRate);
+    }
+
     qDebug() << "recording at " << mFps << "fps";
     mFinished = false;
 
@@ -98,7 +108,7 @@ void VideoRecorder::finishVideo()
         mWait.wakeAll();
         mMutex.unlock();
         wait();
-
+        mTimer.stop();
         QSettings settings;
         QString lastFileName = settings.value("olvisexecgui/videodisplay/lastvideofile").toString();
         QString fileName = QFileDialog::getSaveFileName(mWidget, tr("Save video"), lastFileName, tr("AVI-Videos (*.avi)"));
@@ -172,8 +182,6 @@ void VideoRecorder::run()
     cv::VideoWriter writer;
     writer.open(filename, fourcc, mFps, frameSize);
     mVideoWriter = 1;
-    if (mRate > 0)
-        mTimer.start(mRate);
     while (true) {
         QImage img;
         mMutex.lock();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>34</height>
+    <width>372</width>
+    <height>40</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,13 +121,16 @@
     <string>Export current trace file to CSV</string>
    </property>
   </action>
-  <action name="actionLoadedPlugins">
+  <action name="actionOptions">
    <property name="icon">
     <iconset resource="../images/images.qrc">
-     <normaloff>:/olvisExecGui/plugin_edit.png</normaloff>:/olvisExecGui/plugin_edit.png</iconset>
+     <normaloff>:/olvisExecGui/image_edit.png</normaloff>:/olvisExecGui/image_edit.png</iconset>
    </property>
    <property name="text">
-    <string>Define loaded plugins</string>
+    <string>Vision options</string>
+   </property>
+   <property name="toolTip">
+    <string>Open vision options dialog</string>
    </property>
   </action>
   <action name="actionImageDisplays">

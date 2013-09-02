@@ -41,7 +41,7 @@ SOURCES += src/RcUnit.cpp \
     src/RcUnitBase.cpp \
     src/RcUnitsBase.cpp\
     src/telecontrol/Gamepad.cpp \
-    src/telecontrol/gamepadTypes/WindowXBOXGamepad.cpp
+
 
 HEADERS += src/RcUnit.h \
     src/TcInvoker.h \
@@ -55,25 +55,26 @@ HEADERS += src/RcUnit.h \
     ../../include/telecontrol/HapticInterface.h \
 
 win32*{
-HEADERS += src/telecontrol/WindowsGamepad.h \
-    src/telecontrol/WindowsGamepadFactory.h \
-    ../../include/telecontrol/GamepadInterface.h
+    HEADERS += src/telecontrol/WindowsGamepad.h \
+        src/telecontrol/gamepadTypes/WindowXBOXGamepad.h
+        src/telecontrol/WindowsGamepadFactory.h \
+        ../../include/telecontrol/GamepadInterface.h
 
-LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
+    LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
 
-SOURCES += src/telecontrol/WindowsGamepad.cpp \
-    src/telecontrol/gamepadTypes/WindowsXBOXGamepad.h \
-    src/telecontrol/WindowsGamepadFactory.cpp \
+    SOURCES += src/telecontrol/WindowsGamepad.cpp \
+        src/telecontrol/gamepadTypes/WindowsXBOXGamepad.cpp \
+        src/telecontrol/WindowsGamepadFactory.cpp \
 }
 
 unix:!macx{
-INCLUDEPATH += /usr/include
+    INCLUDEPATH += /usr/include
 
-HEADERS += src/telecontrol/LinuxGamepad.h \
-    src/telecontrol/LinuxGamepadFactory.h \
+    HEADERS += src/telecontrol/LinuxGamepad.h \
+        src/telecontrol/LinuxGamepadFactory.h \
 
-LIBS += -L/usr/lib/ -ljoystick++
+    LIBS += -L/usr/lib/ -ljoystick++
 
-SOURCES += src/telecontrol/LinuxGamepad.cpp \
-    src/telecontrol/LinuxGamepadFactory.cpp \
+    SOURCES += src/telecontrol/LinuxGamepad.cpp \
+        src/telecontrol/LinuxGamepadFactory.cpp \
 }

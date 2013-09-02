@@ -56,7 +56,7 @@ HEADERS += src/RcUnit.h \
 
 win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \
-        src/telecontrol/gamepadTypes/WindowXBOXGamepad.h
+        src/telecontrol/gamepadTypes/WindowsXBOXGamepad.h \
         src/telecontrol/WindowsGamepadFactory.h \
         ../../include/telecontrol/GamepadInterface.h
 

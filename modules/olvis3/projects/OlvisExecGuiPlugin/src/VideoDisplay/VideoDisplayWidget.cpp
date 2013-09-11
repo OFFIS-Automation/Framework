@@ -701,10 +701,16 @@ void VideoDisplayWidget::screenshot()
     mRecorder.saveScreenshot(boundingRect());
 }
 
-void VideoDisplayWidget::recordVideo()
+void VideoDisplayWidget::recordVideo(int fps)
 {
     mToolbar->setVisible(false);
-    mRecorder.startVideo(boundingRect());
+    mRecorder.startVideo(boundingRect(), fps);
+}
+
+void VideoDisplayWidget::endVideoRecording(const QString &filename)
+{
+    if(mRecorder.recording())
+        mRecorder.finishVideo(filename);
 }
 
 void VideoDisplayWidget::setZoom(double value)

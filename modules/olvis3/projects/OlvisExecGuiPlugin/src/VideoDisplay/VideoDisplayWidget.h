@@ -90,7 +90,8 @@ public slots:
     virtual void setHorizontalFlip(bool flip);
     virtual void setVerticalFlip(bool flip);
     virtual void screenshot();
-    virtual void recordVideo();
+    virtual void recordVideo(int fps = -1);
+    virtual void endVideoRecording(const QString& filename = QString());
 
     virtual void editChanged(QAction* action);
     virtual void boolChanged(QAction* action);

@@ -48,7 +48,7 @@ void OlvisExecGuiPlugin::setModelInterface(const QString& name, QObject* object)
 {
     if(!mInterface && name == "OlvisCore")
         mInterface= static_cast<OlvisInterface*>(object);
-    if(!mHilec && name == "HilecCore")
+    if(!mHilec && name == "Hilec")
         mHilec = object;
 }
 

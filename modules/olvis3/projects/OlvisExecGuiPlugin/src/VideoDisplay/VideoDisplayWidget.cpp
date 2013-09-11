@@ -703,8 +703,11 @@ void VideoDisplayWidget::screenshot()
 
 void VideoDisplayWidget::recordVideo(int fps)
 {
-    mToolbar->setVisible(false);
-    mRecorder.startVideo(boundingRect(), fps);
+    if(!mRecorder.recording())
+    {
+        mToolbar->setVisible(false);
+        mRecorder.startVideo(boundingRect(), fps);
+    }
 }
 
 void VideoDisplayWidget::endVideoRecording(const QString &filename)

@@ -104,6 +104,8 @@ void VideoRecorder::startVideo(QRect rect, int fps)
 }
 void VideoRecorder::finishVideo()
 {
+    if(!mVideoWriter)
+        return;
     QSettings settings;
     QString lastFileName = settings.value("olvisexecgui/videodisplay/lastvideofile").toString();
     QString fileName = QFileDialog::getSaveFileName(mWidget, tr("Save video"), lastFileName, tr("AVI-Videos (*.avi)"));
@@ -212,7 +214,5 @@ void VideoRecorder::run()
         }
     }
     qDebug() << "Ended";
-    mTimer.stop();
     mVideoWriter = 0;
-
 }

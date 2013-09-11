@@ -16,6 +16,7 @@
 
 #include "PythonPlugin.h"
 #include <QDebug>
+#include <QFileInfo>
 #include <QStringList>
 #include "HilecCore.h"
 #include "UserRequestManager.h"
@@ -180,7 +181,10 @@ extern "C"
     {
         PyObject* name = 0;
         PyArg_ParseTuple(args, "O", &name);
-        HilecCore::instance().endVideoCapture(PythonTypeConverter::toString(name, true));
+        QString filename = PythonTypeConverter::toString(name, true);
+        if(!filename.isEmpty())
+            filename = QFileInfo(filename).absoluteFilePath();
+        HilecCore::instance().endVideoCapture(filename);
         Py_RETURN_NONE;
     }
 
@@ -202,7 +206,7 @@ extern "C"
             {"rcCall",apy_rcCall, METH_VARARGS,""},
             {"rcGetConstants",apy_rcGetConstants, METH_VARARGS,""},
             {"startVideoCapture", apy_startVideoCapture, METH_VARARGS, ""},
-            {"endVideoCapture", apy_startVideoCapture, METH_VARARGS, ""},
+            {"endVideoCapture", apy_endVideoCapture, METH_VARARGS, ""},
             {NULL, NULL, 0, NULL}
     };
 

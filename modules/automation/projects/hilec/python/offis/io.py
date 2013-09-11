@@ -160,3 +160,12 @@ class InfoPanel:
 
 	def __del__(self):
 		self.close()
+		
+def startVideoRecording(fps = 15):
+	offisio.startVideoCapture(int(fps));
+	
+def quitVideoRecording():
+	offisio.endVideoCapture("");
+	
+def finishVideoRecording(filename):
+	offisio.endVideoCapture(str(filename));

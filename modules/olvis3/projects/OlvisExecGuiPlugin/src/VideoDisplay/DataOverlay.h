@@ -39,6 +39,7 @@ public:
 
 protected:
     QPen mPen;
+    QFont mFont;
     static QList<QColor> sOverlayColors;
 };
 

@@ -19,6 +19,7 @@
 
 #include <core/UserRequest.h>
 
+#include <QDebug>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSpinBox>
@@ -124,9 +125,11 @@ ScriptInput::ScriptInput(const UserRequest &input, QWidget *parent) :
         else if(item.value.type() == QVariant::Int)
         {
             ScriptIntInput* input = new ScriptIntInput();
+            // Overwrite range
+            input->setRange(item.constraints["min"].toInt(), item.constraints["max"].toInt());
+            input->setSingleStep(item.constraints["stepping"].toInt());
+            // Set value, hopefully in range
             input->setValue(item.value.toInt());
-            input->setMinimum(item.constraints["min"].toInt());
-            input->setMaximum(item.constraints["max"].toInt());
             ui->inputs->addRow(item.desc, input);
             mInputs.append(input);
         }

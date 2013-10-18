@@ -15,3 +15,7 @@
 # qt creator files
 build*
 *.pro.user
+
+# auto generated files
+test/*Client.*
+test/*Server.*

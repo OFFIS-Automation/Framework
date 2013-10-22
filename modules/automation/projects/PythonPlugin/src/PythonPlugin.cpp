@@ -186,7 +186,7 @@ extern "C"
     {
         long fps = 0;
         PyArg_ParseTuple(args, "l", &fps);
-        HilecCore::instance().startVideoCapture(fps);
+        //@TODOHilecCore::instance().startVideoCapture(fps);
         Py_RETURN_NONE;
     }
 
@@ -198,7 +198,7 @@ extern "C"
         QString filename = PythonTypeConverter::toString(name, true);
         if(!filename.isEmpty())
             filename = QFileInfo(filename).absoluteFilePath();
-        HilecCore::instance().endVideoCapture(filename);
+        //@TODO HilecCore::instance().endVideoCapture(filename);
         Py_RETURN_NONE;
     }
 

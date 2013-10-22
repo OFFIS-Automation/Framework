@@ -19,7 +19,7 @@ CONFIG += ordered
 
 # Do all the other stuff
 SUBDIRS +=  modules/version \
-            modules/SignalProxy \
+            modules/qt-remote-signals/qtRemoteSignals \
             modules/frontend/projects/LogWidget \
             modules/sensorSystem \
             modules/frontend/projects/AmirFrontend \

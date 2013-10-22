@@ -27,7 +27,7 @@ TARGET = offisio_d
 QMAKE_EXTENSION_SHLIB = pyd
 TEMPLATE = lib
 
-SIGNALDEFS = $${PWD}/signalProxy/PythonProcess.signals
+SIGNALDEFS = $${PWD}/remoteSignals/PythonProcess.signals
 SIGNALTARGET = $${PWD}/src/signalProxy/
 SIGNALHEADER = PythonProcessServer.h
 SIGNALSOURCE= PythonProcessServer.cpp
@@ -35,9 +35,9 @@ createSignalProxy.target = $${SIGNALTARGET}$${SIGNALHEADER}
 
 
 win32-msvc*{
-    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy.exe $$SIGNALDEFS $$SIGNALTARGET --server-only
+    createSignalProxy.commands = $${PWD}/../../../qt-remote-signals/bin/qtRemoteSignals.exe $$SIGNALDEFS $$SIGNALTARGET --server-only
 } else {
-    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy $$SIGNALDEFS $$SIGNALTARGET --server-only
+    createSignalProxy.commands = $${PWD}/../../../qt-remote-signals/bin/qtRemoteSignals $$SIGNALDEFS $$SIGNALTARGET --server-only
 }
 createSignalProxy.depends = FORCE
 QMAKE_EXTRA_TARGETS += createSignalProxy

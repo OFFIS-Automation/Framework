@@ -18,7 +18,7 @@
 #define DEFAULTPORTS_GLOBAL_H
 
 #include <QtCore/qglobal.h>
-#include <filter/Port.h>
+#include <ports/OverlayPort.h>
 
 #if defined(DEFAULTPORTS_LIBRARY)
 #  define DEFAULTPORTSSHARED_EXPORT Q_DECL_EXPORT

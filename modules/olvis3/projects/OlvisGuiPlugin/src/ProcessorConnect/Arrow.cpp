@@ -20,7 +20,7 @@
 #include <math.h>
 
 Arrow::Arrow(ProcessorItem *startItem, ProcessorItem *endItem,
-         QGraphicsItem *parent, QGraphicsScene *scene)
+         QGraphicsItem *parent, QGraphicsScene * /*scene */)
     : QGraphicsLineItem(parent)
 {
     myStartItem = startItem;

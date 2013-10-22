@@ -90,7 +90,7 @@ void LogWindow::addLogType(int id, const QString &name, const QString &prefix, c
     ui->tabWidget->addTab(type.edit, name);
 }
 
-void LogWindow::addMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void LogWindow::addMessage(QtMsgType type, const QMessageLogContext & /*context */, const QString &msg)
 {
     QString prefix;
     if(mLogTypes.contains(type))

@@ -16,7 +16,8 @@
 
 #include "StartScreen.h"
 #include "ui_StartScreen.h"
-#include "QSettings"
+#include <QSettings>
+#include <QFileInfo>
 #include "version.h"
 
 StartScreen::StartScreen(QWidget *parent) :
@@ -25,6 +26,20 @@ StartScreen::StartScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     QStringList recent = QSettings().value("recentProjects").toStringList();
+
+    // Check for deleted items
+    QStringList existing;
+
+    foreach(QString projectPath, recent){
+         if(QFileInfo(projectPath).exists())
+            existing += projectPath;
+    }
+    if(existing.count() > 0){
+        recent = existing;
+        QSettings().setValue("recentProjects", existing);
+    }
+
+    // Add existing items
     ui->comboBox->addItems(recent);
     if(recent.empty())
         ui->recentBox->setEnabled(false);

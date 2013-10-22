@@ -20,7 +20,7 @@
 #include <QStringList>
 #include <core/PortInfo.h>
 
-port::Boolean::Boolean() : Port(QMetaType::Bool, "Boolean")
+port::Boolean::Boolean() : OverlayPort(QMetaType::Bool, "Boolean")
 {
     setIcon(QImage(":/defaultPorts/images/bool.png"));
 }

@@ -31,6 +31,7 @@ FetchTemplate::FetchTemplate()
     mRoi.setName("newRoi");
     mRoi.setDesc("Region where the template is extracted. Only applied when changed.");
     mRoi.setMode(SingleShotPortMode);
+    mRoi.setDisplayVisibility(false);
     addInputPort(mRoi);
 
 }

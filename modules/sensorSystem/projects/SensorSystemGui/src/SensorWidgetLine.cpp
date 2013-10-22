@@ -17,6 +17,10 @@
 #include "SensorWidgetLine.h"
 #include "ui_SensorWidgetLine.h"
 
+#include <QDrag>
+#include <QMimeData>
+#include <QMouseEvent>
+
 SensorWidgetLine::SensorWidgetLine(const QString &title) :
     ui(new Ui::SensorWidgetLine)
 {
@@ -29,6 +33,37 @@ SensorWidgetLine::~SensorWidgetLine()
     delete ui;
 }
 
+void SensorWidgetLine::startDrag()
+{
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+
+    mimeData->setData("application/x-sensorSystem-value", name().toLocal8Bit());
+    drag->setPixmap(QPixmap::grabWidget(ui->checkBox));
+    drag->setHotSpot(QPoint(width()/2, height()/2));
+    drag->setMimeData(mimeData);
+    drag->exec(Qt::CopyAction);
+}
+void SensorWidgetLine::mousePressEvent(QMouseEvent *ev)
+{
+    if(ev->button() == Qt::LeftButton)
+        mStartPos = ev->pos();
+    else
+        QWidget::mouseMoveEvent(ev);
+}
+
+void SensorWidgetLine::mouseReleaseEvent(QMouseEvent *)
+{
+    mStartPos = QPoint();
+}
+
+void SensorWidgetLine::mouseMoveEvent(QMouseEvent *ev)
+{
+    if(!mStartPos.isNull() && (ev->pos() - mStartPos).manhattanLength() > QApplication::startDragDistance())
+        startDrag();
+    else
+        QWidget::mouseMoveEvent(ev);
+}
 QString SensorWidgetLine::name()
 {
     return ui->checkBox->text();

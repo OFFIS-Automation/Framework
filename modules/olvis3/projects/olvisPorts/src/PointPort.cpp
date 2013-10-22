@@ -38,7 +38,7 @@ cv::Point2d port::Point::point(const QPointF &r)
 }
 
 
-port::Point::Point() : Port(QMetaType::QPointF, "Point")
+port::Point::Point() : OverlayPort(QMetaType::QPointF, "Point")
 {
     setIcon(QImage(":/defaultPorts/images/point.png"));
 }

@@ -24,7 +24,7 @@
 
 namespace port
 {
-    class DEFAULTPORTSSHARED_EXPORT Point : public Port
+    class DEFAULTPORTSSHARED_EXPORT Point : public OverlayPort
     {
     public:
         static QPointF qpoint(const cv::Point2d& r);

@@ -34,8 +34,11 @@ public:
     void setStartAtZero(bool startAtZero);
     void setMarkerRange(QString startMarker, QString endMarker);
     void clearElements();
+
+    static QList<QVariant> convertToDouble(const QVariant &var);
+    static QString convertToString(const QVariant& var, const QString& seperator);
 protected:
-    QString convert(const QVariant& var);
+
     QString mSeperator;
     QMap<int, QVariant> mLastElements;
     QList<int> mIds;

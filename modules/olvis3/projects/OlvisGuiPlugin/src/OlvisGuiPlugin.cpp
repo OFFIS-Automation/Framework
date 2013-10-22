@@ -129,7 +129,7 @@ void OlvisGuiPlugin::setGuiInterface(const QString &name, QObject * guiPlugin)
     }
 }
 
-void OlvisGuiPlugin::loadProject(const QString &projectFile)
+void OlvisGuiPlugin::loadProject(const QString & /*projectFile */)
 {
     connections->setEnabled(true);
     search->setEnabled(true);

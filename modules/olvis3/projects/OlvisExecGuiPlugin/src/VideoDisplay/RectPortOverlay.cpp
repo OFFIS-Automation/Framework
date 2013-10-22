@@ -25,6 +25,7 @@ RectPortOverlay::RectPortOverlay(QString name)
     : RectOverlay(name)
 {
     mBoundedToImage = true;
+    connect(this, SIGNAL(clearClicked()), SLOT(onClearClicked()));
 }
 
 void RectPortOverlay::setInitialPos(const QPoint &pos)
@@ -64,4 +65,10 @@ void RectPortOverlay::ensureBounds()
         mRect.moveRight(startRect.topLeft().x()); // mRect is normalized, startRect is not!
     if(startRect.height() < 0)
         mRect.moveBottom(startRect.topLeft().y()); // mRect is normalized, startRect is not!
+}
+
+void RectPortOverlay::onClearClicked()
+{
+    emit valueChanged(portId(), QVariant());
+    setActive(false);
 }

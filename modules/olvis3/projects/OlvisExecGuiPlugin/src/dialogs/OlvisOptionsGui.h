@@ -21,23 +21,25 @@
 #include <QStringListModel>
 
 namespace Ui {
-    class OlvisPluginConfigGui;
+    class OlvisOptionsGui;
 }
 
-class OlvisPluginConfigGui : public QDialog
+class OlvisOptionsGui : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit OlvisPluginConfigGui(QWidget *parent = 0);
-    ~OlvisPluginConfigGui();
+    explicit OlvisOptionsGui(QWidget *parent = 0);
+    ~OlvisOptionsGui();
 
 private slots:
     void on_removeSelection_clicked();
     void on_add_clicked();
 
+    void on_frameRate_valueChanged(int fps);
+
 private:
-    Ui::OlvisPluginConfigGui *ui;
+    Ui::OlvisOptionsGui *ui;
     QStringListModel mDisabledFilters;
 };
 

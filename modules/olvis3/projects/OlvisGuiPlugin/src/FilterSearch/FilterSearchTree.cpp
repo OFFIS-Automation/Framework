@@ -31,7 +31,7 @@ FilterSearchTree::FilterSearchTree(QWidget *parent) :
 
 void FilterSearchTree::mousePressEvent(QMouseEvent *event)
 {
-    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(currentItem());
+    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(itemAt(event->pos()));
 
     if (selectedItem)
     {
@@ -46,11 +46,10 @@ void FilterSearchTree::mouseMoveEvent(QMouseEvent *event)
          return;
     if(mDragStart.isNull())
         return;
-     if ((event->pos() - mDragStart).manhattanLength()
-          < QApplication::startDragDistance())
+     if ((event->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
          return;
     mDragStart = QPoint();
-    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(currentItem());
+    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(itemAt(event->pos()));
     if (!selectedItem)
         return;
     FilterInfo info;
@@ -62,11 +61,16 @@ void FilterSearchTree::mouseMoveEvent(QMouseEvent *event)
         mDragTarget->startDrag(&filterWidget, hotspot);
 }
 
-void FilterSearchTree::mouseDoubleClickEvent(QMouseEvent *)
+void FilterSearchTree::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(currentItem());
+    // Get selected item at double click position
+    // (https://github.com/OFFIS-Automation/Framework/issues/4
+    FilterSearchTreeItem *selectedItem = dynamic_cast<FilterSearchTreeItem*>(itemAt(event->pos()));
+
+    // Add seleted item if not a node / nil
     if (!selectedItem)
         return;
     if(mDragTarget)
         mDragTarget->requestAddFilter(selectedItem->getFilterType().uid);
+
 }

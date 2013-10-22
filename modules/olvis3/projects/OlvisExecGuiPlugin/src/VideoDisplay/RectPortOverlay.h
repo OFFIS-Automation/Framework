@@ -21,17 +21,20 @@
 
 class RectPortOverlay : public RectOverlay
 {
+    Q_OBJECT
 public:
     RectPortOverlay(QString name);
 
     virtual void setInitialPos(const QPoint &pos);
-
+    virtual bool showClear() { return !isOutput(); }
     virtual void mouseMoveEvent(QMouseEvent* event, QList<QPoint> snapPoints);
     virtual void mouseReleaseEvent(QMouseEvent* event);
 
     virtual void setValue(const QVariant &value);
     //virtual void paint(QPainter& painter, bool showControls);
     virtual void ensureBounds();
+protected slots:
+    void onClearClicked();
 };
 
 #endif // RECTPORTOVERLAY_H

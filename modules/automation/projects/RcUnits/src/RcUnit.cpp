@@ -315,25 +315,20 @@ QVariant RcUnit::call(const QByteArray &name, QList<QVariant> params)
 {
     QVariant value;
     RcMethodInvoker* invoker = 0;
-    try
+    mCallMutex.lock();
+    const Method& m = mMethods.value(name);
+    mCallMutex.unlock();
+    if(m.configured)
     {
-        {
-            QMutexLocker lock(&mCallMutex);
-            const Method& m = mMethods.value(name);
-            if(!m.configured)
-                throw RcError(tr("No such method: %1").arg(QString(name)));
-            invoker = new RcMethodInvoker(m, mWrapperFactories);
-            invoker->parseArguments(params);
-        }
+        invoker = new RcMethodInvoker(m, mWrapperFactories);
+        invoker->parseArguments(params);
         invoker->execute(mLolec);
         value = invoker->returnValue();
         delete invoker;
     }
-    catch(...)
+    else
     {
-        if(invoker)
-            delete invoker;
-        throw;
+        value = mLolecInterface->call(mLolec, name, params);
     }
     return value;
 }
@@ -441,6 +436,12 @@ void RcUnit::updateSensitivity(const QString &unitName, double sensitivity, cons
 {
     if(mTcInvoker)
         mTcInvoker->setSensitivity(unitName, sensitivity, inverts);
+    if(mTcMethods.contains(unitName))
+    {
+        TcUpdateMethod& method = mTcMethods[unitName];
+        method.sensitivity = sensitivity;
+        method.inverts = inverts;
+    }
 }
 
 

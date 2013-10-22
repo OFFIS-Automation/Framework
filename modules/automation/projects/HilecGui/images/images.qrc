@@ -17,9 +17,9 @@
         <file>joystick_delete.png</file>
         <file>addLolec.png</file>
         <file>removeLolec.png</file>
-        <file>gamepad.png</file>
         <file>gamepadAbstract.png</file>
         <file>controller_error.png</file>
         <file>controller_info.png</file>
+        <file>gamepadAbstractWithoutNumbers.png</file>
     </qresource>
 </RCC>

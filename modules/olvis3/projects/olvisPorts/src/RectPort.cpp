@@ -30,7 +30,7 @@ cv::Rect port::Rect::rect(const QRectF &r)
 }
 
 
-port::Rect::Rect() : Port(QMetaType::QRectF, "Rect")
+port::Rect::Rect() : OverlayPort(QMetaType::QRectF, "Rect")
 {
     setIcon(QImage(":/defaultPorts/images/rect.png"));
     setWidthConstraint(0);

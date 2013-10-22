@@ -20,7 +20,7 @@
 
 #include <cfloat>
 
-port::Real::Real() : Port(QMetaType::Double, "Real")
+port::Real::Real() : OverlayPort(QMetaType::Double, "Real")
 {
     setIcon(QImage(":/defaultPorts/images/number.png"));
     setRange(-DBL_MAX, DBL_MAX);
@@ -87,6 +87,10 @@ double in::Real::getValue()
     return getRawValue().toDouble();
 }
 
+void in::Real::setInputSensitivity(double sensitivity)
+{
+    setConstraint("sensitivity", sensitivity);
+}
 
 void out::Real::send(double value)
 {

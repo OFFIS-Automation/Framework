@@ -32,7 +32,7 @@ TutorialUnitInterface::TutorialUnitInterface()
 bool TutorialUnitInterface::needsConfigFile() const
 {
 	// return false if you do not need a config file
-	return true;
+    return false;
 }
 
 QString TutorialUnitInterface::name() const
@@ -60,7 +60,7 @@ bool TutorialUnitInterface::createConfig(const QString& configFile, QWidget* par
 	return true;
 }
 
-QObject* TutorialUnitInterface::instance(RcBase &rc, const QString &configFile, const QString& name)
+QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFile */, const QString& /* name */)
 {
     if(hasInstance)
     {
@@ -68,9 +68,6 @@ QObject* TutorialUnitInterface::instance(RcBase &rc, const QString &configFile, 
         return 0;
     }
     hasInstance = true;
-    //@TODO: do someting with the config file if you need it.
-	QSettings settings(configFile, QSettings::IniFormat);
-	QDateTime creationDate = settings.value("creationDate").toDateTime();
 
     TutorialUnit* lolec = new TutorialUnit();
 

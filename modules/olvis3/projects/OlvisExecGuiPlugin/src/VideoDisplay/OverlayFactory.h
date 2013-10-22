@@ -34,6 +34,7 @@ public:
 
 private:
     QSet<QString> mStringOverlays;
+    QSet<QString> mGraphOverlays;
     OverlayFactory();
     Q_DISABLE_COPY(OverlayFactory);
 };

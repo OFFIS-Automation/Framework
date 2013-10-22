@@ -22,7 +22,8 @@
 
 TEMPLATE = lib
 
-QT += widgets
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 win32-msvc*{
     contains(QT_CONFIG, opengles.) {
@@ -46,7 +47,8 @@ INCLUDEPATH += ../../include
 INCLUDEPATH += ../../../frontend/include
 
 INCLUDEPATH += ../../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
+INCLUDEPATH += ../../../sensorSystem/projects/SensorTracer/src
+LIBS += -L$${targetDir}/plugins/ -lSensorSystem -lSensorTracer
 
 
 SOURCES += \  
@@ -69,9 +71,13 @@ SOURCES += \
     src/VideoDisplay/SimpleShapeOverlay.cpp \
     src/dialogs/ExportTraceDialog.cpp \
     src/VideoDisplay/PointPortOverlay.cpp \
-    src/dialogs/OlvisPluginConfigGui.cpp \
     src/VideoDisplay/MainOverlay.cpp \
-    src/VideoDisplay/HistogramOverlay.cpp
+    src/VideoDisplay/HistogramOverlay.cpp \
+    src/VideoDisplay/GraphOverlay.cpp \
+    src/dialogs/GraphOverlayOptions.cpp \
+    src/VideoDisplay/SensorSystemOverlay.cpp \
+    src/VideoDisplay/ScaleBarOverlay.cpp \
+    src/dialogs/OlvisOptionsGui.cpp
 
 
 HEADERS +=  \
@@ -94,9 +100,13 @@ HEADERS +=  \
     src/VideoDisplay/SimpleShapeOverlay.h \
     src/dialogs/ExportTraceDialog.h \
     src/VideoDisplay/PointPortOverlay.h \
-    src/dialogs/OlvisPluginConfigGui.h \
     src/VideoDisplay/MainOverlay.h \
-    src/VideoDisplay/HistogramOverlay.h
+    src/VideoDisplay/HistogramOverlay.h \
+    src/VideoDisplay/GraphOverlay.h \
+    src/dialogs/GraphOverlayOptions.h \
+    src/VideoDisplay/SensorSystemOverlay.h \
+    src/VideoDisplay/ScaleBarOverlay.h \
+    src/dialogs/OlvisOptionsGui.h
        
 
 FORMS += \
@@ -104,7 +114,8 @@ FORMS += \
     src/VideoDisplay/VideoWidget.ui \
     src/VideoDisplay/VideoControlToolbar.ui \
     src/dialogs/ExportTraceDialog.ui \
-    src/dialogs/OlvisPluginConfigGui.ui
+    src/dialogs/GraphOverlayOptions.ui \
+    src/dialogs/OlvisOptionsGui.ui
 
 RESOURCES += \
     images/images.qrc

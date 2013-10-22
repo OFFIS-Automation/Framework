@@ -16,6 +16,7 @@
 
 #include "PythonPlugin.h"
 #include <QDebug>
+#include <QFileInfo>
 #include <QStringList>
 #include "UserRequestManager.h"
 #include "RcUnitInvoker.h"
@@ -181,6 +182,26 @@ extern "C"
         return RcUnitInvoker::instance().getConstants(args);
     }
 
+    PyObject* apy_startVideoCapture(PyObject*, PyObject* args)
+    {
+        long fps = 0;
+        PyArg_ParseTuple(args, "l", &fps);
+        HilecCore::instance().startVideoCapture(fps);
+        Py_RETURN_NONE;
+    }
+
+
+    PyObject* apy_endVideoCapture(PyObject*, PyObject* args)
+    {
+        PyObject* name = 0;
+        PyArg_ParseTuple(args, "O", &name);
+        QString filename = PythonTypeConverter::toString(name, true);
+        if(!filename.isEmpty())
+            filename = QFileInfo(filename).absoluteFilePath();
+        HilecCore::instance().endVideoCapture(filename);
+        Py_RETURN_NONE;
+    }
+
     static PyMethodDef io_methods[] = {
             {"startup", apy_startup, METH_VARARGS,""},
             {"log",apy_print, METH_VARARGS,""},
@@ -199,6 +220,8 @@ extern "C"
             {"exception",apy_exception, METH_VARARGS,""},
             {"rcCall",apy_rcCall, METH_VARARGS,""},
             {"rcGetConstants",apy_rcGetConstants, METH_VARARGS,""},
+            {"startVideoCapture", apy_startVideoCapture, METH_VARARGS, ""},
+            {"endVideoCapture", apy_endVideoCapture, METH_VARARGS, ""},
             {NULL, NULL, 0, NULL}
     };
 

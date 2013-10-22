@@ -91,7 +91,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
         page->setLayout(layout);
         // Add assignment button
         ShowAssignmentButton *button = new ShowAssignmentButton(unit);
-        connect(button, SIGNAL(openButtonAssignment()), this, SLOT(on_openButtonAssignment_clicked()));
+        connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
         layout->addWidget(button);
 
         // Add slider, gain, .. for each method
@@ -130,23 +130,18 @@ void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &activeU
 {
     mInUpdate = true;
 
-    //ui->gamepadTabWidget->setEnabled(active);
-    //ui->activate->setChecked(active);
-    //ui->activate->setEnabled(true);
-    if(active)
-    {
+    if(active){
         int id = mUnitIndexes.key(activeUnit,0);
         ui->gamepadTabWidget->setCurrentIndex(id);
     }
+
     mInUpdate = false;
 }
 
 void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
 {
     mInUpdate = true;
-    //ui->activateHaptic->setEnabled(true);
-    //ui->hapticgamepadTabWidget->setEnabled(active);
-    //ui->activateHaptic->setChecked(active);
+
     if(active)
     {
         int id = mUnitIndexes.key(activeUnit,0);
@@ -168,38 +163,6 @@ void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
     }
 }
 
-void TelecontrolWidget::on_activate_clicked(bool checked)
-{
-    /*
-    if(mInUpdate)
-        return;
-    ui->activate->setEnabled(false);
-    if(checked)
-    {
-        QString unit = mUnitIndexes.value(ui->gamepadTabWidget->currentIndex());
-        emit activateTelecontrol(unit);
-    }
-    else
-        emit deactivateTelecontrol();
-        */
-}
-
-void TelecontrolWidget::on_activateHaptic_clicked(bool checked)
-{
-    /*
-    if(mInUpdate)
-        return;
-    ui->activateHaptic->setEnabled(false);
-    if(checked)
-    {
-        QString unit = mUnitIndexes.value(sHapticIndexOffset + ui->hapticgamepadTabWidget->currentIndex());
-        emit activateHaptic(unit);
-    }
-    else
-        emit deactivateHaptic();
-    */
-}
-
 void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
 {
     if(mInUpdate)
@@ -208,11 +171,13 @@ void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
     emit activateHaptic(unit);
 }
 
-void TelecontrolWidget::on_openButtonAssignment_clicked()
+void TelecontrolWidget::on_openButtonAssignment_clicked(QString unit)
 {
     if(!mTelecontrolAssignmentWidget)
         mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
+    mTelecontrolAssignmentWidget->switchToUnit(unit);
     mTelecontrolAssignmentWidget->show();
+
 }
 
 

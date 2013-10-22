@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "OlvisPluginConfigGui.h"
-#include "ui_OlvisPluginConfigGui.h"
+#include "OlvisOptionsGui.h"
+#include "ui_OlvisOptionsGui.h"
 #include <QMenu>
 #include <QSettings>
 #include <QDir>
 
 #include "../OlvisSingleton.h"
-OlvisPluginConfigGui::OlvisPluginConfigGui(QWidget *parent) :
+OlvisOptionsGui::OlvisOptionsGui(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::OlvisPluginConfigGui)
+    ui(new Ui::OlvisOptionsGui)
 {
     ui->setupUi(this);
     ui->disabledFilters->setModel(&mDisabledFilters);
@@ -49,15 +49,16 @@ OlvisPluginConfigGui::OlvisPluginConfigGui(QWidget *parent) :
 
     // Hide help button
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    ui->frameRate->setValue(QSettings().value("videoCapture/fps", 0).toInt());
 }
 
-OlvisPluginConfigGui::~OlvisPluginConfigGui()
+OlvisOptionsGui::~OlvisOptionsGui()
 {
     delete ui;
 }
 
 
-void OlvisPluginConfigGui::on_removeSelection_clicked()
+void OlvisOptionsGui::on_removeSelection_clicked()
 {
     QStringList current = mDisabledFilters.stringList();
     QItemSelectionModel* selection = ui->disabledFilters->selectionModel();
@@ -72,7 +73,7 @@ void OlvisPluginConfigGui::on_removeSelection_clicked()
     settings.setValue("olvisCore/disabledPlugins", newList);
 }
 
-void OlvisPluginConfigGui::on_add_clicked()
+void OlvisOptionsGui::on_add_clicked()
 {
    QStringList current = mDisabledFilters.stringList();
    current << ui->comboBox->currentText();
@@ -81,4 +82,10 @@ void OlvisPluginConfigGui::on_add_clicked()
    QSettings settings;
    settings.setValue("olvisCore/disabledPlugins", current);
    mDisabledFilters.setStringList(current);
+}
+
+void OlvisOptionsGui::on_frameRate_valueChanged(int fps)
+{
+    QSettings settings;
+    settings.setValue("videoCapture/fps", fps);
 }

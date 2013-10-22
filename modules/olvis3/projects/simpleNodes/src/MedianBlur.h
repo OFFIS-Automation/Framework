@@ -24,9 +24,6 @@ class MedianBlur : public KernelFilter
 public:
     MedianBlur();
     virtual void execute();
-protected:
-    in::Image mIn;
-    out::Image mOut;
 };
 
 #endif // MEDIANBLUR_H

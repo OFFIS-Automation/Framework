@@ -17,7 +17,7 @@
 #include "MainToolBar.h"
 #include "ui_MainToolBar.h"
 #include "dialogs/ExportTraceDialog.h"
-#include "dialogs/OlvisPluginConfigGui.h"
+#include "dialogs/OlvisOptionsGui.h"
 
 #include <core/OlvisInterface.h>
 #include <core/FilterInfo.h>
@@ -99,8 +99,9 @@ void MainToolBar::initMenu(QMenu* fileMenu, QMenu* olvisMenu)
     olvisMenu->addAction(ui->actionStop);
     olvisMenu->addAction(ui->actionPause);
     olvisMenu->addSeparator();
+    olvisMenu->addAction(ui->actionOptions);
     olvisMenu->addAction(ui->actionExportTrace);
-    olvisMenu->addAction(ui->actionLoadedPlugins);
+
 
 }
 
@@ -251,11 +252,6 @@ void MainToolBar::on_actionExportTrace_triggered()
     }
 }
 
-void MainToolBar::on_actionLoadedPlugins_triggered()
-{
-    OlvisPluginConfigGui pluginConfig;
-    pluginConfig.exec();
-}
 
 void MainToolBar::onNumDisplaysChanged()
 {
@@ -281,4 +277,10 @@ void MainToolBar::on_actionRestore_triggered()
 void MainToolBar::on_actionSave_triggered()
 {
     emit saveRequested();
+}
+
+void MainToolBar::on_actionOptions_triggered()
+{
+    OlvisOptionsGui pluginConfig;
+    pluginConfig.exec();
 }

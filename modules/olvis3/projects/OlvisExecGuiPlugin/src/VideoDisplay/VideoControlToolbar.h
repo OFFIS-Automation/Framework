@@ -22,6 +22,7 @@
 #include <core/PortInfo.h>
 #include <core/PortId.h>
 #include <QMap>
+#include <QToolButton>
 
 namespace Ui {
     class VideoControlToolbar;
@@ -40,6 +41,7 @@ public:
 
     void addPortAction(const PortId &portId);
     void removePortAction(const PortId &portId);
+    void removePortAction(QAction* action);
     QAction* currentAction();
     PortInfo currentPortInfo();
     PortId portId(QAction* action);
@@ -68,6 +70,7 @@ private:
     QActionGroup mBoolActions;
     QMap<QAction*, PortId> mPortIds;
     QMap<QAction*, PortId> mChoicePortIds;
+    QMap<QAction*, QToolButton*> mToolButton;
 
 private slots:
     void on_actionSaveVideo_triggered();

@@ -32,8 +32,27 @@ the io extensions provides methods for user interaction via the automation gui
 </p>
 
 <p>
-	<strong>requestYesNo(text, yes = "Yes", no = "No")</strong>
-	<br />Shortcut function to request a Yes/No Choice. Returns 1 for Yes, 0 for No
+        <strong>requestYesNo(text, yes = "Yes", no = "No")</strong>
+        <br />Shortcut function to request a Yes/No Choice. Returns 1 for Yes, 0 for No
+</p>
+
+
+<p>
+        <strong>startVideoRecording(int fps = 15)</strong>
+        <br />Starts a video capture on display 1. This can be completed/canceled by the following
+        methods or manually by the user. Use -1 for automatic fps detection
+</p>
+
+<p>
+        <strong>quitVideoRecording()</strong>
+        <br />Ends the video recording on display 1 without saving the video. Ends all video recordings; issued by automation
+        or issued manually
+</p>
+
+<p>
+        <strong>finishVideoRecording(string filename)</strong>
+        <br />Ends the video recording on display 1 and saves the recorded video to filename. Ends all video recordings; issued by automation
+        or issued manually
 </p>
 
 

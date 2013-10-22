@@ -21,7 +21,7 @@
 
 namespace port
 {
-    class DEFAULTPORTSSHARED_EXPORT Boolean : public Port
+    class DEFAULTPORTSSHARED_EXPORT Boolean : public OverlayPort
     {
     protected:
         Boolean();

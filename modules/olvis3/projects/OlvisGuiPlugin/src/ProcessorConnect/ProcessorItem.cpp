@@ -21,7 +21,7 @@
 
 #include <core/ProcessorInfo.h>
 
-ProcessorItem::ProcessorItem(QGraphicsItem *parent, QGraphicsScene *scene)
+ProcessorItem::ProcessorItem(QGraphicsItem *parent, QGraphicsScene * /*scene */)
     : QGraphicsPolygonItem(parent)
 {
 

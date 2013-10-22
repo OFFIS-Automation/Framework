@@ -45,7 +45,7 @@ private:
 };
 
 PythonProcessControl::PythonProcessControl(QLocalSocket *socket)
-    : PythonProcessClient(*socket, *socket, false)
+    : PythonProcessClient(socket, socket, false)
 {
     HilecCore* hilec = &HilecCore::instance();
     connect(this, SIGNAL(appendInfo(QString)), hilec, SIGNAL(infoAppended(QString)));

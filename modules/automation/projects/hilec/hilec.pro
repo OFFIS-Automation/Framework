@@ -29,17 +29,16 @@ INCLUDEPATH += ../../../olvis3/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../RcUnits/src
 
-SIGNALDEFS = $${PWD}/../PythonPlugin/signalProxy/PythonProcess.signals
+SIGNALDEFS = $${PWD}/../PythonPlugin/remoteSignals/PythonProcess.signals
 SIGNALTARGET = $${PWD}/src/signalProxy/
 SIGNALHEADER = PythonProcessClient.h
 SIGNALSOURCE= PythonProcessClient.cpp
 createSignalProxy.target = $${SIGNALTARGET}$${SIGNALHEADER}
 
-
 win32-msvc*{
-    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy.exe $$SIGNALDEFS $$SIGNALTARGET --client-only
+    createSignalProxy.commands = $${PWD}/../../../qt-remote-signals/bin/qtRemoteSignals.exe $$SIGNALDEFS $$SIGNALTARGET --client-only
 } else {
-    createSignalProxy.commands = $${PWD}/../../../SignalProxy/bin/SignalProxy $$SIGNALDEFS $$SIGNALTARGET --client-only
+    createSignalProxy.commands = $${PWD}/../../../qt-remote-signals/bin/qtRemoteSignals $$SIGNALDEFS $$SIGNALTARGET --client-only
 }
 createSignalProxy.depends = FORCE
 QMAKE_EXTRA_TARGETS += createSignalProxy
@@ -104,8 +103,8 @@ HEADERS += \
     ../../include/telecontrol/HapticInterface.h \
     ../../include/telecontrol/TcConfig.h \
     src/signalProxy/PythonProcessClient.h \
-    src/signalProxy/SignalProxy.h \
-    src/PythonProcessControl.h
+    src/PythonProcessControl.h \
+    src/signalProxy/RemoteSignals.h
 
 SOURCES += \
     HilecPlugin.cpp \
@@ -116,9 +115,9 @@ SOURCES += \
     src/RemoteLolec.cpp \
     src/RemoteRcUnit.cpp \
     src/PythonLinter.cpp \
-    src/signalProxy/SignalProxy.cpp \
     src/signalProxy/PythonProcessClient.cpp \
-    src/PythonProcessControl.cpp
+    src/PythonProcessControl.cpp \
+    src/signalProxy/RemoteSignals.cpp
 
 OTHER_FILES += \
     python/util.py \

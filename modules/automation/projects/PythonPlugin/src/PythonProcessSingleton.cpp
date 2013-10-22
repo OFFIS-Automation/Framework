@@ -45,7 +45,7 @@ bool PythonProcessSingleton::connectToServer(const QString &socketName)
 void PythonProcessSingleton::run()
 {
     QLocalSocket socket;
-    PythonProcessServer server(socket, socket);
+    PythonProcessServer server(&socket, &socket);
     {
         QMutexLocker lock(&mMutex);
         mServer = &server;

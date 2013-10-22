@@ -63,11 +63,12 @@ HEADERS += \
     src/UserRequestManager.h \
     signalProxy/PythonProcess.signals \
     src/signalProxy/PythonProcessServer.h \
-    src/signalProxy/SignalProxy.h \
     src/PythonProcessSingleton.h \
     src/RcUnitInvoker.h \
     src/CallStackDecoder.h \
-    signalProxy/PythonProcess.signals
+    signalProxy/PythonProcess.signals \
+    src/signalProxy/RemoteSignals.h \
+    remoteSignals/PythonProcess.signals
 
 SOURCES += \
     src/PythonTypeConverter.cpp \
@@ -75,9 +76,9 @@ SOURCES += \
     src/PythonDebugger.cpp \
     src/UserRequestParser.cpp \
     src/UserRequestManager.cpp \
-    src/signalProxy/SignalProxy.cpp \
     src/signalProxy/PythonProcessServer.cpp \
     src/PythonProcessSingleton.cpp \
     src/RcUnitInvoker.cpp \
-    src/CallStackDecoder.cpp
+    src/CallStackDecoder.cpp \
+    src/signalProxy/RemoteSignals.cpp
 

@@ -44,6 +44,7 @@ macx{
 
 unix:!macx{
     message("Including OpenCV 2.4.2 UNIX")
-    INCLUDEPATH += `pkg-config opencv --cflags`
+    unix:!macx:CONFIG += link_pkgconfig
+    unix:!macx:PKGCONFIG += opencv
     LIBS += `pkg-config opencv --libs --cflags`
 }

@@ -28,7 +28,7 @@
 QList<QColor> DataOverlay::sOverlayColors;
 
 DataOverlay::DataOverlay(QString name)
-    : RectOverlay(name), mPen(Qt::darkRed)
+    : RectOverlay(name), mPen(Qt::darkRed), mFont("Arial")
 {
     mPen.setWidth(2);
     mPen.setCosmetic(true);
@@ -86,9 +86,12 @@ void DataOverlay::paintContent(QPainter &painter)
 {
     painter.fillRect(mRect, QColor(0, 0, 0, 160));
     painter.setPen(mPen);
+
     painter.setViewTransformEnabled(false);
     QRect textRect = mTransform.mapRect(mRect);
     textRect.setLeft(textRect.left() + textRect.height());
+    mFont.setPixelSize(textRect.height() * 7/8);
+    painter.setFont(mFont);
     painter.drawText(textRect, Qt::AlignVCenter, legendString());
     QRect symbolRect = mTransform.mapRect(mRect);
     symbolRect.setRight(symbolRect.left() + symbolRect.height());

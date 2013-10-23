@@ -42,6 +42,8 @@ public:
 public slots:
     void changeView(VideoDisplayWidget* source, bool updateMaximized = true);
     void updateMaxDisplays(int maxDisplays);
+    void startCapture(int fps);
+    void endCapture(const QString& filename);
 private:
     void createDisplay();
     Ui::VideoWidget *ui;

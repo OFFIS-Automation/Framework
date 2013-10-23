@@ -74,15 +74,18 @@ void VideoRecorder::saveScreenshot(QRect rect)
     }
 }
 
-void VideoRecorder::startVideo(QRect rect)
+void VideoRecorder::startVideo(QRect rect, int fps)
 {
     init(rect);
     qDebug() << "Starting video" << rect;
     mTempFile = QCoreApplication::applicationDirPath() + "/temp%1.avi";
 
     mTempFile = mTempFile.arg((long) mWidget);
-    mFps = QSettings().value("videoCapture/fps", 0).toInt();
-    if(mFps == 0)
+    if(fps < 0)
+        mFps = QSettings().value("videoCapture/fps", 0).toInt();
+    else
+        mFps = fps;
+    if(mFps <= 0)
     {
         // auto fps
         mFps = 1000.0/mWidget->imageRate();
@@ -99,8 +102,25 @@ void VideoRecorder::startVideo(QRect rect)
 
     start();
 }
-
 void VideoRecorder::finishVideo()
+{
+    if(!mVideoWriter)
+        return;
+    QSettings settings;
+    QString lastFileName = settings.value("olvisexecgui/videodisplay/lastvideofile").toString();
+    QString fileName = QFileDialog::getSaveFileName(mWidget, tr("Save video"), lastFileName, tr("AVI-Videos (*.avi)"));
+    if (!fileName.isEmpty()) {
+        // Check if user has given a fileextension
+        if(!fileName.endsWith(".avi")){
+            // Append extension
+            //@TODO find better way to check this, what about other extensins (.mpg, mpeg, dv, divx)
+            fileName.append(".avi");
+        }
+        settings.setValue("olvisexecgui/videodisplay/lastvideofile", fileName);
+    }
+    finishVideo(fileName);
+}
+void VideoRecorder::finishVideo(const QString& fileName)
 {
     if (mVideoWriter) {
         mMutex.lock();
@@ -109,19 +129,9 @@ void VideoRecorder::finishVideo()
         mMutex.unlock();
         wait();
         mTimer.stop();
-        QSettings settings;
-        QString lastFileName = settings.value("olvisexecgui/videodisplay/lastvideofile").toString();
-        QString fileName = QFileDialog::getSaveFileName(mWidget, tr("Save video"), lastFileName, tr("AVI-Videos (*.avi)"));
-        if (!fileName.isEmpty()) {
-            // Check if user has given a fileextension
-            if(!fileName.endsWith(".avi")){
-                // Append extension
-                //@TODO find better way to check this, what about other extensins (.mpg, mpeg, dv, divx)
-                fileName.append(".avi");
-            }
-
+        if(!fileName.isEmpty())
+        {
             // Save image
-            settings.setValue("olvisexecgui/videodisplay/lastvideofile", fileName);
             if (QFile::exists(fileName))
                 QFile::remove(fileName);
             if(!QFile::rename(mTempFile, fileName))
@@ -204,7 +214,5 @@ void VideoRecorder::run()
         }
     }
     qDebug() << "Ended";
-    mTimer.stop();
     mVideoWriter = 0;
-
 }

@@ -86,6 +86,20 @@ void VideoWidget::updateMaxDisplays(int maxDisplays)
     changeView(0,mMaximized);
 }
 
+void VideoWidget::startCapture(int fps)
+{
+    if(mWidgets.empty())
+        return;
+    mWidgets[0]->recordVideo(fps);
+}
+
+void VideoWidget::endCapture(const QString &filename)
+{
+    if(mWidgets.empty())
+        return;
+    mWidgets[0]->endVideoRecording(filename);
+}
+
 void VideoWidget::createDisplay()
 {
     VideoDisplayWidget* widget = new VideoDisplayWidget();

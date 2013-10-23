@@ -37,6 +37,7 @@
 OlvisExecGuiPlugin::OlvisExecGuiPlugin()
 {
     mInterface = 0;
+    mHilec = 0;
     connect(this, SIGNAL(pluginsWriteConfigReq(QXmlStreamWriter&)), SLOT(writeXmlConfig(QXmlStreamWriter&)), Qt::DirectConnection);
     connect(this, SIGNAL(pluginsReadConfigReq(QString)), SLOT(readXmlConfig(QString)), Qt::DirectConnection);
     mTimer.setInterval(5000);
@@ -45,10 +46,10 @@ OlvisExecGuiPlugin::OlvisExecGuiPlugin()
 
 void OlvisExecGuiPlugin::setModelInterface(const QString& name, QObject* object)
 {
-    if(mInterface || name != "OlvisCore")
-        return;
-    //mInterface= dynamic_cast<OlvisInterface*>(object); <-- would be better (funktioniert nicht auf Mac)
-    mInterface= static_cast<OlvisInterface*>(object);
+    if(!mInterface && name == "OlvisCore")
+        mInterface= static_cast<OlvisInterface*>(object);
+    if(!mHilec && name == "Hilec")
+        mHilec = object;
 }
 
 bool OlvisExecGuiPlugin::requirementsMet()
@@ -64,7 +65,11 @@ void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
     const OlvisInterface& model = *mInterface;
     toolbar = new MainToolBar(model);
     videoWidget = new VideoWidget();
-
+    if(mHilec)
+    {
+        connect(mHilec, SIGNAL(videoCaptureStartRequested(int)), videoWidget, SLOT(startCapture(int)));
+        connect(mHilec, SIGNAL(videoCaptureEndRequested(QString)), videoWidget, SLOT(endCapture(QString)));
+    }
     connect(toolbar, SIGNAL(setNumDisplays(int)), videoWidget, SLOT(updateMaxDisplays(int)), Qt::QueuedConnection);
     connect(toolbar, SIGNAL(restoreRequested()), SLOT(restore()));
     connect(toolbar, SIGNAL(saveRequested()), SLOT(save()));

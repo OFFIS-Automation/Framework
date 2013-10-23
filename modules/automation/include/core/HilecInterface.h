@@ -91,6 +91,9 @@ signals:
     void breakpointHit(QString file, int line);
     void scriptExecutionStarted();
     void scriptExecutionFinished();
+
+    void videoCaptureStartRequested(int frameRate);
+    void videoCaptureEndRequested(const QString& filename);
 };
 
 

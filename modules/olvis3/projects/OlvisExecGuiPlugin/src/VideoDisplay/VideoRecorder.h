@@ -39,8 +39,9 @@ public:
     virtual ~VideoRecorder();
 
     virtual void saveScreenshot(QRect rect);
-    virtual void startVideo(QRect rect);
+    virtual void startVideo(QRect rect, int fps = -1);
     virtual void finishVideo();
+    virtual void finishVideo(const QString& filename);
     virtual void nextFrame();
     virtual void init(QRect rect);
     virtual bool recording();

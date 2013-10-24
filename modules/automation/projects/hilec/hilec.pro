@@ -32,7 +32,8 @@ INCLUDEPATH += ../RcUnits/src
 # Python
 win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
 win32*: LIBS += -L$$(AmirDevDir)/python3/libs
-unix:!macx: INCLUDEPATH += `pkg-config python-3.2 --cflags` # include stuff
+unix:!macx:CONFIG += link_pkgconfig
+unix:!macx:PKGCONFIG += python-3.2
 unix:!macx: LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
 LIBS += -L$${targetDir}/plugins -lRcUnits
@@ -41,7 +42,7 @@ pylibs.path    = $${DESTDIR}/hilec/python
 win32*: pylibs.files += $$(AmirDevDir)/python3/Lib/*
 unix:!macx: pylibs.files += /usr/lib/python3.2/*
 
-INSTALLS       += pylibs
+INSTALLS += pylibs
 
 pyDlls.path = $${DESTDIR}
 win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.dll

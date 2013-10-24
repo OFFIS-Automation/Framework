@@ -62,6 +62,7 @@ void WindowsGamepad::createMapping()
             mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
             mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
             mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+            mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
             return;
         }
         settings.endGroup();
@@ -84,8 +85,16 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
     DIJOYSTATE2& status = mState;
     joysticks[Tc::LeftJoystickX] = correctedValue(float(status.lX));
     joysticks[Tc::LeftJoystickY] = correctedValue(-float(status.lY));
-    joysticks[Tc::RightJoystickX] = correctedValue(float(status.lZ));
-    joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRz));
+    if(mSwitchZJoysticks)
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRz));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lZ));
+    }
+    else
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lZ));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRz));
+    }
 
     for(int i=Tc::NorthButton; i<= Tc::RightShoulderLowerButton; i++)
         assingButton(buttons, status.rgbButtons, i);

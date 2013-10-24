@@ -46,6 +46,7 @@ protected:
     friend class WindowsGamepadFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
+    bool mSwitchZJoysticks;
     void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 

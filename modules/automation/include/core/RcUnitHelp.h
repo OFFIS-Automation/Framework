@@ -21,9 +21,9 @@
 #include <QMap>
 #include <QVariant>
 #include <QStringList>
-#include "GamepadConfig.h"
+#include "TelecontrolConfig.h"
 
-struct RcUnitHelp : GamepadConfig
+struct RcUnitHelp : TelecontrolConfig
 {
     QString desc;
     QString server;
@@ -43,9 +43,6 @@ struct RcUnitHelp : GamepadConfig
     QList<Struct> structs;
     QList<Method> methods;
     QVariantMap constants;
-    bool hasHaptic;
-    double hapticSensitivity;
-    double hapticForceFactor;
 };
 
 

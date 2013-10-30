@@ -27,7 +27,7 @@ struct UserRequest;
 struct ScriptCompileInfo;
 struct RcUnitHelp;
 struct TelecontrolConfig;
-struct GamepadConfig;
+struct TelecontrolConfig;
 
 class HilecInterface : public QObject
 {
@@ -35,7 +35,7 @@ class HilecInterface : public QObject
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
     virtual QStringList getTelecontrolableUnits() = 0;
-    virtual GamepadConfig getUnitGamepadConfig(const QString& name) = 0;
+    virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;

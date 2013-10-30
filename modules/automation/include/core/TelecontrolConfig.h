@@ -22,7 +22,7 @@
 #include <QStringList>
 #include "../telecontrol/TcConfig.h"
 
-struct GamepadConfig
+struct TelecontrolConfig
 {
     QString unitName;
     struct TcButton
@@ -44,6 +44,10 @@ struct GamepadConfig
 
     QList<TcJostick> tcJoysticks;
     QList<TcButton> tcButtons;
+
+    bool hasHaptic;
+    double hapticSensitivity;
+    double hapticForceFactor;
 };
 
 #endif // GAMEPADCONFIG_H

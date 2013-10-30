@@ -27,13 +27,16 @@ struct UserRequest;
 struct ScriptCompileInfo;
 struct RcUnitHelp;
 struct TelecontrolConfig;
+struct GamepadConfig;
 
 class HilecInterface : public QObject
 {
     Q_OBJECT
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
-    virtual QStringList lolecs() = 0;
+    virtual QStringList getTelecontrolableUnits() = 0;
+    virtual GamepadConfig getUnitGamepadConfig(const QString& name) = 0;
+    virtual QStringList rcUnits() = 0;
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;

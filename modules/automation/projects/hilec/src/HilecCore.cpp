@@ -69,7 +69,19 @@ RcUnitHelp HilecCore::getUnitHelp(const QString &name)
     return RcUnits::instance()->getHelp(name.toLatin1());
 }
 
-QStringList HilecCore::lolecs()
+QStringList HilecCore::getTelecontrolableUnits()
+{
+    return rcUnits() << "master";
+}
+
+GamepadConfig HilecCore::getUnitGamepadConfig(const QString &name)
+{
+    if(rcUnits().contains(name))
+        return getUnitHelp(name);
+    return GamepadConfig();
+}
+
+QStringList HilecCore::rcUnits()
 {
     return RcUnits::instance()->unitNames();
 }

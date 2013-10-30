@@ -61,7 +61,7 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
     // Clear view
     clear();
     // Reload units
-    QStringList units = HilecSingleton::hilec()->lolecs();
+    QStringList units = HilecSingleton::hilec()->rcUnits();
     foreach(QString unit, units){
         RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);
         // Check if uni has gamepad methods

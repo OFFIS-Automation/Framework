@@ -79,7 +79,7 @@ void TelecontrolWidget::clear()
 void TelecontrolWidget::updateUnits(bool /*partialChange */)
 {
     clear();
-    QStringList units = HilecSingleton::hilec()->lolecs();
+    QStringList units = HilecSingleton::hilec()->rcUnits();
     foreach(QString unit, units)
     {
         RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);

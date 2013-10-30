@@ -42,7 +42,7 @@ void RcUnitWidget::updateRcUnits()
 {
     ui->units->clear();
     QMap<QString, QTreeWidgetItem*> roots;
-    foreach(QString unit, HilecSingleton::hilec()->lolecs())
+    foreach(QString unit, HilecSingleton::hilec()->rcUnits())
     {
         const RcUnitHelp& help = HilecSingleton::hilec()->getUnitHelp(unit);
         if(!roots.contains(help.server))

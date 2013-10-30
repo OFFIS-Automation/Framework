@@ -39,7 +39,9 @@ public:
     QList<QPair<QString, int> > breakpoints() const;
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
-    virtual QStringList lolecs();
+    QStringList getTelecontrolableUnits();
+    GamepadConfig getUnitGamepadConfig(const QString& name);
+    virtual QStringList rcUnits();
     virtual QWidget* createLolecWidget(const QString& lolec);
 
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0);

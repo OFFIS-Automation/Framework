@@ -101,6 +101,7 @@ void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
 RcUnitHelp RcUnit::getHelp() const
 {
     RcUnitHelp help;
+    help.unitName = name();
     help.desc = mDesc;
     help.server = tr("local", "Server location");
     QStringList names = mMethods.keys();

@@ -24,6 +24,7 @@
 
 struct GamepadConfig
 {
+    QString unitName;
     struct TcButton
     {
         QString name;

@@ -20,8 +20,9 @@
 
 #include <QObject>
 #include "GamepadEndpoint.h"
+#include "RcUnitsGlobal.h"
 
-class MasterTcInvoker : public QObject, public GamepadEndpoint
+class RCUNITS_EXPORT MasterTcInvoker : public QObject, public GamepadEndpoint
 {
     Q_OBJECT
 public:

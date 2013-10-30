@@ -138,6 +138,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
             qCritical() << tr("Could not load lolec %1 of type %2: %3").arg(name, type, error);
     }
     settings.endArray();
+    mMasterGamepads["master"]->initialize(mUnits.values());
     emit unitsUpdated();
 }
 

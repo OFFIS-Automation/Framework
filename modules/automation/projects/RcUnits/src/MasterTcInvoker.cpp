@@ -23,10 +23,10 @@ MasterTcInvoker::MasterTcInvoker(const QString &name)
 {
     JoystickWrap j1;
     j1.axeNames << "x" << "y" << "slide" << "z";
-    j1.targets << JoystickWrap::Target("arm", "moveLinear", "x");
-    j1.targets << JoystickWrap::Target("arm", "moveLinear", "y");
+    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "x");
+    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "y");
     j1.targets << JoystickWrap::Target("stepper", "moveSlideG", "duration");
-    j1.targets << JoystickWrap::Target("arm", "moveLinear", "z");
+    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "z");
     j1.joysticks << Tc::LeftJoystickX << Tc::LeftJoystickY << Tc::RightJoystickX << Tc::RightJoystickY;
     j1.deadMansButton = Tc::LeftShoulderUpperButton;
     j1.inverts << false << false << false << false;
@@ -48,12 +48,15 @@ MasterTcInvoker::~MasterTcInvoker()
 
 }
 
-void MasterTcInvoker::initialize(QList<RcUnit*> units)
+void MasterTcInvoker::initialize(QList<RcUnitBase*> units)
 {
     tempUnitButtons.clear();
     tempUnitMethods.clear();
-    foreach(RcUnit* unit, units)
+    foreach(RcUnitBase* baseUnit, units)
     {
+        RcUnit* unit = dynamic_cast<RcUnit*>(baseUnit);
+        if(!unit)
+            continue;
         foreach (JoystickWrap wrap, mWrappers) {
             setupWrapper(unit, wrap);
         }
@@ -111,9 +114,8 @@ TelecontrolConfig MasterTcInvoker::telecontrolConfig() const
 
 void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
 {
-    QList<RcUnit::TcUpdateMethod> newMethods;
+    QString unitName = unit->name();
     QMap<int, int> oldActivationButtons;
-    QList<RcUnit::TcButtonEvent> newButtons;
     foreach(const RcUnit::TcUpdateMethod& method, unit->tcMethods())
     {
         bool configured = false;
@@ -122,7 +124,7 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
             newMethod.joysticks[i] = Tc::NoJoystick; // reset all joysticks
         newMethod.deadMansButton = wrap.deadMansButton;
 
-        for(int targetId; wrap.targets.size(); targetId++)
+        for(int targetId; targetId < wrap.targets.size(); targetId++)
         {
             JoystickWrap::Target target = wrap.targets[targetId];
             if(target.unitName == unit->name() && target.methodName == method.name)

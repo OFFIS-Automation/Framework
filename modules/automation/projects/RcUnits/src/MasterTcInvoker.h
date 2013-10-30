@@ -31,7 +31,7 @@ class RCUNITS_EXPORT MasterTcInvoker : public QObject, public GamepadEndpoint
 public:
     explicit MasterTcInvoker(const QString& name);
     virtual ~MasterTcInvoker();
-    void initialize(QList<RcUnit *> units);
+    void initialize(QList<RcUnitBase *> units);
     virtual void connectGamepad(QObject* gamepad);
     virtual void disconnectGamepad(QObject* gamepad);
     virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);

@@ -26,12 +26,14 @@
 #include <lolecs/LolecInterface.h>
 
 #include "telecontrol/TelecontrolFactory.h"
+#include "MasterTcInvoker.h"
 
 RcUnitsBase::RcUnitsBase() :
     QObject()
 {
     mHaptic = 0;
     mGamepad = 0;
+    mMasterGamepads["master"] = new MasterTcInvoker("master");
 }
 
 RcUnitsBase::~RcUnitsBase()
@@ -44,6 +46,28 @@ RcUnitHelp RcUnitsBase::getHelp(const QString &name)
     if(!mUnits.contains(name))
         return RcUnitHelp();
     return mUnits[name]->getHelp();
+}
+
+TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
+{
+    if(mUnits.contains(name))
+        return mUnits[name]->telecontrolConfig();
+    if(mMasterGamepads.contains(name))
+        return mMasterGamepads[name]->telecontrolConfig();
+    return TelecontrolConfig();
+}
+
+QList<QString> RcUnitsBase::telecontrolableUnitNames()
+{
+    QStringList returnList = mMasterGamepads.keys();
+    foreach(QString name, unitNames())
+    {
+        TelecontrolConfig config = getTelecontrolConfig(name);
+        if(config.hasHaptic || !config.tcButtons.empty() || !config.tcJoysticks.empty())
+            returnList << name;
+    }
+    //@TODO add master gamepad controller
+    return returnList;
 }
 
 

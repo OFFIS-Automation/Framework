@@ -177,9 +177,9 @@ void WindowsGamepad::run()
         }
         lastButtons = buttons;
         emit dataUpdate(joysticks);
-        //int remaining = mPollingIntervall - timer.elapsed();
-        //if(remaining > 0)
-//            msleep(remaining);
+        int remaining = 50 - timer.elapsed();
+        if(remaining > 0)
+            msleep(remaining);
     }
 }
 

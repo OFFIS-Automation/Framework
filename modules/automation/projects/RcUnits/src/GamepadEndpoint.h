@@ -18,7 +18,7 @@
 #ifndef GAMEPADENDPOINT_H
 #define GAMEPADENDPOINT_H
 
-#include <core/GamepadConfig.h>
+#include <core/TelecontrolConfig.h>
 
 class GamepadEndpoint
 {
@@ -27,7 +27,7 @@ public:
     virtual void disconnectGamepad(QObject* gamepad) = 0;
     virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts) = 0;
     virtual bool isTelecontrolable() const = 0;
-    virtual GamepadConfig gamepadConfig() const = 0;
+    virtual TelecontrolConfig telecontrolConfig() const = 0;
 };
 
 #endif // GAMEPADENDPOINT_H

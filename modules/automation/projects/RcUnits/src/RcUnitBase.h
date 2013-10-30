@@ -34,7 +34,7 @@ public:
     virtual RcUnitHelp getHelp() const = 0;
     virtual QObject* lolec() = 0;
     virtual QString name() const = 0;
-    virtual GamepadConfig gamepadConfig() const { return getHelp(); }
+    virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };
 
 #endif // RCUNITBASE_H

@@ -107,7 +107,7 @@ HEADERS += \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
     ../../include/telecontrol/TcConfig.h \
-    ../../include/core/GamepadConfig.h
+    ../../include/core/TelecontrolConfig.h
 
 SOURCES += \
     HilecPlugin.cpp \

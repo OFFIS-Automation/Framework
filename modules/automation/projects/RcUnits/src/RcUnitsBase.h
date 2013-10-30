@@ -21,12 +21,13 @@
 #include "RcUnitsGlobal.h"
 #include <core/RcUnitHelp.h>
 #include <lolecs/RcExceptions.h>
-//#include "telecontrol/Gamepad.h"
+
 
 class Gamepad;
 class LolecInterface;
 class RcUnitBase;
 class HapticInterface;
+class MasterTcInvoker;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -36,7 +37,9 @@ public:
     virtual ~RcUnitsBase();
 
     RcUnitHelp getHelp(const QString &name);
+    TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mUnits.keys(); }
+    QList<QString> telecontrolableUnitNames();
     QWidget * lolecGui(const QString &name);
     virtual void loadConfig(const QString &filename) = 0;
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
@@ -68,6 +71,7 @@ protected:
     QStringList mTelecontrolLolecs;
     QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
     HapticInterface* mHaptic;
+    QMap<QString, MasterTcInvoker*> mMasterGamepads;
 };
 
 #endif // RCUNITSBASE_H

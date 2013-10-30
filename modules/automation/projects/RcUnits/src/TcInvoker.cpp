@@ -64,7 +64,11 @@ void TcInvoker::setButton(int id, bool pressed)
     if(pressed && mMethods.contains(id))
         mActiveMethod = &mMethods[id];
     if(!pressed && mActiveMethod && mActiveMethod->deadMansButton == id)
+    {
+        // call the TC method once with all zeros, to avoid problems with some rcUnits
+        handleData(QMap<int, double>());
         mActiveMethod = 0;
+    }
     if(mButtons.contains(id))
     {
         RcUnit::TcButtonEvent& event = mButtons[id];

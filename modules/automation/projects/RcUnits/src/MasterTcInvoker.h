@@ -19,19 +19,55 @@
 #define MASTERTCINVOKER_H
 
 #include <QObject>
+#include <QMap>
+
 #include "GamepadEndpoint.h"
 #include "RcUnitsGlobal.h"
+#include "RcUnit.h"
 
 class RCUNITS_EXPORT MasterTcInvoker : public QObject, public GamepadEndpoint
 {
     Q_OBJECT
 public:
-    explicit MasterTcInvoker(QObject *parent = 0);
-    
+    explicit MasterTcInvoker(const QString& name);
+    virtual ~MasterTcInvoker();
+    void initialize(QList<RcUnit *> units);
+    virtual void connectGamepad(QObject* gamepad);
+    virtual void disconnectGamepad(QObject* gamepad);
+    virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual bool isTelecontrolable() const { return true; }
+    virtual TelecontrolConfig telecontrolConfig() const;
 signals:
     
-public slots:
-    
+private slots:
+
+private:
+
+    struct JoystickWrap : TelecontrolConfig::TcJostick
+    {
+        struct Target
+        {
+            Target(QString a, QString b, QString c) : unitName(a), methodName(b), paramName(c) {}
+            QString unitName;
+            QString methodName;
+            QString paramName;
+        };
+        QList<Target> targets;
+    };
+    struct ButtonWrap : TelecontrolConfig::TcButton
+    {
+        QString targetUnit;
+        QString targetMethod;
+    };
+
+    QList<JoystickWrap> mWrappers;
+    QList<ButtonWrap> mButtonWrappers;
+
+    QMap<QString, TcInvoker*> mInvoker;
+    QList<RcUnit::TcUpdateMethod> tempUnitMethods;
+    QList<RcUnit::TcButtonEvent> tempUnitButtons;
+
+    void setupWrapper(RcUnit *unit, JoystickWrap &wrap);
 };
 
 #endif // MASTERTCINVOKER_H

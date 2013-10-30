@@ -40,7 +40,7 @@ public:
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     QStringList getTelecontrolableUnits();
-    GamepadConfig getUnitGamepadConfig(const QString& name);
+    TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
     virtual QWidget* createLolecWidget(const QString& lolec);
 

@@ -66,19 +66,17 @@ void HilecCore::compileFile(const QString &filename)
 
 RcUnitHelp HilecCore::getUnitHelp(const QString &name)
 {
-    return RcUnits::instance()->getHelp(name.toLatin1());
+    return RcUnits::instance()->getHelp(name);
 }
 
 QStringList HilecCore::getTelecontrolableUnits()
 {
-    return rcUnits() << "master";
+    return RcUnits::instance()->telecontrolableUnitNames();
 }
 
-GamepadConfig HilecCore::getUnitGamepadConfig(const QString &name)
+TelecontrolConfig HilecCore::getTelecontrolConfig(const QString &name)
 {
-    if(rcUnits().contains(name))
-        return getUnitHelp(name);
-    return GamepadConfig();
+    return RcUnits::instance()->getTelecontrolConfig(name);
 }
 
 QStringList HilecCore::rcUnits()

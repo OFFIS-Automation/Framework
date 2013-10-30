@@ -70,6 +70,8 @@ public:
     virtual const HapticResponse hapticMovement(const QVector3D& targetPositions);
     void hapticMovement(HapticResponse& data, bool readOnly);
 
+
+
     struct Parameter
     {
         enum Type
@@ -104,7 +106,8 @@ public:
         QMetaMethod method;
         bool hideFromUser;
     };
-
+    QList<TcUpdateMethod> tcMethods() { return mTcMethods.values(); }
+    QList<TcButtonEvent> tcButtons() { return mTcButtons; }
 protected:
     void run();
     TcInvoker* mTcInvoker;
@@ -131,6 +134,7 @@ protected:
     double mHapticSensitivity;
     double mHapticForceFactor;
     QMutex mCallMutex;
+
 };
 
 #endif // RCUNIT_H

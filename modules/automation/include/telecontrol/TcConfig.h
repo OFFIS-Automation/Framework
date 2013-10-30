@@ -37,6 +37,7 @@ namespace Tc
 
     enum Joystick
     {
+        NoJoystick = -1,
         LeftJoystickX = 0,
         LeftJoystickY,
         RightJoystickX,

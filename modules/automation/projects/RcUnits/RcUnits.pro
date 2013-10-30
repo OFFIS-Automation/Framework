@@ -41,6 +41,7 @@ SOURCES += src/RcUnit.cpp \
     src/RcUnitBase.cpp \
     src/RcUnitsBase.cpp\
     src/telecontrol/Gamepad.cpp \
+    src/MasterTcInvoker.cpp
 
 
 HEADERS += src/RcUnit.h \
@@ -53,6 +54,9 @@ HEADERS += src/RcUnit.h \
     src/telecontrol/Gamepad.h \
     ../../include/telecontrol/TcConfig.h \
     ../../include/telecontrol/HapticInterface.h \
+    src/MasterTcInvoker.h \
+    src/GamepadEndpoint.h \
+    src/HapticBaseEndpoint.h
 
 win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \

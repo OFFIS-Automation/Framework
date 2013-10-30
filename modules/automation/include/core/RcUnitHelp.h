@@ -21,9 +21,9 @@
 #include <QMap>
 #include <QVariant>
 #include <QStringList>
-#include "../telecontrol/TcConfig.h"
+#include "GamepadConfig.h"
 
-struct RcUnitHelp
+struct RcUnitHelp : GamepadConfig
 {
     QString desc;
     QString server;
@@ -33,22 +33,6 @@ struct RcUnitHelp
         QString sig;
         QString shortDesc;
         QString longDesc;
-    };
-    struct TcButton
-    {
-        QString name;
-        int buttonId;
-        bool toggleMode;
-    };
-
-    struct TcJostick
-    {
-        QString name;
-        int deadMansButton;
-        double sensitivity;
-        QStringList axeNames;
-        QList<Tc::Joystick> joysticks;
-        QList<bool> inverts;
     };
 
     struct Struct

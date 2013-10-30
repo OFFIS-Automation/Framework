@@ -98,7 +98,7 @@ void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
         mTcMethods[methodName].axeNames = names;
 }
 
-RcUnitHelp RcUnit::getHelp()
+RcUnitHelp RcUnit::getHelp() const
 {
     RcUnitHelp help;
     help.desc = mDesc;

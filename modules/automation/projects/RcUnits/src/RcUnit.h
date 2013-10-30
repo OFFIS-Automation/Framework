@@ -39,29 +39,29 @@ public:
     RcUnit(const QString& name, const QString &configFile);
     virtual ~RcUnit();
 
-    QString name() { return mName; }
+    QString name() const { return mName; }
     void addMethod(const QString& name, const QString& shortDesc, const QString& longDesc);
     void setDesc(const QString &desc) { mDesc = desc; }
     virtual void addConstant(const QString name, const QVariant& constant);
 
     void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0);
     void registerButtonEvent(QString methodName, int defaultMapping, bool hideFromUser = false);
-    void registerHapticMethod(QString methodName);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
     void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
-    void setParamNames(const QString &methodName, const QStringList &names);
-
     bool isTelecontrolable()const;
+
+    void setParamNames(const QString &methodName, const QStringList &names);
 
     bool initialize(LolecInterface* plugin);
     QObject* lolec() { return mLolec; }
     QVariant call(const QByteArray& method, QList<QVariant> params);
-    RcUnitHelp getHelp();
+    RcUnitHelp getHelp() const;
     void registerStruct(int id, const QByteArray& name, const QStringList& typeNames, const QList<int>& types, RcWrapperFactoryItf* wrapper);
 
-    QVariantMap getConstants() { return mConstantDefs; }
+    QVariantMap getConstants() const { return mConstantDefs; }
 
+    void registerHapticMethod(QString methodName);
     bool hasHapticInterface() const { return !mHapticName.isEmpty(); }
     virtual void updateHapticSensitivity(double sensitivity, double forceFactor) { mHapticSensitivity = sensitivity; mHapticForceFactor = forceFactor; }
     virtual double hapticSensitivity() const { return mHapticSensitivity; }

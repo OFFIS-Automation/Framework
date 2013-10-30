@@ -28,13 +28,13 @@ public:
     RemoteRcUnit(const QString& name, const RcUnitHelp& help, RemoteLolec& remoteLolec);
     virtual ~RemoteRcUnit();
     virtual QVariant call(const QByteArray& method, QList<QVariant> params);
-    virtual RcUnitHelp getHelp() { return mHelp; }
+    virtual RcUnitHelp getHelp() const { return mHelp; }
     virtual QObject* lolec() { return 0; }
-    virtual QString name() { return mName; }
+    virtual QString name() const { return mName; }
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );
     virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
-    QMap<QString, QVariant> getConstants() { return mHelp.constants; }
+    QMap<QString, QVariant> getConstants() const { return mHelp.constants; }
     bool isTelecontrolable() const { return !mHelp.tcJoysticks.empty(); }
     bool hasHapticInterface() const { return false; }
     const HapticResponse currentHapticData() { return HapticResponse(); }

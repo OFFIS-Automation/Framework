@@ -106,7 +106,8 @@ HEADERS += \
     ../../include/lolecs/Pose2d.h \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
-    ../../include/telecontrol/TcConfig.h
+    ../../include/telecontrol/TcConfig.h \
+    ../../include/core/GamepadConfig.h
 
 SOURCES += \
     HilecPlugin.cpp \

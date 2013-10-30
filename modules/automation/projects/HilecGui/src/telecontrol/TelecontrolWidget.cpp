@@ -79,10 +79,10 @@ void TelecontrolWidget::clear()
 void TelecontrolWidget::updateUnits(bool /*partialChange */)
 {
     clear();
-    QStringList units = HilecSingleton::hilec()->rcUnits();
+    QStringList units = HilecSingleton::hilec()->getTelecontrolableUnits();
     foreach(QString unit, units)
     {
-        RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);
+        TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
         if(help.tcJoysticks.empty() && help.tcButtons.empty())
             continue;
         ui->gamepadTabWidget->setEnabled(true);

@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <cmath>
 
-TelecontrolUnitWidget::TelecontrolUnitWidget(const QString& unit, const RcUnitHelp::TcJostick &method, QWidget *parent) :
+TelecontrolUnitWidget::TelecontrolUnitWidget(const QString& unit, const TelecontrolConfig::TcJostick &method, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TelecontrolUnitWidget),
     mUnit(unit),

@@ -31,7 +31,7 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
     colors << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
 
     // get unit
-    RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);
+    TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
 
     // Buttons
     if(!help.tcButtons.empty()){

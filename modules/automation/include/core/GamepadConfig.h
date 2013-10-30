@@ -41,6 +41,9 @@ struct GamepadConfig
         QList<Tc::Joystick> joysticks;
         QList<bool> inverts;
     };
+
+    QList<TcJostick> tcJoysticks;
+    QList<TcButton> tcButtons;
 };
 
 #endif // GAMEPADCONFIG_H

@@ -42,8 +42,6 @@ struct RcUnitHelp : GamepadConfig
     };
     QList<Struct> structs;
     QList<Method> methods;
-    QList<TcJostick> tcJoysticks;
-    QList<TcButton> tcButtons;
     QVariantMap constants;
     bool hasHaptic;
     double hapticSensitivity;

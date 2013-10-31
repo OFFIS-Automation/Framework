@@ -28,6 +28,7 @@ class LolecInterface;
 class RcUnitBase;
 class HapticInterface;
 class MasterTcInvoker;
+class GamepadEndpoint;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -64,6 +65,7 @@ private slots:
 
 protected:
     void loadTcMasters(const QString& configFile);
+    void loadTcSensitivity(const QString &name, GamepadEndpoint* ep, const QString& configFile);
     LolecInterface* loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;
@@ -73,6 +75,7 @@ protected:
     QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
     HapticInterface* mHaptic;
     QMap<QString, MasterTcInvoker*> mMasterGamepads;
+    QStringList mUnitsHiddenforTc;
 };
 
 #endif // RCUNITSBASE_H

@@ -40,7 +40,8 @@ void TcInvoker::handleData(const QMap<int, double> &data)
         {
             int id = elems[i];
             vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
-            if(activeMethod.inverts[i])
+            int invertPos = activeMethod.invertPos.value(i, i);
+            if(activeMethod.inverts.value(invertPos, false))
                 vals[i] = -vals[i];
             args[i] = Q_ARG(double, vals[i]);
         }

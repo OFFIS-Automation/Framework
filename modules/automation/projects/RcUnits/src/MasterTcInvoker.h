@@ -69,7 +69,7 @@ private:
     QList<RcUnit::TcUpdateMethod> tempUnitMethods;
     QList<RcUnit::TcButtonEvent> tempUnitButtons;
 
-    QString mName;
+    QString mName, mConfigFile;
     void setupWrapper(RcUnit *unit, JoystickWrap &wrap);
 
 };

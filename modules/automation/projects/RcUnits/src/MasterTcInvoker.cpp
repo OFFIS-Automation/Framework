@@ -33,6 +33,7 @@ MasterTcInvoker::~MasterTcInvoker()
 
 void MasterTcInvoker::readConfig(const QString &configFile)
 {
+    mConfigFile = configFile;
     QSettings settings(configFile, QSettings::IniFormat);
     settings.beginGroup("telecontrol-combinations");
     settings.beginGroup(mName);
@@ -41,10 +42,7 @@ void MasterTcInvoker::readConfig(const QString &configFile)
     {
         settings.setArrayIndex(i);
         JoystickWrap wrap;
-        wrap.sensitivity = settings.value("sensitivity").toDouble();
-        QStringList invertStringList = settings.value("inverts").toStringList();
-        foreach(const QString& value, invertStringList)
-            wrap.inverts << (value.toInt() != 0);
+        wrap.sensitivity = 1/64.0;
         wrap.name = settings.value("name").toString();
         wrap.deadMansButton = Tc::buttonFromString(settings.value("activationButton").toString());
         foreach(Tc::Joystick joystick, Tc::allJoysticks())
@@ -60,6 +58,7 @@ void MasterTcInvoker::readConfig(const QString &configFile)
                 target.methodName = settings.value("method").toString();
                 target.paramName= settings.value("channel").toString();
                 wrap.targets << target;
+                wrap.inverts << false;
                 settings.endGroup();
             }
         }
@@ -129,7 +128,17 @@ void MasterTcInvoker::disconnectGamepad(QObject *gamepad)
 
 void MasterTcInvoker::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
-    //@TODO
+    foreach(TcInvoker* invoker, mInvoker)
+        invoker->setSensitivity(unitName, sensitivity, inverts);
+    for(int i=0;i<mWrappers.size(); i++)
+    {
+        JoystickWrap& wrap = mWrappers[i];
+        if(wrap.name == unitName)
+        {
+            wrap.sensitivity = sensitivity;
+            wrap.inverts = inverts;
+        }
+    }
 }
 
 TelecontrolConfig MasterTcInvoker::telecontrolConfig() const
@@ -150,6 +159,8 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
     {
         bool configured = false;
         RcUnit::TcUpdateMethod newMethod = method;
+        newMethod.name = wrap.name;
+        newMethod.inverts = wrap.inverts;
         for(int i=0;i<newMethod.joysticks.size(); i++)
             newMethod.joysticks[i] = Tc::NoJoystick; // reset all joysticks
         newMethod.deadMansButton = wrap.deadMansButton;
@@ -167,7 +178,8 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
                     {
                         Tc::Joystick joyId = wrap.joysticks.value(targetId, Tc::NoJoystick);
                         newMethod.joysticks[paramId] = joyId;
-                        newMethod.inverts[paramId] = wrap.inverts.value(targetId, false);
+                        newMethod.invertPos[paramId] = targetId;
+                        newMethod.sensitivity = wrap.sensitivity;
                         configured = true;
                     }
                 }

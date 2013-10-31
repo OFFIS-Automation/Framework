@@ -100,6 +100,7 @@ public:
     struct TcUpdateMethod : RcUnitHelp::TcJostick
     {
         QMetaMethod method;
+        QMap<int, int> invertPos;
     };
     struct TcButtonEvent : RcUnitHelp::TcButton
     {

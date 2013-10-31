@@ -41,7 +41,7 @@ public:
     QList<QString> unitNames() { return mUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
     QWidget * lolecGui(const QString &name);
-    virtual void loadConfig(const QString &filename) = 0;
+    virtual void loadConfig(const QString &filename);
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& lolec);
     void activateTelecontrol(const QString& unit);
@@ -63,6 +63,7 @@ private slots:
     void onGamepadButtonPressed(int buttonId, bool pressed);
 
 protected:
+    void loadTcMasters(const QString& configFile);
     LolecInterface* loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;

@@ -31,6 +31,7 @@ class RCUNITS_EXPORT MasterTcInvoker : public QObject, public GamepadEndpoint
 public:
     explicit MasterTcInvoker(const QString& name);
     virtual ~MasterTcInvoker();
+    void readConfig(const QString& configFile);
     void initialize(QList<RcUnitBase *> units);
     virtual void connectGamepad(QObject* gamepad);
     virtual void disconnectGamepad(QObject* gamepad);
@@ -47,6 +48,7 @@ private:
     {
         struct Target
         {
+            Target(){}
             Target(QString a, QString b, QString c) : unitName(a), methodName(b), paramName(c) {}
             QString unitName;
             QString methodName;
@@ -67,7 +69,9 @@ private:
     QList<RcUnit::TcUpdateMethod> tempUnitMethods;
     QList<RcUnit::TcButtonEvent> tempUnitButtons;
 
+    QString mName;
     void setupWrapper(RcUnit *unit, JoystickWrap &wrap);
+
 };
 
 #endif // MASTERTCINVOKER_H

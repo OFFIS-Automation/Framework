@@ -19,32 +19,65 @@
 #include "RcUnit.h"
 #include "TcInvoker.h"
 
+#include <QSettings>
+
 MasterTcInvoker::MasterTcInvoker(const QString &name)
 {
-    JoystickWrap j1;
-    j1.axeNames << "x" << "y" << "slide" << "z";
-    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "x");
-    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "y");
-    j1.targets << JoystickWrap::Target("stepper", "moveSlideG", "duration");
-    j1.targets << JoystickWrap::Target("arm", "moveGamepadLinear", "z");
-    j1.joysticks << Tc::LeftJoystickX << Tc::LeftJoystickY << Tc::RightJoystickX << Tc::RightJoystickY;
-    j1.deadMansButton = Tc::LeftShoulderUpperButton;
-    j1.inverts << false << false << false << false;
-    j1.name  = "moveSlide";
-    j1.sensitivity = 1/64.0;
-    mWrappers << j1;
-
-    ButtonWrap b1;
-    b1.name = "CloseGripper";
-    b1.buttonId = Tc::LeftShoulderLowerButton;
-    b1.toggleMode = false;
-    b1.targetMethod = "CloseGripper";
-    b1.targetUnit = "gripper";
-    mButtonWrappers << b1;
+    mName = name;
 }
 
 MasterTcInvoker::~MasterTcInvoker()
 {
+
+}
+
+void MasterTcInvoker::readConfig(const QString &configFile)
+{
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.beginGroup("telecontrol-combinations");
+    settings.beginGroup(mName);
+    int size = settings.beginReadArray("joysticks");
+    for(int i=0;i<size;i++)
+    {
+        settings.setArrayIndex(i);
+        JoystickWrap wrap;
+        wrap.sensitivity = settings.value("sensitivity").toDouble();
+        QStringList invertStringList = settings.value("inverts").toStringList();
+        foreach(const QString& value, invertStringList)
+            wrap.inverts << (value.toInt() != 0);
+        wrap.name = settings.value("name").toString();
+        wrap.deadMansButton = Tc::buttonFromString(settings.value("activationButton").toString());
+        foreach(Tc::Joystick joystick, Tc::allJoysticks())
+        {
+            QString groupName = Tc::stringForJoystick(joystick);
+            if(settings.childGroups().contains(groupName))
+            {
+                settings.beginGroup(groupName);
+                wrap.joysticks << joystick;
+                wrap.axeNames << settings.value("name").toString();
+                JoystickWrap::Target target;
+                target.unitName = settings.value("unit").toString();
+                target.methodName = settings.value("method").toString();
+                target.paramName= settings.value("channel").toString();
+                wrap.targets << target;
+                settings.endGroup();
+            }
+        }
+        mWrappers << wrap;
+    }
+    settings.endArray();
+    size = settings.beginReadArray("buttons");
+    for(int i= 0; i< size; i++)
+    {
+        settings.setArrayIndex(i);
+        ButtonWrap wrap;
+        wrap.name = settings.value("name").toString();
+        wrap.buttonId = Tc::buttonFromString(settings.value("button").toString());
+        wrap.targetUnit = settings.value("unit").toString();
+        wrap.targetMethod = settings.value("method").toString();
+        mButtonWrappers << wrap;
+    }
+    settings.endArray();
 
 }
 
@@ -85,16 +118,13 @@ void MasterTcInvoker::initialize(QList<RcUnitBase*> units)
 void MasterTcInvoker::connectGamepad(QObject *gamepad)
 {
     foreach(TcInvoker* invoker, mInvoker)
-    {
-        connect(gamepad, SIGNAL(buttonToggled(int,bool)), invoker, SLOT(setButton(int,bool)), Qt::DirectConnection);
-        connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), invoker, SLOT(handleData(QMap<int,double>)), Qt::DirectConnection);
-    }
+        invoker->connectGamepad(gamepad);
 }
 
 void MasterTcInvoker::disconnectGamepad(QObject *gamepad)
 {
     foreach(TcInvoker* invoker, mInvoker)
-        gamepad->disconnect(invoker);
+        invoker->disconnectGamepad(gamepad);
 }
 
 void MasterTcInvoker::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
@@ -124,7 +154,8 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
             newMethod.joysticks[i] = Tc::NoJoystick; // reset all joysticks
         newMethod.deadMansButton = wrap.deadMansButton;
 
-        for(int targetId; targetId < wrap.targets.size(); targetId++)
+        int size = wrap.targets.size();
+        for(int targetId = 0; targetId < wrap.targets.size(); targetId++)
         {
             JoystickWrap::Target target = wrap.targets[targetId];
             if(target.unitName == unit->name() && target.methodName == method.name)

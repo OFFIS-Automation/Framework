@@ -32,9 +32,10 @@ public slots:
     void handleData(const QMap<int,double>& data);
     void setButton(int id, bool pressed);
 protected:
-    QMap<int, RcUnit::TcUpdateMethod> mMethods;
-    RcUnit::TcUpdateMethod* mActiveMethod;
+    QList<RcUnit::TcUpdateMethod> mMethods;
+    QList<int> mActiveMethods;
     QMap<int, RcUnit::TcButtonEvent> mButtons;
+    int mCurrentActivationButton;
     QObject* mDevice;
 };
 

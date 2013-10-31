@@ -23,51 +23,66 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcUpdateMethod>& metho
     : mDevice(device)
 {
     foreach(const RcUnit::TcUpdateMethod& m, methods)
-        mMethods[m.deadMansButton] = m;
+        mMethods.append(m);
     foreach(const RcUnit::TcButtonEvent& e, buttons)
         mButtons[e.buttonId] = e;
-    mActiveMethod = 0;
 }
 
 void TcInvoker::handleData(const QMap<int, double> &data)
 {
-    if(!mActiveMethod)
-        return;
-    QVector<QGenericArgument> args(10);
-    QVector<double> vals(10);
-    QList<Tc::Joystick>& elems = mActiveMethod->joysticks;
-    for(int i=0; i<elems.size(); i++)
+    foreach(int activeMethodId, mActiveMethods)
     {
-        int id = elems[i];
-        vals[i] = data.value(id, 0.0)*mActiveMethod->sensitivity;
-        if(mActiveMethod->inverts[i])
-            vals[i] = -vals[i];
-        args[i] = Q_ARG(double, vals[i]);
+        RcUnit::TcUpdateMethod activeMethod = mMethods.value(activeMethodId);
+        QVector<QGenericArgument> args(10);
+        QVector<double> vals(10);
+        QList<Tc::Joystick>& elems = activeMethod.joysticks;
+        for(int i=0; i<elems.size(); i++)
+        {
+            int id = elems[i];
+            vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
+            if(activeMethod.inverts[i])
+                vals[i] = -vals[i];
+            args[i] = Q_ARG(double, vals[i]);
+        }
+        try
+        {
+            activeMethod.method.invoke(mDevice, Qt::DirectConnection, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+        }
+        catch(const std::exception& e)
+        {
+            qCritical() << tr("Telecontrol update error:") << e.what();
+        }
+        catch(...)
+        {
+            qCritical() << tr("Telecontrol update error:") << tr("Unknown");
+        }
     }
-    try
-    {
-        mActiveMethod->method.invoke(mDevice, Qt::DirectConnection, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-    }
-    catch(const std::exception& e)
-    {
-        qCritical() << tr("Telecontrol update error:") << e.what();
-    }
-    catch(...)
-    {
-        qCritical() << tr("Telecontrol update error:") << tr("Unknown");
-    }
-
 }
 
 void TcInvoker::setButton(int id, bool pressed)
 {
-    if(pressed && mMethods.contains(id))
-        mActiveMethod = &mMethods[id];
-    if(!pressed && mActiveMethod && mActiveMethod->deadMansButton == id)
+    if(pressed)
     {
-        // call the TC method once with all zeros, to avoid problems with some rcUnits
-        handleData(QMap<int, double>());
-        mActiveMethod = 0;
+        bool cleared = false;
+        for(int i=0;i<mMethods.size(); i++)
+        {
+            const RcUnit::TcUpdateMethod& method = mMethods[i];
+            if(method.deadMansButton == id)
+            {
+                if(!cleared)
+                {
+                    mActiveMethods.clear();
+                    mCurrentActivationButton = id;
+                    cleared = true;
+                }
+                mActiveMethods << i;
+            }
+        }
+    }
+    if(!pressed && id == mCurrentActivationButton)
+    {
+        mCurrentActivationButton = -1;
+        mActiveMethods.clear();
     }
     if(mButtons.contains(id))
     {
@@ -99,15 +114,16 @@ void TcInvoker::connectGamepad(QObject *gamepad)
 void TcInvoker::disconnectGamepad(QObject *gamepad)
 {
     gamepad->disconnect(this);
-    mActiveMethod = 0;
+    mActiveMethods.clear();
+    mCurrentActivationButton = -1;
 }
 
 void TcInvoker::setSensitivity(const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-    QMutableMapIterator<int, RcUnit::TcUpdateMethod> iter(mMethods);
+    QMutableListIterator<RcUnit::TcUpdateMethod> iter(mMethods);
     while(iter.hasNext())
     {
-        RcUnit::TcUpdateMethod& method = iter.next().value();
+        RcUnit::TcUpdateMethod& method = iter.next();
         if(method.name == methodName)
         {
             method.sensitivity = qMin<double>(sensitivity, 1.0);

@@ -25,7 +25,8 @@ namespace Tc
 
     enum Button
     {
-        NorthButton,
+        UnknownButton = -1,
+        NorthButton = 0,
         SouthButton,
         WestButton,
         EastButton,
@@ -43,6 +44,9 @@ namespace Tc
         RightJoystickX,
         RightJoystickY
     };
+
+
+
     inline QList<Joystick> joysticks()
     {
         return QList<Joystick>();
@@ -65,6 +69,85 @@ namespace Tc
     inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4)
     {
         return joysticks() << j1 << j2 << j3 << j4;
+    }
+
+    inline QList<Joystick> allJoysticks() {
+        return joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX, Tc::RightJoystickY);
+    }
+
+    inline QString stringForButton(int button)
+    {
+        switch(button){
+            case NorthButton:
+                return "NorthButton";
+            case SouthButton:
+                return "SouthButton";
+            case WestButton:
+                return "WestButton";
+            case EastButton:
+                return "EastButton";
+            case LeftShoulderUpperButton:
+                return "LeftShoulderUpperButton";
+            case LeftShoulderLowerButton:
+                return "LeftShoulderLowerButton";
+            case RightShoulderUpperButton:
+                return "RightShoulderUpperButton";
+            case RightShoulderLowerButton:
+                return "RightShoulderLowerButton";
+            default:
+                return "UnknownButton";
+        }
+    }
+
+    inline Button buttonFromString(QString buttonName)
+    {
+        if(buttonName == "NorthButton")
+            return NorthButton;
+        else if(buttonName == "SouthButton")
+            return SouthButton;
+        else if(buttonName == "WestButton")
+            return WestButton;
+        else if(buttonName == "EastButton")
+            return EastButton;
+        else if(buttonName == "LeftShoulderUpperButton")
+            return LeftShoulderUpperButton;
+        else if(buttonName == "LeftShoulderLowerButton")
+            return LeftShoulderLowerButton;
+        else if(buttonName == "RightShoulderUpperButton")
+            return RightShoulderUpperButton;
+        else if(buttonName == "RightShoulderLowerButton")
+            return RightShoulderLowerButton;
+        else
+            return UnknownButton;
+    }
+
+    inline QString stringForJoystick(int joystick)
+    {
+        switch(joystick){
+            case LeftJoystickX:
+                return "LeftJoystickX";
+            case LeftJoystickY:
+                return "LeftJoystickY";
+            case RightJoystickX:
+                return "RightJoystickX";
+            case RightJoystickY:
+                return "RightJoystickY";
+            default:
+                return "UnknownJoystick";
+        }
+    }
+    inline Joystick joystickFromString(const QString& name)
+    {
+        if(name == "LeftJoystickX")
+            return LeftJoystickX;
+        else if(name == "LeftJoystickY")
+            return LeftJoystickY;
+        else if(name == "RightJoystickX")
+            return RightJoystickX;
+        else if(name == "RightJoystickY")
+            return RightJoystickY;
+        else
+            return NoJoystick;
     }
 }
 #endif //LOLECTOOLS_TCCONFIG_H

@@ -33,7 +33,6 @@ RcUnitsBase::RcUnitsBase() :
 {
     mHaptic = 0;
     mGamepad = 0;
-    mMasterGamepads["master"] = new MasterTcInvoker("master");
 }
 
 RcUnitsBase::~RcUnitsBase()
@@ -85,8 +84,8 @@ void RcUnitsBase::loadConfig(const QString &filename)
 {
     mTypes.clear();
     qDeleteAll(mUnits);
-    QString baseDir = QFileInfo(filename).absolutePath();
     mUnits.clear();
+    QString baseDir = QFileInfo(filename).absolutePath();
     QFile file(filename);
     QSettings settings(filename, QSettings::IniFormat);
     int size = settings.beginReadArray("hilecConfig");
@@ -138,8 +137,23 @@ void RcUnitsBase::loadConfig(const QString &filename)
             qCritical() << tr("Could not load lolec %1 of type %2: %3").arg(name, type, error);
     }
     settings.endArray();
-    mMasterGamepads["master"]->initialize(mUnits.values());
+    loadTcMasters(filename);
     emit unitsUpdated();
+}
+
+void RcUnitsBase::loadTcMasters(const QString &configFile)
+{
+    qDeleteAll(mMasterGamepads);
+    mMasterGamepads.clear();
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.beginGroup("telecontrol-combinations");
+    QStringList configs = settings.childGroups();
+    foreach (QString configName, configs) {
+        MasterTcInvoker* master = new MasterTcInvoker(configName);
+        master->readConfig(configFile);
+        master->initialize(mUnits.values());
+        mMasterGamepads[configName] = master;
+    }
 }
 
 LolecInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
@@ -211,8 +225,12 @@ void RcUnitsBase::activateTelecontrol(const QString &unitName)
         connect(mGamepad,SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
         mGamepad->start();
     }
-    RcUnitBase* unitToActivate = mUnits.value(unitName, 0);
-    foreach(RcUnitBase* unit, mUnits.values())
+    GamepadEndpoint* unitToActivate = mMasterGamepads.value(unitName, 0);
+    if(!unitToActivate)
+        unitToActivate = mUnits.value(unitName, 0);
+    foreach(GamepadEndpoint* unit, mMasterGamepads.values())
+        unit->disconnectGamepad(mGamepad);
+    foreach(GamepadEndpoint* unit, mUnits.values())
         unit->disconnectGamepad(mGamepad);
     if(unitToActivate)
         unitToActivate->connectGamepad(mGamepad);

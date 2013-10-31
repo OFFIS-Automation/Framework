@@ -349,15 +349,15 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
         emit telecontrolSensitivityChangeRequested(mCurrentTelecontrolledUnit, buttonId == Tc::ButtonRight);
         return;
     }
-    QStringList& units = mTelecontrolLolecs;
+    QStringList units = telecontrolableUnitNames();
     int currentId = units.indexOf(mCurrentTelecontrolledUnit);
     bool isNewUnit = false;
-    if(buttonId == Tc::ButtonUp)
+    if(buttonId == Tc::ButtonUp && currentId > 0)
     {
         currentId--;
         isNewUnit = true;
     }
-    else if(buttonId == Tc::ButtonDown)
+    else if(buttonId == Tc::ButtonDown && (currentId+1) < units.size())
     {
         currentId++;
         isNewUnit = true;

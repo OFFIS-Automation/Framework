@@ -72,6 +72,8 @@ void TcInvoker::setButton(int id, bool pressed)
             {
                 if(!cleared)
                 {
+                    // stop current movements
+                    handleData(QMap<int, double>());
                     mActiveMethods.clear();
                     mCurrentActivationButton = id;
                     cleared = true;
@@ -82,6 +84,8 @@ void TcInvoker::setButton(int id, bool pressed)
     }
     if(!pressed && id == mCurrentActivationButton)
     {
+        // stop current movements
+        handleData(QMap<int, double>());
         mCurrentActivationButton = -1;
         mActiveMethods.clear();
     }

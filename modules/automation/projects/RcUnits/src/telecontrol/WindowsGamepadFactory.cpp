@@ -31,6 +31,7 @@ LPDIRECTINPUT8 WindowsGamepadFactory::sDirectInput;
 WindowsGamepadFactory::WindowsGamepadFactory()
 {
 	sDirectInput = 0;
+    sGamepad = 0;
     DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
 }
 
@@ -49,6 +50,7 @@ Gamepad* WindowsGamepadFactory::createGamepad()
 {
 	// force constructor/destructor call to acquire/release sDirectInput
     instance();
+    if(sGamepad) delete sGamepad;
 	sGamepad = 0;
 	HRESULT hr;
 	

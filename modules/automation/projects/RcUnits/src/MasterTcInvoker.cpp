@@ -165,7 +165,6 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
             newMethod.joysticks[i] = Tc::NoJoystick; // reset all joysticks
         newMethod.deadMansButton = wrap.deadMansButton;
 
-        int size = wrap.targets.size();
         for(int targetId = 0; targetId < wrap.targets.size(); targetId++)
         {
             JoystickWrap::Target target = wrap.targets[targetId];

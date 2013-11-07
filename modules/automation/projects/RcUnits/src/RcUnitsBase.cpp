@@ -130,6 +130,12 @@ void RcUnitsBase::loadConfig(const QString &filename)
     }
     settings.endArray();
     loadTcMasters(filename);
+    mGamepad = TelecontrolFactory::createGamepad();
+    if(mGamepad)
+    {
+       connect(mGamepad,SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
+       mGamepad->start();
+    }
     emit unitsUpdated();
 }
 

@@ -33,7 +33,9 @@ namespace Tc
         LeftShoulderUpperButton,
         LeftShoulderLowerButton,
         RightShoulderUpperButton,
-        RightShoulderLowerButton
+        RightShoulderLowerButton,
+        ButtonEnumEnd,
+        ButtonEnumFirst = NorthButton
     };
 
     enum Joystick
@@ -96,6 +98,30 @@ namespace Tc
                 return "RightShoulderLowerButton";
             default:
                 return "UnknownButton";
+        }
+    }
+
+    inline QString userFriendlyStringForButton(int button)
+    {
+        switch(button){
+            case NorthButton:
+                return "north button";
+            case SouthButton:
+                return "south button";
+            case WestButton:
+                return "west button";
+            case EastButton:
+                return "east button";
+            case LeftShoulderUpperButton:
+                return "left shoulder upper button";
+            case LeftShoulderLowerButton:
+                return "left shoulder lower button";
+            case RightShoulderUpperButton:
+                return "right shoulder upper button";
+            case RightShoulderLowerButton:
+                return "right shoulder lower button";
+            default:
+                return "unknown button";
         }
     }
 

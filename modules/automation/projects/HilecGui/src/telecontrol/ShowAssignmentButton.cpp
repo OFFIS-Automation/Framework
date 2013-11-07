@@ -17,12 +17,14 @@
 #include "ShowAssignmentButton.h"
 #include "ui_ShowAssignmentButton.h"
 
-ShowAssignmentButton::ShowAssignmentButton(QString unit) :
+ShowAssignmentButton::ShowAssignmentButton(QString unit, bool hideEdit) :
     QWidget(),
     ui(new Ui::ShowAssignmentButton)
 {
     mUnit = unit;
     ui->setupUi(this);
+    if(hideEdit)
+        ui->edit->setEnabled(false);
 }
 
 ShowAssignmentButton::~ShowAssignmentButton()
@@ -30,7 +32,12 @@ ShowAssignmentButton::~ShowAssignmentButton()
     delete ui;
 }
 
-void ShowAssignmentButton::on_pushButton_clicked()
+void ShowAssignmentButton::on_show_clicked()
 {
     emit openButtonAssignment(mUnit);
+}
+
+void ShowAssignmentButton::on_edit_clicked()
+{
+    emit editButtonAssignment(mUnit);
 }

@@ -32,6 +32,7 @@ class TelecontrolWidget : public QDockWidget
 public:
     explicit TelecontrolWidget(QWidget *parent = 0);
     ~TelecontrolWidget();
+    void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
 signals:
     void activateTelecontrol(const QString& unitName);
     void deactivateTelecontrol();
@@ -50,6 +51,7 @@ private slots:
     void on_gamepadTabWidget_currentChanged(int index);
     void on_hapticTabWidget_currentChanged(int index);
     void on_openButtonAssignment_clicked(QString unit);
+    void editButtonAssignment(const QString& unit);
 
 private:
     static const int sHapticIndexOffset = 1024;
@@ -58,6 +60,7 @@ private:
     bool mInUpdate;
     QWidget* mHapticWidget;
     TelecontrolAssignmentWidget *mTelecontrolAssignmentWidget;
+    QString mConfigFile;
 };
 
 #endif // TELECONTROLWIDGET_H

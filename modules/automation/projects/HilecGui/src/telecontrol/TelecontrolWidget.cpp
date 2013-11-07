@@ -23,7 +23,7 @@
 #include "TelecontrolUnitWidget.h"
 #include "TelecontrolHapticWidget.h"
 #include "ShowAssignmentButton.h"
-
+#include "EditGamepadAssignment.h"
 #include "../HilecSingleton.h"
 #include <cmath>
 
@@ -80,6 +80,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
 {
     clear();
     QStringList units = HilecSingleton::hilec()->getTelecontrolableUnits();
+    QStringList rcUnits = HilecSingleton::hilec()->rcUnits();
     foreach(QString unit, units)
     {
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
@@ -90,8 +91,9 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
         QVBoxLayout* layout = new QVBoxLayout();
         page->setLayout(layout);
         // Add assignment button
-        ShowAssignmentButton *button = new ShowAssignmentButton(unit);
+        ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
         connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
+        connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
         layout->addWidget(button);
 
         // Add slider, gain, .. for each method
@@ -178,6 +180,13 @@ void TelecontrolWidget::on_openButtonAssignment_clicked(QString unit)
     mTelecontrolAssignmentWidget->switchToUnit(unit);
     mTelecontrolAssignmentWidget->show();
 
+}
+
+void TelecontrolWidget::editButtonAssignment(const QString &unit)
+{
+    EditGamepadAssignment edit(this);
+    edit.load(unit, mConfigFile);
+    edit.exec();
 }
 
 

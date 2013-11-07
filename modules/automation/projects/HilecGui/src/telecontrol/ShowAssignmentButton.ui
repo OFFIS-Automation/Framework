@@ -21,13 +21,24 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="show">
      <property name="text">
-      <string>Show button assignment</string>
+      <string>Show assignment</string>
      </property>
      <property name="icon">
       <iconset resource="../../images/images.qrc">
        <normaloff>:/hilecGui/controller_info.png</normaloff>:/hilecGui/controller_info.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="edit">
+     <property name="text">
+      <string>Edit assignment</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../images/images.qrc">
+       <normaloff>:/hilecGui/controller_edit.png</normaloff>:/hilecGui/controller_edit.png</iconset>
      </property>
     </widget>
    </item>

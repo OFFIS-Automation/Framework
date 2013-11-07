@@ -37,6 +37,7 @@ public:
     void load(const QString &unitName, const QString &name, const QString &configFile);
 signals:
     void nameChanged(const QString& name);
+    void removeCurrentConfig();
 private:
     Ui::EditGamepadArea *ui;
     QMap<Tc::Joystick, QComboBox*> mJoystickUis;

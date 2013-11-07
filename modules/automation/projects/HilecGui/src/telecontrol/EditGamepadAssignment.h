@@ -35,6 +35,7 @@ public:
     void load(const QString& unit, const QString& configFile);
 private slots:
     void onNameChanged(const QString& text);
+    void onRemoveCurrentConfig();
     void on_add_clicked();
 
 private:

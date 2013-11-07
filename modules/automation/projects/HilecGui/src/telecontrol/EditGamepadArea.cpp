@@ -61,6 +61,7 @@ EditGamepadArea::EditGamepadArea(const QString &name, QWidget *parent) :
     }
 
     connect(ui->name, SIGNAL(textChanged(QString)), SIGNAL(nameChanged(QString)));
+    connect(ui->deleteThis, SIGNAL(clicked()), SIGNAL(removeCurrentConfig()));
 }
 
 EditGamepadArea::~EditGamepadArea()

@@ -56,6 +56,13 @@ void EditGamepadAssignment::onNameChanged(const QString &text)
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), text);
 }
 
+void EditGamepadAssignment::onRemoveCurrentConfig()
+{
+    QWidget* w = ui->tabWidget->currentWidget();
+    ui->tabWidget->removeTab(ui->tabWidget->currentIndex());
+    w->deleteLater();
+}
+
 void EditGamepadAssignment::on_add_clicked()
 {
     QString baseName = "move";
@@ -83,5 +90,6 @@ EditGamepadArea* EditGamepadAssignment::addTab(const QString &name)
     EditGamepadArea* area = new EditGamepadArea(name, this);
     ui->tabWidget->addTab(area, name);
     connect(area, SIGNAL(nameChanged(QString)), SLOT(onNameChanged(QString)));
+    connect(area, SIGNAL(removeCurrentConfig()), SLOT(onRemoveCurrentConfig()));
     return area;
 }

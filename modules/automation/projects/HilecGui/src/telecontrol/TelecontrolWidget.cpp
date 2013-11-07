@@ -186,7 +186,10 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
 {
     EditGamepadAssignment edit(this);
     edit.load(unit, mConfigFile);
-    edit.exec();
+    if(edit.exec())
+    {
+        edit.saveConfig(mConfigFile);
+    }
 }
 
 

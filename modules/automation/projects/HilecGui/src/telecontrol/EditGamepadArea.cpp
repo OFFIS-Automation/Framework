@@ -101,3 +101,10 @@ void EditGamepadArea::load(const QString& unitName, const QString& name, const Q
     }
 
 }
+
+void EditGamepadArea::saveConfig(QSettings &settings)
+{
+    settings.setValue("name", ui->name->text());
+    int index = ui->deadMansButton->currentIndex();
+    settings.setValue("activationButton", Tc::stringForButton(ui->deadMansButton->itemData(index).toInt()));
+}

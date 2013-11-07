@@ -33,6 +33,7 @@ public:
     explicit EditGamepadAssignment(QWidget *parent = 0);
     ~EditGamepadAssignment();
     void load(const QString& unit, const QString& configFile);
+    void saveConfig(const QString& configFile);
 private slots:
     void onNameChanged(const QString& text);
     void onRemoveCurrentConfig();
@@ -41,6 +42,7 @@ private slots:
 private:
     EditGamepadArea *addTab(const QString& name);
     Ui::EditGamepadAssignment *ui;
+    QString mOldName;
 };
 
 #endif // EDITGAMEPADASSIGNMENT_H

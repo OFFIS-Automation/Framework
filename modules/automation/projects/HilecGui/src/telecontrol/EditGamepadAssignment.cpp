@@ -39,6 +39,7 @@ EditGamepadAssignment::~EditGamepadAssignment()
 
 void EditGamepadAssignment::load(const QString &unitName, const QString &configFile)
 {
+    //@TODO reactivate mOldName = unitName;
     ui->name->setText(unitName);
     QSettings settings(configFile, QSettings::IniFormat);
     int size = settings.beginReadArray("telecontrol-combinations/" + unitName + "/joysticks");
@@ -49,6 +50,25 @@ void EditGamepadAssignment::load(const QString &unitName, const QString &configF
         EditGamepadArea* area = addTab(name);
         area->load(unitName, name, configFile);
     }
+}
+
+void EditGamepadAssignment::saveConfig(const QString &configFile)
+{
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.beginGroup("telecontrol-combinations");
+    if(!mOldName.isEmpty())
+        settings.remove(mOldName);
+    const QString& name = ui->name->text();
+    settings.remove(name);
+    settings.beginGroup(name);
+    settings.beginWriteArray("joysticks");
+    for(int i=0;i<ui->tabWidget->count();i++)
+    {
+        settings.setArrayIndex(i);
+        EditGamepadArea* area = qobject_cast<EditGamepadArea*>(ui->tabWidget->widget(i));
+        if(area) area->saveConfig(settings);
+    }
+
 }
 
 void EditGamepadAssignment::onNameChanged(const QString &text)

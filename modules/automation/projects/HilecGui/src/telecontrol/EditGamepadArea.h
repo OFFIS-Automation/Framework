@@ -25,6 +25,7 @@ namespace Ui {
 class EditGamepadArea;
 }
 
+class QSettings;
 class QComboBox;
 
 class EditGamepadArea : public QWidget
@@ -35,6 +36,7 @@ public:
     explicit EditGamepadArea(const QString& name, QWidget *parent = 0);
     ~EditGamepadArea();
     void load(const QString &unitName, const QString &name, const QString &configFile);
+    void saveConfig(QSettings& settings);
 signals:
     void nameChanged(const QString& name);
     void removeCurrentConfig();

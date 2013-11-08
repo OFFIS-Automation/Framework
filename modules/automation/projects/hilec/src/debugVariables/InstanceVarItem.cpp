@@ -28,7 +28,10 @@ InstanceVarItem::ObjectMap InstanceVarItem::setObject(_object *obj)
     if(PyObject_HasAttrString(obj, "__dict__"))
     {
         PyObject* dict = PyObject_GetAttrString(obj, "__dict__");
-        children = DictVarItem::setObject(dict);
+        if(PyDict_Check(dict))
+        {
+            children = DictVarItem::setObject(dict);
+        }
         Py_XDECREF(dict);
     }
 

@@ -39,6 +39,7 @@ public:
     QList<VarTreeItem*> children();
     VarTreeItem* child(int index);
     int uid() const { return mUid; }
+    void invalidatePython();
 protected:
     quint32 mUid;
     static quint32 sUid;

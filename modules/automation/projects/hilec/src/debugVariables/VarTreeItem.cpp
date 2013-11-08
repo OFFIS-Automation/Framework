@@ -54,6 +54,7 @@ VarTreeItem::~VarTreeItem()
 
 int VarTreeItem::childCount() const
 {
+    if(mChildMap.empty()) return resolvedChildCount();
     return mChildMap.size();
 }
 
@@ -82,12 +83,17 @@ QString VarTreeItem::name() const
 
 QString VarTreeItem::value() const
 {
-    return mItem->stringValue();
+    if(mItem)
+        return mItem->stringValue();
+    else return "UNKNOWN";
 }
 
 QString VarTreeItem::typeName() const
 {
-    return mItem->typeName();
+    if(mItem)
+        return mItem->typeName();
+    else
+        return "UNKNOWN";
 }
 
 VarTreeItem* VarTreeItem::child(int index)
@@ -96,4 +102,12 @@ VarTreeItem* VarTreeItem::child(int index)
     if(list.size() <= index)
         return 0;
     return list[index];
+}
+
+void VarTreeItem::invalidatePython()
+{
+    mChildMap.clear();
+    foreach (VarTreeItem* item, mChildren) {
+        item->invalidatePython();
+    }
 }

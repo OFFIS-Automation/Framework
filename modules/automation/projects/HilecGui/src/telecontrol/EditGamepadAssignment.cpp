@@ -23,6 +23,7 @@
 
 #include <core/TelecontrolConfig.h>
 
+#include <QComboBox>
 #include <QSettings>
 
 EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
@@ -30,6 +31,30 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     ui(new Ui::EditGamepadAssignment)
 {
     ui->setupUi(this);
+    int rowCounter = 1;
+    for(int i=Tc::ButtonEnumFirst; i<Tc::ButtonEnumEnd; i++)
+    {
+        QComboBox* box = new QComboBox();
+        QLineEdit* edit = new QLineEdit();
+        box->addItem("Not assigned");
+        mButtonUis[i] = box;
+        mButtonNameUis[i] = edit;
+        QString label = Tc::userFriendlyStringForButton(i);
+        ui->buttonTabLayout->addWidget(new QLabel(label),rowCounter, 0);
+        ui->buttonTabLayout->addWidget(edit,rowCounter, 1);
+        ui->buttonTabLayout->addWidget(box,rowCounter, 2);
+        rowCounter++;
+    }
+    foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
+    {
+        TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
+        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcButtons)
+        {
+            QString label = unit + "." + button.name;
+            foreach(QComboBox* cb, mButtonUis.values())
+                cb->addItem(label);
+        }
+    }
 }
 
 EditGamepadAssignment::~EditGamepadAssignment()
@@ -50,6 +75,30 @@ void EditGamepadAssignment::load(const QString &unitName, const QString &configF
         EditGamepadArea* area = addTab(name);
         area->load(unitName, name, configFile);
     }
+    settings.endArray();
+    size = settings.beginReadArray("telecontrol-combinations/" + unitName + "/buttons");
+    for(int i=0;i<size;i++)
+    {
+        settings.setArrayIndex(i);
+        QString buttonName = settings.value("button").toString();
+        QString name = settings.value("name").toString();
+        QString unit =settings.value("unit").toString();
+        QString method =settings.value("method").toString();
+        QString label = unit + "." + method;
+        Tc::Button button = Tc::buttonFromString(buttonName);
+        QComboBox* cb = mButtonUis.value(button, 0);
+        if(cb)
+        {
+            int index = cb->findText(label);
+            if(index >= 0)
+                cb->setCurrentIndex(index);
+        }
+        QLineEdit* nameEdit = mButtonNameUis.value(button, 0);
+        if(nameEdit)
+            nameEdit->setText(name);
+
+    }
+    settings.endArray();
 }
 
 void EditGamepadAssignment::saveConfig(const QString &configFile)
@@ -62,13 +111,31 @@ void EditGamepadAssignment::saveConfig(const QString &configFile)
     settings.remove(name);
     settings.beginGroup(name);
     settings.beginWriteArray("joysticks");
-    for(int i=0;i<ui->tabWidget->count();i++)
+    for(int i=1;i<ui->tabWidget->count();i++)
     {
-        settings.setArrayIndex(i);
+        settings.setArrayIndex(i-1);
         EditGamepadArea* area = qobject_cast<EditGamepadArea*>(ui->tabWidget->widget(i));
-        if(area) area->saveConfig(settings);
+        Q_ASSERT(area != 0);
+        area->saveConfig(settings);
     }
-
+    settings.endArray();
+    settings.beginWriteArray("buttons");
+    int id = 0;
+    foreach(int buttonId, mButtonNameUis.keys())
+    {
+        QComboBox* cb = mButtonUis.value(buttonId);
+        QStringList labelParts = cb->currentText().split(".");
+        if(labelParts.size() != 2)
+            continue;
+        settings.setArrayIndex(id++);
+        settings.setValue("button", Tc::stringForButton(buttonId));
+        settings.setValue("unit", labelParts[0]);
+        settings.setValue("method", labelParts[1]);
+        QLineEdit* nameEdit = mButtonNameUis.value(buttonId, 0);
+        Q_ASSERT(nameEdit != 0);
+        settings.setValue("name", nameEdit->text());
+    }
+    settings.endArray();
 }
 
 void EditGamepadAssignment::onNameChanged(const QString &text)

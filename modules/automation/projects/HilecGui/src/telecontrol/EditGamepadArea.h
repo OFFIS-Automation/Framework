@@ -27,6 +27,7 @@ class EditGamepadArea;
 
 class QSettings;
 class QComboBox;
+class QLineEdit;
 
 class EditGamepadArea : public QWidget
 {
@@ -43,6 +44,7 @@ signals:
 private:
     Ui::EditGamepadArea *ui;
     QMap<Tc::Joystick, QComboBox*> mJoystickUis;
+    QMap<Tc::Joystick, QLineEdit*> mJoystickNameUis;
 };
 
 #endif // EDITGAMEPADAREA_H

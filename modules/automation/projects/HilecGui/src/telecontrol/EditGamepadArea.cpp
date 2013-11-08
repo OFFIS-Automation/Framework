@@ -37,6 +37,11 @@ EditGamepadArea::EditGamepadArea(const QString &name, QWidget *parent) :
     mJoystickUis[Tc::RightJoystickX] = ui->rightJoystickX;
     mJoystickUis[Tc::RightJoystickY] = ui->rightJoystickY;
 
+    mJoystickNameUis[Tc::LeftJoystickX] = ui->leftXName;
+    mJoystickNameUis[Tc::LeftJoystickY] = ui->leftYName;
+    mJoystickNameUis[Tc::RightJoystickX] = ui->rightXName;
+    mJoystickNameUis[Tc::RightJoystickY] = ui->rightYName;
+
     foreach(QComboBox* cb, mJoystickUis.values())
         cb->addItem(label);
 
@@ -88,13 +93,15 @@ void EditGamepadArea::load(const QString& unitName, const QString& name, const Q
                 QString method = settings.value("method").toString();
                 QString channel = settings.value("channel").toString();
                 QString label = unit + "." + method + "." + channel;
+                QString name = settings.value("name").toString();
                 QComboBox* cb = mJoystickUis.value(id, 0);
-                if(cb)
-                {
-                    int index = cb->findText(label);
-                    if(index >= 0)
-                        cb->setCurrentIndex(index);
-                }
+                Q_ASSERT(cb != 0);
+                int index = cb->findText(label);
+                if(index >= 0)
+                    cb->setCurrentIndex(index);
+                QLineEdit* nameEdit = mJoystickNameUis.value(id, 0);
+                Q_ASSERT(nameEdit != 0);
+                nameEdit->setText(name);
                 settings.endGroup();
             }
         }
@@ -106,5 +113,25 @@ void EditGamepadArea::saveConfig(QSettings &settings)
 {
     settings.setValue("name", ui->name->text());
     int index = ui->deadMansButton->currentIndex();
-    settings.setValue("activationButton", Tc::stringForButton(ui->deadMansButton->itemData(index).toInt()));
+    settings.setValue("activationButton",
+                      Tc::stringForButton(ui->deadMansButton->itemData(index).toInt()));
+    foreach(const ::Tc::Joystick& key, mJoystickUis.keys())
+    {
+        QComboBox* cb = mJoystickUis.value(key, 0);
+        Q_ASSERT(cb != 0);
+        QString label = cb->currentText();
+        QStringList parts = label.split(".");
+        if(parts.size() != 3)
+            continue;
+        settings.beginGroup(Tc::stringForJoystick(key));
+        settings.setValue("unit", parts[0]);
+        settings.setValue("method", parts[1]);
+        settings.setValue("channel", parts[2]);
+
+        QLineEdit* nameEdit = mJoystickNameUis.value(key, 0);
+        Q_ASSERT(nameEdit != 0);
+        settings.setValue("name", nameEdit->text());
+
+        settings.endGroup();
+    }
 }

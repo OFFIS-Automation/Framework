@@ -19,7 +19,11 @@
 #define EDITGAMEPADASSIGNMENT_H
 
 #include <QDialog>
+#include <QMap>
+
 class EditGamepadArea;
+class QComboBox;
+class QLineEdit;
 
 namespace Ui {
 class EditGamepadAssignment;
@@ -43,6 +47,8 @@ private:
     EditGamepadArea *addTab(const QString& name);
     Ui::EditGamepadAssignment *ui;
     QString mOldName;
+    QMap<int, QComboBox*> mButtonUis;
+    QMap<int, QLineEdit*> mButtonNameUis;
 };
 
 #endif // EDITGAMEPADASSIGNMENT_H

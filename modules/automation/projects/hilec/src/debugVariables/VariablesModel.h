@@ -39,12 +39,12 @@ public:
     void setVariables(_object* vars);
     void lock();
     void unlock();
+    void invalidatePython();
 signals:
     void lockChanged(bool locked);
 public slots:
 
 protected:
-    bool mLocked;
     QMutex* mMutex;
     VarTreeItem* mLocals;
     QMap<quint32, VarTreeItem*>* mItems;

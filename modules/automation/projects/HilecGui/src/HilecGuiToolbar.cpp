@@ -60,6 +60,7 @@ void HilecGuiToolbar::createMenu(QMenu *menu)
     menu->addAction(ui->actionLolecHelp);
     menu->addAction(ui->actionCreateLolec);
     menu->addAction(ui->actionAddLolec);
+    menu->addAction(ui->actionCreateGamepadMapping);
 }
 
 void HilecGuiToolbar::on_actionCreateLolec_triggered()
@@ -104,4 +105,9 @@ void HilecGuiToolbar::setEnabled(bool enabled)
 {
     QWidget::setEnabled(enabled);
     ui->actionAddLolec->setEnabled(enabled);
+}
+
+void HilecGuiToolbar::on_actionCreateGamepadMapping_triggered()
+{
+    emit createGamepadMapping();
 }

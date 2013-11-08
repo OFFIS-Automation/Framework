@@ -46,12 +46,12 @@ public slots:
     void updateUnits(bool partialReload);
     void onTelecontrolUpdated(bool active, const QString& activeUnit);
     void onHapticUpdated(bool active, const QString& activeUnit);
+    void editButtonAssignment(const QString& unit = QString());
 
 private slots:
     void on_gamepadTabWidget_currentChanged(int index);
     void on_hapticTabWidget_currentChanged(int index);
     void on_openButtonAssignment_clicked(QString unit);
-    void editButtonAssignment(const QString& unit);
 
 private:
     static const int sHapticIndexOffset = 1024;

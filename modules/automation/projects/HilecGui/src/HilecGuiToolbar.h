@@ -37,6 +37,7 @@ signals:
     void aboutToRunFile(QString);
     void runFile(QString);
     void showHelpWidget();
+    void createGamepadMapping();
 
 public slots:
     void setCurrentFile(const QString& filename) { mFile = filename; }
@@ -53,6 +54,8 @@ private slots:
     void on_actionAddLolec_triggered();
 
     void on_actionLolecHelp_triggered();
+
+    void on_actionCreateGamepadMapping_triggered();
 
 private:
     Ui::HilecGuiToolbar *ui;

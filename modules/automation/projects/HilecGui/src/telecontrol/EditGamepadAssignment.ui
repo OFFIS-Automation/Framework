@@ -24,12 +24,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="name"/>
+      <widget class="QLineEdit" name="name">
+       <property name="text">
+        <string>user</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="add">
        <property name="text">
-        <string>add configuration</string>
+        <string>add joystick configuration</string>
        </property>
        <property name="icon">
         <iconset resource="../../images/images.qrc">
@@ -91,6 +95,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QPushButton" name="remove">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -132,8 +143,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>348</x>
-     <y>276</y>
+     <x>387</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
      <x>393</x>
@@ -148,8 +159,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>283</y>
+     <x>287</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
      <x>182</x>

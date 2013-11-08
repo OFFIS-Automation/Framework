@@ -43,12 +43,15 @@ private slots:
     void onRemoveCurrentConfig();
     void on_add_clicked();
 
+    void on_remove_clicked();
+
 private:
     EditGamepadArea *addTab(const QString& name);
     Ui::EditGamepadAssignment *ui;
     QString mOldName;
     QMap<int, QComboBox*> mButtonUis;
     QMap<int, QLineEdit*> mButtonNameUis;
+    bool mShouldDelete;
 };
 
 #endif // EDITGAMEPADASSIGNMENT_H

@@ -25,6 +25,7 @@
 #include "ShowAssignmentButton.h"
 #include "EditGamepadAssignment.h"
 #include "../HilecSingleton.h"
+#include <QMessageBox>
 #include <cmath>
 
 TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
@@ -185,10 +186,12 @@ void TelecontrolWidget::on_openButtonAssignment_clicked(QString unit)
 void TelecontrolWidget::editButtonAssignment(const QString &unit)
 {
     EditGamepadAssignment edit(this);
-    edit.load(unit, mConfigFile);
+    if(!unit.isEmpty())
+        edit.load(unit, mConfigFile);
     if(edit.exec())
     {
         edit.saveConfig(mConfigFile);
+        QMessageBox::information(this, tr("Relaod required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
     }
 }
 

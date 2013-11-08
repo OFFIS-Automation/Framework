@@ -30,7 +30,9 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::EditGamepadAssignment)
 {
+    mShouldDelete = false;
     ui->setupUi(this);
+    ui->remove->setEnabled(false);
     int rowCounter = 1;
     for(int i=Tc::ButtonEnumFirst; i<Tc::ButtonEnumEnd; i++)
     {
@@ -64,7 +66,8 @@ EditGamepadAssignment::~EditGamepadAssignment()
 
 void EditGamepadAssignment::load(const QString &unitName, const QString &configFile)
 {
-    //@TODO reactivate mOldName = unitName;
+    ui->remove->setEnabled(true);
+    mOldName = unitName;
     ui->name->setText(unitName);
     QSettings settings(configFile, QSettings::IniFormat);
     int size = settings.beginReadArray("telecontrol-combinations/" + unitName + "/joysticks");
@@ -106,7 +109,11 @@ void EditGamepadAssignment::saveConfig(const QString &configFile)
     QSettings settings(configFile, QSettings::IniFormat);
     settings.beginGroup("telecontrol-combinations");
     if(!mOldName.isEmpty())
+    {
         settings.remove(mOldName);
+        if(mShouldDelete)
+            return;
+    }
     const QString& name = ui->name->text();
     settings.remove(name);
     settings.beginGroup(name);
@@ -169,7 +176,8 @@ void EditGamepadAssignment::on_add_clicked()
             }
         }
     }
-    addTab(name);
+    QWidget* w = addTab(name);
+    ui->tabWidget->setCurrentWidget(w);
 }
 
 EditGamepadArea* EditGamepadAssignment::addTab(const QString &name)
@@ -179,4 +187,10 @@ EditGamepadArea* EditGamepadAssignment::addTab(const QString &name)
     connect(area, SIGNAL(nameChanged(QString)), SLOT(onNameChanged(QString)));
     connect(area, SIGNAL(removeCurrentConfig()), SLOT(onRemoveCurrentConfig()));
     return area;
+}
+
+void EditGamepadAssignment::on_remove_clicked()
+{
+    mShouldDelete = true;
+    emit accept();
 }

@@ -104,19 +104,30 @@ Method parseLine(const QString& line)
     }
     QString paramsLine = line.mid(start+1, end-start-1);
     QStringList params = paramsLine.split(",", QString::SkipEmptyParts);
+    QString prebuffer = "";
     foreach(QString param, params)
     {
-        Parameter paramType;
+
         param = param.trimmed();
         if(param.isEmpty())
             continue;
+        param = prebuffer + param;
+        prebuffer = "";
+        if(param.count("<") > param.count(">"))
+        {
+            prebuffer = param + ", ";
+            continue;
+        }
+        Parameter paramType;
+
+
         param.replace("unsigned long long", "quint64");
         param.replace("long long", "qint64");
         param.replace("unsigned ", "u");
 
 
 
-        int split = param.indexOf(' ');
+        int split = param.lastIndexOf(' ');
         paramType.name = param.mid(split+1).trimmed();
         paramType.type = param.mid(0, split).trimmed();
         paramType.isBasic = basicTypes.contains(paramType.type);

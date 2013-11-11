@@ -144,6 +144,8 @@ void MasterTcInvoker::updateSensitivity(const QString &unitName, double sensitiv
 TelecontrolConfig MasterTcInvoker::telecontrolConfig() const
 {
     TelecontrolConfig config;
+    config.hasHaptic = false;
+    config.unitName = mName;
     foreach(const JoystickWrap& wrap, mWrappers)
         config.tcJoysticks << wrap;
     foreach(const ButtonWrap wrap, mButtonWrappers)

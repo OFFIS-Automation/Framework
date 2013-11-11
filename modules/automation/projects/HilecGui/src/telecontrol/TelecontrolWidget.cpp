@@ -34,7 +34,7 @@ TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->gamepadTabWidget->setEnabled(false);
-    ui->hapticTabWidget->setEnabled(false);
+    ui->hapticGroupBox->setVisible(false);
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateUnits(bool)));
     connect(HilecSingleton::hilec(), SIGNAL(telecontrolUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
     connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(bool, QString)), SLOT(onHapticUpdated(bool, QString)));
@@ -74,7 +74,7 @@ void TelecontrolWidget::clear()
         delete widget;
     }
     ui->gamepadTabWidget->setEnabled(false);
-    ui->hapticTabWidget->setEnabled(false);
+    ui->hapticGroupBox->setVisible(false);
 }
 
 void TelecontrolWidget::updateUnits(bool /*partialChange */)
@@ -110,7 +110,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
         mUnitIndexes[index] = unit;
         if(help.hasHaptic)
         {
-            ui->hapticTabWidget->setEnabled(true);
+            ui->hapticGroupBox->setVisible(true);
             TelecontrolHapticWidget* haptic = new TelecontrolHapticWidget(unit, help.hapticSensitivity, help.hapticForceFactor);
             connect(haptic, SIGNAL(updateHaptic(QString,double, double)), SIGNAL(updateHaptic(QString,double, double)));
             int index = ui->hapticTabWidget->addTab(haptic, QIcon(":/hilecGui/joystick.png"),unit);

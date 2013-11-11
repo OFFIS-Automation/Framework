@@ -75,7 +75,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QGroupBox" name="hapticGroupBox">
        <property name="title">
         <string>Haptic control</string>
        </property>

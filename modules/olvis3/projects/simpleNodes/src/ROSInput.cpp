@@ -13,3 +13,34 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "ROSInput.h"
+
+REGISTER_FILTER(ROSInput);
+
+ROSInput::ROSInput()
+{
+    setName("ROSInput");
+    setDesc("Receives images from ROS");
+    setGroup("ros");
+}
+
+void ROSInput::execute()
+{
+}
+
+void ROSInput::stop()
+{
+}
+
+void ROSInput::deinitialize()
+{
+}
+
+void ROSInput::initialize()
+{
+}
+
+void ROSInput::start()
+{
+}

@@ -17,4 +17,19 @@
 #ifndef ROSINPUT_H
 #define ROSINPUT_H
 
+#include <filter/PluginInterface.h>
+
+class ROSInput : public UserFilter
+{
+public:
+    ROSInput();
+    virtual void execute();
+    virtual void initialize();
+    virtual void start();
+    virtual void stop();
+    virtual void deinitialize();
+protected:
+
+};
+
 #endif // ROSINPUT_H

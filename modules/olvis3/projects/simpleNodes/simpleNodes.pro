@@ -124,10 +124,11 @@ RESOURCES += \
 
 unix:!macx{
 # Include ROS
+message(Including ROS stuff)
+
 SOURCES += src/ROSInput.cpp
 HEADERS += src/ROSInput.h
 
-
-
+LIBS += -L/opt/ros/hydro/lib -lroscpp -lcpp_common -lroscpp_serialization -lrostime -lxmlrpcpp -lrosconsole
 }
 

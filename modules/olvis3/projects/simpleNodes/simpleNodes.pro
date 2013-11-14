@@ -67,7 +67,6 @@ SOURCES += \
     src/RectInput.cpp \
     src/ResizeImage.cpp \
     src/Rgb2Gray.cpp \
-    src/ROSInput.cpp \
     src/RotateImage.cpp \
     src/ScaleImage.cpp \
     src/SetRoiFilter.cpp \
@@ -124,9 +123,11 @@ RESOURCES += \
     images/images.qrc
 
 unix:!macx{
-HEADERS += \
-    src/ROSInput.h \
-SOURCES += \
-    src/ROSInput.cpp \
+# Include ROS
+SOURCES += src/ROSInput.cpp
+HEADERS += src/ROSInput.h
+
+
+
 }
 

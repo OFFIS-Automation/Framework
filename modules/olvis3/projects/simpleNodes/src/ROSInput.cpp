@@ -13,22 +13,3 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#include "Blur.h"
-#include <opencv2/imgproc/imgproc.hpp>
-REGISTER_FILTER(Blur);
-
-Blur::Blur()
-{
-    setName("Blur");
-    setDesc("Smoothes image using a normalized box filter");
-}
-
-void Blur::execute()
-{
-    int kSize = mKSize;
-    const cv::Mat& src = mIn;
-    cv::Mat dest;
-    cv::blur(src, dest, cv::Size(kSize, kSize));
-    mOut.send(dest);
-}

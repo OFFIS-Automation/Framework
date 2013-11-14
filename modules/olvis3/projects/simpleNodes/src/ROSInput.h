@@ -14,20 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef BLUR_H
-#define BLUR_H
+#ifndef ROSINPUT_H
+#define ROSINPUT_H
 
-#include "KernelFilter.h"
-
-class Blur : public KernelFilter
-{
-public:
-    Blur();
-    virtual void execute();
-protected:
-    in::Image mIn;
-    out::Image mOut;
-};
-
-
-#endif // BLUR_H
+#endif // ROSINPUT_H

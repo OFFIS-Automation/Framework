@@ -1,6 +1,6 @@
+# URL for libjoystick: http://libjoystick.sourceforge.net/
 CC=g++
 
-FOLDER=$(shell pwd)
 OBJECTS=joystick.o
 LIB=libjoystick++.so
 CPPFLAGS=-fPIC
@@ -8,7 +8,6 @@ CPPFLAGS=-fPIC
 all: library
 
 clean:
-	@echo $(FOLDER)	
 	@echo "Cleaning up directory."
 	rm -f *.o *.so *~
 

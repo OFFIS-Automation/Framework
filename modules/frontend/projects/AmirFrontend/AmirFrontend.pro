@@ -54,12 +54,6 @@ versiontarget.depends = FORCE
 QMAKE_EXTRA_TARGETS += versiontarget
 PRE_TARGETDEPS += $$VERSION_HEADER
 
-
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 include(../../../properties/pathes.pro)
 
 DESTDIR = $${targetDir}

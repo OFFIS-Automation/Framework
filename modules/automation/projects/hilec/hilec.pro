@@ -37,11 +37,9 @@ unix:!macx:PKGCONFIG += python-3.2
 unix:!macx: LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
 LIBS += -L$${targetDir}/plugins -lRcUnits
-
-pylibs.path    = $${DESTDIR}/hilec/python
+pylibs.path = $${DESTDIR}/hilec/python
 win32*: pylibs.files += $$(AmirDevDir)/python3/Lib/*
-unix:!macx: pylibs.files += /usr/lib/python3.2/*
-
+unix:!macx: pylibs.files+= /usr/lib/python3.2/*
 INSTALLS += pylibs
 
 pyDlls.path = $${DESTDIR}
@@ -51,7 +49,6 @@ win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.pdb
 unix:!macx :pyDlls.files += `which python3` #/usr/bin/python3
 unix:!macx :pyDlls.files += `which python3.2` #/usr/bin/python3.2
 unix:!macx :pyDlls.files += `which python3.2-dbg`  #/usr/bin/python3.2-dbg
-
 INSTALLS       += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python

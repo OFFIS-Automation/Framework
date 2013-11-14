@@ -34,7 +34,7 @@ win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
 win32*: LIBS += -L$$(AmirDevDir)/python3/libs
 unix:!macx:CONFIG += link_pkgconfig
 unix:!macx:PKGCONFIG += python-3.2
-unix:!macx: LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
+unix:!macx:LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
 LIBS += -L$${targetDir}/plugins -lRcUnits
 pylibs.path = $${DESTDIR}/hilec/python

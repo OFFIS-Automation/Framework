@@ -20,13 +20,13 @@
 #
 #-------------------------------------------------
 
-
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Toolbox
 TEMPLATE = app
 INCLUDEPATH += $${PWD}
+
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 INCLUDEPATH += ../../../version
@@ -55,8 +55,11 @@ QMAKE_EXTRA_TARGETS += versiontarget
 PRE_TARGETDEPS += $$VERSION_HEADER
 
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 include(../../../properties/pathes.pro)
 
 DESTDIR = $${targetDir}

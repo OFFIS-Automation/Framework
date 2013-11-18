@@ -33,11 +33,9 @@ TARGET = RcUnits
 TEMPLATE = lib
 CONFIG += lib
 
-QMAKE_EXTRA_TARGETS += makeLibjoystick
-PRE_TARGETDEPS += makeLibjoystick
-makeLibjoystick.commands = cd $${PWD}/src/telecontrol/libjoystick
-makeLibjoystick.commands = make
-makeLibjoystick.commands = make install
+#QMAKE_EXTRA_TARGETS += makeLibjoystick
+#PRE_TARGETDEPS += makeLibjoystick
+#makeLibjoystick.commands = cd $${PWD}/src/telecontrol/libjoystick; make; make install
 
 SOURCES += src/RcUnit.cpp \
     src/TcInvoker.cpp \

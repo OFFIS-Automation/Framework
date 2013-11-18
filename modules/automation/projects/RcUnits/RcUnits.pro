@@ -79,10 +79,10 @@ win32*{
 unix:!macx{
     INCLUDEPATH += /usr/include
 
+    LIBS += -L/usr/lib/ -ljoystick++
+
     HEADERS += src/telecontrol/LinuxGamepad.h \
         src/telecontrol/LinuxGamepadFactory.h \
-
-    LIBS += -L/usr/lib/ -ljoystick++
 
     SOURCES += src/telecontrol/LinuxGamepad.cpp \
         src/telecontrol/LinuxGamepadFactory.cpp \

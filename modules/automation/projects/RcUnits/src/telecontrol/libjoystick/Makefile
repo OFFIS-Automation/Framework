@@ -17,5 +17,5 @@ library: $(OBJECTS)
 
 install:
 	cp $(LIB) /usr/lib
-	cp joystick.h /usr/
+	cp joystick.h /usr/include
 

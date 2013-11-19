@@ -33,9 +33,9 @@ TARGET = RcUnits
 TEMPLATE = lib
 CONFIG += lib
 
-#QMAKE_EXTRA_TARGETS += makeLibjoystick
-#PRE_TARGETDEPS += makeLibjoystick
-#makeLibjoystick.commands = cd $${PWD}/src/telecontrol/libjoystick; make; make install
+QMAKE_EXTRA_TARGETS += makeLibjoystick
+PRE_TARGETDEPS += makeLibjoystick
+makeLibjoystick.commands = cd $${PWD}/src/telecontrol/libjoystick; make; make install
 
 SOURCES += src/RcUnit.cpp \
     src/TcInvoker.cpp \
@@ -75,9 +75,9 @@ win32*{
 }
 
 unix:!macx{
-    INCLUDEPATH += /usr/include
+    INCLUDEPATH += src/telecontrol/libjoystick/build/include
 
-    LIBS += -L/usr/lib/ -ljoystick++
+    LIBS += -Lsrc/telecontrol/libjoystick/build/lib -ljoystick++
 
     HEADERS += src/telecontrol/LinuxGamepad.h \
         src/telecontrol/LinuxGamepadFactory.h \

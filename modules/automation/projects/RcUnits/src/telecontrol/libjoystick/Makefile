@@ -8,14 +8,15 @@ CPPFLAGS=-fPIC
 all: library
 
 clean:
-	@echo "Cleaning up directory."
-	rm -f *.o *.so *~
+	@echo "Cleaning up build directory."
+	rm -rf build
 
 # Applications:
 library: $(OBJECTS)
 	$(CC) $(CPPFLAGS) -shared -Wl,-soname,$(LIB) -o $(LIB) $(OBJECTS)
 
 install:
-	cp $(LIB) /usr/lib
-	cp joystick.h /usr/include
+	mkdir -p build build/lib build/include
+	cp $(LIB) build/lib
+	cp joystick.h build/include
 

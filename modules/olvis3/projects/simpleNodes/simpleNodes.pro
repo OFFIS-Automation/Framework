@@ -126,9 +126,16 @@ unix:!macx{
 # Include ROS
 message(Including ROS stuff)
 
-SOURCES += src/ROSInput.cpp
-HEADERS += src/ROSInput.h
+SOURCES += \
+    src/ROSInput.cpp \
+    src/ROSSpinThread.cpp \
 
+HEADERS += \
+    src/ROSInput.h \
+    src/ROSSpinThread.h \
+
+# This pathes have to be adjusted acording to the installed ROS version
+INCLUDEPATH += /opt/ros/hydro/include/
 LIBS += -L/opt/ros/hydro/lib -lroscpp -lcpp_common -lroscpp_serialization -lrostime -lxmlrpcpp -lrosconsole
 }
 

@@ -18,6 +18,16 @@
 #define ROSINPUT_H
 
 #include <filter/PluginInterface.h>
+#include <ports/StringPort.h>
+#include <ports/ImagePort.h>
+
+#include <ros/ros.h>
+#include <sensor_msgs/Image.h>
+
+#include <QMutex>
+#include <QWaitCondition>
+
+#include "ROSSpinThread.h"
 
 class ROSInput : public UserFilter
 {
@@ -29,7 +39,20 @@ public:
     virtual void stop();
     virtual void deinitialize();
 protected:
+    // Methods
+    void callbackImageReceived(const sensor_msgs::ImageConstPtr& imageMsg);
+    ros::NodeHandle getNodeHandle(){ return *n; }
 
+    // Attributes
+    in::String mROSTopic;
+    out::Image mImageOut;
+
+    ros::Subscriber mImageSubscriber;
+    ros::NodeHandle* n;
+    ROSSpinThread mSpinThread;
+
+    QMutex mMutex;
+    QWaitCondition mCondition;
 };
 
 #endif // ROSINPUT_H

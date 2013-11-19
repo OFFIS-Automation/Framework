@@ -19,7 +19,6 @@
 
 #include "Gamepad.h"
 #include <joystick.h>
-
 #include <QMap>
 
 class LinuxGamepadFactory;

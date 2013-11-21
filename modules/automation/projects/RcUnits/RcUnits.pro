@@ -1,16 +1,16 @@
 # OFFIS Automation Framework
 # Copyright (C) 2013 OFFIS e.V.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
@@ -32,10 +32,6 @@ DEFINES += RCUNITS_LIBRARY
 TARGET = RcUnits
 TEMPLATE = lib
 CONFIG += lib
-
-QMAKE_EXTRA_TARGETS += makeLibjoystick
-PRE_TARGETDEPS += makeLibjoystick
-makeLibjoystick.commands = cd $${PWD}/src/telecontrol/libjoystick; make; make install
 
 SOURCES += src/RcUnit.cpp \
     src/TcInvoker.cpp \
@@ -75,13 +71,11 @@ win32*{
 }
 
 unix:!macx{
-    INCLUDEPATH += src/telecontrol/libjoystick/build/include
-
-    LIBS += -Lsrc/telecontrol/libjoystick/build/lib -ljoystick++
-
     HEADERS += src/telecontrol/LinuxGamepad.h \
         src/telecontrol/LinuxGamepadFactory.h \
+        src/telecontrol/libjoystick/joystick.h \
 
     SOURCES += src/telecontrol/LinuxGamepad.cpp \
         src/telecontrol/LinuxGamepadFactory.cpp \
+        src/telecontrol/libjoystick/joystick.cpp \
 }

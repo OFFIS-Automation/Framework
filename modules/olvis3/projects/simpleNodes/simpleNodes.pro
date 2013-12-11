@@ -28,6 +28,7 @@ TEMPLATE = lib
 DEFINES += DEFAULTPORTS_LIBRARY
 INCLUDEPATH += ../../include
 
+CONFIG+=dll
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins/olvisPlugins
@@ -40,85 +41,93 @@ LIBS += -L$${targetDir}/plugins/ -lSensorSystem
 include(../../../properties/opencv.pro)
 
 SOURCES += \ 
-    src/Threshold.cpp \
-    src/DirectoryIterator.cpp \
-    src/main.cpp \
-    src/ImageOutput.cpp \
-    src/PathCreator.cpp \
+    src/BlobDetection.cpp \
+    src/Blur.cpp \
+    src/cannyfilter.cpp \
+    src/ColorCorrection.cpp \
+    src/CorrectPosition.cpp \
     src/Delay.cpp \
-    src/MinimumFps.cpp \
-    src/VideoInput.cpp \
-    src/SetRoiFilter.cpp \
-    src/SimpleCameraInput.cpp \
+    src/DirectoryIterator.cpp \
+    src/FetchTemplate.cpp \
+    src/FlipImage.cpp \
+    src/GaussianBlur.cpp \
+    src/Gray2Rgb.cpp \
+    src/HistogramNode.cpp \
+    src/ImageInput.cpp \
+    src/ImageOutput.cpp \
+    src/Invert.cpp \
+    src/main.cpp \
     src/MathFilter.cpp \
     src/MedianBlur.cpp \
-    src/GaussianBlur.cpp \
+    src/MinimumFps.cpp \
     src/Morphology.cpp \
-    src/cannyfilter.cpp \
-    src/Rgb2Gray.cpp \
-    src/Invert.cpp \
-    src/ScaleImage.cpp \
-    src/TemplateMatching.cpp \
-    src/FlipImage.cpp \
+    src/NormalizeHistogramm.cpp \
+    src/PathCreator.cpp \
     src/PointInput.cpp \
     src/RectInput.cpp \
-    src/Gray2Rgb.cpp \
-    src/ImageInput.cpp \
-    src/Blur.cpp \
-    src/HistogramNode.cpp \
-    src/RotateImage.cpp \
-    src/NormalizeHistogramm.cpp \
-    src/SobelFilter.cpp \
     src/ResizeImage.cpp \
-    src/SimpleNodes.cpp
+    src/Rgb2Gray.cpp \
+    src/RotateImage.cpp \
+    src/ScaleImage.cpp \
+    src/SetRoiFilter.cpp \
+    src/SimpleCameraInput.cpp \
+    src/SimpleNodes.cpp \
+    src/SobelFilter.cpp \
+    src/TemplateMatching.cpp \
+    src/Threshold.cpp \
+    src/VarianceFilter.cpp \
+    src/VideoInput.cpp \
+    src/VideoWriter.cpp \
 
 HEADERS += \ 
-    src/Threshold.h \
-    src/ImageInput.h \
-    src/DirectoryIterator.h \
-    src/ImageOutput.h \
-    src/PathCreator.h \
-    src/Delay.h \
-    src/MinimumFps.h \
-    src/VideoInput.h \
-    src/SetRoiFilter.h \
-    src/SimpleCameraInput.h \
-    src/MathFilter.h \
-    src/KernelFilter.h \
-    src/MedianBlur.h \
-    src/GaussianBlur.h \
-    src/Morphology.h \
+    src/BlobDetection.h \
+    src/Blur.h \
     src/cannyfilter.h \
-    src/Rgb2Gray.h \
-    src/Invert.h \
-    src/ScaleImage.h \
-    src/TemplateMatching.h \
+    src/ColorCorrection.h \
+    src/CorrectPosition.h \
+    src/Delay.h \
+    src/DirectoryIterator.h \
+    src/FetchTemplate.h \
     src/FlipImage.h \
+    src/GaussianBlur.h \
+    src/Gray2Rgb.h \
+    src/HistogramNode.h \
+    src/ImageInput.h \
+    src/ImageInput.h \
+    src/ImageOutput.h \
+    src/Invert.h \
+    src/KernelFilter.h \
+    src/MathFilter.h \
+    src/MedianBlur.h \
+    src/MinimumFps.h \
+    src/Morphology.h \
+    src/NormalizeHistogramm.h \
+    src/PathCreator.h \
     src/PointInput.h \
     src/RectInput.h \
-    src/Gray2Rgb.h \
-    src/ImageInput.h \
-    src/Blur.h \
-    src/HistogramNode.h \
-    src/RotateImage.h \
-    src/NormalizeHistogramm.h \
-    src/SobelFilter.h \
     src/ResizeImage.h \
-    src/SimpleNodes.h
-
-CONFIG+=dll
+    src/Rgb2Gray.h \
+    src/RotateImage.h \
+    src/ScaleImage.h \
+    src/SetRoiFilter.h \
+    src/SimpleCameraInput.h \
+    src/SimpleNodes.h \
+    src/SobelFilter.h \
+    src/TemplateMatching.h \
+    src/Threshold.h \
+    src/VarianceFilter.h \
+    src/VideoInput.h \
+    src/VideoWriter.h \
 
 RESOURCES += \
     images/images.qrc
-HEADERS += src/ColorCorrection.h
-SOURCES += src/ColorCorrection.cpp
-HEADERS += src/VarianceFilter.h
-SOURCES += src/VarianceFilter.cpp
-HEADERS += src/VideoWriter.h
-SOURCES += src/VideoWriter.cpp
-HEADERS += src/FetchTemplate.h
-SOURCES += src/FetchTemplate.cpp
-HEADERS += src/CorrectPosition.h
-SOURCES += src/CorrectPosition.cpp
-HEADERS += src/BlobDetection.h
-SOURCES += src/BlobDetection.cpp
+
+unix:!macx{
+# Include ROS
+SOURCES += src/ROSInput.cpp
+HEADERS += src/ROSInput.h
+
+
+
+}
+

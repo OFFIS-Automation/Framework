@@ -14,21 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Application.h"
+#ifndef ROSINPUT_H
+#define ROSINPUT_H
 
-Application::Application(int &argc, char* argv[]) : QApplication(argc, argv)
-{
-}
-
-bool Application::notify(QObject* receiver, QEvent* e)
-{
-    try
-    {
-        return QApplication::notify(receiver, e);
-    }
-    catch(const std::exception& err)
-    {
-        qCritical("%s", err.what());
-        return false;
-    }
-}
+#endif // ROSINPUT_H

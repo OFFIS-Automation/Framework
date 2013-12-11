@@ -37,25 +37,6 @@ static int getBuildNumber()
   return ((today.year() - 2000) * 1000) + today.dayOfYear();
 }
 
-static int getSubversionRevision()
-{
-    int revision = 0;
-    QProcess process;
-    process.start("svnversion", QStringList() << "." << "--no-newline");
-    if (process.waitForStarted() && process.waitForReadyRead()){
-        const QString str(process.readAll().constData());
-        const int pos = str.indexOf(':');
-
-        if (pos != -1){
-            revision = str.mid(pos + 1).toInt();
-        } else {
-            revision = str.toInt();
-        }
-        process.waitForFinished();
-    }
-    return revision;
-}
-
 static QByteArray readFile(const QString& fileName)
 {
     QFile file(fileName);

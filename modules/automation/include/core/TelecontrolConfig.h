@@ -50,4 +50,49 @@ struct TelecontrolConfig
     double hapticForceFactor;
 };
 
+inline QDataStream& operator>>(QDataStream& stream, Tc::Joystick& joystick)
+{
+
+    int id;
+    stream >> id;
+    joystick = (Tc::Joystick)id;
+    if(!Tc::joysticks().contains(joystick))
+        joystick = Tc::NoJoystick;
+    return stream;
+}
+
+
+inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcButton& button)
+{
+    stream >> button.name;
+    stream >> button.buttonId;
+    stream >> button.toggleMode;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcJostick& joystick)
+{
+    stream >> joystick.name;
+    stream >> joystick.deadMansButton;
+    stream >> joystick.sensitivity;
+    stream >> joystick.axeNames;
+    stream >> joystick.joysticks;
+    stream >> joystick.inverts;
+    return stream;
+}
+
+
+inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig& tc)
+{
+    stream >> tc.unitName;
+    stream >> tc.tcJoysticks;
+    stream >> tc.tcButtons;
+    stream >> tc.hasHaptic;
+    stream >> tc.hapticSensitivity;
+    stream >> tc.hapticForceFactor;
+    return stream;
+}
+
+
+
 #endif // GAMEPADCONFIG_H

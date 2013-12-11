@@ -121,13 +121,3 @@ HEADERS += \
 
 RESOURCES += \
     images/images.qrc
-
-unix:!macx{
-# Include ROS
-SOURCES += src/ROSInput.cpp
-HEADERS += src/ROSInput.h
-
-
-
-}
-

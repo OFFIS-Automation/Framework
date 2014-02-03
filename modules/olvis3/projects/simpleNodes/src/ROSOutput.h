@@ -14,26 +14,52 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SIMPLECAMERAINPUT_H
-#define SIMPLECAMERAINPUT_H
+#ifndef ROSOUTPUT_H
+#define ROSOUTPUT_H
+
 #include <filter/PluginInterface.h>
+#include <ports/StringPort.h>
 #include <ports/ImagePort.h>
-#include <ports/FilePort.h>
-#include <ports/RealPort.h>
+#include <ports/IntegerPort.h>
 
-#include <opencv2/highgui/highgui.hpp>
+#include <ros/ros.h>
+#include <sensor_msgs/Image.h>
 
-class SimpleCameraInput : public UserFilter
+#include <QMutex>
+#include <QWaitCondition>
+
+class ROSOutput : public UserFilter
 {
 public:
-    SimpleCameraInput();
+    ROSOutput();
     virtual void execute();
     virtual void initialize();
+    virtual void start();
+    virtual void stop();
+    virtual void deinitialize();
 protected:
-    out::Image mOut;
-    out::Real mFps;
-    cv::VideoCapture mCapture;
+    enum Mode
+    {
+        Mono8 = 0,
+        Mono16,
+        BGR8,
+        BGRA8,
+        RGB8,
+        RGBA8
+    };
 
+    const char* mode2str[6] = {"mono8", "mono16", "bgr8", "bgra8", "rgb8", "rgba8"};
+
+    // Methods
+    ros::NodeHandle getNodeHandle(){ return *n; }
+
+    // Attributes
+    in::String mROSTopic;
+    in::Image mImageIn;
+    in::Integer mMode;
+
+    ros::Publisher mImagePublisher;
+    ros::NodeHandle* n;
 };
 
-#endif // SIMPLECAMERAINPUT_H
+#endif // ROSINPUT_H

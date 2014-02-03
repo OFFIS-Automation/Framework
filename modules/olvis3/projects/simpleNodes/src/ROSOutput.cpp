@@ -14,80 +14,86 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "ROSInput.h"
+#include "ROSOutput.h"
 #include <QDebug>
-#include "my_bridge.h"
+#include <cv_bridge/cv_bridge.h>
 
-REGISTER_FILTER(ROSInput);
+REGISTER_FILTER(ROSOutput);
 
-ROSInput::ROSInput()
+ROSOutput::ROSOutput()
 {
     // Setup filter configuration
-    setName("ROSInput");
-    setDesc("Receives image data from ROS on the specified topic");
+    setName("ROSOutput");
+    setDesc("Sends image data to ROS on the specified topic");
     setGroup("ros");
 
     // Init ports
-    mImageOut.setName("outImage");
-    mImageOut.setDesc("image output port");
-    addOutputPort(mImageOut);
+    mImageIn.setName("inImage");
+    mImageIn.setDesc("image input port");
+    addInputPort(mImageIn);
 
     mROSTopic.setName("rosTopic");
-    mROSTopic.setDesc("ros topic to which the filter subscribes to");
+    mROSTopic.setDesc("ros topic to which the filter sends to");
     mROSTopic.setMode(OptionalPortMode);
     mROSTopic.setDefault("oaf/image");
     addInputPort(mROSTopic);
+
+    mMode.setName("color mode");
+    mMode.setDesc("Select the color mode.");
+    mMode.addChoice(Mono8, "Default Mono, 8Bit");
+    mMode.addChoice(Mono16, "Mono, 16Bit");
+    mMode.addChoice(BGR8, "BGR, 8Bit");
+    mMode.addChoice(BGRA8, "BGRA, 8Bit");
+    mMode.addChoice(RGB8, "RGB, 8Bit");
+    mMode.addChoice(RGBA8, "RGBA, 8Bit");
+    mMode.setDefault(Mono8);
+    mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
+    addInputPort(mMode);
 }
 
-void ROSInput::execute()
+void ROSOutput::execute()
 {
     // Update subscriber with topic if string has changed
     if(mROSTopic.hasChanged()){
         // Create a nodehandle, NodeHandle is the main access point to communications with the ROS system.
         ros::NodeHandle n = getNodeHandle();
         // Subscribe to topic (at init time to default topic)
-        mImageSubscriber = n.subscribe(mROSTopic.getValue().toStdString(), 10, &ROSInput::imageCallback, this);
+        mImagePublisher = n.advertise<sensor_msgs::Image>(mROSTopic.getValue().toStdString(), 10);
     }
 
-    mMutex.lock();
-    if(!mImage.data)
-        mCondition.wait(&mMutex, 2000);
+    cv_bridge::CvImage cvImage;
+    cvImage.image = mImageIn.getValue();
+    cvImage.encoding = mode2str[mMode];
 
-    // Store received image, then reset data structure
-    cv::Mat image = mImage;
-    mImage = cv::Mat();
-    mMutex.unlock();
-
-    // Send data
-    mImageOut.send(image);
+    // Publish image to topic
+    mImagePublisher.publish(cvImage);
 }
 
-void ROSInput::stop()
+void ROSOutput::stop()
 {
-    mSpinThread.terminate();
     // Call default
     UserFilter::stop();
 }
 
-void ROSInput::deinitialize()
+void ROSOutput::deinitialize()
 {
     // Call default
     UserFilter::deinitialize();
 }
 
-void ROSInput::initialize()
+void ROSOutput::initialize()
 {
     try {
         // Initialize ROS
         // ros::init() must be called before using any other part of the ROS system.
         int argc = 0;
-        ros::init(argc, NULL, "oafImageListener");
+        ros::init(argc, NULL, "oafImageSubscriber");
 
         if(ros::isInitialized()){
             // Create a nodehandle, NodeHandle is the main access point to communications with the ROS system.
             n = new ros::NodeHandle;
             // Subscribe to topic (at init time to default topic)
-            mImageSubscriber = n->subscribe(mROSTopic.getValue().toStdString(), 10, &ROSInput::imageCallback, this);
+            mImagePublisher = n->advertise<sensor_msgs::Image>(mROSTopic.getValue().toStdString(), 10);
         } else {
             qWarning("ROS system is not initialized.");
         }
@@ -100,26 +106,8 @@ void ROSInput::initialize()
     }
 }
 
-void ROSInput::start()
+void ROSOutput::start()
 {
-    mSpinThread.start();
     // Call default
     UserFilter::start();
-}
-
-// Callbacks
-void ROSInput::imageCallback(const sensor_msgs::ImageConstPtr &imageMsg)
-{
-    cv_bridge::CvImagePtr cvImagePtr;
-    try{
-        cvImagePtr = cv_bridge::toCvCopy(imageMsg);
-    } catch (cv_bridge::Exception& e) {
-        ROS_ERROR("cv_bridge exception: %s", e.what());
-        return;
-    }
-
-    mMutex.lock();
-    mImage = cvImagePtr->image;
-    mCondition.wakeAll();
-    mMutex.unlock();
 }

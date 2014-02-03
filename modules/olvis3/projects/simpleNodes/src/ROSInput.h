@@ -22,6 +22,7 @@
 #include <ports/ImagePort.h>
 
 #include <ros/ros.h>
+#include <image_transport/image_transport.h>
 #include <sensor_msgs/Image.h>
 
 #include <QMutex>
@@ -40,12 +41,13 @@ public:
     virtual void deinitialize();
 protected:
     // Methods
-    void callbackImageReceived(const sensor_msgs::ImageConstPtr& imageMsg);
+    void imageCallback(const sensor_msgs::ImageConstPtr& imageMsg);
     ros::NodeHandle getNodeHandle(){ return *n; }
 
     // Attributes
     in::String mROSTopic;
     out::Image mImageOut;
+    cv::Mat mImage;
 
     ros::Subscriber mImageSubscriber;
     ros::NodeHandle* n;

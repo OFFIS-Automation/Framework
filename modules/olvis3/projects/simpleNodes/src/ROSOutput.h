@@ -43,12 +43,16 @@ protected:
         Mono8 = 0,
         Mono16,
         BGR8,
+        BGR16,
         BGRA8,
+        BGRA16,
         RGB8,
-        RGBA8
+        RGB16,
+        RGBA8,
+        RGBA16
     };
 
-    const char* mode2str[6] = {"mono8", "mono16", "bgr8", "bgra8", "rgb8", "rgba8"};
+    const char* mode2str[10] = {"mono8", "mono16", "bgr8", "bgr16", "bgra8", "bgra16", "rgb8", "rgb16", "rgba8", "rgba16"};
 
     // Methods
     ros::NodeHandle getNodeHandle(){ return *n; }

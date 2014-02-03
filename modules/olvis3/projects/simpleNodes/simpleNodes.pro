@@ -33,12 +33,13 @@ CONFIG+=dll
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins/olvisPlugins
 TARGET = SimpleNodes
-LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts  -lolvisPlugin
+LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts  -lolvisPlugin \
 
-INCLUDEPATH += ../../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
-
-include(../../../properties/opencv.pro)
+INCLUDEPATH += ../../../sensorSystem/include \
+LIBS += -L$${targetDir}/plugins/ -lSensorSystem \
+unix:!macx:CONFIG += link_pkgconfig
+unix:!macx:PKGCONFIG += opencv
+LIBS += `pkg-config opencv --libs --cflags`
 
 SOURCES += \ 
     src/BlobDetection.cpp \
@@ -128,14 +129,24 @@ message(Including ROS stuff)
 
 SOURCES += \
     src/ROSInput.cpp \
+    src/ROSOutput.cpp \
+    src/my_bridge.cpp \
     src/ROSSpinThread.cpp \
 
 HEADERS += \
     src/ROSInput.h \
+    src/ROSOutput.h \
+    src/my_bridge.h \
     src/ROSSpinThread.h \
 
 # This pathes have to be adjusted acording to the installed ROS version
-INCLUDEPATH += /opt/ros/hydro/include/
+INCLUDEPATH += /opt/ros/hydro/include
+DEPENDPATH += /opt/ros/hydro/include
 LIBS += -L/opt/ros/hydro/lib -lroscpp -lcpp_common -lroscpp_serialization -lrostime -lxmlrpcpp -lrosconsole
+
+INCLUDEPATH += /usr/include
+DEPENDPATH += /usr/include
+LIBS += -L/usr/lib -lboost_date_time-mt -lboost_thread-mt -lboost_regex-mt -llog4cxx
 }
+
 

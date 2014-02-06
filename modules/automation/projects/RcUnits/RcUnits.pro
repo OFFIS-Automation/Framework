@@ -59,14 +59,12 @@ HEADERS += src/RcUnit.h \
 
 win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \
-        src/telecontrol/gamepadTypes/WindowsXBOXGamepad.h \
         src/telecontrol/WindowsGamepadFactory.h \
         ../../include/telecontrol/GamepadInterface.h
 
     LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
 
     SOURCES += src/telecontrol/WindowsGamepad.cpp \
-        src/telecontrol/gamepadTypes/WindowsXBOXGamepad.cpp \
         src/telecontrol/WindowsGamepadFactory.cpp \
 }
 

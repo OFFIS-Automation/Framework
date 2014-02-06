@@ -47,6 +47,11 @@ protected:
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
     bool mSwitchZJoysticks;
+    enum Type {
+        XBoxGamepad,
+        DefaultGamepad
+    } mGamepadType;
+
     void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 

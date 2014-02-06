@@ -37,7 +37,8 @@ WindowsGamepadFactory::WindowsGamepadFactory()
 
 WindowsGamepadFactory::~WindowsGamepadFactory()
 {
-    sDirectInput->Release();
+    if(sDirectInput)
+        sDirectInput->Release();
 }
 
 WindowsGamepadFactory &WindowsGamepadFactory::instance()
@@ -67,12 +68,7 @@ BOOL CALLBACK WindowsGamepadFactory::enumDevices(const DIDEVICEINSTANCE *inst, v
         QString product = QString::fromWCharArray(inst->tszProductName);
         WindowsGamepad* gamepad;
         QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
-        // Check for XBOX Gamepad (with special button assignment)
-        if(name.compare(QString("Controller (XBOX 360 For Windows)")) == 0)
-            gamepad = new WindowsXBOXGamepad(name);
-        else
-            gamepad = new WindowsGamepad(name, guid);
-
+        gamepad = new WindowsGamepad(name, guid);
         if(!gamepad)
             throw std::runtime_error(qPrintable(tr("No wrapper for device: %1").arg(name)));
 

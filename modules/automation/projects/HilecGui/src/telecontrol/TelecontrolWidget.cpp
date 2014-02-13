@@ -85,29 +85,30 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
     foreach(QString unit, units)
     {
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        if(help.tcJoysticks.empty() && help.tcButtons.empty())
-            continue;
-        ui->gamepadTabWidget->setEnabled(true);
-        QWidget* page = new QWidget;
-        QVBoxLayout* layout = new QVBoxLayout();
-        page->setLayout(layout);
-        // Add assignment button
-        ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
-        connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
-        connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
-        layout->addWidget(button);
-
-        // Add slider, gain, .. for each method
-        foreach(RcUnitHelp::TcJostick method, help.tcJoysticks)
+        if(!help.tcJoysticks.empty() || !help.tcButtons.empty())
         {
-            TelecontrolUnitWidget* unitWidget = new TelecontrolUnitWidget(unit, method);
-            connect(unitWidget, SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)), SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)));
-            layout->addWidget(unitWidget);
-            connect(HilecSingleton::hilec(), SIGNAL(telecontrolChangeSensitivityRequested(QString,bool)), unitWidget, SLOT(changeSlider(QString,bool)));
+            ui->gamepadTabWidget->setEnabled(true);
+            QWidget* page = new QWidget;
+            QVBoxLayout* layout = new QVBoxLayout();
+            page->setLayout(layout);
+            // Add assignment button
+            ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
+            connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
+            connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
+            layout->addWidget(button);
+
+            // Add slider, gain, .. for each method
+            foreach(RcUnitHelp::TcJostick method, help.tcJoysticks)
+            {
+                TelecontrolUnitWidget* unitWidget = new TelecontrolUnitWidget(unit, method);
+                connect(unitWidget, SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)), SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)));
+                layout->addWidget(unitWidget);
+                connect(HilecSingleton::hilec(), SIGNAL(telecontrolChangeSensitivityRequested(QString,bool)), unitWidget, SLOT(changeSlider(QString,bool)));
+            }
+            layout->addStretch(1);
+            int index = ui->gamepadTabWidget->addTab(page, QIcon(":/hilecGui/controller.png"),unit);
+            mUnitIndexes[index] = unit;
         }
-        layout->addStretch(1);
-        int index = ui->gamepadTabWidget->addTab(page, QIcon(":/hilecGui/controller.png"),unit);
-        mUnitIndexes[index] = unit;
         if(help.hasHaptic)
         {
             ui->hapticGroupBox->setVisible(true);

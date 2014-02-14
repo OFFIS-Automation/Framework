@@ -70,6 +70,14 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcButton&
     return stream;
 }
 
+inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcButton& button)
+{
+    stream << button.name;
+    stream << button.buttonId;
+    stream << button.toggleMode;
+    return stream;
+}
+
 inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcJostick& joystick)
 {
     stream >> joystick.name;
@@ -78,6 +86,17 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcJostick
     stream >> joystick.axeNames;
     stream >> joystick.joysticks;
     stream >> joystick.inverts;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcJostick& joystick)
+{
+    stream << joystick.name;
+    stream << joystick.deadMansButton;
+    stream << joystick.sensitivity;
+    stream << joystick.axeNames;
+    stream << joystick.joysticks;
+    stream << joystick.inverts;
     return stream;
 }
 
@@ -90,6 +109,17 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig& tc)
     stream >> tc.hasHaptic;
     stream >> tc.hapticSensitivity;
     stream >> tc.hapticForceFactor;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig& tc)
+{
+    stream << tc.unitName;
+    stream << tc.tcJoysticks;
+    stream << tc.tcButtons;
+    stream << tc.hasHaptic;
+    stream << tc.hapticSensitivity;
+    stream << tc.hapticForceFactor;
     return stream;
 }
 

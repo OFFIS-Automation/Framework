@@ -24,8 +24,10 @@
 Server::Server() : mTcpServer(this)
 {
     connect(&mTcpServer, SIGNAL(newConnection()), SLOT(onConnect()));
+/*
     connect(&mRcUnits, SIGNAL(asyncResponse(int,QVariant)), SLOT(sendCallResponse(int,QVariant)));
     connect(&mRcUnits, SIGNAL(asyncError(int,QString)), SLOT(sendCallError(int,QString)));
+    */
 }
 
 void Server::restart(QString host, int port)
@@ -60,41 +62,13 @@ void Server::onConnect()
     if(!mSocket)
         return;
     emit stateChanged(QAbstractSocket::ConnectedState);
-    mMsgSize = 0;
-    connect(mSocket, SIGNAL(readyRead()), SLOT(processMessage()));
-    connect(&mRcUnits, SIGNAL(unitsUpdated()), SLOT(sendLolecList()));
+    mServer = new RemoteRcUnitServer(&mRcUnits, mSocket, true);
 }
 
 void Server::onDisconnect()
 {
-    disconnect(&mRcUnits, SIGNAL(unitsUpdated()), this, SLOT(sendLolecList()));
-    mStop = true;
 }
-
-void Server::processMessage()
-{
-    while(true)
-    {
-        if(mMsgSize)
-        {
-            if(mSocket->bytesAvailable() < mMsgSize)
-                return;
-            mMsgSize = 0;
-            QDataStream stream(mSocket);
-            QString call;
-            stream >> call;
-            dispatch(call, stream);
-        }
-        else if(mSocket->bytesAvailable()>=4)
-        {
-            QByteArray sizeArr = mSocket->read(4);
-            mMsgSize = qFromLittleEndian<int>((uchar*)sizeArr.data());
-        }
-        else
-            return;
-    }
-}
-
+/*
 void Server::dispatch(const QString &method, QDataStream &stream)
 {
     qDebug() << method;
@@ -199,47 +173,9 @@ void Server::sendLolecList()
     stream << QVariant(data);
     sendMessage(byteData);
 }
-
-void Server::sendMessage(const QByteArray &data)
-{
-    QMutexLocker lock(&mMutex);
-    QByteArray sizeData(4, 0);
-    qToLittleEndian<int>(data.size(), (uchar*)sizeData.data());
-    mSocket->write(sizeData);
-    mSocket->write(data);
-}
+*/
 
 void Server::loadProject(const QString &filename)
 {
     mRcUnits.loadConfig(filename);
 }
-
-void Server::sendCallResponse(int id, const QVariant &response)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("call");
-    stream << id;
-    stream << response;
-    sendMessage(byteData);
-}
-
-void Server::sendCallError(int id, const QString &error)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("callError");
-    stream << id;
-    stream << error;
-    sendMessage(byteData);
-}
-
-void Server::sendTcResponse(int id)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("tc");
-    stream << id;
-    sendMessage(byteData);
-}
-

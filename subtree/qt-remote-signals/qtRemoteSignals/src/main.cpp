@@ -253,6 +253,26 @@ void writeClass(ID id, const QList<Method>& methods, const QList<QString>& inclu
     writeImplementation(id, methods, dir, className, reverse);
 }
 
+void writeUserClass(const QDir& folder, const QString& className)
+{
+    QFileInfo fileInfo(folder.absoluteFilePath(className + ".h"));
+    if(!fileInfo.exists())
+    {
+        QFile file(fileInfo.absoluteFilePath());
+        file.open(QFile::WriteOnly);
+        QTextStream stream(&file);
+        stream << "#ifndef " + className.toUpper() + "_H" << endl;
+        stream << "#define " + className.toUpper() + "_H" << endl;
+        stream << "#include \"" + className + "Base.h\"" << endl << endl;
+        stream << "class " + className + " : public " + className + "Base" << endl;
+        stream << "{" << endl <<  "public:" << endl;
+        stream << "\t" << className << "(QIODevice* writeDevice, QIODevice* readDevice = 0, bool initialize = false)" << endl;
+        stream << "\t\t:" << className << "Base(writeDevice, readDevice, initialize) {}" << endl;
+        stream << "};" << endl;
+        stream << "#endif // " + className.toUpper() + "_H" << endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -297,9 +317,16 @@ int main(int argc, char *argv[])
     qWarning() << "Found " << methods.size() << " methods. ID:" << QString("0x%1%2").arg(id.id1, 16).arg(id.id2, 16);
     file.close();
     if(!params.contains("--server-only"))
-        writeClass(id, methods, includes, targetDir, className + "Client", true);
+    {
+        writeClass(id, methods, includes, targetDir, className + "ClientBase", true);
+        writeUserClass(targetDir, className + "Client");
+    }
     if(!params.contains("--client-only"))
-        writeClass(id, methods, includes, targetDir, className + "Server", false);
+    {
+        writeClass(id, methods, includes, targetDir, className + "ServerBase", false);
+        writeUserClass(targetDir, className + "Server");
+    }
+
     QDir srcDir(a.applicationDirPath());
     QFile::remove(targetDir.absoluteFilePath("RemoteSignals.h"));
     QFile::remove(targetDir.absoluteFilePath("RemoteSignals.cpp"));

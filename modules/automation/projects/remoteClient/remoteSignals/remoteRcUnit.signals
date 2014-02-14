@@ -4,9 +4,9 @@ listUnits()
 -unitList(QList<RcUnitHelp> units)
 
 
-callMethod(QByteArray unit, QByteArray method, QVariantList params)
--methodError(QString error)
--methodResponse(QVariant result)
+callMethod(uint callId, QByteArray unit, QByteArray method, QVariantList params)
+-methodError(uint callId, QString error)
+-methodResponse(uint callId, QVariant result)
 
 enableTelecontrol(QString unitName)
 disableTelecontrol(QString unitName)

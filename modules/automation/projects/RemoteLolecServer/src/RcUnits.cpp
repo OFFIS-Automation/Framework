@@ -26,7 +26,7 @@ RcUnits* RcUnits::sInst = 0;
 class UnitInvokerRunnable : public QRunnable
 {
 public:
-    UnitInvokerRunnable(RcUnits& units, const QByteArray& unit, const QByteArray& method, const QList<QVariant>& params, int id) :
+    UnitInvokerRunnable(RcUnits& units, const QByteArray& unit, const QByteArray& method, const QList<QVariant>& params, uint id) :
         mUnits(units),
         mUnit(unit),
         mMethod(method),
@@ -50,7 +50,7 @@ protected:
     RcUnits& mUnits;
     const QByteArray mUnit, mMethod;
     const QList<QVariant> mParams;
-    int mId;
+    uint mId;
 };
 
 RcUnits::RcUnits()
@@ -77,9 +77,9 @@ QMap<QString, RcUnitHelp> RcUnits::getHelpList()
     return list;
 }
 
-void RcUnits::callAsync(const QByteArray &unit, const QByteArray &name, int returnId, const QList<QVariant>& params)
+void RcUnits::callAsync(uint id, const QByteArray &unit, const QByteArray &name, const QVariantList& params)
 {
-    mThreads.start(new UnitInvokerRunnable(*this, unit, name, params, returnId));
+    mThreads.start(new UnitInvokerRunnable(*this, unit, name, params, id));
 }
 
 void RcUnits::sendAsyncResponse(int id, const QVariant &var)

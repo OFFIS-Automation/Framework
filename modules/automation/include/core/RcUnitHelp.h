@@ -54,10 +54,26 @@ inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Method& helpMeth
     return stream;
 }
 
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp::Method& helpMethod)
+{
+    stream << helpMethod.name;
+    stream << helpMethod.sig;
+    stream << helpMethod.shortDesc;
+    stream << helpMethod.longDesc;
+    return stream;
+}
+
 inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Struct& helpStruct)
 {
     stream >> helpStruct.name;
     stream >> helpStruct.members;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp::Struct& helpStruct)
+{
+    stream << helpStruct.name;
+    stream << helpStruct.members;
     return stream;
 }
 
@@ -69,6 +85,17 @@ inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp& help)
     stream >> help.structs;
     stream >> help.methods;
     stream >> help.constants;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp& help)
+{
+    stream << static_cast<TelecontrolConfig>(help);
+    stream << help.desc;
+    stream << help.server;
+    stream << help.structs;
+    stream << help.methods;
+    stream << help.constants;
     return stream;
 }
 

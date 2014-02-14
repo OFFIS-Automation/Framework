@@ -20,13 +20,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network widgets
+QT       += core gui network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}
-TARGET = HilecGui
 
-TARGET = RemoteLolecServer
+TARGET = RemoteServer
 TEMPLATE = app
 
 INCLUDEPATH += ../../include
@@ -36,17 +36,38 @@ INCLUDEPATH += ../RcUnits/src
 LIBS += -L$${targetDir}/plugins -lRcUnits
 LIBS += -L$${targetDir} -lLogWidget
 
+SIGNALDEFS = $${PWD}/../remoteClient/remoteSignals/RemoteRcUnit.signals
+SIGNALTARGET = $${PWD}/src/remoteSignals/
+SIGNALHEADER = remoteRcUnitServer.h
+SIGNALSOURCE= RemoteRcUnitsServer.cpp
+createSignalProxy.target = $${SIGNALTARGET}$${SIGNALHEADER}
+
+
+win32-msvc*{
+    createSignalProxy.commands = $${PWD}/../../../../subtree/qt-remote-signals/bin/qtRemoteSignals.exe $$SIGNALDEFS $$SIGNALTARGET --server-only
+} else {
+    createSignalProxy.commands = $${PWD}/../../../../subtree/qt-remote-signals/bin/qtRemoteSignals $$SIGNALDEFS $$SIGNALTARGET --server-only
+}
+createSignalProxy.depends = FORCE
+QMAKE_EXTRA_TARGETS += createSignalProxy
+PRE_TARGETDEPS += $${SIGNALTARGET}$${SIGNALHEADER}
+
 SOURCES += src/main.cpp\
         src/MainWindow.cpp \
     src/Server.cpp \
     src/RcUnits.cpp \
-    src/GamepadWrapper.cpp
+    src/GamepadWrapper.cpp \
+    src/remoteSignals/RemoteSignals.cpp \
+    src/remoteSignals/RemoteRcUnitServerBase.cpp \
+    src/remoteSignals/RemoteRcUnitServer.cpp
 
 HEADERS  += src/MainWindow.h \
     src/Server.h \
     src/RcUnits.h \
     src/GamepadWrapper.h \
-    ../../include/remote/RemoteCommands.h
+    src/remoteSignals/RemoteSignals.h \
+    src/remoteSignals/RemoteRcUnitServerBase.h \
+    src/remoteSignals/RemoteRcUnitServer.h
 
 FORMS    += src/MainWindow.ui
 

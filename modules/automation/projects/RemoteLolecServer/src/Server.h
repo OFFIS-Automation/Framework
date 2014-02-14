@@ -21,6 +21,8 @@
 #include <QTcpServer>
 #include <QMutex>
 
+#include "remoteSignals/RemoteRcUnitServer.h"
+
 #include <core/RcUnitHelp.h>
 #include "RcUnits.h"
 
@@ -42,24 +44,16 @@ signals:
 public slots:
     void restart(QString host, int port);
     void loadProject(const QString& filename);
-    void sendLolecList();
-    void sendCallResponse(int id, const QVariant& response);
-    void sendCallError(int id, const QString &response);
-    void sendTcResponse(int id);
+
 private slots:
     void onConnect();
     void onDisconnect();
-    void processMessage();
 
 private:
-    void dispatch(const QString& method, QDataStream& stream);
-    void sendMessage(const QByteArray& data);
-    bool mStop;
-    int mMsgSize;
     QTcpServer mTcpServer;
     QTcpSocket* mSocket;
     RcUnits mRcUnits;
-    QMutex mMutex;
+    RemoteRcUnitServer* mServer;
 };
 
 #endif // SERVER_H

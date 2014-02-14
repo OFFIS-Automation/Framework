@@ -54,15 +54,32 @@ void WindowsGamepad::createMapping()
         QStringList guids = settings.value("guids").toStringList();
         if(guids.contains(mGuid))
         {
-            mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
-            mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
-            mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
-            mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
-            mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
-            mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
-            mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
-            mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
-            mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+            if(settings.value("type").toString().toLower() == "xbox")
+            {
+                mGamepadType = XBoxGamepad;
+                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
+                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
+                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
+                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
+                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
+                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
+                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+            }
+            else
+            {
+                mGamepadType = DefaultGamepad;
+                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
+                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
+                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
+                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
+                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
+                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
+                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+            }
             return;
         }
         settings.endGroup();
@@ -85,7 +102,12 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
     DIJOYSTATE2& status = mState;
     joysticks[Tc::LeftJoystickX] = correctedValue(float(status.lX));
     joysticks[Tc::LeftJoystickY] = correctedValue(-float(status.lY));
-    if(mSwitchZJoysticks)
+    if(mGamepadType == XBoxGamepad)
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRx));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRy));
+    }
+    else if(mSwitchZJoysticks)
     {
         joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRz));
         joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lZ));
@@ -99,6 +121,11 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
     for(int i=Tc::NorthButton; i<= Tc::RightShoulderLowerButton; i++)
         assingButton(buttons, status.rgbButtons, i);
 
+    if(mGamepadType == XBoxGamepad)
+    {
+        buttons[Tc::LeftShoulderLowerButton] = float(status.lZ) > 0.8;
+        buttons[Tc::RightShoulderLowerButton] = float(status.lZ) < -0.8;
+    }
     bool up = false, down = false, left = false, right = false;
     switch(status.rgdwPOV[0]) // contour-clockwise from left direction
     {

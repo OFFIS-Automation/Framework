@@ -27,7 +27,7 @@
 #include <lolecs/LolecInterface.h>
 #include <QTcpSocket>
 
-#include "RemoteLolec.h"
+#include "RemoteRcUnits.h"
 #include "RemoteRcUnit.h"
 
 
@@ -67,9 +67,9 @@ void RcUnits::loadConfig(const QString &filename)
         QString host = settings.value("address").toString();
         int port = settings.value("port").toInt();
         double timeout = settings.value("callTimeout").toDouble();
-        RemoteLolec* rl = new RemoteLolec(name, host, port);
+        RemoteRcUnits* rl = new RemoteRcUnits(name, host, port);
         rl->setTimeout(timeout);
-        connect(rl, SIGNAL(lolecsUpdated(QString, QStringList)), SLOT(onRemoteLolecsListed(QString, QStringList)));
+        connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteLolecsListed(QString, QStringList)));
         mRemoteLolecs[name] = rl;
         rl->startConnect();
     }
@@ -77,7 +77,7 @@ void RcUnits::loadConfig(const QString &filename)
 
 void RcUnits::onRemoteLolecsListed(const QString &remoteServerName, const QStringList &oldLolecs)
 {
-    RemoteLolec* rl = mRemoteLolecs.value(remoteServerName, 0);
+    RemoteRcUnits* rl = mRemoteLolecs.value(remoteServerName, 0);
     if(!rl)
         return;
     QList<RcUnitBase*> units = rl->units();

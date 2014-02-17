@@ -22,7 +22,7 @@ RemoteRcUnitServer::RemoteRcUnitServer(RcUnits* rcUnits, QIODevice *device, bool
     : RemoteRcUnitServerBase(device, device, false)
 {
     mRcUnits = rcUnits;
-    connect(this, SIGNAL(listUnits()), SLOT(onListUnits()));
+    connect(this, SIGNAL(listUnits()), this, SLOT(onListUnits()));
     connect(this, SIGNAL(callMethod(uint,QByteArray,QByteArray,QVariantList)), rcUnits, SLOT(callAsync(uint,QByteArray,QByteArray,QVariantList)));
     connect(rcUnits, SIGNAL(asyncError(uint,QString)), SLOT(methodError(uint,QString)));
     connect(rcUnits, SIGNAL(asyncResponse(uint,QVariant)), SLOT(methodResponse(uint,QVariant)));

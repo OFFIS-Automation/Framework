@@ -18,15 +18,34 @@
 #include "RemoteRcUnitClient.h"
 #include <lolecs/RcExceptions.h>
 
-RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *writeDevice, QIODevice *readDevice, bool initialize)
-    : RemoteRcUnitClientBase(writeDevice, readDevice, initialize)
+RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *device, uint defaultTimeout)
+    : RemoteRcUnitClientBase(device, device, false),
+      mDefaultTimeout(defaultTimeout)
 {
     mNextId = 0;
+    connect(this, SIGNAL(methodError(uint,QString)), SLOT(onMethodError(uint,QString)));
+    connect(this, SIGNAL(methodResponse(uint,QVariant)), SLOT(onMethodResponse(uint,QVariant)));
+    connect(this, SIGNAL(unitList(QList<RcUnitHelp>)), SLOT(onUnitList(QList<RcUnitHelp>)));
+    initialize();
+}
+
+void RemoteRcUnitClient::setDefaultTimeout(uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    mDefaultTimeout = timeout;
+}
+
+uint RemoteRcUnitClient::defaultTimeout()
+{
+    QMutexLocker lock(&mMutex);
+    return mDefaultTimeout;
 }
 
 QVariant RemoteRcUnitClient::callMethod(const QByteArray &unit, const QByteArray &name, const QVariantList &params, unsigned long timeout)
 {
     QMutexLocker lock(&mMutex);
+    if(timeout == DefaultTimeout)
+        timeout = mDefaultTimeout;
     uint id = mNextId++;
     RemoteCall call;
     mRemoteCalls[id] = &call;
@@ -43,6 +62,8 @@ QVariant RemoteRcUnitClient::callMethod(const QByteArray &unit, const QByteArray
 QList<RcUnitHelp> RemoteRcUnitClient::listUnits(ulong timeout)
 {
     QMutexLocker lock(&mMutex);
+    if(timeout == DefaultTimeout)
+        timeout = mDefaultTimeout;
     RemoteRcUnitClientBase::listUnits();
     if(!mListUnitWait.wait(&mMutex, timeout))
         throw RcError(QString("Timeout retrieving remote unit list"));

@@ -28,6 +28,7 @@ INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../../olvis3/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../RcUnits/src
+INCLUDEPATH += ../remoteClient/src
 
 # Python
 win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
@@ -36,7 +37,7 @@ unix:!macx:CONFIG += link_pkgconfig
 unix:!macx:PKGCONFIG += python-3.2
 unix:!macx:LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
-LIBS += -L$${targetDir}/plugins -lRcUnits
+LIBS += -L$${targetDir}/plugins -lRcUnits -lRemoteClient
 pylibs.path = $${DESTDIR}/hilec/python
 win32*: pylibs.files += $$(AmirDevDir)/python3/Lib/*
 unix:!macx: pylibs.files+= /usr/lib/python3.2/*
@@ -96,8 +97,6 @@ HEADERS += \
     src/debugVariables/ListVarItem.h \
     src/debugVariables/TupleVarItem.h \
     src/debugVariables/InstanceVarItem.h \
-    src/RemoteLolec.h \
-    src/RemoteRcUnit.h \
     src/CallStackDecoder.h \
     src/PythonLinter.h \
     ../../include/lolecs/Pose2d.h \
@@ -125,8 +124,6 @@ SOURCES += \
     src/debugVariables/ListVarItem.cpp \
     src/debugVariables/TupleVarItem.cpp \
     src/debugVariables/InstanceVarItem.cpp \
-    src/RemoteLolec.cpp \
-    src/RemoteRcUnit.cpp \
     src/CallStackDecoder.cpp \
     src/PythonLinter.cpp
 

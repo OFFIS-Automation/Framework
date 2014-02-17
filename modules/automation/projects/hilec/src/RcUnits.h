@@ -27,7 +27,7 @@ class QXmlStreamReader;
 class LolecInterface;
 class RcUnit;
 class Gamepad;
-class RemoteLolec;
+class RemoteRcUnits;
 
 class RcUnits : public RcUnitsBase
 {
@@ -43,7 +43,7 @@ private slots:
     void onRemoteLolecsListed(const QString& remoteServerName, const QStringList& oldLolecs);
 private:
     static RcUnits* mInstance;
-    QMap<QString, RemoteLolec*> mRemoteLolecs;
+    QMap<QString, RemoteRcUnits*> mRemoteLolecs;
 };
 
 #endif // RCUNITS_H

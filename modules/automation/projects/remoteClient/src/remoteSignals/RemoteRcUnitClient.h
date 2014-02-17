@@ -9,10 +9,12 @@
 class RemoteRcUnitClient : public RemoteRcUnitClientBase
 {
 public:
-    RemoteRcUnitClient(QIODevice* writeDevice, QIODevice* readDevice = 0, bool initialize = false);
-
-    QVariant callMethod(const QByteArray& unit, const QByteArray& name, const QVariantList& params, unsigned long timeout = ULONG_MAX);
-    QList<RcUnitHelp> listUnits(ulong timeout = LONG_MAX);
+    enum { DefaultTimeout = 0 };
+    RemoteRcUnitClient(QIODevice* device, uint defaultTimeout = 10000);
+    QVariant callMethod(const QByteArray& unit, const QByteArray& name, const QVariantList& params, unsigned long timeout = DefaultTimeout);
+    QList<RcUnitHelp> listUnits(ulong timeout = DefaultTimeout);
+    void setDefaultTimeout(uint timeout);
+    uint defaultTimeout();
 protected slots:
 
     void onMethodError(uint id, const QString& error) { insertCallResponse(id, error, true); }
@@ -32,5 +34,6 @@ protected:
     QMap<uint, RemoteCall*> mRemoteCalls;
     QList<RcUnitHelp> mLastUnitList;
     QWaitCondition mListUnitWait;
+    uint mDefaultTimeout;
 };
 #endif // REMOTERCUNITCLIENT_H

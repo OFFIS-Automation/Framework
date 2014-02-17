@@ -101,7 +101,7 @@ void MainWindow::on_actionLoadProject_triggered()
 {
     QSettings settings;
     QString currentDir = settings.value("configFile").toString();
-    QString project = QFileDialog::getOpenFileName(this, tr("Select configuration"), currentDir, tr("Project Files (*pro)"));
+    QString project = QFileDialog::getOpenFileName(this, tr("Select configuration"), currentDir, tr("Project Files (*oap)"));
     if(project.isEmpty())
         return;
     settings.setValue("configFile", project);

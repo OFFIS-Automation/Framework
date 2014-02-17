@@ -7,6 +7,7 @@ class RcUnits;
 
 class RemoteRcUnitServer : public RemoteRcUnitServerBase
 {
+    Q_OBJECT
 public:
     RemoteRcUnitServer(RcUnits* rcUnits, QIODevice* device, bool initialize = false);
 

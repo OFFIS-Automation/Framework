@@ -50,6 +50,10 @@ public:
     {
         mName = realName;
     }
+    virtual ~RcListArgumentWrapper()
+    {
+        mVal.clear();;
+    }
     void convert(const QVariant& var)
     {
         foreach(const QVariant& elem, var.toList())

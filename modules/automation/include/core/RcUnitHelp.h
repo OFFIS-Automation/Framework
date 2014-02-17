@@ -79,7 +79,8 @@ inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp::Struct& he
 
 inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp& help)
 {
-    stream >> static_cast<TelecontrolConfig>(help);
+    TelecontrolConfig& tc = help;
+    stream >> tc;
     stream >> help.desc;
     stream >> help.server;
     stream >> help.structs;

@@ -19,7 +19,7 @@
 #define REMOTERCUNITS_H
 
 
-#include <QObject>
+#include <QThread>
 #include <QTcpSocket>
 #include <QMutex>
 #include <QWaitCondition>
@@ -30,7 +30,8 @@
 
 class RcUnitBase;
 class RemoteRcUnitClient;
-class REMOTECLIENT_EXPORT RemoteRcUnits : public QObject
+
+class REMOTECLIENT_EXPORT RemoteRcUnits : public QThread
 {
     Q_OBJECT
 public:
@@ -53,12 +54,15 @@ private slots:
     void onError(QAbstractSocket::SocketError socketError);
 
 private:
+    void run();
     QString mName;
     QString mHost;
     int mPort;
-    QTcpSocket mSocket;
+    QTcpSocket* mSocket;
     QMap<QString, RcUnitHelp> mLolecs;
     RemoteRcUnitClient* mClient;
+    QMutex mMutex;
+    QWaitCondition mStartupWait;
 };
 
 #endif // REMOTERCUNITS_H

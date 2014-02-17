@@ -8,9 +8,10 @@
 
 class RemoteRcUnitClient : public RemoteRcUnitClientBase
 {
+    Q_OBJECT
 public:
     enum { DefaultTimeout = 0 };
-    RemoteRcUnitClient(QIODevice* device, uint defaultTimeout = 10000);
+    RemoteRcUnitClient(QIODevice* readDevice, QIODevice*  writeDevice, bool initialize = true);
     QVariant callMethod(const QByteArray& unit, const QByteArray& name, const QVariantList& params, unsigned long timeout = DefaultTimeout);
     QList<RcUnitHelp> listUnits(ulong timeout = DefaultTimeout);
     void setDefaultTimeout(uint timeout);

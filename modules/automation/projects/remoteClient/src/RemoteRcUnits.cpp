@@ -27,22 +27,22 @@ RemoteRcUnits::RemoteRcUnits(const QString &name, const QString &host, int port)
     mHost(host),
     mPort(port)
 {
-    mClient = new RemoteRcUnitClient(&mSocket);
-    connect(&mSocket, SIGNAL(connected()), SLOT(onConnected()));
-    connect(&mSocket, SIGNAL(disconnected()), SLOT(onDisconnected()));
-    connect(&mSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onError(QAbstractSocket::SocketError)));
+    QMutexLocker lock(&mMutex);
+    start();
+    mStartupWait.wait(&mMutex);
 }
+
 void RemoteRcUnits::startConnect()
 {
-    if(mSocket.state() == QAbstractSocket::UnconnectedState)
-        mSocket.connectToHost(mHost, mPort);
+    if(mSocket->state() == QAbstractSocket::UnconnectedState)
+        mSocket->connectToHost(mHost, mPort);
 }
 
 RemoteRcUnits::~RemoteRcUnits()
 {
-    mSocket.disconnect(this);
-    mSocket.close();
-    delete mClient;
+    quit();
+    wait();
+
 }
 
 void RemoteRcUnits::onConnected()
@@ -72,12 +72,28 @@ void RemoteRcUnits::onDisconnected()
     QList<QString> old = mLolecs.keys();
     mLolecs.clear();
     emit unitsUpdated(mName, old);
-    mSocket.connectToHost(mHost, mPort);
+    mSocket->connectToHost(mHost, mPort);
 }
 
 void RemoteRcUnits::onError(QAbstractSocket::SocketError /*socketError*/)
 {
-    mSocket.connectToHost(mHost, mPort);
+    mSocket->connectToHost(mHost, mPort);
+}
+
+void RemoteRcUnits::run()
+{
+    {
+        QMutexLocker lock(&mMutex);
+        mSocket = new QTcpSocket();
+        connect(mSocket, SIGNAL(connected()), SLOT(onConnected()));
+        connect(mSocket, SIGNAL(disconnected()), SLOT(onDisconnected()), Qt::DirectConnection);
+        connect(mSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onError(QAbstractSocket::SocketError)), Qt::DirectConnection);
+        mClient = new RemoteRcUnitClient(mSocket, mSocket);
+        mStartupWait.wakeAll();
+    }
+    exec();
+    delete mClient;
+    delete mSocket;
 }
 
 

@@ -18,15 +18,16 @@
 #include "RemoteRcUnitClient.h"
 #include <lolecs/RcExceptions.h>
 
-RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *device, uint defaultTimeout)
-    : RemoteRcUnitClientBase(device, device, false),
-      mDefaultTimeout(defaultTimeout)
+RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *readDevice, QIODevice *writeDevice, bool doInitialize)
+    : RemoteRcUnitClientBase(readDevice, writeDevice, false),
+      mDefaultTimeout(10000)
 {
     mNextId = 0;
-    connect(this, SIGNAL(methodError(uint,QString)), SLOT(onMethodError(uint,QString)));
-    connect(this, SIGNAL(methodResponse(uint,QVariant)), SLOT(onMethodResponse(uint,QVariant)));
-    connect(this, SIGNAL(unitList(QList<RcUnitHelp>)), SLOT(onUnitList(QList<RcUnitHelp>)));
-    initialize();
+    connect(this, SIGNAL(methodError(uint,QString)), SLOT(onMethodError(uint,QString)), Qt::DirectConnection);
+    connect(this, SIGNAL(methodResponse(uint,QVariant)), SLOT(onMethodResponse(uint,QVariant)), Qt::DirectConnection);
+    connect(this, SIGNAL(unitList(QList<RcUnitHelp>)), SLOT(onUnitList(QList<RcUnitHelp>)), Qt::DirectConnection);
+    if(doInitialize)
+        initialize();
 }
 
 void RemoteRcUnitClient::setDefaultTimeout(uint timeout)

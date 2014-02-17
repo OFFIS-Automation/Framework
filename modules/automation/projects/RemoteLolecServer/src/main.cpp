@@ -23,7 +23,7 @@
 class Application : public QApplication
 {
 public:
-    Application(int argc, char* argv[]) : QApplication(argc, argv){}
+    Application(int &argc, char* argv[]) : QApplication(argc, argv){}
     bool notify(QObject* receiver, QEvent* e) {
         try {
             return QApplication::notify(receiver, e);

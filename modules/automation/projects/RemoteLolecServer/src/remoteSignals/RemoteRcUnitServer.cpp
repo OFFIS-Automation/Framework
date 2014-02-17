@@ -18,6 +18,8 @@
 #include "RemoteRcUnitServer.h"
 #include "../RcUnits.h"
 
+#include <QDebug>
+
 RemoteRcUnitServer::RemoteRcUnitServer(RcUnits* rcUnits, QIODevice *device, bool doInitialize)
     : RemoteRcUnitServerBase(device, device, false)
 {
@@ -32,6 +34,7 @@ RemoteRcUnitServer::RemoteRcUnitServer(RcUnits* rcUnits, QIODevice *device, bool
 
 void RemoteRcUnitServer::onListUnits()
 {
+    qDebug() << "list units";
     QList<RcUnitHelp> list = mRcUnits->getHelpList().values();
     unitList(list);
 }

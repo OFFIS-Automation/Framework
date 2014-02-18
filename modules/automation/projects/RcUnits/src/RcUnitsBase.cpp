@@ -84,9 +84,7 @@ QWidget* RcUnitsBase::lolecGui(const QString &name)
 
 void RcUnitsBase::loadConfig(const QString &filename)
 {
-    mTypes.clear();
-    qDeleteAll(mUnits);
-    mUnits.clear();
+    releaseConfig();
     QString baseDir = QFileInfo(filename).absolutePath();
     QFile file(filename);
     QSettings settings(filename, QSettings::IniFormat);
@@ -139,10 +137,18 @@ void RcUnitsBase::loadConfig(const QString &filename)
     emit unitsUpdated();
 }
 
-void RcUnitsBase::loadTcMasters(const QString &configFile)
+void RcUnitsBase::releaseConfig()
 {
+    mTypes.clear();
+    qDeleteAll(mUnits);
+    mUnits.clear();
     qDeleteAll(mMasterGamepads);
     mMasterGamepads.clear();
+
+}
+
+void RcUnitsBase::loadTcMasters(const QString &configFile)
+{
     QSettings settings(configFile, QSettings::IniFormat);
     settings.beginGroup("telecontrol-combinations");
     mUnitsHiddenforTc = settings.value("hiddenUnits").toStringList();

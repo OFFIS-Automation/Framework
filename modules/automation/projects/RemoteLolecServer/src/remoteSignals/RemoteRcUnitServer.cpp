@@ -28,6 +28,11 @@ RemoteRcUnitServer::RemoteRcUnitServer(RcUnits* rcUnits, QIODevice *device, bool
     connect(this, SIGNAL(callMethod(uint,QByteArray,QByteArray,QVariantList)), rcUnits, SLOT(callAsync(uint,QByteArray,QByteArray,QVariantList)));
     connect(rcUnits, SIGNAL(asyncError(uint,QString)), SLOT(methodError(uint,QString)));
     connect(rcUnits, SIGNAL(asyncResponse(uint,QVariant)), SLOT(methodResponse(uint,QVariant)));
+    connect(this, SIGNAL(enableTelecontrol(uint,QString)), SLOT(onEnableTelecontrol(uint,QString)));
+    connect(this, SIGNAL(disableTelecontrol(uint,QString)), SLOT(onDisableTelecontrol(uint,QString)));
+    connect(this, SIGNAL(handleTcData(uint,QMap<int,double>)), SLOT(onHandleTcData(uint,QMap<int,double>)));
+    connect(this, SIGNAL(setTcButton(uint,int,bool)), SLOT(onSetTcButton(uint,int,bool)));
+    connect(this, SIGNAL(updateTcSensitivity(uint,QString,QString,double,QList<bool>)), SLOT(onUpdateTcSensitivity(uint,QString,QString,double,QList<bool>)));
     if(doInitialize)
         initialize();
 }
@@ -38,4 +43,42 @@ void RemoteRcUnitServer::onListUnits()
     QList<RcUnitHelp> list = mRcUnits->getHelpList().values();
     unitList(list);
 }
+
+void RemoteRcUnitServer::onEnableTelecontrol(uint id, const QString &unitName)
+{
+    qDebug() << "enable gamepad" << unitName << id;
+    mRcUnits->enableGamepad(unitName);
+    tcFinished(id);
+}
+
+void RemoteRcUnitServer::onDisableTelecontrol(uint id, const QString &unitName)
+{
+    qDebug() << "disable gamepad" << unitName << id;
+    mRcUnits->disableGamepad(unitName);
+    tcFinished(id);
+}
+
+void RemoteRcUnitServer::onHandleTcData(uint id, const QMap<int, double> &data)
+{
+    //qDebug() << "tcData" << id;
+    mRcUnits->handleTcData(data);
+    tcFinished(id);
+}
+
+void RemoteRcUnitServer::onSetTcButton(uint id, int buttonId, const bool &pressed)
+{
+    qDebug() << "tc button" << buttonId << pressed;
+    mRcUnits->handleTcButton(buttonId, pressed);
+    tcFinished(id);
+}
+
+void RemoteRcUnitServer::onUpdateTcSensitivity(uint id, const QString &unitName, const QString& sensName,
+                                               double sensitivity, const QList<bool> &inverts)
+{
+    qDebug() << "update sens" << unitName << sensName << id;
+    mRcUnits->updateSensitivity(unitName, sensName, sensitivity, inverts);
+    tcFinished(id);
+}
+
+
 

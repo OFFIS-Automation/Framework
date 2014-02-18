@@ -35,17 +35,16 @@ class REMOTECLIENT_EXPORT RemoteRcUnits : public QThread
 {
     Q_OBJECT
 public:
-    explicit RemoteRcUnits(const QString& name, const QString& host, int port);
+    explicit RemoteRcUnits(const QString& name, const QString& host, int port, double timeout = 10.0);
     virtual ~RemoteRcUnits();
     QList<RcUnitBase*> units();
     double timout();
     QString name() const { return mName; }
+    void startConnect();
 
 signals:
     void unitsUpdated(const QString& remoteServerName, const QStringList& oldLolecs);
-
 public slots:
-    void startConnect();
     void setTimeout(double seconds);
 
 private slots:
@@ -58,6 +57,7 @@ private:
     QString mName;
     QString mHost;
     int mPort;
+    double mTimeout;
     QTcpSocket* mSocket;
     QMap<QString, RcUnitHelp> mLolecs;
     RemoteRcUnitClient* mClient;

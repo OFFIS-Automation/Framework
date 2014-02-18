@@ -3,7 +3,7 @@
 #include "RemoteRcUnitServerBase.h"
 
 RemoteRcUnitServerBase::RemoteRcUnitServerBase(QIODevice* readDevice, QIODevice* writeDevice, bool initialize)
-	: RemoteSignals(Q_UINT64_C(0xb8b4f561830eace),Q_UINT64_C(0xdaaf949ad3148f67), readDevice, writeDevice, initialize)
+	: RemoteSignals(Q_UINT64_C(0x7192336e62a4174),Q_UINT64_C(0x77ab91543458f0), readDevice, writeDevice, initialize)
 {}
 
 void RemoteRcUnitServerBase::unitList(const QList<RcUnitHelp>& units)
@@ -35,6 +35,15 @@ void RemoteRcUnitServerBase::methodResponse(uint callId, const QVariant& result)
 	transmitSignal(msgData);
 }
 
+void RemoteRcUnitServerBase::tcFinished(uint id)
+{
+	QByteArray msgData;
+	QDataStream stream(&msgData, QIODevice::WriteOnly);
+	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)11;
+	stream << id;
+	transmitSignal(msgData);
+}
+
 void RemoteRcUnitServerBase::processRemoteInputs(const QByteArray& data)
 {
 	QDataStream stream(data);
@@ -62,29 +71,51 @@ void RemoteRcUnitServerBase::processRemoteInputs(const QByteArray& data)
 		return;
 	}
 	if(remoteSignalMethodId == 6) {
+		uint id;
 		QString unitName;
+		stream >> id;
 		stream >> unitName;
-		emit enableTelecontrol(unitName);
+		emit enableTelecontrol(id, unitName);
 		return;
 	}
 	if(remoteSignalMethodId == 7) {
+		uint id;
 		QString unitName;
+		stream >> id;
 		stream >> unitName;
-		emit disableTelecontrol(unitName);
+		emit disableTelecontrol(id, unitName);
 		return;
 	}
 	if(remoteSignalMethodId == 8) {
+		uint id;
 		QMap<int, double> data;
+		stream >> id;
 		stream >> data;
-		emit handleTcData(data);
+		emit handleTcData(id, data);
 		return;
 	}
 	if(remoteSignalMethodId == 9) {
+		uint id;
 		int buttonId;
 		bool pressed;
+		stream >> id;
 		stream >> buttonId;
 		stream >> pressed;
-		emit setTcButton(buttonId, pressed);
+		emit setTcButton(id, buttonId, pressed);
+		return;
+	}
+	if(remoteSignalMethodId == 10) {
+		uint id;
+		QString unitName;
+		QString sensName;
+		double sensitivity;
+		QList<bool> inverts;
+		stream >> id;
+		stream >> unitName;
+		stream >> sensName;
+		stream >> sensitivity;
+		stream >> inverts;
+		emit updateTcSensitivity(id, unitName, sensName, sensitivity, inverts);
 		return;
 	}
 

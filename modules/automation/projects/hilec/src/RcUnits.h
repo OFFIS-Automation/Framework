@@ -37,6 +37,7 @@ public:
     virtual ~RcUnits();
     static RcUnits* instance() { return mInstance; }
     void loadConfig(const QString &filename);
+    void releaseConfig();
 signals:
     void unitListUpdated(bool partialUpdate = false);
 private slots:

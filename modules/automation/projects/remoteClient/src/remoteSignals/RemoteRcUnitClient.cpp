@@ -26,6 +26,7 @@ RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *readDevice, QIODevice *writeDe
     connect(this, SIGNAL(methodError(uint,QString)), SLOT(onMethodError(uint,QString)), Qt::DirectConnection);
     connect(this, SIGNAL(methodResponse(uint,QVariant)), SLOT(onMethodResponse(uint,QVariant)), Qt::DirectConnection);
     connect(this, SIGNAL(unitList(QList<RcUnitHelp>)), SLOT(onUnitList(QList<RcUnitHelp>)), Qt::DirectConnection);
+    connect(this, SIGNAL(tcFinished(uint)), SLOT(onTcFinished(uint)), Qt::DirectConnection);
     if(doInitialize)
         initialize();
 }
@@ -42,7 +43,62 @@ uint RemoteRcUnitClient::defaultTimeout()
     return mDefaultTimeout;
 }
 
-QVariant RemoteRcUnitClient::callMethod(const QByteArray &unit, const QByteArray &name, const QVariantList &params, unsigned long timeout)
+
+void RemoteRcUnitClient::waitTcCall(uint id, uint timeout)
+{
+    if(timeout == DefaultTimeout)
+        timeout = mDefaultTimeout;
+    QWaitCondition waiter;
+    mTcCalls[id] = &waiter;
+    bool hasTimedOut = !waiter.wait(&mMutex, timeout);
+    mTcCalls.remove(id);
+    if(hasTimedOut)
+        throw RcError(QString("RemoteRcUnit telecontrol timeout"));
+}
+
+void RemoteRcUnitClient::enableTelecontrol(const QString &unitName, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::enableTelecontrol(id, unitName);
+    waitTcCall(id, timeout);
+}
+
+void RemoteRcUnitClient::disableTelecontrol(const QString &unitName, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::disableTelecontrol(id, unitName);
+    waitTcCall(id, timeout);
+}
+
+void RemoteRcUnitClient::handleTcData(const QMap<int, double> &data, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::handleTcData(id, data);
+    waitTcCall(id, timeout);
+}
+
+void RemoteRcUnitClient::setTcButton(int buttonId, const bool &pressed, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::setTcButton(id, buttonId, pressed);
+    waitTcCall(id, timeout);
+}
+
+void RemoteRcUnitClient::updateSensitivity(const QString &unitName, const QString &tcName,
+                                           double sensitivity, const QList<bool> &inverts, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::updateTcSensitivity(id, unitName, tcName, sensitivity, inverts);
+    waitTcCall(id, timeout);
+}
+
+QVariant RemoteRcUnitClient::callMethod(const QByteArray &unit, const QByteArray &name,
+                                        const QVariantList &params, unsigned long timeout)
 {
     QMutexLocker lock(&mMutex);
     if(timeout == DefaultTimeout)
@@ -54,9 +110,9 @@ QVariant RemoteRcUnitClient::callMethod(const QByteArray &unit, const QByteArray
     bool hasTimeout = !call.waiter.wait(&mMutex, timeout);
     mRemoteCalls.remove(id);
     if(hasTimeout)
-        throw RcError(QString("Timeout calling %1:%2").arg(QString(unit), QString(name)));
+        throw RcError(QString("RemoteRcUnit Method call: Timeout calling %1:%2").arg(QString(unit), QString(name)));
     if(call.isError)
-        throw RcError(QString("Error calling %1:%2: %3").arg(unit, name, call.returnValue.toString()));
+        throw RcError(QString("RemoteRcUnit Method call: Error calling %1:%2: %3").arg(unit, name, call.returnValue.toString()));
     return call.returnValue;
 }
 
@@ -76,6 +132,14 @@ void RemoteRcUnitClient::onUnitList(const QList<RcUnitHelp> &list)
     QMutexLocker lock(&mMutex);
     mLastUnitList = list;
     mListUnitWait.wakeAll();
+}
+
+void RemoteRcUnitClient::onTcFinished(uint id)
+{
+    QMutexLocker lock(&mMutex);
+    QWaitCondition* waiter = mTcCalls.value(id, 0);
+    if(waiter)
+        waiter->wakeAll();
 }
 
 void RemoteRcUnitClient::insertCallResponse(uint id, QVariant value, bool isError)

@@ -137,6 +137,7 @@ void HilecGui::closeProject()
     rcUnits->clear();
     errors->clear();
     telecontrol->clear();
+    hilec->releaseConfig();
 }
 
 QObject* HilecGui::getConnectObject()

@@ -49,6 +49,7 @@ public slots:
     virtual void compileFile(const QString& filename) = 0;
     virtual void userInput(int uid, int buttonId, const QList<QVariant>& data) = 0;
     virtual void loadConfig(const QString& filename) = 0;
+    virtual void releaseConfig() = 0;
     virtual void addBreakpoint(QString file, int line) = 0;
     virtual void removeBreakpoint(QString file, int line) = 0;
     virtual void resume() = 0;

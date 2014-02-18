@@ -23,7 +23,7 @@
 class Application : public QApplication
 {
 public:
-    Application(int &argc, char* argv[]) : QApplication(argc, argv){}
+    Application(int &argc, char** argv) : QApplication(argc, argv){}
     bool notify(QObject* receiver, QEvent* e) {
         try {
             return QApplication::notify(receiver, e);
@@ -46,6 +46,5 @@ int main(int argc, char *argv[])
     server.moveToThread(&serverThread);
     MainWindow w(&server);
     w.show();
-
     return a.exec();
 }

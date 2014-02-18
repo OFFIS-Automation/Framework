@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>197</height>
+    <width>425</width>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,9 +22,25 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="status">
+        <widget class="QLabel" name="statusListen">
+         <property name="styleSheet">
+          <string notr="true">color:blue;</string>
+         </property>
          <property name="text">
-          <string>Offline</string>
+          <string>Listening</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="statusConnected">
+         <property name="styleSheet">
+          <string notr="true">color: darkgreen;</string>
+         </property>
+         <property name="text">
+          <string>Connected</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -181,8 +197,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>21</height>
+     <width>425</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

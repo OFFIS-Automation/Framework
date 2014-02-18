@@ -37,7 +37,7 @@ QVariant RemoteRcUnit::call(const QByteArray &method, QList<QVariant> params)
 
 void RemoteRcUnit::connectGamepad(QObject *gamepad)
 {
-    // TODO mRemote.
+    mRemote.enableTelecontrol(name());
     connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(setGamepadButton(int,bool)), Qt::DirectConnection);
     connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
 
@@ -46,20 +46,20 @@ void RemoteRcUnit::connectGamepad(QObject *gamepad)
 void RemoteRcUnit::disconnectGamepad(QObject *gamepad)
 {
     gamepad->disconnect(this);
-    // TODO mRemote.disconnectGamepad(mName);
+    mRemote.disableTelecontrol(name());
 }
 
 void RemoteRcUnit::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
-    // TODO mRemote.updateSensitivity(mName, unitName, sensitivity, inverts);
+    mRemote.updateSensitivity(name(), unitName, sensitivity, inverts);
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)
 {
-    // TODO mRemote.handleGamepadData(data);
+    mRemote.handleTcData(data, 1000);
 }
 
 void RemoteRcUnit::setGamepadButton(int id, bool pressed)
 {
-    // TODO mRemote.setGamepadButton(id, pressed);
+    mRemote.setTcButton(id, pressed, 2000);
 }

@@ -91,6 +91,11 @@ void HilecCore::loadConfig(const QString &filename)
     RcUnits::instance()->loadConfig(filename);
 }
 
+void HilecCore::releaseConfig()
+{
+    RcUnits::instance()->releaseConfig();
+}
+
 QWidget* HilecCore::createLolecWidget(const QString &lolec)
 {
     return RcUnits::instance()->lolecGui(lolec);

@@ -22,20 +22,19 @@
 #include <lolecs/RcExceptions.h>
 #include "RemoteRcUnit.h"
 
-RemoteRcUnits::RemoteRcUnits(const QString &name, const QString &host, int port) :
+RemoteRcUnits::RemoteRcUnits(const QString &name, const QString &host, int port, double timeout) :
     mName(name),
     mHost(host),
-    mPort(port)
+    mPort(port),
+    mTimeout(timeout)
 {
-    QMutexLocker lock(&mMutex);
-    start();
-    mStartupWait.wait(&mMutex);
 }
 
 void RemoteRcUnits::startConnect()
 {
-    if(mSocket->state() == QAbstractSocket::UnconnectedState)
-        mSocket->connectToHost(mHost, mPort);
+    QMutexLocker lock(&mMutex);
+    start();
+    mStartupWait.wait(&mMutex);
 }
 
 RemoteRcUnits::~RemoteRcUnits()
@@ -47,6 +46,7 @@ RemoteRcUnits::~RemoteRcUnits()
 
 void RemoteRcUnits::onConnected()
 {
+    QMutexLocker lock(&mMutex);
     QList<RcUnitHelp> list = mClient->listUnits();
     QList<QString> old = mLolecs.keys();
     mLolecs.clear();
@@ -57,6 +57,7 @@ void RemoteRcUnits::onConnected()
 
 void RemoteRcUnits::onDisconnected()
 {
+    QMutexLocker lock(&mMutex);
 /*
     QString error = tr("Connection to remote server lost");
 /*
@@ -89,17 +90,21 @@ void RemoteRcUnits::run()
         connect(mSocket, SIGNAL(disconnected()), SLOT(onDisconnected()), Qt::DirectConnection);
         connect(mSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onError(QAbstractSocket::SocketError)), Qt::DirectConnection);
         mClient = new RemoteRcUnitClient(mSocket, mSocket);
+        mClient->setDefaultTimeout(mTimeout * 1000);
+        if(mSocket->state() == QAbstractSocket::UnconnectedState)
+            mSocket->connectToHost(mHost, mPort);
         mStartupWait.wakeAll();
     }
     exec();
+    QMutexLocker lock(&mMutex);
+    mSocket->disconnect(this);
+    mSocket->disconnectFromHost();
+    QList<QString> old = mLolecs.keys();
+    mLolecs.clear();
+    emit unitsUpdated(mName, old);
     delete mClient;
     delete mSocket;
 }
-
-
-
-
-
 
 QList<RcUnitBase *> RemoteRcUnits::units()
 {
@@ -116,11 +121,15 @@ QList<RcUnitBase *> RemoteRcUnits::units()
 
 double RemoteRcUnits::timout()
 {
-    return mClient->defaultTimeout() / 1000.0;
+    return mTimeout;
 }
+
 
 void RemoteRcUnits::setTimeout(double seconds)
 {
-    mClient->setDefaultTimeout(seconds * 1000);
+    QMutexLocker lock(&mMutex);
+    if(mClient)
+        mClient->setDefaultTimeout(seconds * 1000);
+    mTimeout = seconds;
 }
 

@@ -43,6 +43,7 @@ public:
     QList<QString> telecontrolableUnitNames();
     QWidget * lolecGui(const QString &name);
     virtual void loadConfig(const QString &filename);
+    virtual void releaseConfig();
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& lolec);
     void activateTelecontrol(const QString& unit);

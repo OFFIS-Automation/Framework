@@ -3,7 +3,7 @@
 #include "RemoteRcUnitClientBase.h"
 
 RemoteRcUnitClientBase::RemoteRcUnitClientBase(QIODevice* writeDevice, QIODevice* readDevice, bool initialize)
-	: RemoteSignals(Q_UINT64_C(0xb8b4f561830eace),Q_UINT64_C(0xdaaf949ad3148f67), readDevice, writeDevice, initialize)
+	: RemoteSignals(Q_UINT64_C(0x7192336e62a4174),Q_UINT64_C(0x77ab91543458f0), readDevice, writeDevice, initialize)
 {}
 
 void RemoteRcUnitClientBase::listUnits()
@@ -26,40 +26,57 @@ void RemoteRcUnitClientBase::callMethod(uint callId, const QByteArray& unit, con
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::enableTelecontrol(const QString& unitName)
+void RemoteRcUnitClientBase::enableTelecontrol(uint id, const QString& unitName)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)6;
+	stream << id;
 	stream << unitName;
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::disableTelecontrol(const QString& unitName)
+void RemoteRcUnitClientBase::disableTelecontrol(uint id, const QString& unitName)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)7;
+	stream << id;
 	stream << unitName;
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::handleTcData(const QMap<int, double>& data)
+void RemoteRcUnitClientBase::handleTcData(uint id, const QMap<int, double>& data)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)8;
+	stream << id;
 	stream << data;
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::setTcButton(int buttonId, const bool& pressed)
+void RemoteRcUnitClientBase::setTcButton(uint id, int buttonId, const bool& pressed)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)9;
+	stream << id;
 	stream << buttonId;
 	stream << pressed;
+	transmitSignal(msgData);
+}
+
+void RemoteRcUnitClientBase::updateTcSensitivity(uint id, const QString& unitName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
+{
+	QByteArray msgData;
+	QDataStream stream(&msgData, QIODevice::WriteOnly);
+	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
+	stream << id;
+	stream << unitName;
+	stream << sensName;
+	stream << sensitivity;
+	stream << inverts;
 	transmitSignal(msgData);
 }
 
@@ -93,6 +110,12 @@ void RemoteRcUnitClientBase::processRemoteInputs(const QByteArray& data)
 		stream >> callId;
 		stream >> result;
 		emit methodResponse(callId, result);
+		return;
+	}
+	if(remoteSignalMethodId == 11) {
+		uint id;
+		stream >> id;
+		emit tcFinished(id);
 		return;
 	}
 

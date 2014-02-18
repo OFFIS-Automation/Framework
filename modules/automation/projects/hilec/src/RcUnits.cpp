@@ -67,12 +67,18 @@ void RcUnits::loadConfig(const QString &filename)
         QString host = settings.value("address").toString();
         int port = settings.value("port").toInt();
         double timeout = settings.value("callTimeout").toDouble();
-        RemoteRcUnits* rl = new RemoteRcUnits(name, host, port);
-        rl->setTimeout(timeout);
+        RemoteRcUnits* rl = new RemoteRcUnits(name, host, port, timeout);
         connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteLolecsListed(QString, QStringList)));
         mRemoteLolecs[name] = rl;
         rl->startConnect();
     }
+}
+
+void RcUnits::releaseConfig()
+{
+    RcUnitsBase::releaseConfig();
+    qDeleteAll(mRemoteLolecs);
+    mRemoteLolecs.clear();
 }
 
 void RcUnits::onRemoteLolecsListed(const QString &remoteServerName, const QStringList &oldLolecs)

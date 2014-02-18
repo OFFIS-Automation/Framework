@@ -30,12 +30,8 @@ class Server : public QObject
 {
     Q_OBJECT
 public:
-    enum Status
-    {
-
-    };
-
     Server();
+    virtual ~Server();
 signals:
     void stateChanged(int state);
     void listenError(const QString& error);

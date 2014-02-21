@@ -105,12 +105,12 @@ void HilecGui::checkFile(const QString &filename)
 
 void HilecGui::loadProject(const QString &projectFile)
 {
+    rcUnits->setProjectFile(projectFile);
     hilec->loadConfig(projectFile);
     runConfigurations->setConfigFile(projectFile);
     toolbar->setConfigFile(projectFile);
     callStack->setProjectFile(projectFile);
     errors->setProjectFile(projectFile);
-    rcUnits->setProjectFile(projectFile);
     telecontrol->setConfigFile(projectFile);
     // compile all files
     foreach(const QString& file, allPythonFiles(QFileInfo(projectFile).absoluteDir(), 1))

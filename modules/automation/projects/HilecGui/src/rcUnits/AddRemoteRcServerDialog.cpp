@@ -44,7 +44,7 @@ void AddRemoteRcServerDialog::addToSettings()
     settings.setValue("name", ui->name->text());
     settings.setValue("address", ui->address->text());
     settings.setValue("port", ui->port->value());
-    settings.setValue("timeout", 10.0);
+    settings.setValue("callTimeout", 5.0);
     settings.endArray();
 }
 

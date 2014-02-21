@@ -38,7 +38,7 @@ signals:
     void runFile(QString);
     void showHelpWidget();
     void createGamepadMapping();
-
+    void addRcServer();
 public slots:
     void setCurrentFile(const QString& filename) { mFile = filename; }
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
@@ -56,6 +56,8 @@ private slots:
     void on_actionLolecHelp_triggered();
 
     void on_actionCreateGamepadMapping_triggered();
+
+    void on_actionAddRcServer_triggered();
 
 private:
     Ui::HilecGuiToolbar *ui;

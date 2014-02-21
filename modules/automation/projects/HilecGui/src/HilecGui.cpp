@@ -66,6 +66,7 @@ void HilecGui::initialize(const QString&)
     connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
+    connect(toolbar, SIGNAL(addRcServer()), rcUnits, SLOT(addRcServer()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
     connect(callStack, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
     connect(errors, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));

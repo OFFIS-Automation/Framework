@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "AddRemoteRcServerDialog.h"
 #include "RcUnitWidget.h"
 #include "ui_RcUnitWidget.h"
 #include "../HilecSingleton.h"
@@ -37,6 +38,7 @@ RcUnitWidget::~RcUnitWidget()
 {
     delete ui;
 }
+
 
 void RcUnitWidget::updateRcUnits()
 {
@@ -80,6 +82,7 @@ void RcUnitWidget::on_units_customContextMenuRequested(const QPoint &pos)
             menu.addAction(ui->actionRemoveLolec);
     }
     menu.addAction(ui->actionAddLolec);
+    menu.addAction(ui->actionAddServer);
     menu.exec(mapToGlobal(pos));
 }
 
@@ -130,4 +133,18 @@ void RcUnitWidget::on_actionRemoveLolec_triggered()
     }
     settings.sync();
     emit projectFileChanged(mProjectFile);
+}
+
+void RcUnitWidget::on_actionAddServer_triggered()
+{
+    addRcServer();
+}
+
+
+void RcUnitWidget::addRcServer()
+{
+    AddRemoteRcServerDialog dlg(mProjectFile, this);
+    if(dlg.exec())
+        dlg.addToSettings();
+
 }

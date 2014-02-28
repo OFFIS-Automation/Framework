@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName("OFFIS");
     a.setApplicationName("RemoteLolecServer");
     QSettings::setDefaultFormat(QSettings::IniFormat);
+    QDir::setCurrent(a.applicationDirPath() + "/plugins");
     Server server;
     QThread serverThread;
     serverThread.start();

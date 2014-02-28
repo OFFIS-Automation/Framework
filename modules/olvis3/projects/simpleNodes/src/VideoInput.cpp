@@ -29,9 +29,9 @@ VideoInput::VideoInput()
     setGroup("input");
 
     // Inputs
-    mIn.setName("inFile");
+    mIn.setName("filename");
     mIn.setDesc("File to read video data stream from");
-    mIn.setFilter("*.avi");
+    mIn.setFilter("*.avi *.wmv *.m4v *.mp4");
     addInputPort(mIn);
 
     mRepeat.setName("repeat");

@@ -556,9 +556,9 @@ void OlvisCoreInterface::connectProcessor(int source, int targetId)
         qCritical() << errorMsg;
         return;
     }
-    ProcessingElement* target= mProcessors.value(targetId, 0);
-    if(!target)
-        target = mJoins.value(targetId, 0);
+    Processor* target= mProcessors.value(targetId, 0);
+//    if(!target)
+//        target = mJoins.value(targetId, 0);
 //    if(!target)
 //        target = mBuffers.value(targetId, 0);
     if(!target)
@@ -570,7 +570,7 @@ void OlvisCoreInterface::connectProcessor(int source, int targetId)
         return;
     mChanged = true;
     emit processorsConnected(source, targetId);
-    setProcessorStartupBehavior(targetId, false);
+    setProcessorStartupBehavior(targetId, target->info().pausedStartup);
 }
 
 void OlvisCoreInterface::disconnectProcessor(int id)

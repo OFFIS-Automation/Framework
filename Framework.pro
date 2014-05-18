@@ -49,5 +49,11 @@ macx{
 }
 win32-msvc*{
     message(Windows-Build)
+    win32-msvc*:contains(QMAKE_TARGET.arch, x86_64):{
+        message("Building for 64 bit")
+    }
+    else {
+        message("Building for 32 bit")
+    }
 }
 

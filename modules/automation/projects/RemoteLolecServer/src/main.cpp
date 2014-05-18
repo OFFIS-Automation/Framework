@@ -19,6 +19,8 @@
 #include "Server.h"
 #include <QDebug>
 #include <QSettings>
+#include <QDir>
+
 
 class Application : public QApplication
 {

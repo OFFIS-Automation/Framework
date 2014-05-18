@@ -21,7 +21,7 @@
 #include <QStringList>
 #include <QDebug>
 
-Server::Server() : mTcpServer(this)
+Server::Server() : mTcpServer(this), mSocket(0)
 {
     connect(&mTcpServer, SIGNAL(newConnection()), SLOT(onConnect()));
 }

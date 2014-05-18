@@ -46,3 +46,6 @@ SOURCES += \
 
 FORMS += \
     src/TutorialUnitGui.ui
+
+RESOURCES += \
+    images/images.qrc

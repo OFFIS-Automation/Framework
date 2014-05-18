@@ -25,8 +25,11 @@ TutorialUnitGui::TutorialUnitGui(TutorialUnit *control, GraphicsView *scene) :
 {
     ui->setupUi(this);
     connect(mController, SIGNAL(connectStatusChanged(bool)), ui->connectButton, SLOT(setChecked(bool)));
+    connect(mController, SIGNAL(positionUpdated(QPointF,qreal)), SLOT(onPositionUpdate(QPointF, qreal)));
     connect(this, SIGNAL(connectClicked()), mController, SLOT(acquireHardware()));
     connect(this, SIGNAL(disconnectClicked()), mController, SLOT(releaseHardware()));
+    connect(this, SIGNAL(resetSystem()), mController, SLOT(resetSetup()));
+    connect(this, SIGNAL(resetSystemRandom()), mController, SLOT(resetSetupRandom()));
     scene->show();
     scene->hide();
 }
@@ -37,10 +40,27 @@ TutorialUnitGui::~TutorialUnitGui()
     delete mScene;
 }
 
+void TutorialUnitGui::onPositionUpdate(QPointF p, qreal rot)
+{
+    ui->x->setValue(p.x());
+    ui->y->setValue(p.y());
+    ui->rot->setValue(rot);
+}
+
 void TutorialUnitGui::on_connectButton_clicked(bool checked)
 {
     if(checked)
         emit connectClicked();
     else
         emit disconnectClicked();
+}
+
+void TutorialUnitGui::on_resetButton_clicked()
+{
+    emit resetSystem();
+}
+
+void TutorialUnitGui::on_resetRandomButton_clicked()
+{
+    emit resetSystemRandom();
 }

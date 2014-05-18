@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/TutorialPlugin">
+        <file>connect.png</file>
+        <file>disconnect.png</file>
+        <file>arrow_switch.png</file>
+        <file>arrow_undo.png</file>
+    </qresource>
+</RCC>

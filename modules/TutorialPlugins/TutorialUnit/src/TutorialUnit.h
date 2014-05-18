@@ -46,6 +46,7 @@ private slots:
     void onMovementFinished();
 signals:
     void connectStatusChanged(bool connected);
+    void positionUpdated(QPointF pos, qreal rot);
 
     void moveRel(QPointF pos, int moveTime = -1);
     void moveAbs(QPointF pos, int moveTime = -1);

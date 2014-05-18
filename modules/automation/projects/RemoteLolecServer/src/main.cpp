@@ -21,7 +21,6 @@
 #include <QSettings>
 #include <QDir>
 
-
 class Application : public QApplication
 {
 public:

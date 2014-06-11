@@ -35,6 +35,7 @@ class FILTERBASESHARED_EXPORT Tracer : public QThread
 public:
     static Tracer& instance();
     virtual ~Tracer();
+    void setEnabled(bool enabled);
     double timestamp();
     int labelId(const QString& name);
     SubTracer subTracer(int filterId);
@@ -82,6 +83,7 @@ private:
     QTextStream mTransStream;
     int mNextLabelId;
     QMap<QString, int> mLabels;
+    bool mEnabled;
 };
 
 class SubTracer

@@ -1081,6 +1081,11 @@ bool OlvisCoreInterface::testUpdateFlag() const
     return mChanged;
 }
 
+void OlvisCoreInterface::setTracingEnabled(bool enabled)
+{
+    Tracer::instance().setEnabled(enabled);
+}
+
 bool OlvisCoreInterface::canBeProcessorOutput(const PortId &portId) const
 {
     if(isRunning()) return false;

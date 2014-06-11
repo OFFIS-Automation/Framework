@@ -169,6 +169,18 @@
     <string>Save the vision configuration to the project</string>
    </property>
   </action>
+  <action name="actionEnableTracing">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/page.png</normaloff>:/olvisExecGui/page.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enable Tracing</string>
+   </property>
+  </action>
   <addaction name="actionRun"/>
   <addaction name="actionPause"/>
   <addaction name="actionStep"/>
@@ -185,7 +197,24 @@
   <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
   <include location="../images/images.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionEnableTracing</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>actionExportTrace</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <signal>startRequested()</signal>
   <signal>stopRequested()</signal>

@@ -83,6 +83,7 @@ MainToolBar::MainToolBar(const OlvisInterface &model, QWidget *parent) :
     connect(this, SIGNAL(stopRequested()), &mInterface, SLOT(stop()), Qt::QueuedConnection);
     connect(this, SIGNAL(pauseRequested()), &mInterface, SLOT(pause()), Qt::QueuedConnection);
     connect(this, SIGNAL(stepRequested(bool)), &mInterface, SLOT(step(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTraceEnabled(bool)), &mInterface, SLOT(setTracingEnabled(bool)), Qt::QueuedConnection);
     onExecutionFinished();
     check();
 }
@@ -100,6 +101,7 @@ void MainToolBar::initMenu(QMenu* fileMenu, QMenu* olvisMenu)
     olvisMenu->addAction(ui->actionPause);
     olvisMenu->addSeparator();
     olvisMenu->addAction(ui->actionOptions);
+    olvisMenu->addAction(ui->actionEnableTracing);
     olvisMenu->addAction(ui->actionExportTrace);
 
 
@@ -283,4 +285,10 @@ void MainToolBar::on_actionOptions_triggered()
 {
     OlvisOptionsGui pluginConfig;
     pluginConfig.exec();
+}
+
+
+void MainToolBar::on_actionEnableTracing_triggered(bool checked)
+{
+    emit setTraceEnabled(checked);
 }

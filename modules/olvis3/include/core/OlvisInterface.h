@@ -203,6 +203,11 @@ public:
 public slots:
 
     /**
+     * @brief enables the tracing of filter execution times
+     * @param enabled
+     */
+    virtual void setTracingEnabled(bool enabled) = 0;
+    /**
     * creates a new processor named @a name
     * @emits processorCreated
     */

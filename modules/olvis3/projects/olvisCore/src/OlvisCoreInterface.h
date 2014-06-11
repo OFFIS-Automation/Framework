@@ -108,6 +108,7 @@ public:
 signals:
 
 public slots:
+    virtual void setTracingEnabled(bool enabled);
     virtual int createProcessor(const QString& name);
     virtual void deleteProcessor(int name);
     virtual void renameProcessor(int id, const QString& newName);

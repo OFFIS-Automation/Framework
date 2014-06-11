@@ -43,6 +43,7 @@ signals:
     void restoreRequested();
     void saveRequested();
     void setNumDisplays(int numOfDisplays);
+    void setTraceEnabled(bool enable);
 public slots:
     bool check();
 
@@ -68,6 +69,9 @@ private slots:
     void on_actionRestore_triggered();
 
     void on_actionSave_triggered();
+
+
+    void on_actionEnableTracing_triggered(bool checked);
 
 private:
     Ui::MainToolBar *ui;

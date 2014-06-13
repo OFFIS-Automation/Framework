@@ -27,6 +27,7 @@
 #include <QDebug>
 #include "TcInvoker.h"
 #include "RcMethodInvoker.h"
+#include <QDebug>
 
 RcUnit::RcUnit(const QString &name, const QString& configFile)
     : mName(name),
@@ -173,6 +174,15 @@ bool RcUnit::initialize(LolecInterface* plugin)
         }
         if(sig == mHapticName)
             configureHapticMethod(method);
+    }
+    foreach(QString unitName, mMethods.keys())
+    {
+        const Method& method = mMethods[unitName];
+        if(!method.configured)
+        {
+            qCritical() << "Error initializing RC-Unit"  << name() << ": Method" << method.name << "is published, but not found as slot!";
+            mMethods.remove(unitName);
+        }
     }
     if(mLolec)
         mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons);

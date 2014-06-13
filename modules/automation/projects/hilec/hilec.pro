@@ -28,31 +28,28 @@ INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../../olvis3/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../RcUnits/src
+INCLUDEPATH += ../remoteClient/src
 
 # Python
 win32*: INCLUDEPATH += $$(AmirDevDir)/python3/include
 win32*: LIBS += -L$$(AmirDevDir)/python3/libs
-unix:!macx: INCLUDEPATH += /usr/include/python3.2 # include stuff
-unix:!macx: LIBS += -L/usr/lib/python3.2/config -lpython3.2 # static library path
-macx: INCLUDEPATH += /opt/local/Library/Frameworks/Python.framework/Versions/3.2/include/python3.2m
-macx: LIBS += /opt/local/Library/Frameworks/Python.framework/Versions/3.2
+unix:!macx:CONFIG += link_pkgconfig
+unix:!macx:PKGCONFIG += python-3.2
+unix:!macx:LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
-LIBS += -L$${targetDir}/plugins -lRcUnits
-
-pylibs.path    = $${DESTDIR}/hilec/python
+LIBS += -L$${targetDir}/plugins -lRcUnits -lRemoteClient
+pylibs.path = $${DESTDIR}/hilec/python
 win32*: pylibs.files += $$(AmirDevDir)/python3/Lib/*
-unix:!macx: pylibs.files += /usr/lib/python3.2/*
-
-INSTALLS       += pylibs
+unix:!macx: pylibs.files+= /usr/lib/python3.2/*
+INSTALLS += pylibs
 
 pyDlls.path = $${DESTDIR}
 win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.dll
 win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.exe
 win32*: pyDlls.files += $$(AmirDevDir)/python3/bin/pytho*.pdb
-unix:!macx :pyDlls.files += /usr/bin/python3
-unix:!macx :pyDlls.files += /usr/bin/python3.2
-unix:!macx :pyDlls.files += /usr/bin/python3.2-dbg
-
+unix:!macx :pyDlls.files += `which python3` #/usr/bin/python3
+unix:!macx :pyDlls.files += `which python3.2` #/usr/bin/python3.2
+unix:!macx :pyDlls.files += `which python3.2-dbg`  #/usr/bin/python3.2-dbg
 INSTALLS       += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python
@@ -66,6 +63,10 @@ INSTALLS       += lolecfiles
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
 tcfiles.files  += ../../include/telecontrol/*
 INSTALLS       += tcfiles
+
+tcConfig.path    = $${targetDir}
+tcConfig.files  += ../../data/gamepads.ini
+INSTALLS       += tcConfig
 
 
 HEADERS += \
@@ -96,14 +97,13 @@ HEADERS += \
     src/debugVariables/ListVarItem.h \
     src/debugVariables/TupleVarItem.h \
     src/debugVariables/InstanceVarItem.h \
-    src/RemoteLolec.h \
-    src/RemoteRcUnit.h \
     src/CallStackDecoder.h \
     src/PythonLinter.h \
     ../../include/lolecs/Pose2d.h \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
-    ../../include/telecontrol/TcConfig.h
+    ../../include/telecontrol/TcConfig.h \
+    ../../include/core/TelecontrolConfig.h
 
 SOURCES += \
     HilecPlugin.cpp \
@@ -124,8 +124,6 @@ SOURCES += \
     src/debugVariables/ListVarItem.cpp \
     src/debugVariables/TupleVarItem.cpp \
     src/debugVariables/InstanceVarItem.cpp \
-    src/RemoteLolec.cpp \
-    src/RemoteRcUnit.cpp \
     src/CallStackDecoder.cpp \
     src/PythonLinter.cpp
 

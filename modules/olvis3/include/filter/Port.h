@@ -33,29 +33,36 @@ public:
     void setDesc(const QString& desc);
     void setIcon(const QImage &icon);
 
-    // input port methods for filters
+    /**
+     * sets a mode for this port. The Choices are:
+     *  RegularPortMode: default bahavior, port must always have a value
+     *  OptionalPortMode: port may or may not have a value. The filter must check with hasValue()
+     *  SingleShotPortMode: port may or may not have a value. IF a value is assigned, it is only valid for one execution of the
+     *      filter. After the execution, it is automatically reset to NoValue
+     */
     void setMode(InputPortMode mode);
 
     /**
-    Returns whether this port holds a valid value.
-    Returns false for optional ports that are not set.
-
-    For list ports, this commands returns true if the list holds another value.
-    You can iterate through the input list using while(hasValue()) getValue();
-    getValue returns one element of the list and increments the list id
+     * Returns whether this port holds a valid value.
+     * For default ports that are not lists, the return value is always true
+     *
+     * For list ports, this commands returns true if the list holds another value.
+     * You can iterate through the input list using while(hasValue()) getValue();
+     * getValue returns one element of the list and increments the list id
     */
     bool hasValue();
 
     /**
-      Returns whether the port was updated since the last execution
+     * Returns whether the port was updated since the last execution
     */
     bool isUpdated();
 
     /**
-      Returns whether the port was update and holds a new value
-      that is distinct from the previous value
+     * Returns whether the port was update and holds a new value
+     * that is distinct from the previous value
      */
     bool hasChanged();
+
 
     PortInfo getInfo() const;
     const QString& name() const;
@@ -65,10 +72,9 @@ public:
     virtual QVariant fromString(const QString& str) const = 0;
     virtual QVariant constrainedValue(const QVariant& var) const = 0;
     virtual QVariant toSimpleType(const QVariant& var) const{ return var; }
+
 protected:
-
-
-    // methods for ports
+    // methods for derived port specializations
     Port(int id, const QString& name, bool isMainType = false);
     void setConstraint(const QByteArray& key, const QVariant& value);
     void addChoiceRaw(const QVariant& value, const QString& name);

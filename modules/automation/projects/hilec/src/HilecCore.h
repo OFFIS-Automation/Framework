@@ -36,9 +36,12 @@ public:
     static HilecCore& instance() { return *mInstance; }
     virtual ~HilecCore();
     virtual bool waitForStop(uint timeout = ULONG_MAX);
-
+    QList<QPair<QString, int> > breakpoints() const;
+    QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
-    virtual QStringList lolecs();
+    QStringList getTelecontrolableUnits();
+    TelecontrolConfig getTelecontrolConfig(const QString& name);
+    virtual QStringList rcUnits();
     virtual QWidget* createLolecWidget(const QString& lolec);
 
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0);
@@ -50,6 +53,8 @@ public:
     void updateProgress(int id, int progress) { emit progressBarUpdated(id, progress); }
     void removeProgress(int id) { emit progressBarRemoved(id); }
 
+    void startVideoCapture(int fps) { emit videoCaptureStartRequested(fps); }
+    void endVideoCapture(const QString& filename) { emit videoCaptureEndRequested(filename); }
     void createInfoPanel(int id, const QString& title, const QStringList& names) { emit newInfoPanel(id, title, names); }
     void updateInfoPanel(int id, const QStringList& values) { emit infoPanelUpdated(id, values); }
     void removeInfoPanel(int id) { emit infoPanelRemoved(id); }
@@ -68,6 +73,7 @@ public slots:
     void compileFile(const QString& filename);
     void userInput(int uid, int buttonId, const QList<QVariant>& data);
     void loadConfig(const QString &filename);
+    void releaseConfig();
     void addBreakpoint(QString file, int line);
     void removeBreakpoint(QString file, int line);
     void pause();

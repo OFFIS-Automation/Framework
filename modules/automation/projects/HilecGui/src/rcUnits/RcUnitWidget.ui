@@ -83,6 +83,24 @@
     <string>Remove the selected RC-Unit from the project</string>
    </property>
   </action>
+  <action name="actionAddServer">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add RC-Unit Server</string>
+   </property>
+  </action>
+  <action name="actionRemoveServer">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/removeLolec.png</normaloff>:/hilecGui/removeLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>remove RC-Unit server</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../../images/images.qrc"/>

@@ -39,30 +39,20 @@ bool LinuxGamepad::initialize()
 void LinuxGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &buttons)
 {
     // Axis (and their local buttons)
-    joysticks[Tc::XAxisLeft] = correctedValue(float(mDevice.getAxis(0) / 255.0));
-    joysticks[Tc::YAxisLeft] = correctedValue(-float(mDevice.getAxis(1) / 255.0));
-    buttons[Tc::LeftAxisPush] = mDevice.getButton(10) != 0;
-    joysticks[Tc::XAxisRight] = correctedValue(float(mDevice.getAxis(2) / 255.0));
-    joysticks[Tc::YAxisRight] = correctedValue(-float(mDevice.getAxis(3) / 255.0));
-    buttons[Tc::RightAxisPush] = mDevice.getButton(10) != 0;
+    joysticks[Tc::LeftJoystickX] = correctedValue(float(mDevice.getAxis(0) / 255.0));
+    joysticks[Tc::LeftJoystickY] = correctedValue(-float(mDevice.getAxis(1) / 255.0));
+    joysticks[Tc::RightJoystickX] = correctedValue(float(mDevice.getAxis(2) / 255.0));
+    joysticks[Tc::RightJoystickY] = correctedValue(-float(mDevice.getAxis(3) / 255.0));
 
     // Buttons
-    buttons[Tc::Button1] = mDevice.getButton(0) != 0;
-    buttons[Tc::Button2] = mDevice.getButton(1) != 0;
-    buttons[Tc::Button3] = mDevice.getButton(2) != 0;
-    buttons[Tc::Button4] = mDevice.getButton(3) != 0;
-    buttons[Tc::Button5] = mDevice.getButton(4) != 0;
-    buttons[Tc::Button6] = mDevice.getButton(5) != 0;
-    buttons[Tc::Button7] = mDevice.getButton(6) != 0;
-    buttons[Tc::Button8] = mDevice.getButton(7) != 0;
-    buttons[Tc::Button9] = mDevice.getButton(8) != 0;
-    buttons[Tc::Button10] = mDevice.getButton(9) != 0;
-
-    // D-Pad
-    buttons[Tc::ButtonLeft] = mDevice.getAxis(4) < 0;
-    buttons[Tc::ButtonRight] = mDevice.getAxis(4) > 0;
-    buttons[Tc::ButtonUp] = mDevice.getAxis(5) > 0;
-    buttons[Tc::ButtonDown] = mDevice.getAxis(5) < 0;
+    buttons[Tc::WestButton] = mDevice.getButton(0) != 0;
+    buttons[Tc::SouthButton] = mDevice.getButton(1) != 0;
+    buttons[Tc::EastButton] = mDevice.getButton(2) != 0;
+    buttons[Tc::NorthButton] = mDevice.getButton(3) != 0;
+    buttons[Tc::LeftShoulderUpperButton] = mDevice.getButton(4) != 0;
+    buttons[Tc::RightShoulderUpperButton] = mDevice.getButton(5) != 0;
+    buttons[Tc::LeftShoulderLowerButton] = mDevice.getButton(6) != 0;
+    buttons[Tc::RightShoulderLowerButton] = mDevice.getButton(7) != 0;
 }
 
 float LinuxGamepad::correctedValue(float v)

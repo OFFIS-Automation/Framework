@@ -27,22 +27,29 @@ struct UserRequest;
 struct ScriptCompileInfo;
 struct RcUnitHelp;
 struct TelecontrolConfig;
+struct TelecontrolConfig;
 
 class HilecInterface : public QObject
 {
     Q_OBJECT
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
-    virtual QStringList lolecs() = 0;
+    virtual QStringList getTelecontrolableUnits() = 0;
+    virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
+    virtual QStringList rcUnits() = 0;
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
+    virtual QList<QPair<QString, int> > breakpoints() const = 0;
+    virtual QList<int> breakpoints(const QString& fileName) const = 0;
     virtual bool waitForStop(uint timeout = ULONG_MAX) = 0;
 public slots:
+
     virtual void runFile(const QString& filename) = 0;
     virtual void compileFile(const QString& filename) = 0;
     virtual void userInput(int uid, int buttonId, const QList<QVariant>& data) = 0;
     virtual void loadConfig(const QString& filename) = 0;
+    virtual void releaseConfig() = 0;
     virtual void addBreakpoint(QString file, int line) = 0;
     virtual void removeBreakpoint(QString file, int line) = 0;
     virtual void resume() = 0;
@@ -88,6 +95,9 @@ signals:
     void breakpointHit(QString file, int line);
     void scriptExecutionStarted();
     void scriptExecutionFinished();
+
+    void videoCaptureStartRequested(int frameRate);
+    void videoCaptureEndRequested(const QString& filename);
 };
 
 

@@ -20,11 +20,13 @@
 #
 #-------------------------------------------------
 
-
-QT       += core gui widgets
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Toolbox
 TEMPLATE = app
+INCLUDEPATH += $${PWD}
+
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 INCLUDEPATH += ../../../version
@@ -51,9 +53,6 @@ win32-msvc*{
 versiontarget.depends = FORCE
 QMAKE_EXTRA_TARGETS += versiontarget
 PRE_TARGETDEPS += $$VERSION_HEADER
-
-
-
 
 include(../../../properties/pathes.pro)
 

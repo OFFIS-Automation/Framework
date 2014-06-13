@@ -71,15 +71,31 @@ void ProjectEditor::initialize(const QString&)
     connect(mToolbar, SIGNAL(closeAllFilesRequested()), mEditArea, SLOT(closeAll()));
     connect(mToolbar, SIGNAL(findRequested()), mEditArea, SLOT(showFind()));
 
+    connect(mToolbar, SIGNAL(undoRequested()), mEditArea, SLOT(undo()));
+    connect(mToolbar, SIGNAL(redoRequested()), mEditArea, SLOT(redo()));
+
+    connect(mToolbar, SIGNAL(zoomInRequested()), mEditArea, SLOT(increaseFontSize()));
+    connect(mToolbar, SIGNAL(zoomOutRequested()), mEditArea, SLOT(decreaseFontSize()));
+    connect(mToolbar, SIGNAL(zoomNormalRequested()), mEditArea, SLOT(setFontSize()));
+    connect(mToolbar, SIGNAL(copyRequested()), mEditArea, SLOT(copy()));
+    connect(mToolbar, SIGNAL(cutRequested()), mEditArea, SLOT(cut()));
+    connect(mToolbar, SIGNAL(pasteRequested()), mEditArea, SLOT(paste()));
+
     connect(mFileTree, SIGNAL(openFileRequested(QString)), mEditArea, SLOT(openFile(QString)));
     connect(mFileTree, SIGNAL(newFileRequested(QString)), mEditArea, SLOT(newFile(QString)));
     connect(mFileTree, SIGNAL(closeFileRequested(QString)), mEditArea, SLOT(closeFile(QString)));
-    connect(mFileTree, SIGNAL(renameFileRequested(QString, QString)), mEditArea, SLOT(renameFile(QString, QString)));
-    connect(mFileTree, SIGNAL(renameDirRequested(QString,QString)), mEditArea, SLOT(renameDir(QString, QString)));
+    connect(mFileTree, SIGNAL(fileRenamed(QString,QString)), mEditArea, SLOT(renameFile(QString, QString)));
+    connect(mFileTree, SIGNAL(directoryRenamed(QString,QString)), mEditArea, SLOT(renameDir(QString, QString)));
 
     connect(mEditArea, SIGNAL(currentFileChanged(QString)), SIGNAL(activeFileChanged(QString)));
     connect(mEditArea, SIGNAL(fileSaved(QString)), SIGNAL(fileSaved(QString)));
     connect(mEditArea, SIGNAL(fileOpened(QString)), SIGNAL(fileOpened(QString)));
+    connect(mEditArea, SIGNAL(clickedProblem(QString,int)), SIGNAL(clickedProblem(QString,int)));
+
+    connect(mEditArea, SIGNAL(undoStatusChanged(bool)), mToolbar, SLOT(onUndoStatusChanged(bool)));
+    connect(mEditArea, SIGNAL(redoStatusChanged(bool)), mToolbar, SLOT(onRedoStatusChanged(bool)));
+    connect(mEditArea, SIGNAL(cutCopyStatusChanged(bool)), mToolbar, SLOT(onCutCopyStatusChanged(bool)));
+
     closeProject();
 
 }
@@ -88,8 +104,12 @@ void ProjectEditor::deinitialize()
 {
 }
 
-void ProjectEditor::setGuiInterface(const QString& , QObject*)
+void ProjectEditor::setGuiInterface(const QString& name, QObject* obj)
 {
+    if(name == "HilecGui")
+    {
+        mEditArea->connect(obj, SIGNAL(focusLine(QString, int)), SLOT(focusLine(QString, int)));
+    }
 }
 
 
@@ -129,10 +149,6 @@ void ProjectEditor::start()
 {
 }
 
-void ProjectEditor::focusLine(const QString &file, int line)
-{
-    mEditArea->focusLine(file, line);
-}
 
 void ProjectEditor::loadProject(const QString &projectName)
 {

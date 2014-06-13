@@ -29,6 +29,7 @@ MainWindow::MainWindow(QObject* server, QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->statusConnected->setVisible(false);
     addDockWidget(Qt::BottomDockWidgetArea, new LogWindow());
     ui->errorString->hide();
     connect(this, SIGNAL(reconnect(QString,int)), server, SLOT(restart(QString, int)));
@@ -77,16 +78,17 @@ void MainWindow::on_restart_clicked()
 void MainWindow::updateStatus(int state)
 {
     ui->errorString->hide();
+
     switch(state)
     {
         case QAbstractSocket::ListeningState:
-            ui->status->setText(tr("Listening"));
-            break;
         case QAbstractSocket::UnconnectedState:
-            ui->status->setText(tr("Unconnected"));
+            ui->statusListen->setVisible(true);
+            ui->statusConnected->setVisible(false);
             break;
         case QAbstractSocket::ConnectedState:
-            ui->status->setText(tr("Connected"));
+            ui->statusListen->setVisible(false);
+            ui->statusConnected->setVisible(true);
             break;
     }
 }
@@ -101,7 +103,7 @@ void MainWindow::on_actionLoadProject_triggered()
 {
     QSettings settings;
     QString currentDir = settings.value("configFile").toString();
-    QString project = QFileDialog::getOpenFileName(this, tr("Select configuration"), currentDir, tr("Project Files (*pro)"));
+    QString project = QFileDialog::getOpenFileName(this, tr("Select configuration"), currentDir, tr("Project Files (*oap)"));
     if(project.isEmpty())
         return;
     settings.setValue("configFile", project);

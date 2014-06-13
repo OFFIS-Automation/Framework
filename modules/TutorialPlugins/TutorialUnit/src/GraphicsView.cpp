@@ -137,6 +137,8 @@ void GraphicsView::moveRobotRel(QPointF dist, int durationInMs)
     moveRobotAbs(robot->pos() + dist, durationInMs);
 }
 
+
+
 void GraphicsView::rotateRobotAbs(double angle, int durationInMs)
 {
     if(durationInMs < 0)
@@ -191,6 +193,7 @@ void GraphicsView::setGripperState(bool open)
 
 void GraphicsView::sendImage()
 {
+    emit positionUpdate(robot->pos(), robot->rotation());
     QImage img(sceneRect().size().toSize(), QImage::Format_RGB32);
     QPainter painter(&img);
     painter.setRenderHints(QPainter::Antialiasing);

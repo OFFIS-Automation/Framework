@@ -63,7 +63,10 @@ void HilecGui::initialize(const QString&)
     telecontrol = new TelecontrolWidget();
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
+    connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
+    connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
+    connect(toolbar, SIGNAL(addRcServer()), rcUnits, SLOT(addRcServer()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
     connect(callStack, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
     connect(errors, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
@@ -83,10 +86,10 @@ void HilecGui::setGuiInterface(const QString& name, QObject* obj)
 {
     if(name == "ProjectEditor")
     {
-        obj->connect(this, SIGNAL(focusLine(QString, int)), SLOT(focusLine(QString, int)));
         toolbar->connect(obj, SIGNAL(activeFileChanged(QString)),SLOT(setCurrentFile(QString)));
         connect(obj ,SIGNAL(fileSaved(QString)), SLOT(checkFile(QString)));
         connect(obj ,SIGNAL(fileOpened(QString)), SLOT(checkFile(QString)));
+        connect(obj, SIGNAL(clickedProblem(QString,int)), errors, SLOT(selectProblem(QString,int)));
     }
 }
 
@@ -102,12 +105,13 @@ void HilecGui::checkFile(const QString &filename)
 
 void HilecGui::loadProject(const QString &projectFile)
 {
+    rcUnits->setProjectFile(projectFile);
     hilec->loadConfig(projectFile);
     runConfigurations->setConfigFile(projectFile);
     toolbar->setConfigFile(projectFile);
     callStack->setProjectFile(projectFile);
     errors->setProjectFile(projectFile);
-    rcUnits->setProjectFile(projectFile);
+    telecontrol->setConfigFile(projectFile);
     // compile all files
     foreach(const QString& file, allPythonFiles(QFileInfo(projectFile).absoluteDir(), 1))
     {
@@ -134,6 +138,7 @@ void HilecGui::closeProject()
     rcUnits->clear();
     errors->clear();
     telecontrol->clear();
+    hilec->releaseConfig();
 }
 
 QObject* HilecGui::getConnectObject()

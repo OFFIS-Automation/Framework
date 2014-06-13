@@ -32,7 +32,7 @@ public:
     virtual void setInitialPos(const QPoint& ) {}
     virtual void paint(QPainter& painter, bool showControls);
     virtual void setValue(const QVariant &value);
-
+    virtual bool isReadOnly() { return isOutput(); }
     virtual void mousePressEvent(QMouseEvent* event);
     virtual void mouseReleaseEvent(QMouseEvent*  event);
     virtual void mouseMoveEvent(QMouseEvent*  event, QList<QPoint> snapPoints);

@@ -16,13 +16,17 @@
 
 TEMPLATE = lib
 
-QT += widgets
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 TARGET = ProjectEditor
 
+LIBS        += -L$${targetDir}/plugins -lqscintilla2
+
 INCLUDEPATH += ../../../frontend/include
+INCLUDEPATH += ../QScintilla/Qt4Qt5
 INCLUDEPATH += ../../include
 
 
@@ -30,27 +34,19 @@ HEADERS += \
     src/ProjectEditor.h \
     src/HilecSingleton.h \
     src/FileTree/FileTree.h \
-    src/Editor/LineNumberArea.h \
     src/Editor/EditArea.h \
-    src/Editor/CodeEditor.h \
-    src/Editor/SyntaxHighlighter/XmlHighlighter.h \
-    src/Editor/SyntaxHighlighter/TxtHighlighter.h \
-    src/Editor/SyntaxHighlighter/PyHighlighter.h \
-    src/Editor/SyntaxHighlighterFactory.h \
-    src/EditorToolBar.h
+    src/EditorToolBar.h \
+    src/Editor/FileEditor.h \
+    src/FileTree/FileModelFilterProxy.h
 
 SOURCES += \
     src/ProjectEditor.cpp \
     src/HilecSingleton.cpp \
     src/FileTree/FileTree.cpp \
-    src/Editor/LineNumberArea.cpp \
     src/Editor/EditArea.cpp \
-    src/Editor/CodeEditor.cpp \
-    src/Editor/SyntaxHighlighter/XmlHighlighter.cpp \
-    src/Editor/SyntaxHighlighter/TxtHighlighter.cpp \
-    src/Editor/SyntaxHighlighter/PyHighlighter.cpp \
-    src/Editor/SyntaxHighlighterFactory.cpp \
-    src/EditorToolBar.cpp
+    src/EditorToolBar.cpp \
+    src/Editor/FileEditor.cpp \
+    src/FileTree/FileModelFilterProxy.cpp
 
 FORMS += \
     src/FileTree/FileTree.ui \

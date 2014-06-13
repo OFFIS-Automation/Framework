@@ -39,6 +39,7 @@ signals:
     void focusLine(const QString& file, int line);
 public slots:
     void updateCompileError(const ScriptCompileInfo& info);
+    void selectProblem(const QString& file, int line);
     void setProjectFile(const QString& path);
     void clear();
 private slots:

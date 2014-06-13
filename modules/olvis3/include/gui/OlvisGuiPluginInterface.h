@@ -25,7 +25,7 @@ class OlvisGuiPluginInterface
 public:
 
     virtual QString getName() const = 0;
-    virtual PortEditInterface* portEditFor(const PortInfo& info) { return 0; }
+    virtual PortEditInterface* portEditFor(const PortInfo& /* info */) { return 0; }
 };
 
 #define OlvisGuiPluginInterface_iid "com.offis.vision.GuiPluginInterface/1.0"

@@ -18,9 +18,12 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS += projects/RcUnits
+SUBDIRS += projects/remoteClient
 SUBDIRS += projects/hilec
 SUBDIRS += projects/HilecGui
+SUBDIRS += projects/QScintilla
 SUBDIRS += projects/ProjectEditor
+SUBDIRS += projects/RemoteLolecServer
 
 include(../properties/pathes.pro)
 

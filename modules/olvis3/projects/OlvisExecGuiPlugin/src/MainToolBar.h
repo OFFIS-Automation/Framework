@@ -43,10 +43,13 @@ signals:
     void restoreRequested();
     void saveRequested();
     void setNumDisplays(int numOfDisplays);
+    void setTraceEnabled(bool enable);
 public slots:
     bool check();
 
 private slots:
+    void on_actionOptions_triggered();
+
     void on_actionProblems_triggered();
     void on_actionStop_triggered();
     void on_actionRun_triggered();
@@ -61,13 +64,14 @@ private slots:
     void on_actionStepSingle_triggered();
     void on_actionExportTrace_triggered();
 
-    void on_actionLoadedPlugins_triggered();
-
     void onNumDisplaysChanged();
 
     void on_actionRestore_triggered();
 
     void on_actionSave_triggered();
+
+
+    void on_actionEnableTracing_triggered(bool checked);
 
 private:
     Ui::MainToolBar *ui;

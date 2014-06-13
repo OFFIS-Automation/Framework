@@ -18,8 +18,7 @@
 #define LOLECTOOLS_LINUXGAMEPAD_HQT
 
 #include "Gamepad.h"
-#include <joystick.h>
-
+#include "libjoystick/joystick.h"
 #include <QMap>
 
 class LinuxGamepadFactory;

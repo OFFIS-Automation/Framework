@@ -19,7 +19,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include "version.h"
-
+#include <QMessageBox>
 
 AboutScreen::AboutScreen(QWidget *parent) :
     QDialog(parent),

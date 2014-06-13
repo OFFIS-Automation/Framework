@@ -108,6 +108,7 @@ public:
 signals:
 
 public slots:
+    virtual void setTracingEnabled(bool enabled);
     virtual int createProcessor(const QString& name);
     virtual void deleteProcessor(int name);
     virtual void renameProcessor(int id, const QString& newName);
@@ -116,6 +117,9 @@ public slots:
     virtual void setProcessorPriority(const QString& name, int priority);
     virtual void setProcessorStartupBehavior(int id, bool pausedStartup);
     virtual void setProcessorStartupBehavior(const QString& processorName , bool pausedStartup);
+
+    virtual void setProcessorTriggerBehavior(int id, bool ignoreTrigger);
+    virtual void setProcessorTriggerBehavior(const QString& processorName , bool ignoreTrigger);
 
     virtual int createDataBuffer(int size = 10, const QString& name = QString());
     virtual void resizeDataBuffer(int id, int size);

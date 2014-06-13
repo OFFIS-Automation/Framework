@@ -20,27 +20,21 @@
 #include <core/RcUnitHelp.h>
 #include <QVariant>
 #include "RcUnitsGlobal.h"
-#include <telecontrol/HapticInterface.h>
+#include "GamepadEndpoint.h"
+#include "HapticBaseEndpoint.h"
 
-class RCUNITS_EXPORT RcUnitBase : public HapticEndpoint
+class RCUNITS_EXPORT RcUnitBase : public HapticBaseEndpoint, public GamepadEndpoint
 {
 public:
     RcUnitBase();
     virtual ~RcUnitBase(){}
 
-    virtual QMap<QString, QVariant> getConstants() = 0;
+    virtual QMap<QString, QVariant> getConstants() const = 0;
     virtual QVariant call(const QByteArray& method, QList<QVariant> params) = 0;
-    virtual RcUnitHelp getHelp() = 0;
+    virtual RcUnitHelp getHelp() const = 0;
     virtual QObject* lolec() = 0;
-    virtual QString name() = 0;
-    virtual void connectGamepad(QObject* gamepad) = 0;
-    virtual void disconnectGamepad(QObject* gamepad) = 0;
-    virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts) = 0;
-    virtual bool isTelecontrolable() const = 0;
-    virtual bool hasHapticInterface() const = 0;
-    virtual void updateHapticSensitivity(double sensitivity, double forceFactor) = 0;
-    virtual double hapticSensitivity() const = 0;
-    virtual double hapticForceFactor() const = 0;
+    virtual QString name() const = 0;
+    virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };
 
 #endif // RCUNITBASE_H

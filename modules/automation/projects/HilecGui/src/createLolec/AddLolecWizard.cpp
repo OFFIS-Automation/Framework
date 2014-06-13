@@ -45,6 +45,9 @@ AddLolecWizard::AddLolecWizard(const QString &projectFile, QWidget *parent) :
         ui->lolecSelect->setCurrentIndex(-1);
     }
 
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     connect(this, SIGNAL(projectFileChanged(QString)), HilecSingleton::hilec(), SLOT(loadConfig(QString)), Qt::QueuedConnection);
 }
 

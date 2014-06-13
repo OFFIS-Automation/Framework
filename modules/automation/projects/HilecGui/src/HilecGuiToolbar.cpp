@@ -48,6 +48,8 @@ HilecGuiToolbar::~HilecGuiToolbar()
 
 void HilecGuiToolbar::on_actionResume_triggered()
 {
+    if(!mRunning)
+        emit aboutToRunFile(mFile);
     emit runFile(mFile);
 }
 
@@ -58,6 +60,8 @@ void HilecGuiToolbar::createMenu(QMenu *menu)
     menu->addAction(ui->actionLolecHelp);
     menu->addAction(ui->actionCreateLolec);
     menu->addAction(ui->actionAddLolec);
+    menu->addAction(ui->actionAddRcServer);
+    menu->addAction(ui->actionCreateGamepadMapping);
 }
 
 void HilecGuiToolbar::on_actionCreateLolec_triggered()
@@ -85,12 +89,14 @@ void HilecGuiToolbar::on_actionLolecHelp_triggered()
 
 void HilecGuiToolbar::onScriptExecutionStarted()
 {
+    mRunning = true;
     ui->actionAutomationIdle->setVisible(false);
     ui->actionAutomationRunning->setVisible(true);
 }
 
 void HilecGuiToolbar::onScriptExecutionFinished()
 {
+    mRunning = false;
     ui->actionAutomationIdle->setVisible(true);
     ui->actionAutomationRunning->setVisible(false);
 }
@@ -100,4 +106,16 @@ void HilecGuiToolbar::setEnabled(bool enabled)
 {
     QWidget::setEnabled(enabled);
     ui->actionAddLolec->setEnabled(enabled);
+    ui->actionAddRcServer->setEnabled(enabled);
+    ui->actionCreateGamepadMapping->setEnabled(enabled);
+}
+
+void HilecGuiToolbar::on_actionCreateGamepadMapping_triggered()
+{
+    emit createGamepadMapping();
+}
+
+void HilecGuiToolbar::on_actionAddRcServer_triggered()
+{
+    emit addRcServer();
 }

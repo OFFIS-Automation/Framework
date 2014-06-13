@@ -23,6 +23,8 @@ namespace Ui {
     class RcUnitWidget;
 }
 
+class QTreeWidgetItem;
+
 class RcUnitWidget : public QDockWidget
 {
     Q_OBJECT
@@ -30,11 +32,12 @@ class RcUnitWidget : public QDockWidget
 public:
     explicit RcUnitWidget(QWidget *parent = 0);
     ~RcUnitWidget();
-    void setProjectFile(const QString& projectFile) { mProjectFile = projectFile; }
+    void setProjectFile(const QString& projectFile);
 signals:
     void addPluginToProject();
     void projectFileChanged(QString);
 public slots:
+    void addRcServer();
     void updateRcUnits();
     void enableContent();
     void disableContent();
@@ -47,7 +50,12 @@ private slots:
 
     void on_actionRemoveLolec_triggered();
 
+    void on_actionAddServer_triggered();
+
+    void on_actionRemoveServer_triggered();
+
 private:
+    QMap<QString, QTreeWidgetItem *> readServer();
     QString mProjectFile;
     Ui::RcUnitWidget *ui;
 };

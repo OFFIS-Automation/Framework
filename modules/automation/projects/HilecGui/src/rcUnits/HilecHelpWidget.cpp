@@ -73,7 +73,7 @@ void HilecHelpWidget::on_treeWidget_itemClicked(QTreeWidgetItem *item, int)
 void HilecHelpWidget::updateRcUnits()
 {
     qDeleteAll(rcUnits->takeChildren());
-    QStringList types = HilecSingleton::hilec()->lolecs();
+    QStringList types = HilecSingleton::hilec()->rcUnits();
     types.removeDuplicates();
     types.sort();
     foreach(QString type, types)

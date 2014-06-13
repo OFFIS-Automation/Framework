@@ -48,6 +48,7 @@ public:
     int trace(_frame* frame, int what, _object* arg);
     void addBreakpoint(const QString& file, int line);
     void removeBreakpoint(const QString& file, int line);
+    QList<QPair<QString, int> > breakpoints() const;
     void step(StepMode stepMode = Resume);
     QAbstractItemModel* variables(int frameDepth);
     QList<TraceLine> callStack();

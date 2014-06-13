@@ -330,14 +330,14 @@ void FilterConnectWidget::updateProcessorConnections(const PortId &outputPort)
     }
 }
 
-void FilterConnectWidget::showFilterError(const QString &filter, const QString &errMsg, int processorId)
+void FilterConnectWidget::showFilterError(const QString &filter, const QString &errMsg, int /* processorId */)
 {
     FilterWidget* widget  = mFilterWidgets.value(filter);
     if(widget)
         widget->showError(errMsg);
 }
 
-void FilterConnectWidget::removeFilterError(const QString &filter, int processorId)
+void FilterConnectWidget::removeFilterError(const QString &filter, int  /* processorId */)
 {
     FilterWidget* widget  = mFilterWidgets.value(filter);
     if(widget)

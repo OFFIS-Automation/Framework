@@ -17,13 +17,18 @@
 #include "WindowsGamepad.h"
 
 #include <QDebug>
+#include <QSettings>
+#include <QCoreApplication>
 #include <QElapsedTimer>
 #include <telecontrol/TcConfig.h>
+#include <QStringList>
 
 bool WindowsGamepad::initialize()
 {
     setObjectName("Gamepad: " + getName());
     try{
+        createMapping();
+
         if(FAILED(mDevice->SetDataFormat( &c_dfDIJoystick2 )))
             throw std::runtime_error(tr("Could not set data format to joystick.").toStdString());
 
@@ -39,27 +44,88 @@ bool WindowsGamepad::initialize()
     }
 }
 
+void WindowsGamepad::createMapping()
+{
+    QString settingsFile = QCoreApplication::applicationDirPath() + "/gamepads.ini";
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    foreach(QString group, settings.childGroups())
+    {
+        settings.beginGroup(group);
+        QStringList guids = settings.value("guids").toStringList();
+        if(guids.contains(mGuid))
+        {
+            if(settings.value("type").toString().toLower() == "xbox")
+            {
+                mGamepadType = XBoxGamepad;
+                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
+                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
+                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
+                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
+                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
+                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
+                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+            }
+            else
+            {
+                mGamepadType = DefaultGamepad;
+                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
+                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
+                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
+                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
+                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
+                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
+                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+            }
+            return;
+        }
+        settings.endGroup();
+    }
+    qWarning() << "no gamepad mapping found for" << mName << "guid:" << mGuid;
+    qWarning() << "add an entry with its guid into the mapping file <gamepads.ini> in the root directory";
+    throw std::runtime_error("Gamepad mapping not found!");
+}
+
+void WindowsGamepad::assingButton(QMap<int, bool>& buttons, BYTE* data, int buttonId)
+{
+    int readId = mButtonMapping.value(buttonId, 0) -1;
+    if(readId < 0)
+        return;
+    buttons[buttonId] = data[readId] != 0;
+}
+
 void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &buttons)
 {
     DIJOYSTATE2& status = mState;
-    joysticks[Tc::XAxisLeft] = correctedValue(float(status.lX));
-    joysticks[Tc::YAxisLeft] = correctedValue(-float(status.lY));
-    buttons[Tc::LeftAxisPush] = status.rgbButtons[10] != 0;
-    joysticks[Tc::XAxisRight] = correctedValue(float(status.lZ));
-    joysticks[Tc::YAxisRight] = correctedValue(-float(status.lRz));
-    buttons[Tc::RightAxisPush] = status.rgbButtons[11] != 0;
+    joysticks[Tc::LeftJoystickX] = correctedValue(float(status.lX));
+    joysticks[Tc::LeftJoystickY] = correctedValue(-float(status.lY));
+    if(mGamepadType == XBoxGamepad)
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRx));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRy));
+    }
+    else if(mSwitchZJoysticks)
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRz));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lZ));
+    }
+    else
+    {
+        joysticks[Tc::RightJoystickX] = correctedValue(float(status.lZ));
+        joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRz));
+    }
 
-    buttons[Tc::Button1] = status.rgbButtons[0] != 0;
-    buttons[Tc::Button2] = status.rgbButtons[1] != 0;
-    buttons[Tc::Button3] = status.rgbButtons[2] != 0;
-    buttons[Tc::Button4] = status.rgbButtons[3] != 0;
-    buttons[Tc::Button5] = status.rgbButtons[4] != 0;
-    buttons[Tc::Button6] = status.rgbButtons[5] != 0;
-    buttons[Tc::Button7] = status.rgbButtons[6] != 0;
-    buttons[Tc::Button8] = status.rgbButtons[7] != 0;
-    buttons[Tc::Button9] = status.rgbButtons[8] != 0;
-    buttons[Tc::Button10] = status.rgbButtons[9] != 0;
+    for(int i=Tc::NorthButton; i<= Tc::RightShoulderLowerButton; i++)
+        assingButton(buttons, status.rgbButtons, i);
 
+    if(mGamepadType == XBoxGamepad)
+    {
+        buttons[Tc::LeftShoulderLowerButton] = float(status.lZ) > 0.8;
+        buttons[Tc::RightShoulderLowerButton] = float(status.lZ) < -0.8;
+    }
     bool up = false, down = false, left = false, right = false;
     switch(status.rgdwPOV[0]) // contour-clockwise from left direction
     {
@@ -87,7 +153,9 @@ float WindowsGamepad::correctedValue(float v)
         return v;
 }
 
-WindowsGamepad::WindowsGamepad(const QString &name) : mName(name)
+WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid)
+    : mName(name),
+      mGuid(guid)
 {
     mDevice = 0;
 }
@@ -136,9 +204,9 @@ void WindowsGamepad::run()
         }
         lastButtons = buttons;
         emit dataUpdate(joysticks);
-        //int remaining = mPollingIntervall - timer.elapsed();
-        //if(remaining > 0)
-//            msleep(remaining);
+        int remaining = 50 - timer.elapsed();
+        if(remaining > 0)
+            msleep(remaining);
     }
 }
 

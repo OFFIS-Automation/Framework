@@ -18,13 +18,15 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 # Do all the other stuff
-SUBDIRS +=  modules/version \
+SUBDIRS +=  subtree/qt-remote-signals/qtRemoteSignals \
+            modules/version \
             modules/frontend/projects/LogWidget \
             modules/sensorSystem \
             modules/frontend/projects/AmirFrontend \
             modules/automation \
             modules/olvis3 \
             modules/TutorialPlugins
+
 
 unix:!macx{
     QMAKE_CXXFLAGS_WARN_OFF += -Wno-write-strings
@@ -47,5 +49,11 @@ macx{
 }
 win32-msvc*{
     message(Windows-Build)
+    win32-msvc*:contains(QMAKE_TARGET.arch, x86_64):{
+        message("Building for 64 bit")
+    }
+    else {
+        message("Building for 32 bit")
+    }
 }
 

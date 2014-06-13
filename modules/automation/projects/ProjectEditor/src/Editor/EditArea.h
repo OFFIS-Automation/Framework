@@ -19,6 +19,9 @@
 
 #include <QDockWidget>
 #include <QMdiArea>
+#include "FileEditor.h"
+
+
 class QPlainTextEdit;
 
 namespace Ui {
@@ -37,6 +40,12 @@ signals:
     void currentFileChanged(const QString& filename);
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
+    void clickedProblem(const QString& file, int line);
+    void undoStatusChanged(bool undoAvailable);
+    void redoStatusChanged(bool redoAvailable);
+    void cutCopyStatusChanged(bool cutCopyAvailable);
+    void addBreakpoint(const QString& filename, int line);
+    void removeBreakpoint(const QString& filename, int line);
 
 public slots:
     void openFile(QString fileName);
@@ -51,34 +60,43 @@ public slots:
     void setSubView();
     void focusLine(const QString& filename, int line);
     void closeFile(QString filename);
-    void search(QString word, int number);
+    void search(QString word);
     void replace(QString word);
     void showFind();
     void cascade();
     void tile();
+    void textChanged();
+    void selectionChanged();
 
 private slots:
-    void closeTab(int i);
     void increaseFontSize();
     void decreaseFontSize();
-    void changeFontSize(int changePoints);
-    bool search(bool back = false);
+    void setFontSize(int size = 0);
+    bool search(bool forwardSearch = false);
     void replace();
+    void undo();
+    void redo();
+    void cut();
+    void copy();
+    void paste();
 
     void on_searchNext_clicked();
     void on_searchPrev_clicked();
     void on_replace_clicked();
 
     void on_replaceNext_clicked();
-
     void on_replaceAll_clicked();
-
     void on_mdiArea_subWindowActivated(QMdiSubWindow *arg1);
+    void on_searchValue_textChanged(const QString &arg1);
 
 private:
-    QPlainTextEdit* currentEditor();
+    int currentFontSize();
+    FileEditor* currentEditor();
     Ui::EditArea *ui;
     QString mBaseDir;
+
+    bool mForwardSearch;
+    bool mFoundFirst;
 };
 
 #endif // EDITAREA_H

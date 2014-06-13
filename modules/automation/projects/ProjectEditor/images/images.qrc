@@ -23,5 +23,12 @@
         <file>zoom.png</file>
         <file>folder_table.png</file>
         <file>information.png</file>
+        <file>copy.png</file>
+        <file>paste.png</file>
+        <file>zoom_in.png</file>
+        <file>zoom_out.png</file>
+        <file>arrow_redo.png</file>
+        <file>arrow_undo.png</file>
+        <file>cut.png</file>
     </qresource>
 </RCC>

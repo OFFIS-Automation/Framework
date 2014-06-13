@@ -26,6 +26,7 @@
 #include <lolecs/LolecInterface.h>
 
 #include "telecontrol/TelecontrolFactory.h"
+#include "MasterTcInvoker.h"
 
 RcUnitsBase::RcUnitsBase() :
     QObject()
@@ -46,6 +47,30 @@ RcUnitHelp RcUnitsBase::getHelp(const QString &name)
     return mUnits[name]->getHelp();
 }
 
+TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
+{
+    if(mUnits.contains(name))
+        return mUnits[name]->telecontrolConfig();
+    if(mMasterGamepads.contains(name))
+        return mMasterGamepads[name]->telecontrolConfig();
+    return TelecontrolConfig();
+}
+
+QList<QString> RcUnitsBase::telecontrolableUnitNames()
+{
+    QStringList returnList = mMasterGamepads.keys();
+    foreach(QString name, unitNames())
+    {
+        if(mUnitsHiddenforTc.contains(name))
+            continue;
+        TelecontrolConfig config = getTelecontrolConfig(name);
+        if(config.hasHaptic || !config.tcButtons.empty() || !config.tcJoysticks.empty())
+            returnList << name;
+    }
+    //@TODO add master gamepad controller
+    return returnList;
+}
+
 
 QWidget* RcUnitsBase::lolecGui(const QString &name)
 {
@@ -59,10 +84,8 @@ QWidget* RcUnitsBase::lolecGui(const QString &name)
 
 void RcUnitsBase::loadConfig(const QString &filename)
 {
-    mTypes.clear();
-    qDeleteAll(mUnits);
+    releaseConfig();
     QString baseDir = QFileInfo(filename).absolutePath();
-    mUnits.clear();
     QFile file(filename);
     QSettings settings(filename, QSettings::IniFormat);
     int size = settings.beginReadArray("hilecConfig");
@@ -83,18 +106,8 @@ void RcUnitsBase::loadConfig(const QString &filename)
                 RcUnit* rcUnit = new RcUnit(name, config);
                 if(rcUnit->initialize(plugin))
                 {
+                    loadTcSensitivity(name, rcUnit, filename);
                     QSettings teleSettings(filename, QSettings::IniFormat);
-                    teleSettings.beginGroup(QString("telecontrol/%1").arg(name));
-                    foreach(QString method, teleSettings.childGroups())
-                    {
-                        double sens = teleSettings.value(QString("%1/sensitivity").arg(method)).toDouble();
-                        QList<bool> inverts;
-                        QStringList invertStringList = teleSettings.value(QString("%1/inverts").arg(method)).toStringList();
-                        foreach(const QString& value, invertStringList)
-                            inverts << (value.toInt() != 0);
-                        rcUnit->updateSensitivity(method, sens, inverts);
-                    }
-                    teleSettings.endGroup();
                     double hapticSens = teleSettings.value(QString("haptic/%1/sensitivity").arg(name), rcUnit->hapticSensitivity()).toDouble();
                     double hapticForce = teleSettings.value(QString("haptic/%1/forceFactor").arg(name), rcUnit->hapticForceFactor()).toDouble();
                     rcUnit->updateHapticSensitivity(hapticSens, hapticForce);
@@ -114,7 +127,54 @@ void RcUnitsBase::loadConfig(const QString &filename)
             qCritical() << tr("Could not load lolec %1 of type %2: %3").arg(name, type, error);
     }
     settings.endArray();
+    loadTcMasters(filename);
+    mGamepad = TelecontrolFactory::createGamepad();
+    if(mGamepad)
+    {
+       connect(mGamepad,SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
+       mGamepad->start();
+    }
     emit unitsUpdated();
+}
+
+void RcUnitsBase::releaseConfig()
+{
+    mTypes.clear();
+    qDeleteAll(mUnits);
+    mUnits.clear();
+    qDeleteAll(mMasterGamepads);
+    mMasterGamepads.clear();
+
+}
+
+void RcUnitsBase::loadTcMasters(const QString &configFile)
+{
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.beginGroup("telecontrol-combinations");
+    mUnitsHiddenforTc = settings.value("hiddenUnits").toStringList();
+    QStringList configs = settings.childGroups();
+    foreach (QString configName, configs) {
+        MasterTcInvoker* master = new MasterTcInvoker(configName);
+        master->readConfig(configFile);
+        master->initialize(mUnits.values());
+        mMasterGamepads[configName] = master;
+        loadTcSensitivity(configName, master, configFile);
+    }
+}
+
+void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *ep, const QString& configFile)
+{
+    QSettings teleSettings(configFile, QSettings::IniFormat);
+    teleSettings.beginGroup(QString("telecontrol/%1").arg(name));
+    foreach(QString method, teleSettings.childGroups())
+    {
+        double sens = teleSettings.value(QString("%1/sensitivity").arg(method)).toDouble();
+        QList<bool> inverts;
+        QStringList invertStringList = teleSettings.value(QString("%1/inverts").arg(method)).toStringList();
+        foreach(const QString& value, invertStringList)
+            inverts << (value.toInt() != 0);
+        ep->updateSensitivity(method, sens, inverts);
+    }
 }
 
 LolecInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
@@ -186,8 +246,12 @@ void RcUnitsBase::activateTelecontrol(const QString &unitName)
         connect(mGamepad,SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
         mGamepad->start();
     }
-    RcUnitBase* unitToActivate = mUnits.value(unitName, 0);
-    foreach(RcUnitBase* unit, mUnits.values())
+    GamepadEndpoint* unitToActivate = mMasterGamepads.value(unitName, 0);
+    if(!unitToActivate)
+        unitToActivate = mUnits.value(unitName, 0);
+    foreach(GamepadEndpoint* unit, mMasterGamepads.values())
+        unit->disconnectGamepad(mGamepad);
+    foreach(GamepadEndpoint* unit, mUnits.values())
         unit->disconnectGamepad(mGamepad);
     if(unitToActivate)
         unitToActivate->connectGamepad(mGamepad);
@@ -210,7 +274,10 @@ void RcUnitsBase::deactivateTelecontrol()
 
 void RcUnitsBase::updateTelecontrol(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-    RcUnitBase* unit = mUnits.value(unitName, 0);
+
+    GamepadEndpoint* unit = mMasterGamepads.value(unitName, 0);
+    if(!unit)
+        unit = mUnits.value(unitName, 0);
     if(!unit)
         return;
     unit->updateSensitivity(methodName, sensitivity, inverts);
@@ -294,15 +361,15 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
         emit telecontrolSensitivityChangeRequested(mCurrentTelecontrolledUnit, buttonId == Tc::ButtonRight);
         return;
     }
-    QStringList& units = mTelecontrolLolecs;
+    QStringList units = telecontrolableUnitNames();
     int currentId = units.indexOf(mCurrentTelecontrolledUnit);
     bool isNewUnit = false;
-    if(buttonId == Tc::ButtonUp)
+    if(buttonId == Tc::ButtonUp && currentId > 0)
     {
         currentId--;
         isNewUnit = true;
     }
-    else if(buttonId == Tc::ButtonDown)
+    else if(buttonId == Tc::ButtonDown && (currentId+1) < units.size())
     {
         currentId++;
         isNewUnit = true;

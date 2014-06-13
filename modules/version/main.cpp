@@ -37,25 +37,6 @@ static int getBuildNumber()
   return ((today.year() - 2000) * 1000) + today.dayOfYear();
 }
 
-static int getSubversionRevision()
-{
-    int revision = 0;
-    QProcess process;
-    process.start("svnversion", QStringList() << "." << "--no-newline");
-    if (process.waitForStarted() && process.waitForReadyRead()){
-        const QString str(process.readAll().constData());
-        const int pos = str.indexOf(':');
-
-        if (pos != -1){
-            revision = atoi(str.mid(pos + 1).toAscii().constData());
-        } else {
-            revision = atoi(str.toAscii().constData());
-        }
-        process.waitForFinished();
-    }
-    return revision;
-}
-
 static QByteArray readFile(const QString& fileName)
 {
     QFile file(fileName);
@@ -65,7 +46,7 @@ static QByteArray readFile(const QString& fileName)
     return file.readAll();
 }
 
-static int writeFile(const QString& fileName, const int major, const int minor, const int revision, const int build)
+static int writeFile(const QString& fileName, const int major, const int minor, const int /* revision */, const int build)
 {
     // Create a temp file containing the version info and
     // only replace the existing one if they are different

@@ -33,6 +33,7 @@ public:
     void start(const QString& filename, const QString& baseDir);
     void addBreakpoint(const QString& file, int line);
     void removeBreakpoint(const QString& file, int line);
+    QList<QPair<QString, int> >  breakpoints() const;
     void resume();
     void stepInto();
     void stepOver();

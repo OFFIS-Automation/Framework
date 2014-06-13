@@ -24,6 +24,7 @@
 class RcArgumentWrapper
 {
 public:
+    virtual ~RcArgumentWrapper() {}
     virtual void convert(const QVariant& var) = 0;
     virtual QGenericReturnArgument toArg() = 0;
     virtual QVariant toVariant() = 0;

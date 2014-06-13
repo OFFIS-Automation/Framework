@@ -34,6 +34,7 @@ void BoundingRect::execute()
     while(mIn.hasValue())
     {
         const std::vector<cv::Point>& pointList=  mIn.getValue2();
-        mOut.send(cv::boundingRect(pointList));
+        cv::Rect r = cv::boundingRect(pointList);
+        mOut.send(r);
     }
 }

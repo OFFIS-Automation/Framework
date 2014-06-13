@@ -23,7 +23,7 @@ class Application : public QApplication
 {
     Q_OBJECT
 public:
-    explicit Application(int argc, char* argv[]);
+    explicit Application(int &argc, char* argv[]);
     bool notify(QObject* receiver, QEvent* e);
 
 signals:

@@ -62,7 +62,7 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
 
 
     HilecInterface* hilec = HilecSingleton::hilec();
-    foreach(const QString& name, hilec->lolecs())
+    foreach(const QString& name, hilec->rcUnits())
     {
         QWidget* w = hilec->createLolecWidget(name);
         if(w)

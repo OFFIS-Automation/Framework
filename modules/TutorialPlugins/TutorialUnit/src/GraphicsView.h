@@ -35,7 +35,7 @@ public:
     Pose2d getPosition();
 signals:
     void movementFinished();
-
+    void positionUpdate(QPointF pos, qreal rot);
 public slots:
     void reset(bool randomPositions);
     void moveRobotAbs(QPointF position, int durationInMs);
@@ -45,7 +45,6 @@ public slots:
     void setGripperState(bool open);
 protected slots:
     void sendImage();
-
 protected:
     Robot *robot;
     QList <Circle*> objects;

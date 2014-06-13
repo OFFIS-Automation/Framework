@@ -21,12 +21,14 @@
 #include "RcUnitsGlobal.h"
 #include <core/RcUnitHelp.h>
 #include <lolecs/RcExceptions.h>
-//#include "telecontrol/Gamepad.h"
+
 
 class Gamepad;
 class LolecInterface;
 class RcUnitBase;
 class HapticInterface;
+class MasterTcInvoker;
+class GamepadEndpoint;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -36,9 +38,12 @@ public:
     virtual ~RcUnitsBase();
 
     RcUnitHelp getHelp(const QString &name);
+    TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mUnits.keys(); }
+    QList<QString> telecontrolableUnitNames();
     QWidget * lolecGui(const QString &name);
-    virtual void loadConfig(const QString &filename) = 0;
+    virtual void loadConfig(const QString &filename);
+    virtual void releaseConfig();
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& lolec);
     void activateTelecontrol(const QString& unit);
@@ -60,6 +65,8 @@ private slots:
     void onGamepadButtonPressed(int buttonId, bool pressed);
 
 protected:
+    void loadTcMasters(const QString& configFile);
+    void loadTcSensitivity(const QString &name, GamepadEndpoint* ep, const QString& configFile);
     LolecInterface* loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;
@@ -68,6 +75,8 @@ protected:
     QStringList mTelecontrolLolecs;
     QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
     HapticInterface* mHaptic;
+    QMap<QString, MasterTcInvoker*> mMasterGamepads;
+    QStringList mUnitsHiddenforTc;
 };
 
 #endif // RCUNITSBASE_H

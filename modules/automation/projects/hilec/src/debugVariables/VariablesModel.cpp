@@ -143,19 +143,30 @@ void VariablesModel::setVariables(_object *vars)
 
 void VariablesModel::lock()
 {
-    mLocked = true;
     emit lockChanged(true);
 }
 
 void VariablesModel::unlock()
 {
-    mLocked = false;
     emit lockChanged(false);
+}
+
+void VariablesModel::invalidatePython()
+{
+    return setVariables(0);
+    beginResetModel();
+    lock();
+    mMutex->lock();
+    mItems->clear();
+    mLocals->invalidatePython();
+    mMutex->unlock();
+    unlock();
+    endResetModel();
 }
 
 QVariant VariablesModel::data(const QModelIndex &index, int role) const
 {
-    if (mLocked || !index.isValid())
+    if (!index.isValid())
         return QVariant();
 
     QMutexLocker lock(mMutex);

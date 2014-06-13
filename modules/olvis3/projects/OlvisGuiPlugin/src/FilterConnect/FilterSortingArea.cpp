@@ -449,7 +449,7 @@ void FilterSortingArea::mouseMoveEvent(QMouseEvent *event)
             QString warning;
             ProcessorInputPortWidget* input = qobject_cast<ProcessorInputPortWidget*>(mCurrent.source);
             if(input)
-                mCurrent.possible = port == mCurrent.ignore || mInterface.canConnectInput(input->portName(), port->portId(), warning);
+                mCurrent.possible = port == mCurrent.ignore || mInterface.canConnectInput(input->realName(), port->portId(), warning);
             else
                 mCurrent.possible = port == mCurrent.ignore || mInterface.canConnect(mCurrent.source->portId(), port->portId(), warning);
             mCurrent.hasWarning = !warning.isEmpty();
@@ -508,8 +508,8 @@ void FilterSortingArea::mouseReleaseEvent(QMouseEvent *event)
             QString warning;
             if(input)
             {
-                if(mInterface.canConnectInput(input->portName(), port->portId(), warning))
-                    emit connectInputRequested(input->portName(), port->filterId(), port->portName());
+                if(mInterface.canConnectInput(input->realName(), port->portId(), warning))
+                    emit connectInputRequested(input->realName(), port->filterId(), port->portName());
             }
             else if(mInterface.canConnect(mCurrent.source->portId(), port->portId(), warning))
                 emit connectRequested(mCurrent.source->filterId(), mCurrent.source->portName(), port->filterId(), port->portName());

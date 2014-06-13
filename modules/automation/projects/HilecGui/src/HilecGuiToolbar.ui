@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>34</height>
+    <height>40</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -158,6 +158,24 @@
    </property>
    <property name="toolTip">
     <string>Automation is idle</string>
+   </property>
+  </action>
+  <action name="actionCreateGamepadMapping">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/controller_add.png</normaloff>:/hilecGui/controller_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create gamepad mapping</string>
+   </property>
+  </action>
+  <action name="actionAddRcServer">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add RC-Unit server</string>
    </property>
   </action>
   <addaction name="actionResume"/>

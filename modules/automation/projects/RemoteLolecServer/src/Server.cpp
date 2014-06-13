@@ -21,11 +21,21 @@
 #include <QStringList>
 #include <QDebug>
 
-Server::Server() : mTcpServer(this)
+Server::Server() : mTcpServer(this), mSocket(0)
 {
     connect(&mTcpServer, SIGNAL(newConnection()), SLOT(onConnect()));
-    connect(&mRcUnits, SIGNAL(asyncResponse(int,QVariant)), SLOT(sendCallResponse(int,QVariant)));
-    connect(&mRcUnits, SIGNAL(asyncError(int,QString)), SLOT(sendCallError(int,QString)));
+}
+
+Server::~Server()
+{
+    mTcpServer.close();
+    if(mSocket)
+        mSocket->close();
+    mSocket->waitForDisconnected();
+    if(mServer)
+        delete mServer;
+    if(mSocket)
+        delete mSocket;
 }
 
 void Server::restart(QString host, int port)
@@ -59,187 +69,24 @@ void Server::onConnect()
    mSocket = mTcpServer.nextPendingConnection();
     if(!mSocket)
         return;
+    connect(mSocket, SIGNAL(disconnected()), SLOT(onDisconnect()));
     emit stateChanged(QAbstractSocket::ConnectedState);
-    mMsgSize = 0;
-    connect(mSocket, SIGNAL(readyRead()), SLOT(processMessage()));
-    connect(&mRcUnits, SIGNAL(unitsUpdated()), SLOT(sendLolecList()));
+    mServer = new RemoteRcUnitServer(&mRcUnits, mSocket, true);
 }
 
 void Server::onDisconnect()
 {
-    disconnect(&mRcUnits, SIGNAL(unitsUpdated()), this, SLOT(sendLolecList()));
-    mStop = true;
-}
+    emit stateChanged(QAbstractSocket::UnconnectedState);
+    if(mServer)
+        delete mServer;
+    if(mSocket)
+        mSocket->deleteLater();
+    mServer = 0;
+    mSocket = 0;
 
-void Server::processMessage()
-{
-    while(true)
-    {
-        if(mMsgSize)
-        {
-            if(mSocket->bytesAvailable() < mMsgSize)
-                return;
-            mMsgSize = 0;
-            QDataStream stream(mSocket);
-            QString call;
-            stream >> call;
-            dispatch(call, stream);
-        }
-        else if(mSocket->bytesAvailable()>=4)
-        {
-            QByteArray sizeArr = mSocket->read(4);
-            mMsgSize = qFromLittleEndian<int>((uchar*)sizeArr.data());
-        }
-        else
-            return;
-    }
-}
-
-void Server::dispatch(const QString &method, QDataStream &stream)
-{
-    qDebug() << method;
-    if(method == "list")
-    {
-        sendLolecList();
-    }
-    else if(method == "call")
-    {
-        QByteArray method, unit;
-        int id;
-        QList<QVariant> params;
-        stream >> unit >> method >> id >> params;
-        mRcUnits.callAsync(unit, method, id, params);
-    }
-    else if(method.left(2) == "tc")
-    {
-        int id;
-        stream >> id;
-
-        if(method == "tcSens")
-        {
-            double sens;
-            QList<bool> inverts;
-            QString unit, tcName;
-            stream >> unit >> tcName >> sens >> inverts;
-            qDebug() << "tcSens" << id << unit;
-            mRcUnits.updateSensitivity(unit, tcName, sens, inverts);
-        }
-        else if(method == "tcEnable")
-        {
-            QString unit;
-            stream >> unit;
-            qDebug() << "tcEnable" << id << unit;
-            mRcUnits.enableGamepad(unit);
-        }
-        else if(method == "tcDisable")
-        {
-            QString unit;
-            stream >> unit;
-            qDebug() << "tcDisable" << id << unit;
-            mRcUnits.disableGamepad(unit);
-        }
-        else if(method == "tcData")
-        {
-            QMap<int, double> data;
-            stream >> data;
-            mRcUnits.handleTcData(data);
-        }
-        else if(method == "tcButton")
-        {
-            int button;
-            bool enable;
-            stream >> button >> enable;
-            qDebug() << "tcButton" << id << button << enable;
-            mRcUnits.handleTcButton(button, enable);
-        }
-        sendTcResponse(id);
-    }
-}
-
-void Server::sendLolecList()
-{
-    const QMap<QString, RcUnitHelp>& list = mRcUnits.getHelpList();
-    QList<QVariant> data;
-    foreach(const QString& name, list.keys())
-    {
-        const RcUnitHelp& help = list.value(name);
-        QList<QVariant> structs;
-        foreach(const RcUnitHelp::Struct& structItem, help.structs)
-        {
-            QStringList structData;
-            structData << structItem.name;
-            structData << structItem.members;
-            structs << QVariant(structData);
-        }
-        QList<QVariant> methods;
-        foreach(const RcUnitHelp::Method& method, help.methods)
-        {
-            QStringList methodData;
-            methodData << method.name << method.sig << method.shortDesc << method.longDesc;
-            methods << QVariant(methodData);
-        }
-        QList<QVariant> tcMethods;
-        foreach(const RcUnitHelp::TcJostick& method, help.tcJoysticks)
-        {
-            QVariantList methodData;
-            methodData << method.name << method.deadMansButton << method.sensitivity << QVariant(method.axeNames);
-            tcMethods << QVariant(methodData);
-        }
-
-        data << name;
-        data << help.desc;
-        data << QVariant(structs);
-        data << QVariant(methods);
-        data << QVariant(help.constants);
-        data << QVariant(tcMethods);
-    }
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("list");
-    stream << QVariant(data);
-    sendMessage(byteData);
-}
-
-void Server::sendMessage(const QByteArray &data)
-{
-    QMutexLocker lock(&mMutex);
-    QByteArray sizeData(4, 0);
-    qToLittleEndian<int>(data.size(), (uchar*)sizeData.data());
-    mSocket->write(sizeData);
-    mSocket->write(data);
 }
 
 void Server::loadProject(const QString &filename)
 {
     mRcUnits.loadConfig(filename);
 }
-
-void Server::sendCallResponse(int id, const QVariant &response)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("call");
-    stream << id;
-    stream << response;
-    sendMessage(byteData);
-}
-
-void Server::sendCallError(int id, const QString &error)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("callError");
-    stream << id;
-    stream << error;
-    sendMessage(byteData);
-}
-
-void Server::sendTcResponse(int id)
-{
-    QByteArray byteData;
-    QDataStream stream(&byteData, QIODevice::WriteOnly);
-    stream << QString("tc");
-    stream << id;
-    sendMessage(byteData);
-}
-

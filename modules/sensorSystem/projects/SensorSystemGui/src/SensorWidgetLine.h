@@ -41,7 +41,13 @@ private slots:
     void on_checkBox_toggled(bool checked);
 
 private:
+    void startDrag();
+    void mouseMoveEvent(QMouseEvent *ev);
+    void mousePressEvent(QMouseEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *ev);
+
     Ui::SensorWidgetLine *ui;
+    QPointF mStartPos;
 };
 
 #endif // SENSORWIDGETLINE_H

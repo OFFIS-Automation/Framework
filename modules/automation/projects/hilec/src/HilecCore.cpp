@@ -66,10 +66,20 @@ void HilecCore::compileFile(const QString &filename)
 
 RcUnitHelp HilecCore::getUnitHelp(const QString &name)
 {
-    return RcUnits::instance()->getHelp(name.toLatin1());
+    return RcUnits::instance()->getHelp(name);
 }
 
-QStringList HilecCore::lolecs()
+QStringList HilecCore::getTelecontrolableUnits()
+{
+    return RcUnits::instance()->telecontrolableUnitNames();
+}
+
+TelecontrolConfig HilecCore::getTelecontrolConfig(const QString &name)
+{
+    return RcUnits::instance()->getTelecontrolConfig(name);
+}
+
+QStringList HilecCore::rcUnits()
 {
     return RcUnits::instance()->unitNames();
 }
@@ -79,6 +89,11 @@ void HilecCore::loadConfig(const QString &filename)
     mBaseDir = QFileInfo(filename).absolutePath();
     mLint.setBasePath(mBaseDir);
     RcUnits::instance()->loadConfig(filename);
+}
+
+void HilecCore::releaseConfig()
+{
+    RcUnits::instance()->releaseConfig();
 }
 
 QWidget* HilecCore::createLolecWidget(const QString &lolec)
@@ -99,6 +114,23 @@ void HilecCore::addBreakpoint(QString file, int line)
 void HilecCore::removeBreakpoint(QString file, int line)
 {
     mPython.removeBreakpoint(file, line);
+}
+
+QList<QPair<QString, int> > HilecCore::breakpoints() const
+{
+    return mPython.breakpoints();
+}
+
+QList<int> HilecCore::breakpoints(const QString &filename) const
+{
+    typedef QPair<QString, int> BreakpointPair;
+    QList<int> lines;
+    foreach(BreakpointPair breakpoint, breakpoints())
+    {
+        if(QFileInfo(breakpoint.first) == QFileInfo(filename))
+            lines << breakpoint.second;
+    }
+    return lines;
 }
 
 void HilecCore::resume()

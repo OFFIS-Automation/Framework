@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QVariant>
 
+#include "RcExceptions.h"
 #include "../telecontrol/TcConfig.h"
 
 class RcWrapperFactoryItf;
@@ -179,8 +180,19 @@ public:
      * Using GUI elements will crash the application
      */
     virtual void deleteInstance(QObject* instance) { delete instance; }
+    /**
+     * @brief extra method that is called if a function called from automation is not found
+     * The default implementation raises an RcError("No such method")
+     * @param instance the rcUnit instance
+     * @param methodName the method that is requested
+     * @param params the params that were given
+     * @return return the return value of the function
+     */
+    virtual QVariant call(QObject* instance, const QByteArray& methodName, const QVariantList& params)
+        { Q_UNUSED(instance); Q_UNUSED(params); throw RcError(QObject::tr("No such method: %1").arg(QString(methodName))); }
+
 };
-#define LolecInterface_iid "offis.automation.RcInterface/2.3"
+#define LolecInterface_iid "offis.automation.RcInterface/2.4"
 Q_DECLARE_INTERFACE(LolecInterface, LolecInterface_iid)
 
 #if QT_VERSION < 0x050000

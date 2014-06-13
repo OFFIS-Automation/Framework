@@ -20,6 +20,9 @@
       <property name="title">
        <string>Information</string>
       </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QTextEdit" name="information">

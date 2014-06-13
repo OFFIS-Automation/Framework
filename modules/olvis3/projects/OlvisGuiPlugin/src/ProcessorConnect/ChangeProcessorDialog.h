@@ -43,6 +43,8 @@ signals:
     void disconnectProcessor(int sourceId, int targetId);
     void setPriority(int id, int priority);
     void setStartupMode(int id, bool pausedOnStartup);
+    void setTriggerMode(int id, bool ignoreTrigger);
+
 private:
     Ui::ChangeProcessorDialog *ui;
     ProcessorInfo mInfo;

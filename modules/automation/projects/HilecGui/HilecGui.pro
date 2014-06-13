@@ -16,7 +16,8 @@
 
 TEMPLATE = lib
 
-QT += widgets
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
@@ -66,7 +67,10 @@ HEADERS += \
     src/createLolec/DefineLolecWizardPage.h \
     src/telecontrol/TelecontrolAssignmentWidget.h \
     src/telecontrol/ShowAssignmentButton.h \
-    src/telecontrol/GamepadAssignmentWidget.h
+    src/telecontrol/GamepadAssignmentWidget.h \
+    src/telecontrol/EditGamepadAssignment.h \
+    src/telecontrol/EditGamepadArea.h \
+    src/rcUnits/AddRemoteRcServerDialog.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -97,7 +101,10 @@ SOURCES += \
     src/createLolec/DefineLolecWizardPage.cpp \
     src/telecontrol/TelecontrolAssignmentWidget.cpp \
     src/telecontrol/ShowAssignmentButton.cpp \
-    src/telecontrol/GamepadAssignmentWidget.cpp
+    src/telecontrol/GamepadAssignmentWidget.cpp \
+    src/telecontrol/EditGamepadAssignment.cpp \
+    src/telecontrol/EditGamepadArea.cpp \
+    src/rcUnits/AddRemoteRcServerDialog.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -122,7 +129,10 @@ FORMS += \
     src/createLolec/AddLolecWizard.ui \
     src/telecontrol/TelecontrolAssignmentWidget.ui \
     src/telecontrol/ShowAssignmentButton.ui \
-    src/telecontrol/GamepadAssignmentWidget.ui
+    src/telecontrol/GamepadAssignmentWidget.ui \
+    src/telecontrol/EditGamepadAssignment.ui \
+    src/telecontrol/EditGamepadArea.ui \
+    src/rcUnits/AddRemoteRcServerDialog.ui
 
 RESOURCES += \
     images/images.qrc

@@ -21,9 +21,9 @@
 #include <QMap>
 #include <QVariant>
 #include <QStringList>
-#include "../telecontrol/TcConfig.h"
+#include "TelecontrolConfig.h"
 
-struct RcUnitHelp
+struct RcUnitHelp : TelecontrolConfig
 {
     QString desc;
     QString server;
@@ -34,22 +34,6 @@ struct RcUnitHelp
         QString shortDesc;
         QString longDesc;
     };
-    struct TcButton
-    {
-        QString name;
-        int buttonId;
-        bool toggleMode;
-    };
-
-    struct TcJostick
-    {
-        QString name;
-        int deadMansButton;
-        double sensitivity;
-        QStringList axeNames;
-        QList<Tc::Joystick> joysticks;
-        QList<bool> inverts;
-    };
 
     struct Struct
     {
@@ -58,14 +42,62 @@ struct RcUnitHelp
     };
     QList<Struct> structs;
     QList<Method> methods;
-    QList<TcJostick> tcJoysticks;
-    QList<TcButton> tcButtons;
     QVariantMap constants;
-    bool hasHaptic;
-    double hapticSensitivity;
-    double hapticForceFactor;
 };
 
+inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Method& helpMethod)
+{
+    stream >> helpMethod.name;
+    stream >> helpMethod.sig;
+    stream >> helpMethod.shortDesc;
+    stream >> helpMethod.longDesc;
+    return stream;
+}
 
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp::Method& helpMethod)
+{
+    stream << helpMethod.name;
+    stream << helpMethod.sig;
+    stream << helpMethod.shortDesc;
+    stream << helpMethod.longDesc;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Struct& helpStruct)
+{
+    stream >> helpStruct.name;
+    stream >> helpStruct.members;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp::Struct& helpStruct)
+{
+    stream << helpStruct.name;
+    stream << helpStruct.members;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp& help)
+{
+    TelecontrolConfig& tc = help;
+    stream >> tc;
+    stream >> help.desc;
+    stream >> help.server;
+    stream >> help.structs;
+    stream >> help.methods;
+    stream >> help.constants;
+    return stream;
+}
+
+inline QDataStream& operator<<(QDataStream& stream, const RcUnitHelp& help)
+{
+    stream << static_cast<TelecontrolConfig>(help);
+    stream << help.desc;
+    stream << help.server;
+    stream << help.structs;
+    stream << help.methods;
+    stream << help.constants;
+    return stream;
+}
 
 #endif // RCUNITHELP_H

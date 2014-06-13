@@ -20,6 +20,7 @@
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/FilePort.h>
+#include <ports/BooleanPort.h>
 
 class ImageInput : public UserFilter
 {
@@ -29,6 +30,7 @@ public:
     virtual void execute();
 protected:
     in::ReadFile mIn;
+    in::Boolean mAlwaysRead;
     out::Image mOut;
     cv::Mat image;
     QFileInfo lastInfo;

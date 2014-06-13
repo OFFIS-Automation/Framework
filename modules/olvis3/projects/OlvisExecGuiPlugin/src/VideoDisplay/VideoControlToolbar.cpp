@@ -114,6 +114,7 @@ void VideoControlToolbar::addPortAction(const PortId &portId)
         button->setPopupMode(QToolButton::InstantPopup);
         addWidget(button);
 //        addAction(action);
+        mToolButton[action] = button;
         connect(group, SIGNAL(triggered(QAction*)), SIGNAL(choiceChangeRequested(QAction*)));
         mPortIds[action] = portId;
     }
@@ -136,24 +137,36 @@ void VideoControlToolbar::addPortAction(const PortId &portId)
 
 void VideoControlToolbar::removePortAction(const PortId &portId)
 {
-    QAction* action = mPortIds.key(portId, 0);
-    if (action) {
-        removeAction(action);
-        mPortIds.remove(action);
-        adjustSize();
+    removePortAction(mPortIds.key(portId, 0));
+}
+
+void VideoControlToolbar::removePortAction(QAction *action)
+{
+    if(!action)
+        return;
+    PortId id = mPortIds.value(action);
+    if(!id.isValid())
+        return;
+
+    removeAction(action);
+    mPortIds.remove(action);
+    QToolButton* button = mToolButton.take(action);
+    delete action;
+    if(button)
+        delete button;
+    foreach(QAction* action, mChoicePortIds.keys(id))
+    {
+        mChoicePortIds.remove(action);
+        delete action;
     }
+    adjustSize();
 }
 
 void VideoControlToolbar::clear()
 {
-    QList<QAction*> actions = mPortIds.keys();
-    foreach (QAction* action, actions) {
-        if (action != 0) {
-            removeAction(action);
-            delete action;
-        }
-    }
-    mPortIds.clear();
+
+    foreach(QAction* action, mPortIds.keys())
+        removePortAction(action);
     ui->actionEditOverlays->setChecked(true);
     adjustSize();
 }
@@ -182,7 +195,7 @@ PortId VideoControlToolbar::portId(QAction *action)
 
 PortId VideoControlToolbar::currentPortId()
 {
-    return mPortIds[currentAction()];
+    return portId(currentAction());
 }
 
 void VideoControlToolbar::setZoomToFit(bool value)

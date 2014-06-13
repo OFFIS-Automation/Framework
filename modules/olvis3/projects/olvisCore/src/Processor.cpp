@@ -32,8 +32,9 @@ Processor::Processor(int id, const QString& name, Priority priority)
     mInfo.id = id;
     mInfo.priority = priority;
     mInfo.pausedStartup = false;
+    mInfo.ignoreTrigger = false;
     setName(name);
-    mTriggeredExecution = false;
+    mHasSource = false;
     mRunId = 0;
     mLoopId = 0;
 }
@@ -54,6 +55,11 @@ void Processor::setProcessorPriority(QThread::Priority priority)
 void Processor::setStartupMode(bool pausedStartup)
 {
     mInfo.pausedStartup = pausedStartup;
+}
+
+void Processor::setTriggerMode(bool ignoreTrigger)
+{
+    mInfo.ignoreTrigger = ignoreTrigger;
 }
 
 void Processor::setName(const QString& name)
@@ -175,13 +181,14 @@ void Processor::execute()
         filters.toFront();
         bool working = false;
         mPauseMutex.lock();
-        if(!mTriggeredExecution && mPauseOnStart)
+        if(mPauseOnStart)
             mPauseWait.wait(&mPauseMutex);
         mPauseMutex.unlock();
-        if(mTriggeredExecution)
+        if(mHasSource)
         {
             QMutexLocker lock(&mTriggerMutex);
-            mTriggerWait.wait(&mTriggerMutex);
+            if(!mInfo.ignoreTrigger)
+                mTriggerWait.wait(&mTriggerMutex);
             if(mTriggerFinished || mStop)
                 break;
             for(int i=0; i<mTriggerData.size(); i++)
@@ -220,7 +227,7 @@ void Processor::execute()
             mFilterWithErrors << filters.value();
         }
 
-        if(!mTriggeredExecution && !working)
+        if(!mHasSource && !working)
             mTriggerFinished = true;
 
         QList<QVariant> dataOut;
@@ -346,16 +353,19 @@ void Processor::trigger(QList<QVariant> &data, int runId)
 
 void Processor::triggerFinished()
 {
-    QMutexLocker lock(&mTriggerMutex);
-    mTriggerFinished = true;
-    mTriggerWait.wakeAll();
+    {
+        QMutexLocker lock(&mTriggerMutex);
+        mTriggerFinished = true;
+        mTriggerWait.wakeAll();
+    }
+    resume();
 }
 
 bool Processor::addSource(ProcessingElement *)
 {
-    if(mTriggeredExecution)
+    if(mHasSource)
         return false;
-    mTriggeredExecution = true;
+    mHasSource = true;
     return true;
 }
 
@@ -363,7 +373,7 @@ void Processor::removeSource(ProcessingElement *)
 {
     qDeleteAll(mInputs);
     mInputs.clear();
-    mTriggeredExecution = false;
+    mHasSource = false;
 }
 
 void Processor::addPort(ProcessorOutputPort *port)

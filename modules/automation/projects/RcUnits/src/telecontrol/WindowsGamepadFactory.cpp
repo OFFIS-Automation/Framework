@@ -23,18 +23,22 @@
 #include <QPluginLoader>
 #include <telecontrol/GamepadInterface.h>
 
+#include <QUuid>
+
 Gamepad* WindowsGamepadFactory::sGamepad;
 LPDIRECTINPUT8 WindowsGamepadFactory::sDirectInput;
 
 WindowsGamepadFactory::WindowsGamepadFactory()
 {
 	sDirectInput = 0;
+    sGamepad = 0;
     DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
 }
 
 WindowsGamepadFactory::~WindowsGamepadFactory()
 {
-    sDirectInput->Release();
+    if(sDirectInput)
+        sDirectInput->Release();
 }
 
 WindowsGamepadFactory &WindowsGamepadFactory::instance()
@@ -47,6 +51,7 @@ Gamepad* WindowsGamepadFactory::createGamepad()
 {
 	// force constructor/destructor call to acquire/release sDirectInput
     instance();
+    if(sGamepad) delete sGamepad;
 	sGamepad = 0;
 	HRESULT hr;
 	
@@ -60,14 +65,10 @@ BOOL CALLBACK WindowsGamepadFactory::enumDevices(const DIDEVICEINSTANCE *inst, v
     try
     {
         QString name = QString::fromWCharArray(inst->tszInstanceName);
+        QString product = QString::fromWCharArray(inst->tszProductName);
         WindowsGamepad* gamepad;
-
-        // Check for XBOX Gamepad (with special button assignment)
-        if(name.compare(QString("Controller (XBOX 360 For Windows)")) == 0)
-            gamepad = new WindowsXBOXGamepad(name);
-        else
-            gamepad = new WindowsGamepad(name);
-
+        QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
+        gamepad = new WindowsGamepad(name, guid);
         if(!gamepad)
             throw std::runtime_error(qPrintable(tr("No wrapper for device: %1").arg(name)));
 

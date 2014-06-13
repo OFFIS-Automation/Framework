@@ -203,6 +203,11 @@ public:
 public slots:
 
     /**
+     * @brief enables the tracing of filter execution times
+     * @param enabled
+     */
+    virtual void setTracingEnabled(bool enabled) = 0;
+    /**
     * creates a new processor named @a name
     * @emits processorCreated
     */
@@ -238,6 +243,9 @@ public slots:
      */
     virtual void setProcessorStartupBehavior(int id, bool pausedStartup) = 0;
     virtual void setProcessorStartupBehavior(const QString& processorName , bool pausedStartup) = 0;
+
+    virtual void setProcessorTriggerBehavior(int id, bool ignoreTrigger) = 0;
+    virtual void setProcessorTriggerBehavior(const QString& processorName , bool ignoreTrigger) = 0;
 
 
     /**

@@ -31,11 +31,11 @@ public:
     virtual int getResolution() const;
     virtual ~WindowsGamepad();
 protected:
-    WindowsGamepad(const QString& name);
+    WindowsGamepad(const QString& name, const QString& guid);
     virtual void run();
     virtual bool initialize();
     virtual QString getName() { return mName; }
-
+    void createMapping();
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
 
@@ -44,7 +44,15 @@ protected:
     LPDIRECTINPUTDEVICE8 mDevice;
     DIJOYSTATE2 mState;
     friend class WindowsGamepadFactory;
-    QString mName;
+    QString mName, mGuid;
+    QMap<int, int> mButtonMapping;
+    bool mSwitchZJoysticks;
+    enum Type {
+        XBoxGamepad,
+        DefaultGamepad
+    } mGamepadType;
+
+    void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
 #endif //LOLECTOOLS_WINDOWSGAMEPAD_HQT

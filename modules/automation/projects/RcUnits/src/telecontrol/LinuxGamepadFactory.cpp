@@ -41,16 +41,19 @@ Gamepad* LinuxGamepadFactory::createGamepad()
 	// force constructor/destructor call to acquire/release sDirectInput
     instance();
 	sGamepad = 0;
+    try {
+        // Create device
+        LinuxGamepad* gamepad = new LinuxGamepad();
 
-    // Create device
-    LinuxGamepad* gamepad = new LinuxGamepad();
-
-    // Try to init device
-    if(!gamepad->initialize()){
-        delete gamepad;
-        throw std::runtime_error(qPrintable(tr("Error initializing gamepad on port /dev/input/js0")));
-    } else {
-        sGamepad = gamepad;
+        // Try to init device
+        if(!gamepad->initialize()){
+            delete gamepad;
+            throw std::runtime_error(qPrintable(tr("Error initializing gamepad on port /dev/input/js0")));
+        } else {
+            sGamepad = gamepad;
+        }
+    }  catch(const std::exception& e) {
+        qWarning() << tr("Could not create device:") << " " << e.what();
     }
 
     return sGamepad;

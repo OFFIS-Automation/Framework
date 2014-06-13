@@ -23,7 +23,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -41,6 +41,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionAbout_OFFIS_Automation_Toolbox"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuHelp"/>
@@ -133,10 +134,20 @@
     <string>Update components</string>
    </property>
   </action>
+  <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset resource="../../../../automation/projects/ProjectEditor/images/images.qrc">
+     <normaloff>:/ProjectEditor/information.png</normaloff>:/ProjectEditor/information.png</iconset>
+   </property>
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../images/images.qrc"/>
   <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
+  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
+  <include location="../images/images.qrc"/>
   <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
  </resources>
  <connections>

@@ -1,0 +1,16 @@
+# Set default behaviour, in case users don't have core.autocrlf set.
+* text=auto
+*.c text
+*.cpp text
+*.h text
+*.pro text
+*.ui text
+*.rc text
+*.signal text
+
+
+*.png binary
+*.jpg binary
+*.pdf binary
+*.docx binary
+*.doc binary

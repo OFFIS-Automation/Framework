@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Button assigment</string>
+   <string>Button assignment</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../images/images.qrc">

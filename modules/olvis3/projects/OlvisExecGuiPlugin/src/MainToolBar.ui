@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>34</height>
+    <width>372</width>
+    <height>40</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,13 +121,16 @@
     <string>Export current trace file to CSV</string>
    </property>
   </action>
-  <action name="actionLoadedPlugins">
+  <action name="actionOptions">
    <property name="icon">
     <iconset resource="../images/images.qrc">
-     <normaloff>:/olvisExecGui/plugin_edit.png</normaloff>:/olvisExecGui/plugin_edit.png</iconset>
+     <normaloff>:/olvisExecGui/image_edit.png</normaloff>:/olvisExecGui/image_edit.png</iconset>
    </property>
    <property name="text">
-    <string>Define loaded plugins</string>
+    <string>Vision options</string>
+   </property>
+   <property name="toolTip">
+    <string>Open vision options dialog</string>
    </property>
   </action>
   <action name="actionImageDisplays">
@@ -166,6 +169,18 @@
     <string>Save the vision configuration to the project</string>
    </property>
   </action>
+  <action name="actionEnableTracing">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/olvisExecGui/page.png</normaloff>:/olvisExecGui/page.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enable Tracing</string>
+   </property>
+  </action>
   <addaction name="actionRun"/>
   <addaction name="actionPause"/>
   <addaction name="actionStep"/>
@@ -182,7 +197,24 @@
   <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
   <include location="../images/images.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionEnableTracing</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>actionExportTrace</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <signal>startRequested()</signal>
   <signal>stopRequested()</signal>

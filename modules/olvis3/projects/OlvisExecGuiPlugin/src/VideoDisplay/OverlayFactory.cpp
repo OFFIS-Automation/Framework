@@ -22,6 +22,10 @@
 #include "PointPortOverlay.h"
 #include "SimpleShapeOverlay.h"
 #include "HistogramOverlay.h"
+#include "GraphOverlay.h"
+#include "SensorSystemOverlay.h"
+#include "ScaleBarOverlay.h"
+
 #include "src/OlvisSingleton.h"
 
 #include <QDebug>
@@ -31,9 +35,9 @@ OverlayFactory::OverlayFactory()
     mStringOverlays.insert("String");
     mStringOverlays.insert("File");
     mStringOverlays.insert("Directory");
-    mStringOverlays.insert("Integer");
-    mStringOverlays.insert("Real");
-    mStringOverlays.insert("Boolean");
+    mGraphOverlays.insert("Integer");
+    mGraphOverlays.insert("Real");
+    mGraphOverlays.insert("Boolean");
 }
 
 OverlayFactory& OverlayFactory::instance()
@@ -58,6 +62,12 @@ Overlay* OverlayFactory::createOverlay(const QString &name)
         return new PointPortOverlay(name);
     else if (name == "HistogramOverlay")
         return new HistogramOverlay(name);
+    else if (name == "GraphOverlay")
+        return new GraphOverlay(name);
+    else if (name == "SensorSystemOverlay")
+        return new SensorSystemOverlay(name);
+    else if(name == "ScaleBarOverlay")
+        return new ScaleBarOverlay(name);
     qCritical() << tr("found unknown overlay type");
     return 0;
 }
@@ -68,9 +78,13 @@ Overlay* OverlayFactory::createOverlay(const PortId &portId, bool output, bool m
     const PortInfo& info = model.getPortInfo(portId);
     QString portTypeName = info.typeName;
     Overlay* overlay = 0;
-    if(!info.isArray && mStringOverlays.contains(portTypeName) && !main)
+    if(!info.isArray && info.constraints.value("isPhysicalPixelSize", false).toBool() && !main)
+        overlay = new ScaleBarOverlay("ScaleBarOverlay");
+    else if(!info.isArray && mStringOverlays.contains(portTypeName) && !main)
         overlay = new StringOverlay("StringOverlay");
-    if (output) {
+    else if(!info.isArray && mGraphOverlays.contains(portTypeName) && !main)
+        overlay = new GraphOverlay("GraphOverlay");
+    else if (output) {
         if (portTypeName == "Image" || portTypeName == "GrayImage" || portTypeName == "RGBImage" || portTypeName == "RGBAImage" || portTypeName == "DepthMap")
             overlay = new ImagePortOverlay("ImagePortOverlay");
         else if(portTypeName == "Histogram")

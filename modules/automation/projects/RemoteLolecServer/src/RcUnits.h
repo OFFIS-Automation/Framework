@@ -29,7 +29,8 @@ public:
     virtual ~RcUnits();
     static RcUnits* instance();
     QMap<QString, RcUnitHelp> getHelpList();
-    void callAsync(const QByteArray &unit, const QByteArray &name, int returId, const QList<QVariant>& params);
+public slots:
+    void callAsync(uint id, const QByteArray &unit, const QByteArray &name, const QVariantList& params);
     void updateSensitivity(const QString& unit, const QString& tcName, double sens, const QList<bool>& inverts);
     void sendAsyncResponse(int id, const QVariant& var);
     void sendAsyncError(int id, const QString& error);
@@ -38,8 +39,8 @@ public:
     void enableGamepad(const QString& unit);
     void disableGamepad(const QString& unit);
 signals:
-    void asyncResponse(int id, const QVariant& var);
-    void asyncError(int id, const QString& var);
+    void asyncResponse(uint id, const QVariant& var);
+    void asyncError(uint id, const QString& var);
 private:
     GamepadWrapper mGamepad;
     void setGamepad(const QString& unit, QObject* gamepad);

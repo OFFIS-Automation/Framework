@@ -26,7 +26,7 @@ TelecontrolAssignmentWidget::TelecontrolAssignmentWidget(QWidget *parent) :
     ui(new Ui::TelecontrolAssignmentWidget)
 {
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    this->setWindowTitle(tr("Gamepad button assigment"));
+    this->setWindowTitle(tr("Gamepad button assignment"));
     ui->setupUi(this);
 
     // Signal / Slot stuff
@@ -61,9 +61,9 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
     // Clear view
     clear();
     // Reload units
-    QStringList units = HilecSingleton::hilec()->lolecs();
+    QStringList units = HilecSingleton::hilec()->getTelecontrolableUnits();
     foreach(QString unit, units){
-        RcUnitHelp help = HilecSingleton::hilec()->getUnitHelp(unit);
+        TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
         // Check if uni has gamepad methods
         if(help.tcJoysticks.empty() && help.tcButtons.empty())
             continue;
@@ -80,13 +80,15 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
     }
 }
 
+void TelecontrolAssignmentWidget::switchToUnit(QString unit)
+{
+    int id = mUnitIndexes.key(unit, -1);
+    if(id >= 0)
+        ui->tabWidget->setCurrentIndex(id);
+}
+
 void TelecontrolAssignmentWidget::onTelecontrolUpdated(bool active, const QString &activeUnit)
 {
-    if(activeUnit.length() == 0){
-        ui->tabWidget->setEnabled(false);
-        return;
-    }
-
     if(active){
         int id = mUnitIndexes.key(activeUnit,0);
         ui->tabWidget->setEnabled(true);

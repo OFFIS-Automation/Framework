@@ -29,10 +29,14 @@ ImageInput::ImageInput()
     mOut.setName("outImage");
     mOut.setDesc("Image output port");
     addOutputPort(mOut);
-    mIn.setName("inFile");
+    mIn.setName("filename");
     mIn.setDesc("File to read");
     mIn.setFilter("*.jpg *.png *.bmp");
+    mAlwaysRead.setName("alwaysReload");
+    mAlwaysRead.setDefault(false);
+    mAlwaysRead.setDesc("Read the file from disc every time");
     addInputPort(mIn);
+    addInputPort(mAlwaysRead);
 }
 
 void ImageInput::start()
@@ -44,7 +48,7 @@ void ImageInput::execute()
 {
 
     QFileInfo path = mIn;
-    if(path != lastInfo)
+    if(path != lastInfo || mAlwaysRead.getValue())
     {
         image = cv::imread(path.canonicalFilePath().toStdString(), -1);
         lastInfo = path;

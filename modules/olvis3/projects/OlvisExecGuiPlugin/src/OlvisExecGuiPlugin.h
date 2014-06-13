@@ -61,7 +61,7 @@ signals:
 private:
     QTimer mTimer;
     OlvisInterface* mInterface;
-
+    QObject* mHilec;
     MainToolBar* toolbar;
     VideoWidget* videoWidget;
     QString graphFile, autoSaveFile;

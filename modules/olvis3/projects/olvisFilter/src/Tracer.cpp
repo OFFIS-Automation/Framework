@@ -25,6 +25,7 @@
 
 Tracer::Tracer() : mTimer(new Timer())
 {
+    mEnabled = false;
     mTraces[0].reserve(sizeof(TraceElement)*2000);
     mTraces[1].reserve(sizeof(TraceElement)*2000);
     mCurrentTrace = &mTraces[0];
@@ -61,6 +62,12 @@ Tracer::~Tracer()
     delete mTimer;
 }
 
+void Tracer::setEnabled(bool enabled)
+{
+    QMutexLocker lock(&mMutex);
+    mEnabled = enabled;
+}
+
 int Tracer::labelId(const QString &label)
 {
     QMutexLocker lock(&mLabelMutex);
@@ -87,11 +94,12 @@ double Tracer::timestamp()
 
 void Tracer::trace(int event, int name, int value, int id)
 {
+    QMutexLocker locker(&mMutex);
+    if(!mEnabled)
+        return;
     TraceElement te(timestamp(), event, name, value, id);
-    mMutex.lock();
     void* data = &te;
     mCurrentTrace->append((char*)data, sizeof(TraceElement));
-    mMutex.unlock();
 }
 
 void Tracer::run()

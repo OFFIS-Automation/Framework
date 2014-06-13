@@ -1,16 +1,16 @@
 # OFFIS Automation Framework
 # Copyright (C) 2013 OFFIS e.V.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
@@ -27,7 +27,6 @@ DESTDIR = $${targetDir}/plugins
 INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../include
 
-
 DEFINES += RCUNITS_LIBRARY
 
 TARGET = RcUnits
@@ -41,7 +40,8 @@ SOURCES += src/RcUnit.cpp \
     src/RcUnitBase.cpp \
     src/RcUnitsBase.cpp\
     src/telecontrol/Gamepad.cpp \
-    src/telecontrol/gamepadTypes/WindowXBOXGamepad.cpp
+    src/MasterTcInvoker.cpp
+
 
 HEADERS += src/RcUnit.h \
     src/TcInvoker.h \
@@ -53,27 +53,27 @@ HEADERS += src/RcUnit.h \
     src/telecontrol/Gamepad.h \
     ../../include/telecontrol/TcConfig.h \
     ../../include/telecontrol/HapticInterface.h \
+    src/MasterTcInvoker.h \
+    src/GamepadEndpoint.h \
+    src/HapticBaseEndpoint.h
 
 win32*{
-HEADERS += src/telecontrol/WindowsGamepad.h \
-    src/telecontrol/WindowsGamepadFactory.h \
-    ../../include/telecontrol/GamepadInterface.h
+    HEADERS += src/telecontrol/WindowsGamepad.h \
+        src/telecontrol/WindowsGamepadFactory.h \
+        ../../include/telecontrol/GamepadInterface.h
 
-LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
+    LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
 
-SOURCES += src/telecontrol/WindowsGamepad.cpp \
-    src/telecontrol/gamepadTypes/WindowsXBOXGamepad.h \
-    src/telecontrol/WindowsGamepadFactory.cpp \
+    SOURCES += src/telecontrol/WindowsGamepad.cpp \
+        src/telecontrol/WindowsGamepadFactory.cpp \
 }
 
 unix:!macx{
-INCLUDEPATH += /usr/include
+    HEADERS += src/telecontrol/LinuxGamepad.h \
+        src/telecontrol/LinuxGamepadFactory.h \
+        src/telecontrol/libjoystick/joystick.h \
 
-HEADERS += src/telecontrol/LinuxGamepad.h \
-    src/telecontrol/LinuxGamepadFactory.h \
-
-LIBS += -L/usr/lib/ -ljoystick++
-
-SOURCES += src/telecontrol/LinuxGamepad.cpp \
-    src/telecontrol/LinuxGamepadFactory.cpp \
+    SOURCES += src/telecontrol/LinuxGamepad.cpp \
+        src/telecontrol/LinuxGamepadFactory.cpp \
+        src/telecontrol/libjoystick/joystick.cpp \
 }

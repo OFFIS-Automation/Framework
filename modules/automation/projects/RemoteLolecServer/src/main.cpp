@@ -19,11 +19,12 @@
 #include "Server.h"
 #include <QDebug>
 #include <QSettings>
+#include <QDir>
 
 class Application : public QApplication
 {
 public:
-    Application(int argc, char* argv[]) : QApplication(argc, argv){}
+    Application(int &argc, char** argv) : QApplication(argc, argv){}
     bool notify(QObject* receiver, QEvent* e) {
         try {
             return QApplication::notify(receiver, e);
@@ -40,12 +41,12 @@ int main(int argc, char *argv[])
     a.setOrganizationName("OFFIS");
     a.setApplicationName("RemoteLolecServer");
     QSettings::setDefaultFormat(QSettings::IniFormat);
+    QDir::setCurrent(a.applicationDirPath() + "/plugins");
     Server server;
     QThread serverThread;
     serverThread.start();
     server.moveToThread(&serverThread);
     MainWindow w(&server);
     w.show();
-
     return a.exec();
 }

@@ -43,6 +43,7 @@ void CallStackDecoder::prepareResume()
     foreach(_frame* frame, mConvertedLocals)
         PyFrame_LocalsToFast(frame, 0);
     mConvertedLocals.clear();
+    mVars.invalidatePython();
 }
 
 void CallStackDecoder::decode(_frame *frame)
@@ -87,6 +88,7 @@ QAbstractItemModel * CallStackDecoder::locals(int frameDepth)
     }
     if(frame)
     {
+
         if(!mConvertedLocals.contains(frame))
         {
             PyFrame_FastToLocals(frame);

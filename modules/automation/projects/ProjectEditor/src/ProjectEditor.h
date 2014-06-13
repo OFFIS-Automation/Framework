@@ -37,7 +37,7 @@ public:
     virtual bool requirementsMet();
     virtual void initialize(const QString& pluginDir);
     virtual void deinitialize();
-    virtual void setGuiInterface(const QString& name, QObject* connectObject);
+    virtual void setGuiInterface(const QString& name, QObject* obj);
     virtual QObject* getConnectObject();
     virtual void addElements(MainWindowInterface* mainWindow);
     virtual void start();
@@ -48,9 +48,7 @@ signals:
     void activeFileChanged(const QString& filename);
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
-
-public slots:
-    void focusLine(const QString& file, int line);
+    void clickedProblem(const QString& string, int line);
 
 protected:
     // add window objects here

@@ -20,6 +20,8 @@
 #include <QString>
 #include <QFont>
 #include "RectOverlay.h"
+#include <QMap>
+#include <QVariant>
 
 class VideoDisplayWidget;
 
@@ -31,11 +33,13 @@ public:
     void readElement(QXmlStreamReader &reader);
     virtual void paintContent(QPainter &painter);
     virtual void mousePressEvent(QMouseEvent *event);
+    virtual void setPortId(const PortId &portId, bool output);
 
 protected:
     QString format(QVariant value);
     QString mString, mFormatString;
     QFont mFont;
+    QMap<QString, QString> mPreDefinedStrings;
 };
 
 #endif // STRINGOVERLAY_H

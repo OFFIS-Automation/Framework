@@ -28,14 +28,17 @@ class ShowAssignmentButton : public QWidget
     Q_OBJECT
     
 public:
-    explicit ShowAssignmentButton(QString unit);
+    explicit ShowAssignmentButton(QString unit, bool hideEdit = true);
     ~ShowAssignmentButton();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_show_clicked();
+
+    void on_edit_clicked();
 
 signals:
-    void openButtonAssignment();
+    void openButtonAssignment(QString unit);
+    void editButtonAssignment(QString unit);
 
 private:
     QString mUnit;

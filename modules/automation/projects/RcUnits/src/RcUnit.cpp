@@ -207,8 +207,7 @@ void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
 {
     QList<Method>& methods = mMethods[sig];
     if(methods.last().configured)
-        methods << methods.last();
-    methods.last().configured = false;
+        addMethod(methods.last().name, methods.last().shortDesc, methods.last().longDesc);
 
     Method& m = methods.last();
     QByteArray retType = method.typeName();

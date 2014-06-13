@@ -99,26 +99,24 @@ void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
 
 void TutorialUnit::resetSetup()
 {
-    srand(QDateTime::currentDateTime().toTime_t());
-    QMutexLocker lock(&mMutex);
-    QMutexLocker waitLock(&mWaitMutex);
-    mOffset = QPointF(0, 0);
-    mScaling = 1.0;
-    emit resetScene(false);
-    mWait.wait(&mWaitMutex, 1000);
-    mWait.wait(&mWaitMutex, 500);
+    resetSetup(false);
 }
 
-void TutorialUnit::resetSetupRandom()
+void TutorialUnit::resetSetup(bool randomize)
 {
     srand(QDateTime::currentDateTime().toTime_t());
     QMutexLocker lock(&mMutex);
     QMutexLocker waitLock(&mWaitMutex);
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
-    emit resetScene(true);
+    emit resetScene(randomize);
     mWait.wait(&mWaitMutex, 1000);
     mWait.wait(&mWaitMutex, 500);
+}
+
+void TutorialUnit::resetSetupRandom()
+{
+    resetSetup(true);
 }
 
 void TutorialUnit::randomizeCoordinateSystem()

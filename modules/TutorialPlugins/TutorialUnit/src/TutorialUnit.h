@@ -34,11 +34,13 @@ public slots:
     void releaseHardware();
     Pose2d getPosition();
     void setPosition(QPointF targetPosition);
+    void setPosition(double x, double y) { setPosition(QPointF(x, y)); }
     void setRotation(double targetAngle);
     void openGripper();
     void closeGripper();
     void moveGamepad(double xAxis, double yAxis, double phi);
     void resetSetup();
+    void resetSetup(bool randomize);
     void resetSetupRandom();
     void randomizeCoordinateSystem();
 

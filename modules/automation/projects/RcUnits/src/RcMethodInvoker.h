@@ -91,7 +91,7 @@ class RcMethodInvoker : public QObject
 public:
     RcMethodInvoker(const RcUnit::Method& method, QMap<int, RcWrapperFactoryItf*>& factories);
     virtual ~RcMethodInvoker();
-    void parseArguments(const QList<QVariant>& arguments);
+    bool parseArguments(const QList<QVariant>& arguments, QString &error);
     void parseArgument(const QVariant& var, int pos);
     void execute(QObject* object);
     QVariant returnValue();

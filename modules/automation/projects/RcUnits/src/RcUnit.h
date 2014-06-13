@@ -116,13 +116,16 @@ protected:
     void configureTcMethod(const QMetaMethod& method, QString sig);
     void configureTcButton(TcButtonEvent& ev, const QMetaMethod& method);
     void configureHapticMethod(const QMetaMethod& method);
-    QString typeName(QString str);
+    static QString typeName(QString str);
+    static QString typeName(QByteArray str) {return typeName(QString(str)); }
+    static QString typeName(const char* str){return typeName(QString(str)); }
+    static QString typeName(int type);
     Parameter createParamInfo(QByteArray type, QByteArray name = "");
     QString mName, mConfigFile;
     QString mDesc;
     QObject* mLolec;
     LolecInterface* mLolecInterface;
-    QMap<QString, Method> mMethods;
+    QMap<QString, QList<Method>> mMethods;
     QMap<int, RcWrapperFactoryItf*> mWrapperFactories;
     QMap<QString, RcUnitHelp::Struct> mStructDefs;
     QVariantMap mConstantDefs;

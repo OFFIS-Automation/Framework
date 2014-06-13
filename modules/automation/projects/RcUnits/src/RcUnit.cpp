@@ -88,13 +88,21 @@ void RcUnit::addMethod(const QString &name, const QString &shortDesc, const QStr
     m.shortDesc = shortDesc;
     m.longDesc = longDesc;
     m.configured = false;
-    mMethods[name] = m;
+    mMethods[name].append(m);
 }
 
 void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
 {
     if(mMethods.contains(methodName))
-        mMethods[methodName].paramNames = names;
+    {
+        QList<Method>& methods = mMethods[methodName];
+        for(int i=0;i<methods.size();i++)
+        {
+            Method& method = methods[i];
+            if(method.paramNames.size() == names.size())
+                method.paramNames = names;
+        }
+    }
     if(mTcMethods.contains(methodName))
         mTcMethods[methodName].axeNames = names;
 }
@@ -109,8 +117,7 @@ RcUnitHelp RcUnit::getHelp() const
     names.sort();
     foreach(const QString& name, names)
     {
-        const Method& m = mMethods[name];
-        if(m.configured)
+        foreach(const Method& m, mMethods[name])
             help.methods << m;
     }
 
@@ -177,12 +184,19 @@ bool RcUnit::initialize(LolecInterface* plugin)
     }
     foreach(QString unitName, mMethods.keys())
     {
-        const Method& method = mMethods[unitName];
-        if(!method.configured)
+        QList<Method> methods = mMethods[unitName];
+        QList<Method> validMethods;
+        foreach(const Method& method, methods)
         {
-            qCritical() << "Error initializing RC-Unit"  << name() << ": Method" << method.name << "is published, but not found as slot!";
-            mMethods.remove(unitName);
+            if(!method.configured)
+                qCritical() << "Error initializing RC-Unit"  << name() << ": Method" << method.name << "is published, but not found as slot!";
+            else
+                validMethods << method;
         }
+        if(validMethods.empty())
+            mMethods.remove(unitName);
+        else
+            mMethods[unitName] = validMethods;
     }
     if(mLolec)
         mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons);
@@ -191,7 +205,12 @@ bool RcUnit::initialize(LolecInterface* plugin)
 
 void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
 {
-    Method &m = mMethods[sig];
+    QList<Method>& methods = mMethods[sig];
+    if(methods.last().configured)
+        methods << methods.last();
+    methods.last().configured = false;
+
+    Method& m = methods.last();
     QByteArray retType = method.typeName();
     m.hasReturn = !retType.isEmpty();
     if(m.hasReturn)
@@ -325,17 +344,38 @@ RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
 QVariant RcUnit::call(const QByteArray &name, QList<QVariant> params)
 {
     QVariant value;
-    RcMethodInvoker* invoker = 0;
     mCallMutex.lock();
-    const Method& m = mMethods.value(name);
+    const QList<Method>& methods = mMethods.value(name);
     mCallMutex.unlock();
-    if(m.configured)
+    if(!methods.empty())
     {
-        invoker = new RcMethodInvoker(m, mWrapperFactories);
-        invoker->parseArguments(params);
-        invoker->execute(mLolec);
-        value = invoker->returnValue();
-        delete invoker;
+        QString lastError;
+        foreach(const Method& m, methods)
+        {
+            RcMethodInvoker invoker(m, mWrapperFactories);
+            if(invoker.parseArguments(params, lastError))
+            {
+                invoker.execute(mLolec);
+                return invoker.returnValue();
+            }
+        }
+        // if we get here, no method matched the parameters!
+        // if there is only one method, return the error of the method
+        // else, create new error message
+        if(methods.size() > 1)
+        {
+            QStringList paramTypes;
+            foreach(QVariant param, params)
+                paramTypes << typeName(param.userType());
+
+            lastError = tr("no matching method found for %1(%2).").arg(name, paramTypes.join(", "));
+            lastError += "\n" + tr("Candidates are:");
+            foreach(const Method& m, methods)
+                lastError += "\n" + m.sig;
+
+        }
+        throw RcError(lastError);
+
     }
     else
     {
@@ -397,6 +437,9 @@ void RcUnit::addConstant(const QString name, const QVariant &constant)
 
 QString RcUnit::typeName(QString str)
 {
+    str.replace("QStringList", "string[]");
+    str.replace("QVariantList", "mixed[]");
+    str.replace("QList", "mixed[]");
     str.replace("QVariant", "mixed");
     str.replace("QString", "string");
     if(str.startsWith("Q"))
@@ -404,6 +447,11 @@ QString RcUnit::typeName(QString str)
     if(str.length()>1)
         str = str[0] + str.mid(1).toLower();
     return str;
+}
+
+QString RcUnit::typeName(int type)
+{
+    return typeName(QString(QMetaType::typeName(type)));
 }
 
 void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Joystick> &defaultMapping, int defaultActivateButton, double defaultSensitivity)

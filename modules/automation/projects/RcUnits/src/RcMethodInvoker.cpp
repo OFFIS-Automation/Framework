@@ -31,14 +31,22 @@ RcMethodInvoker::~RcMethodInvoker()
         delete mReturnWrapper;
 }
 
-void RcMethodInvoker::parseArguments(const QList<QVariant> &arguments)
+bool RcMethodInvoker::parseArguments(const QList<QVariant> &arguments, QString& error)
 {
-    if(mMethod.arguments.count() != arguments.count())
-        throw RcError(tr("Wrong parameter count, expected %1, got %2").arg(mMethod.arguments.count()).arg(arguments.count()));
-    for(int i=0; i<arguments.size(); i++)
-        parseArgument(arguments[i], i);
-    if(mMethod.hasReturn)
-        mReturnWrapper = createWrapper(mMethod.returnType.type == RcUnit::Parameter::List, mMethod.returnType.typeId, mMethod.returnType.realName);
+    try{
+        if(mMethod.arguments.count() != arguments.count())
+            throw RcError(tr("Wrong parameter count, expected %1, got %2").arg(mMethod.arguments.count()).arg(arguments.count()));
+        for(int i=0; i<arguments.size(); i++)
+            parseArgument(arguments[i], i);
+        if(mMethod.hasReturn)
+            mReturnWrapper = createWrapper(mMethod.returnType.type == RcUnit::Parameter::List, mMethod.returnType.typeId, mMethod.returnType.realName);
+       return true;
+    }
+    catch(const std::exception& e)
+    {
+        error = e.what();
+        return false;
+    }
 }
 
 void RcMethodInvoker::parseArgument(const QVariant &var, int pos)

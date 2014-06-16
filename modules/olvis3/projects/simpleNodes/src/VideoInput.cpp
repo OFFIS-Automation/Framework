@@ -121,7 +121,8 @@ void VideoInput::execute()
         mCapture.set(CV_CAP_PROP_POS_FRAMES, framePos);
 
     }
-    if(!mCapture.grab() || mCapture.get(CV_CAP_PROP_POS_AVI_RATIO) > (double) mEnd)
+    double elapsedFrames = mCapture.get(CV_CAP_PROP_POS_FRAMES) / mCapture.get(CV_CAP_PROP_FRAME_COUNT);
+    if(!mCapture.grab() || elapsedFrames > (double) mEnd)
     {
         // Check if *.avi has finished
         if((bool)mRepeat){

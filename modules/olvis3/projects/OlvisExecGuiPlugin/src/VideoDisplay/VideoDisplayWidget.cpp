@@ -330,7 +330,6 @@ void VideoDisplayWidget::paintEvent(QPaintEvent*)
 
 #endif
 
-
     if (!mMainOverlay)
         return;
 

@@ -21,31 +21,21 @@
 #include <QDebug>
 
 VideoDisplayScrollArea::VideoDisplayScrollArea(QWidget *parent) :
-    QAbstractScrollArea(parent)
+    QScrollArea(parent)
 {
-}
-
-void VideoDisplayScrollArea::setWidgetResizable(bool )
-{
-
-}
-
-void VideoDisplayScrollArea::setWidget(QWidget *widget)
-{
-    widget->setParent(viewport());
-    mVideoDisplayWidget = (VideoDisplayWidget*) widget;
 }
 
 void VideoDisplayScrollArea::scrollContentsBy(int , int )
 {
-
-    mVideoDisplayWidget->setOffset(horizontalScrollBar()->value(), verticalScrollBar()->value());
-    mVideoDisplayWidget->update();
+    VideoDisplayWidget* w = qobject_cast<VideoDisplayWidget*>(widget());
+    w->setOffset(horizontalScrollBar()->value(), verticalScrollBar()->value());
+    w->update();
 }
 
 void VideoDisplayScrollArea::resizeEvent(QResizeEvent*)
 {
-    mVideoDisplayWidget->resize(viewport()->size());
+    VideoDisplayWidget* w = qobject_cast<VideoDisplayWidget*>(widget());
+    w->resize(viewport()->size());
     //mVideoDisplayWidget->updateSize();
-    mVideoDisplayWidget->update();
+    w->update();
 }

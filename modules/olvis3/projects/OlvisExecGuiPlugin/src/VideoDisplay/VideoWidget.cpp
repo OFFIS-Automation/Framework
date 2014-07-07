@@ -103,10 +103,14 @@ void VideoWidget::endCapture(const QString &filename)
 void VideoWidget::createDisplay()
 {
     VideoDisplayWidget* widget = new VideoDisplayWidget();
-    VideoDisplayScrollArea* scrollArea = new VideoDisplayScrollArea(ui->dockWidgetContents);
+    QScrollArea* scrollArea = new VideoDisplayScrollArea();
     scrollArea->setWidgetResizable(true);
+    scrollArea->setBackgroundRole(QPalette::Shadow);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     widget->setGeometry(QRect(0, 0, 391, 280));
     scrollArea->setWidget(widget);
+    //scrollArea->registerWidget(widget);
     // calculate the position, it should be
     // -------------
     // | 0 | 1 | 4 |

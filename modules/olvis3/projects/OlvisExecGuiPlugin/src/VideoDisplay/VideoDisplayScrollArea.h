@@ -17,29 +17,25 @@
 #ifndef VIDEODISPLAYSCROLLAREA_H
 #define VIDEODISPLAYSCROLLAREA_H
 
-#include <QAbstractScrollArea>
+#include <QScrollArea>
 
 class VideoDisplayWidget;
 class QResizeEvent;
 
-class VideoDisplayScrollArea : public QAbstractScrollArea
+class VideoDisplayScrollArea : public QScrollArea
 {
     Q_OBJECT
 public:
     explicit VideoDisplayScrollArea(QWidget *parent = 0);
-    void setWidgetResizable(bool resizeable);
-    void setWidget(QWidget* widget);
 
 protected:
     virtual void scrollContentsBy(int dx, int dy);
-
     virtual void resizeEvent(QResizeEvent* event);
 signals:
 
 public slots:
 
 protected:
-    VideoDisplayWidget* mVideoDisplayWidget;
 
 };
 

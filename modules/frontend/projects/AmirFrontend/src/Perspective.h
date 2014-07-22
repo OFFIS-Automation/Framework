@@ -22,14 +22,14 @@
 class Perspective: public PerspectiveInterface
 {
 public:
-    Perspective() { fixed = false; }
+    Perspective() { fixed = false; displayedOnce = false; }
     virtual void addToolbar(QToolBar* bar);
     virtual void setCentralWidget(QDockWidget* w, int screen = 0);
     virtual void addDockWidget(QDockWidget* w, int screen = 0);
     bool isFresh() { return masterState.isEmpty(); }
     QByteArray masterState, slaveState;
     QStringList masterObjects, slaveObjects, visibleObjects, defaultMasterObjects, defaultSlaveObjects;
-    bool fixed;
+    bool fixed, displayedOnce;
 protected:
     void updateList(QStringList& list, QObject* object, int pos = 1);
 };

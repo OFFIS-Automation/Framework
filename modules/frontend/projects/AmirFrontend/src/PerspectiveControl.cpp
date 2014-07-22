@@ -145,6 +145,7 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     if(mSlave) mSlave->setUpdatesEnabled(true);
     mDeleteAction->setEnabled(!mPerspectives[name].fixed);
     mResetAction->setEnabled(mPerspectives[name].fixed);
+    mPerspectives[name].displayedOnce = true;
 
 }
 void PerspectiveControl::resetPerspectives()
@@ -172,13 +173,15 @@ void PerspectiveControl::storePerspectives(const QString& perspective)
         if(!perspective.isEmpty() && perspective != name)
             continue;
         const Perspective& p = mPerspectives[name];
-        settings.beginGroup(name);
-        settings.setValue("master/docks", p.masterObjects);
-        settings.setValue("master/state", QString(p.masterState.toBase64()));
+        if(p.displayedOnce) {
+            settings.beginGroup(name);
+            settings.setValue("master/docks", p.masterObjects);
+            settings.setValue("master/state", QString(p.masterState.toBase64()));
 
-        settings.setValue("slave/docks", p.slaveObjects);
-        settings.setValue("slave/state", QString(p.slaveState.toBase64()));
-        settings.endGroup();
+            settings.setValue("slave/docks", p.slaveObjects);
+            settings.setValue("slave/state", QString(p.slaveState.toBase64()));
+            settings.endGroup();
+        }
     }
 }
 

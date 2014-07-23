@@ -172,6 +172,5 @@ void FileTree::on_openExplorer_triggered()
     param += QDir::toNativeSeparators(fileInfo.absoluteFilePath());
 
     // Open explorer in an own thread
-    QProcess *process = new QProcess(this);
-    process->startDetached("explorer.exe",  QStringList(param));
+    QProcess::startDetached("explorer.exe",  QStringList(param));
 }

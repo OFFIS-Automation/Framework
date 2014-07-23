@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vision Options</string>
+   <string>Vision options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -41,12 +41,18 @@
         <item row="0" column="0">
          <widget class="QLabel" name="frameRateLabel">
           <property name="text">
-           <string>frame rate (fps)</string>
+           <string>Frame rate (fps)</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="frameRate">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="specialValueText">
            <string>auto</string>
           </property>

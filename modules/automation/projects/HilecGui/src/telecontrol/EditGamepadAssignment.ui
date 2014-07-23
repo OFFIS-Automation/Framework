@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Create gamepad mapping</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -26,14 +26,17 @@
      <item>
       <widget class="QLineEdit" name="name">
        <property name="text">
-        <string>user</string>
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Enter name for mapping</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="add">
        <property name="text">
-        <string>add joystick configuration</string>
+        <string>Add gamepad mapping</string>
        </property>
        <property name="icon">
         <iconset resource="../../images/images.qrc">
@@ -55,21 +58,21 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>button</string>
+            <string>Original button</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>name</string>
+            <string>Name of action</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>assigned button</string>
+            <string>Assigned button</string>
            </property>
           </widget>
          </item>
@@ -124,7 +127,7 @@
      <item>
       <widget class="QPushButton" name="exit">
        <property name="text">
-        <string>Exit</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>

@@ -54,6 +54,8 @@ private slots:
     void on_deleteFile_triggered();
     void on_renameFile_triggered();
 
+    void on_openExplorer_triggered();
+
 private:
     Ui::FileTree *ui;
     QFileSystemModel mModel;

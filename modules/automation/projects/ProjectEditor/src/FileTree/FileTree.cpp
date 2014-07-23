@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QInputDialog>
+#include <QProcess>
 
 FileTree::FileTree(QWidget *parent) :
     QDockWidget(parent),
@@ -87,8 +88,10 @@ void FileTree::on_treeView_customContextMenuRequested(const QPoint &pos)
     QModelIndex realCurrentIndex = mFilteredModel.mapToSource(ui->treeView->currentIndex());
     if (!mModel.fileInfo(realCurrentIndex).isDir() && ui->treeView->indexAt(pos).isValid())
         menu.addAction(ui->deleteFile);
-    if (ui->treeView->indexAt(pos).isValid())
+    if (ui->treeView->indexAt(pos).isValid()){
         menu.addAction(ui->renameFile);
+        menu.addAction(ui->openExplorer);
+    }
     menu.exec(mapToGlobal(pos));
 }
 
@@ -123,7 +126,7 @@ void FileTree::on_newFile_triggered()
     if (!fileName.contains(mBaseDir))
     {
         QMessageBox msgBox;
-        msgBox.setText(tr("The File is not inside the Project Directory."));
+        msgBox.setText(tr("The file is not inside the project directory."));
         msgBox.setInformativeText(tr("Do you really want to create it?"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
@@ -138,8 +141,8 @@ void FileTree::on_newFile_triggered()
 void FileTree::on_deleteFile_triggered()
 {
     QMessageBox msgBox;
-    msgBox.setText(tr("Delete File?"));
-    msgBox.setInformativeText(tr("Do you really want to delete this File?"));
+    msgBox.setText(tr("Delete file?"));
+    msgBox.setInformativeText(tr("Do you really want to delete this file?"));
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Ok);
     int ret = msgBox.exec();
@@ -155,3 +158,20 @@ void FileTree::on_renameFile_triggered()
     ui->treeView->edit(ui->treeView->currentIndex());
 }
 
+
+void FileTree::on_openExplorer_triggered()
+{
+    QModelIndex realCurrentIndex = mFilteredModel.mapToSource(ui->treeView->currentIndex());
+    QFileInfo fileInfo = mModel.fileInfo(realCurrentIndex);
+
+    // Create params
+    QString param;
+    if (!QFileInfo(fileInfo.absoluteFilePath()).isDir()){
+        param = QLatin1String("/select,");
+    }
+    param += QDir::toNativeSeparators(fileInfo.absoluteFilePath());
+
+    // Open explorer in an own thread
+    QProcess *process = new QProcess(this);
+    process->startDetached("explorer.exe",  QStringList(param));
+}

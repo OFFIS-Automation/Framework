@@ -48,10 +48,10 @@
      <normaloff>:/ProjectEditor/page_add.png</normaloff>:/ProjectEditor/page_add.png</iconset>
    </property>
    <property name="text">
-    <string>Create File</string>
+    <string>Create file</string>
    </property>
    <property name="toolTip">
-    <string>Create new file</string>
+    <string>Create a new file inside the project directory</string>
    </property>
   </action>
   <action name="deleteFile">
@@ -62,6 +62,9 @@
    <property name="text">
     <string>Delete file</string>
    </property>
+   <property name="toolTip">
+    <string>Delete the selected file</string>
+   </property>
   </action>
   <action name="renameFile">
    <property name="icon">
@@ -71,10 +74,26 @@
    <property name="text">
     <string>Rename file</string>
    </property>
+   <property name="toolTip">
+    <string>Rename the current file</string>
+   </property>
+  </action>
+  <action name="openExplorer">
+   <property name="icon">
+    <iconset resource="../../../../../frontend/projects/AmirFrontend/images/images.qrc">
+     <normaloff>:/img/loadProject.png</normaloff>:/img/loadProject.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show in Explorer</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the current file in the Windows Explorer</string>
+   </property>
   </action>
  </widget>
  <resources>
   <include location="../../images/images.qrc"/>
+  <include location="../../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

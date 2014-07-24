@@ -254,6 +254,9 @@
          <normaloff>:/TutorialPlugin/disconnect.png</normaloff>
          <normalon>:/TutorialPlugin/connect.png</normalon>:/TutorialPlugin/disconnect.png</iconset>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>

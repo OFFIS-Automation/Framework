@@ -39,13 +39,12 @@ signals:
     void disconnectClicked();
     void resetSystem();
     void resetSystemRandom();
+
 private slots:
+    void updateStatus(bool connected);
     void onPositionUpdate(QPointF p, qreal rot);
-
     void on_connectButton_clicked(bool checked);
-
     void on_resetButton_clicked();
-
     void on_resetRandomButton_clicked();
 
 private:

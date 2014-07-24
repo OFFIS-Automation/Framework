@@ -17,6 +17,9 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 * [Feature requests](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#features)
 * [Pull requests](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests)
 
+## Integrated / Included Frameworks
+
+* [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
 
 
 ## Authors

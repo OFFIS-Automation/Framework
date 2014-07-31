@@ -29,7 +29,6 @@ public:
 protected:
     in::GrayImage mIn;
     in::Integer mThreshold;
-    in::Boolean mLower;
     in::Integer mMode;
     out::GrayImage mOut;
     bool mInvert;

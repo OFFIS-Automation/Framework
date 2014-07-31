@@ -32,4 +32,4 @@ protected:
     out::Image mOut;
 };
 
-#endif // BACKGROUNDSUBSTRACTION_H
+#endif // IMAGESUBSTRACTION_H

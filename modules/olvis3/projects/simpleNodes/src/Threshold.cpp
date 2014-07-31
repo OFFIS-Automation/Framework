@@ -25,23 +25,32 @@ Threshold::Threshold()
     setName("Threshold");
     setDesc("Thresholds an image");
     setGroup("image/color");
+
     mOut.setName("outImage");
-    mOut.setDesc("image output port");
+    mOut.setDesc("Image output port");
     addOutputPort(mOut);
+
     mIn.setName("inImage");
-    mIn.setDesc("image input");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
     mThreshold.setName("inThreshold");
-    mThreshold.setDesc("threshold value");
+    mThreshold.setDesc("Threshold value");
     mThreshold.setDefault(128);
     mThreshold.setRange(0, 255);
     addInputPort(mThreshold);
 
+    mLower.setName("lower");
+    mLower.setDefault(true);
+    addInputPort(mLower);
+
     mMode.setName("mode");
-    mMode.setDesc("thresholding mode");
-    mMode.addChoice(cv::THRESH_BINARY, "Binary");
-    mMode.addChoice(cv::THRESH_BINARY_INV, "Binary inverted");
-    mMode.addChoice(cv::THRESH_TOZERO, "to zero");
+    mMode.setDesc("Thresholding mode");
+    mMode.addChoice(cv::THRESH_BINARY, "Binary (value = value > threshold ? max_value : 0 )");
+    mMode.addChoice(cv::THRESH_BINARY_INV, "Binary inverted (value = value > threshold ? 0 : max_value)");
+    mMode.addChoice(cv::THRESH_TOZERO, "To zero (value = value > threshold ? value : 0)");
+    mMode.addChoice(cv::THRESH_TOZERO_INV, "To zero inverted (value = value > threshold ? 0 : value)");
+    mMode.addChoice(cv::THRESH_TRUNC, "Truncate (value = value > threshold ? threshold : value)");
     mMode.setDefault(cv::THRESH_BINARY);
     addInputPort(mMode);
 }

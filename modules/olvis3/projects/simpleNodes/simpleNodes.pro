@@ -78,7 +78,8 @@ SOURCES += \
     src/VarianceFilter.cpp \
     src/VideoInput.cpp \
     src/VideoWriter.cpp \
-    src/BrighnessContrast.cpp
+    src/BrighnessContrast.cpp \
+    src/BackgroundSubstraction.cpp
 
 HEADERS += \ 
     src/BlobDetection.h \
@@ -119,7 +120,8 @@ HEADERS += \
     src/VarianceFilter.h \
     src/VideoInput.h \
     src/VideoWriter.h \
-    src/BrighnessContrast.h
+    src/BrighnessContrast.h \
+    src/BackgroundSubstraction.h
 
 RESOURCES += \
     images/images.qrc

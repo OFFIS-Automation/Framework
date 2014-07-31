@@ -14,26 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef THRESHOLD_H
-#define THRESHOLD_H
+#ifndef BACKGROUNDSUBSTRACTION_H
+#define BACKGROUNDSUBSTRACTION_H
+
+#include <opencv2/video/background_segm.hpp>
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
 #include <ports/BooleanPort.h>
 
-class Threshold : public UserFilter
+class BackgroundSubstraction : public UserFilter
 {
 public:
-    Threshold();
-    virtual void execute();
+    BackgroundSubstraction();
+    void execute();
 protected:
-    in::GrayImage mIn;
-    in::Integer mThreshold;
-    in::Boolean mLower;
+    enum Mode
+    {
+        MOG = 0,
+        MOG2
+    };
+
+    in::Image mIn;
     in::Integer mMode;
-    out::GrayImage mOut;
-    bool mInvert;
+    out::Image mBackgroundOut;
+    out::Image mForegroundOut;
+private:
+    cv::BackgroundSubtractorMOG mMog;
+    cv::BackgroundSubtractorMOG2 mMog2;
 };
 
-
-#endif // THRESHOLD_H
+#endif // BACKGROUNDSUBSTRACTION_H

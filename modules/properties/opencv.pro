@@ -23,11 +23,10 @@ win32-msvc*{
     DEFINES += _CRT_SECURE_NO_WARNINGS # supress win32 stdlib warnings
     include($$(AmirDevDir)/opencv2/opencv_version.pro)
     CONFIG(debug, debug|release) {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d
+        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d -lopencv_video$${CVVERSION}d
     } else {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION}
+        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION} -lopencv_video$${CVVERSION}
     }
-
 }
 
 macx{

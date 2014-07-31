@@ -21,7 +21,7 @@ REGISTER_FILTER(BackgroundSubstraction);
 BackgroundSubstraction::BackgroundSubstraction()
 {
     setName("BackgroundSubstraction");
-    setDesc("Converts an RGB image into a grayscale image. Can extract a single channel.");
+    setDesc("Automatic background substraction.");
     setGroup("image/convert");
     mMode.setName("mode");
     mMode.setDesc("Select the operation mode.");

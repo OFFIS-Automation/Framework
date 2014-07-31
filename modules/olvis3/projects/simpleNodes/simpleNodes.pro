@@ -55,6 +55,7 @@ SOURCES += \
     src/HistogramNode.cpp \
     src/ImageInput.cpp \
     src/ImageOutput.cpp \
+    src/ImageSubstraction.cpp \
     src/Invert.cpp \
     src/main.cpp \
     src/MathFilter.cpp \
@@ -95,7 +96,7 @@ HEADERS += \
     src/Gray2Rgb.h \
     src/HistogramNode.h \
     src/ImageInput.h \
-    src/ImageInput.h \
+    src/ImageSubstraction.h \
     src/ImageOutput.h \
     src/Invert.h \
     src/KernelFilter.h \

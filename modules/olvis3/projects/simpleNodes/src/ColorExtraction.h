@@ -37,6 +37,8 @@ protected:
     in::Real mTolerance;
     in::Integer mRValue, mGValue, mBValue;
     in::Integer mDefaultValue;
+private:
+    int mValues[3];
 };
 
 #endif // COLOREXTRACTION_H

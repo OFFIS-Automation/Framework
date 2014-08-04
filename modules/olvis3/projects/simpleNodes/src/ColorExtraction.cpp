@@ -34,15 +34,15 @@ ColorExtraction::ColorExtraction()
     mOutPoint.setName("output point");
     addOutputPort(mOutPoint);
 
-    mRValue.setName("red value (ignored when input point is set)");
+    mRValue.setName("red value");
     mRValue.setDefault(128);
     mRValue.setRange(0, 255);
     addInputPort(mRValue);
-    mGValue.setName("green value (ignored when input point is set)");
+    mGValue.setName("green value");
     mGValue.setDefault(128);
     mGValue.setRange(0, 255);
     addInputPort(mGValue);
-    mBValue.setName("blue value (ignored when input point is set)");
+    mBValue.setName("blue value");
     mBValue.setDefault(128);
     mBValue.setRange(0, 255);
     addInputPort(mBValue);
@@ -62,27 +62,40 @@ ColorExtraction::ColorExtraction()
 
     mColorOut.setName("colorOut");
     addOutputPort(mColorOut);
+
+    mValues[0] = 0;
+    mValues[1] = 0;
+    mValues[2] = 0;
 }
 
 void ColorExtraction::execute()
 {
     const cv::Mat input = mIn;
     // Select which color value to choose
-    int values[3] = {mBValue.getValue(), mGValue.getValue(), mRValue.getValue()};
-    if (mInPoint.hasValue()){
+    if(mBValue.hasChanged()){
+        mValues[0] = mBValue.getValue();
+    }
+    if(mGValue.hasChanged()){
+        mValues[1] = mGValue.getValue();
+    }
+    if(mRValue.hasChanged()){
+        mValues[2] = mRValue.getValue();
+    }
+    if (mInPoint.hasChanged()){
         cv::Point2d point = mInPoint.getValue();
         mOutPoint.send(point);
 
         cv::Vec3b pointValues = input.at<cv::Vec3b>(point.y, point.x);
-        values[0] = pointValues.val[0]; // B
-        values[1] = pointValues.val[1]; // G
-        values[2] = pointValues.val[2]; // R
+        mValues[0] = pointValues.val[0]; // B
+        mValues[1] = pointValues.val[1]; // G
+        mValues[2] = pointValues.val[2]; // R
     }
+
     float tolerance = mTolerance.getValue();
     int defaultValue = mDefaultValue.getValue();
 
     cv::Mat color = cv::Mat(1, 1, CV_8UC3);
-    color.setTo(cv::Scalar(values[0], values[1], values[2]));
+    color.setTo(cv::Scalar(mValues[0], mValues[1], mValues[2]));
     mColorOut.send(color);
 
     // Extract color
@@ -91,8 +104,8 @@ void ColorExtraction::execute()
 
     for(unsigned i=0; i<channels.size(); i++){
         // Tolerance (half lower, half upper)
-        int minValue = values[i] * (1-((tolerance / 100.0) / 2));
-        int maxValue = values[i] * (1+((tolerance / 100.0) / 2));
+        int minValue = mValues[i] * (1-((tolerance / 100.0) / 2));
+        int maxValue = mValues[i] * (1+((tolerance / 100.0) / 2));
 
         cv::threshold(channels[i], channels[i], minValue, defaultValue, cv::THRESH_TOZERO);
         cv::threshold(channels[i], channels[i], maxValue, defaultValue, cv::THRESH_TOZERO_INV);

@@ -22,15 +22,15 @@ REGISTER_FILTER(BrighnessContrast);
 
 BrighnessContrast::BrighnessContrast()
 {
-    setName("BrighnessContrast");
-    setDesc("Adjusts brighness and contrast.");
+    setName("BrightnessContrast");
+    setDesc("Adjusts brightness and contrast.");
     setGroup("image/color");
     mIn.setName("input");
     mOut.setName("output");
     addInputPort(mIn);
     addOutputPort(mOut);
-    mBrighness.setName("adjustBrighness");
-    mBrighness.setDesc("adjust the brighness");
+    mBrighness.setName("adjustBrightness");
+    mBrighness.setDesc("adjust the brightness");
     mBrighness.setDefault(0);
     mBrighness.setRange(-100, 100);
     addInputPort(mBrighness);

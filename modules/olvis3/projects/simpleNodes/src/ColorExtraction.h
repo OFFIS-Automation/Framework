@@ -14,22 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef COLORCORRECTION_H
-#define COLORCORRECTION_H
+#ifndef COLOREXTRACTION_H
+#define COLOREXTRACTION_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
+#include <ports/PointPort.h>
+#include <ports/IntegerPort.h>
 #include <ports/RealPort.h>
 
-class ColorCorrection : public UserFilter
+class ColorExtraction : public UserFilter
 {
 public:
-    ColorCorrection();
+    ColorExtraction();
     virtual void execute();
 protected:
     in::RgbImage mIn;
     out::RgbImage mOut;
-    in::Real mRFactor, mGFactor, mBFactor;
+    out::RgbImage mColorOut;
+    in::Point mInPoint;
+    out::Point mOutPoint;
+    in::Real mTolerance;
+    in::Integer mRValue, mGValue, mBValue;
+    in::Integer mDefaultValue;
 };
 
-#endif // COLORCORRECTION_H
+#endif // COLOREXTRACTION_H

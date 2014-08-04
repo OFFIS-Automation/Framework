@@ -40,10 +40,6 @@ Threshold::Threshold()
     mThreshold.setRange(0, 255);
     addInputPort(mThreshold);
 
-    mLower.setName("lower");
-    mLower.setDefault(true);
-    addInputPort(mLower);
-
     mMode.setName("mode");
     mMode.setDesc("Thresholding mode");
     mMode.addChoice(cv::THRESH_BINARY, "Binary (value = value > threshold ? max_value : 0 )");

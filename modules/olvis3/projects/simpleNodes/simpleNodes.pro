@@ -80,7 +80,8 @@ SOURCES += \
     src/VideoInput.cpp \
     src/VideoWriter.cpp \
     src/BrighnessContrast.cpp \
-    src/BackgroundSubstraction.cpp
+    src/BackgroundSubstraction.cpp \
+    src/ColorExtraction.cpp
 
 HEADERS += \ 
     src/BlobDetection.h \
@@ -122,7 +123,8 @@ HEADERS += \
     src/VideoInput.h \
     src/VideoWriter.h \
     src/BrighnessContrast.h \
-    src/BackgroundSubstraction.h
+    src/BackgroundSubstraction.h \
+    src/ColorExtraction.h
 
 RESOURCES += \
     images/images.qrc

@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Start</string>
+   <string>Welcome</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/images.qrc">
@@ -27,7 +27,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Welcome to OFFIS Automation Framework. What would you like to do?</string>
+      <string>Welcome to the  OFFIS Automation Framework. What would you like to do?</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -73,7 +73,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Open or create a project</string>
+      <string>Create or open a project</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>

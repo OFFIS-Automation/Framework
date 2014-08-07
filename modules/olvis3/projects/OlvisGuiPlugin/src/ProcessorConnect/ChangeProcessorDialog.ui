@@ -94,7 +94,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="triggerBehaviorLabel">
        <property name="text">
-        <string>trigger behavior</string>
+        <string>Trigger behavior</string>
        </property>
       </widget>
      </item>

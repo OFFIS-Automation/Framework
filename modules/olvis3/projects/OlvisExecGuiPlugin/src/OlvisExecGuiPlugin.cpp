@@ -240,8 +240,8 @@ void OlvisExecGuiPlugin::loadProject(const QString &projectFile)
     autoSaveFile =  QFileInfo(projectFile).absolutePath() + "/~" + graphName;
 
     if(QFileInfo(graphFile).lastModified() < QFileInfo(autoSaveFile).lastModified()
-        &&QMessageBox::warning(0, "Auto save file detected (vision)",
-                             "An automatic save file was detected that is newer than the original file. Recover auto save file?",
+        &&QMessageBox::warning(0, "Autosave file for a vision configuration detected",
+                             "An autosave file was detected, that is newer than the original file. Do you want to recover the autosave file?",
                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
     {
         loadGraphFile(autoSaveFile);

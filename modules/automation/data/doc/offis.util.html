@@ -18,10 +18,9 @@ The util extension provides different automation helpers
 	<br />
 	Creates a thread execute object that calls method in a different thread.<br />
 	arguments without keyword must be given as tuple (args), arguments with keywords must be given as dict (kwargs)
-	<br />Example: call print("Test", 1, 2, file = sys.stderr) threaded:<br />
-	threadedPrint = ThreadExecute(print, ("Test", 1, 2), {'file' : sys.stderr} )
-	<br />
-	After the construction, status and return values can be queued from the object.
+        <br />Example: call print("Test", 1, 2, file = sys.stderr) threaded:
+        <br />threadedPrint = ThreadExecute(print, ("Test", 1, 2), {'file' : sys.stderr} )
+	<br />After the construction, status and return values can be queued from the object.
 </p>
 <p>
 	<strong>ThreadExecute::finished()</strong>

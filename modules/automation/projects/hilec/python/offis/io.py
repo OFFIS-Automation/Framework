@@ -163,9 +163,12 @@ class InfoPanel:
 		
 def startVideoRecording(fps = 15):
 	offisio.startVideoCapture(int(fps));
-	
+
 def quitVideoRecording():
 	offisio.endVideoCapture("");
 	
 def finishVideoRecording(filename):
 	offisio.endVideoCapture(str(filename));
+	
+def saveScreenshot(filename):
+	offisio.saveScreenshot(str(filename));

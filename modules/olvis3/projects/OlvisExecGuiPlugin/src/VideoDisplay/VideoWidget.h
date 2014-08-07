@@ -44,6 +44,8 @@ public slots:
     void updateMaxDisplays(int maxDisplays);
     void startCapture(int fps);
     void endCapture(const QString& filename);
+    void saveScreenshot(const QString& filename);
+
 private:
     void createDisplay();
     Ui::VideoWidget *ui;

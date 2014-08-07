@@ -98,6 +98,7 @@ signals:
 
     void videoCaptureStartRequested(int frameRate);
     void videoCaptureEndRequested(const QString& filename);
+    void saveScreenshotRequested(const QString& filename);
 };
 
 

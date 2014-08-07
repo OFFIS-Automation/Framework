@@ -697,7 +697,12 @@ void VideoDisplayWidget::mouseDoubleClickEvent(QMouseEvent *event)
 
 void VideoDisplayWidget::screenshot()
 {
-    mRecorder.saveScreenshot(boundingRect());
+    mRecorder.saveScreenshot(boundingRect(), QString());
+}
+
+void VideoDisplayWidget::screenshotWithFileName(const QString &filename)
+{
+    mRecorder.saveScreenshot(boundingRect(), QString(filename));
 }
 
 void VideoDisplayWidget::recordVideo(int fps)

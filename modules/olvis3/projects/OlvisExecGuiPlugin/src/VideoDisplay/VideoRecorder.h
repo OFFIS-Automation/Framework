@@ -38,7 +38,7 @@ public:
     VideoRecorder(VideoDisplayWidget* widget);
     virtual ~VideoRecorder();
 
-    virtual void saveScreenshot(QRect rect);
+    virtual void saveScreenshot(QRect rect, QString &fileName);
     virtual void startVideo(QRect rect, int fps = -1);
     virtual void finishVideo();
     virtual void finishVideo(const QString& filename);

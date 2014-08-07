@@ -69,6 +69,7 @@ void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
     {
         connect(mHilec, SIGNAL(videoCaptureStartRequested(int)), videoWidget, SLOT(startCapture(int)));
         connect(mHilec, SIGNAL(videoCaptureEndRequested(QString)), videoWidget, SLOT(endCapture(QString)));
+        connect(mHilec, SIGNAL(saveScreenshotRequested(QString)), videoWidget, SLOT(saveScreenshot(QString)));
     }
     connect(toolbar, SIGNAL(setNumDisplays(int)), videoWidget, SLOT(updateMaxDisplays(int)), Qt::QueuedConnection);
     connect(toolbar, SIGNAL(restoreRequested()), SLOT(restore()));

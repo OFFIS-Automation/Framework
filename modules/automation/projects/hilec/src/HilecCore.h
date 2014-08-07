@@ -55,6 +55,7 @@ public:
 
     void startVideoCapture(int fps) { emit videoCaptureStartRequested(fps); }
     void endVideoCapture(const QString& filename) { emit videoCaptureEndRequested(filename); }
+    void saveScreenshot(const QString& filename) { emit saveScreenshotRequested(filename); }
     void createInfoPanel(int id, const QString& title, const QStringList& names) { emit newInfoPanel(id, title, names); }
     void updateInfoPanel(int id, const QStringList& values) { emit infoPanelUpdated(id, values); }
     void removeInfoPanel(int id) { emit infoPanelRemoved(id); }

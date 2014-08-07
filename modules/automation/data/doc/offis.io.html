@@ -4,7 +4,7 @@
 
 <h1> offis.io python extension</h1>
 <p>
-the io extensions provides methods for user interaction via the automation gui
+The io extensions provides methods for user interaction via the automation GUI
 </p>
 
 <h2>Methods</h2>
@@ -12,23 +12,23 @@ the io extensions provides methods for user interaction via the automation gui
 
 <p>
 	<strong>appendInfo(text)</strong>
-	<br />appends a line to the user info box
+        <br />Appends a line to the user info box
 </p>
 
 <p>
 	<strong>clearInfo()</strong>
-	<br />clears the user info box
+        <br />Clears the user info box
 </p>
 
 <p>
 	<strong>setInfo(text)</strong>
-	<br />clears the user info box and inserts thet text
+        <br />Clears the user info box and inserts the text
 </p>
 
 
 <p>
 	<strong>alert(string text, string buttonText = "Ok")</strong>
-	<br /> Shortcut function to display a message using a User Request 
+        <br />Shortcut function to display a message using a User Request
 </p>
 
 <p>
@@ -39,7 +39,7 @@ the io extensions provides methods for user interaction via the automation gui
 
 <p>
         <strong>startVideoRecording(int fps = 15)</strong>
-        <br />Starts a video capture on display 1. This can be completed/canceled by the following
+        <br />Starts a video capture on display 1. This can be completed/cancelled by the following
         methods or manually by the user. Use -1 for automatic fps detection
 </p>
 
@@ -51,9 +51,15 @@ the io extensions provides methods for user interaction via the automation gui
 
 <p>
         <strong>finishVideoRecording(string filename)</strong>
-        <br />Ends the video recording on display 1 and saves the recorded video to filename. Ends all video recordings; issued by automation
+        <br />Ends the video recording on display 1 and saves the recorded video with the given filename. Ends all video recordings; issued by automation
         or issued manually
 </p>
+
+<p>
+        <strong>saveScreenshot(string filename)</strong>
+        <br />Samples display 1 and safes it to an file with the given filename.
+</p>
+
 
 
 <h2>UserRequest class</h2>
@@ -65,52 +71,46 @@ the io extensions provides methods for user interaction via the automation gui
 </p>
 <p>
 	<strong>UserRequest::addString(string desc, string default = "", choices=[])</strong>
-	<br />
-	Adds a string request to the form.
-	if choices are given, an editable drop down list will be shown
+        <br />Adds a string request to the form. If choices are given, an editable drop down list will be shown
 </p>
 <p>
 	<strong>UserRequest::addInteger(string desc, int default = 0, int min = not_defined, int max = not_Defined, int step = 1)</strong>
-	<br />
-	Adds a integer request to the form. If min and max are defined, the user request must be in this range. 
+	<br />Adds a integer request to the form. If min and max are defined, the user request must be in this range. 
 	step defines the value change if the user uses the input up/down button
 </p>
 <p>
 	<strong>UserRequest::addFloat(string desc, float default = 0.0)</strong>
-	<br />
-	Adds a float request to the form. The float can be entered by the user in scientific mode (8e-6). 
+	<br />Adds a float request to the form. The float can be entered by the user in scientific mode (8e-6). 
 </p>
 <p>
 	<strong>UserRequest::addBool(string desc, bool default = False, string trueName = 'Yes', string falseName = 'No')</strong>
-	<br />
-	Adds a boolean request to the form. The request is displayed as radio button. The default names (Yes/No) can be changed by providing the string trueName and falseName
+        <br /> Adds a boolean request to the form. The request is displayed as radio button. The default names (Yes/No) can be changed by providing the string trueName and falseName
 </p>
 
 <p>
 	<strong>UserRequest::addChoice(string desc, list names, list values, mixed defaultValue = None)</strong>
 	<br />
-	Adds a drop-down list to the request. names and values must be a list of convertable types(string,int,float). Default value must match exacly one value in the values list to have an effect.
+        Adds a drop-down list to the request. names and values must be a list of convertable types(string,int,float).
+        Default value must match exactly one value in the values list to have an effect.
 </p>
 
 <p>
 	<strong>UserRequest::addInputFile(string desc, string default = "")</strong>
 	<br />
-	Adds an input file request to the form. The gui will show an input file selection button.
-	the return value is a string
+	Adds an input file request to the form. The GUI will show an input file selection button.
+    The return value is a string
 </p>
 
 <p>
 	<strong>UserRequest::addOutputFile(string desc, string default = "")</strong>
-	<br />
-	Adds an output file request to the form. The gui will show an output file selection button.
-	the return value is a string
+        <br /> Adds an output file request to the form. The gui will show an output file selection button.
+        The return value is a string
 </p>
 
 <p>
 	<strong>UserRequest::addDirectory(string desc, string default = "")</strong>
-	<br />
-	Adds an directory request to the form. The gui will show a directory selection button.
-	the return value is a string
+        <br />Adds an directory request to the form. The gui will show a directory selection button.
+        The return value is a string
 </p>
 
 <p>
@@ -143,20 +143,17 @@ the io extensions provides methods for user interaction via the automation gui
 <h3>class methods</h3>
 <p>
 	<strong>ProgressBar::ProgressBar(string title = 'ProgressBar', int maximum = 100)</strong>
-	<br />
-	Creates a new progress bar with the given title. The progress is initially zero. The maximum can be changed to a different value
+        <br />Creates a new progress bar with the given title. The progress is initially zero. The maximum can be changed to a different value
 </p>
 
 <p>
 	<strong>ProgressBar::setProgress(int progress)</strong>
-	<br />
-	Updates the progress bar to the given value. progress should be between 0 and maximum
+	<br />Updates the progress bar to the given value. progress should be between 0 and maximum
 </p>
 
 <p>
 	<strong>ProgressBar::close()</strong>
-	<br />
-	Removes the progress bar form the user interface
+	<br />Removes the progress bar form the user interface
 </p>
 
 <h2>InfoPanel class</h2>
@@ -164,36 +161,30 @@ the io extensions provides methods for user interaction via the automation gui
 <h3>class methods</h3>
 <p>
 	<strong>InfoPanel::InfoPanel(string title = 'Info')</strong>
-	<br />
-	Creates a new InfoPanel bar with the given title. call add and show afterwards
+        <br />Creates a new InfoPanel bar with the given title. Call add and show afterwards
 </p>
 
 <p>
 	<strong>InfoPanel::add(string key, mixed value)</strong>
-	<br />
-	Adds a line to the info Panel. Must be called before show to have effect
+	<br />Adds a line to the info Panel. Must be called before show to have effect
 </p>
 
 <p>
 	<strong>InfoPanel::show(string key, mixed value)</strong>
-	<br />
-	Finishes the setup of the info panel. The info panel is shown to the user. Afterwards, only update functions should be called
+	<br />Finishes the setup of the info panel. The info panel is shown to the user. Afterwards, only update functions should be called
 </p>
 
 <p>
 	<strong>InfoPanel::updateAll(list values)</strong>
-	<br />
-	Updates all values of the panel. list should have the same size as the number of lines in this panel
+        <br />Updates all values of the panel. List should have the same size as the number of lines in this panel
 </p>
 
 <p>
 	<strong>InfoPanel::updateOne(int position, mixed value)</strong>
-	<br />
-	Updates a single value of the panel. position is the zero based index of the value (same order add was called)
+        <br />Updates a single value of the panel. position is the zero based index of the value (same order add was called)
 <p>
 	<strong>InfoPanel::close()</strong>
-	<br />
-	Removes the Info panel bar form the user interface
+        <br />Removes the Info panel bar form the user interface
 </p>
 
 </body>

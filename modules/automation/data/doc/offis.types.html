@@ -29,7 +29,7 @@ point1 * float<br />
 </p>
 <p>
 	<strong>float Point::distTo(Point other)</strong>
-	<br />Returns the eclidian norm distance to another point
+	<br />Returns the euclidian norm distance to another point
 </p>
 <p>
 	<strong>dict Point::toDict()</strong>
@@ -61,7 +61,7 @@ size1 * float<br />
 </p>
 <p>
 	<strong>dict Size::toDict()</strong>
-	<br />Returns a dict: {'wdith': width, 'height': height };
+	<br />Returns a dict: {'width': width, 'height': height };
 </p>
 
 
@@ -187,13 +187,13 @@ rect1 == rect2<br />
 <p>
 	<strong>Rect Rect::translateTo(Point p)</strong>
 	<br />
-	Translates the rectangle to the given point. Topleft corner will be at the given point
+	Translates the rectangle to the given point. Top left corner will be at the given point
 </p>
 
 <p>
 	<strong>Rect Rect::translateTo(float x, float y)</strong>
 	<br />
-	Translates the rectangle to the given coordinates. Topleft corner will be at the given coordinates
+	Translates the rectangle to the given coordinates. Top left corner will be at the given coordinates
 </p>
 
 <p>
@@ -205,7 +205,7 @@ rect1 == rect2<br />
 <p>
 	<strong>Rect Rect::unite(Rect other)</strong>
 	<br />
-	Unites this rectangle oth a second one. Returns the united rectangle
+	Unites this rectangle with a second one. Returns the united rectangle
 </p>
 
 <p>

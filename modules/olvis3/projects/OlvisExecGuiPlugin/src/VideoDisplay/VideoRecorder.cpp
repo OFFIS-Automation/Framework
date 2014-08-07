@@ -49,7 +49,7 @@ void VideoRecorder::init(QRect rect)
     mRect = rect;
 }
 
-void VideoRecorder::saveScreenshot(QRect rect)
+void VideoRecorder::saveScreenshot(QRect rect, QString &fileName)
 {
     init(rect);
     QImage img = getImage();
@@ -59,7 +59,11 @@ void VideoRecorder::saveScreenshot(QRect rect)
 
     QSettings settings;
     QString lastFileName = settings.value("olvisexecgui/videodisplay/lastimagefile").toString();
-    QString fileName = QFileDialog::getSaveFileName(mWidget, tr("Save image"), lastFileName, tr("Images (*.png *.bmp *.jpg)"));
+
+    if(fileName.isNull()){
+        fileName = QFileDialog::getSaveFileName(mWidget, tr("Save image"), lastFileName, tr("Images (*.png *.bmp *.jpg)"));
+    }
+
     if (!fileName.isEmpty()) {
         // Check if user has given a fileextension
         if(!fileName.endsWith(".png") && !fileName.endsWith(".bmp") && !fileName.endsWith(".jpg")){
@@ -72,6 +76,7 @@ void VideoRecorder::saveScreenshot(QRect rect)
         if(!cv::imwrite(fileName.toStdString(), m2))
             QMessageBox::information(mWidget, tr("Error while saving image"), 0, QMessageBox::Ok);
     }
+
 }
 
 void VideoRecorder::startVideo(QRect rect, int fps)

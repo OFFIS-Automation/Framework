@@ -100,6 +100,13 @@ void VideoWidget::endCapture(const QString &filename)
     mWidgets[0]->endVideoRecording(filename);
 }
 
+void VideoWidget::saveScreenshot(const QString &filename)
+{
+    if(mWidgets.empty())
+        return;
+    mWidgets[0]->screenshotWithFileName(filename);
+}
+
 void VideoWidget::createDisplay()
 {
     VideoDisplayWidget* widget = new VideoDisplayWidget();

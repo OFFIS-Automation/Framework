@@ -176,7 +176,6 @@ extern "C"
         Py_RETURN_NONE;
     }
 
-
     PyObject* apy_endVideoCapture(PyObject*, PyObject* args)
     {
         PyObject* name = 0;
@@ -185,6 +184,17 @@ extern "C"
         if(!filename.isEmpty())
             filename = QFileInfo(filename).absoluteFilePath();
         HilecCore::instance().endVideoCapture(filename);
+        Py_RETURN_NONE;
+    }
+
+    PyObject* apy_saveScreenshot(PyObject*, PyObject* args)
+    {
+        PyObject* name = 0;
+        PyArg_ParseTuple(args, "O", &name);
+        QString filename = PythonTypeConverter::toString(name, true);
+        if(!filename.isEmpty())
+            filename = QFileInfo(filename).absoluteFilePath();
+        HilecCore::instance().saveScreenshot(filename);
         Py_RETURN_NONE;
     }
 
@@ -207,6 +217,7 @@ extern "C"
             {"rcGetConstants",apy_rcGetConstants, METH_VARARGS,""},
             {"startVideoCapture", apy_startVideoCapture, METH_VARARGS, ""},
             {"endVideoCapture", apy_endVideoCapture, METH_VARARGS, ""},
+            {"saveScreenshot", apy_saveScreenshot, METH_VARARGS, ""},
             {NULL, NULL, 0, NULL}
     };
 

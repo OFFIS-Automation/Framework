@@ -25,9 +25,6 @@
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
         <attribute name="headerVisible">
          <bool>true</bool>
         </attribute>

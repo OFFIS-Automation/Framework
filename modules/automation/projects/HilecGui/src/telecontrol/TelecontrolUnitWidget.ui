@@ -61,7 +61,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Gain:</string>
+           <string>Gain</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -102,7 +102,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Invert:</string>
+           <string>Invert</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

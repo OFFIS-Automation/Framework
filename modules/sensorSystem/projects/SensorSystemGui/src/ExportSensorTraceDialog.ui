@@ -53,7 +53,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="seperatorLabel">
        <property name="text">
-        <string>Seperator</string>
+        <string>Separator</string>
        </property>
       </widget>
      </item>
@@ -101,7 +101,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="writeEntryLabel">
        <property name="text">
-        <string>write entry</string>
+        <string>Write entry</string>
        </property>
       </widget>
      </item>
@@ -110,7 +110,7 @@
        <item>
         <widget class="QRadioButton" name="everyUpdate">
          <property name="text">
-          <string>for every value update</string>
+          <string>For every value update</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -122,7 +122,7 @@
          <item>
           <widget class="QRadioButton" name="singleUpdate">
            <property name="text">
-            <string>only for updates of</string>
+            <string>Only for updates of</string>
            </property>
           </widget>
          </item>

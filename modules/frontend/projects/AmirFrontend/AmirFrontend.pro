@@ -40,8 +40,8 @@ win32-msvc*{
 }
 
 # Generate version number
-MAJOR = 0
-MINOR = 9
+MAJOR = 1
+MINOR = 0
 VERSION_HEADER = $${PWD}/../../../version/version.h
 versiontarget.target = $$VERSION_HEADER
 

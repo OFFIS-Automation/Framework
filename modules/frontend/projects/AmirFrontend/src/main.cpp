@@ -19,6 +19,7 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QSplashScreen>
+#include <QStyleFactory>
 
 #include "MasterWindow.h"
 #include "PluginLoader.h"
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
     Application a(argc, argv);
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Toolbox");
+    a.setStyle(QStyleFactory::create("Fusion"));
 
     // Splash image
     QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");

@@ -146,9 +146,6 @@
          <property name="dragEnabled">
           <bool>false</bool>
          </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
          <property name="indentation">
           <number>8</number>
          </property>
@@ -177,7 +174,16 @@
        <string>Category help</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
         <number>9</number>
        </property>
        <item>
@@ -259,10 +265,10 @@
   </widget>
  </widget>
  <resources>
-  <include location="../../../../../olvis3/projects/DefaultPorts/images/images.qrc"/>
-  <include location="../../../../../olvis3/projects/OlvisExecGuiPlugin/images/images.qrc"/>
-  <include location="../../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
   <include location="../../../ProjectEditor/images/images.qrc"/>
+  <include location="../../../../../olvis3/projects/DefaultPorts/images/images.qrc"/>
+  <include location="../../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
+  <include location="../../../../../olvis3/projects/OlvisExecGuiPlugin/images/images.qrc"/>
  </resources>
  <connections>
   <connection>

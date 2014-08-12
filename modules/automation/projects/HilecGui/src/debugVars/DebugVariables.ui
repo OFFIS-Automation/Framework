@@ -23,9 +23,6 @@
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
-      <property name="alternatingRowColors">
-       <bool>false</bool>
-      </property>
      </widget>
     </item>
    </layout>

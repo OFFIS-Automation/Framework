@@ -189,7 +189,7 @@ void PerspectiveControl::storePerspectives(const QString& perspective)
 void PerspectiveControl::createPerspective(QString name, bool trigger)
 {
     if(name.isEmpty())
-        name = QInputDialog::getText(mMaster, tr("Create Perspective"), tr("Enter name for the new perspective"));
+        name = QInputDialog::getText(mMaster, tr("New perspective"), tr("Enter a name for the new perspective."));
     if(name.isEmpty() || mPerspectives.contains(name))
         return;
     savePerspective(name);
@@ -209,7 +209,7 @@ void PerspectiveControl::deletePerspective()
         return;
     if(mPerspectives[name].fixed)
         return;
-    if(QMessageBox::Yes != QMessageBox::question(mMaster, tr("Delete perspective"), tr("Delete perspective \"%1\"").arg(name), QMessageBox::Yes | QMessageBox::No))
+    if(QMessageBox::Yes != QMessageBox::question(mMaster, tr("Delete perspective"), tr("Do you want to delete the perspective \"%1\"?").arg(name), QMessageBox::Yes | QMessageBox::No))
         return;
     mPerspectives.remove(name);
     QSettings settings;

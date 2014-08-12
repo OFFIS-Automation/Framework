@@ -61,7 +61,7 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
     {
         if(info.id == mInfo.id)
             continue;
-        QString text = tr("Triggered by <%1>").arg(info.name);
+        QString text = tr("Triggered by \"%1\"").arg(info.name);
         ui->triggerBox->addItem(text, info.id);
         if(info.id == mTriggerId)
             ui->triggerBox->setCurrentIndex(ui->triggerBox->count()-1);

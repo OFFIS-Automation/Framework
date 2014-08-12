@@ -129,7 +129,7 @@ void RcUnitWidget::on_actionRemoveLolec_triggered()
     if(!parent || parent->text(0) != "local")
         return;
     QString lolecToRemove = item->text(0);
-    if(QMessageBox::question(this, tr("Remove RC-Unit"), tr("Remove the RC-Unit <%1>?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
+    if(QMessageBox::question(this, tr("Remove RC-Unit"), tr("Do you want to remove the RC-Unit \"%1\"?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
             != QMessageBox::Yes)
         return;
     QList<QVariantMap> values;
@@ -188,7 +188,7 @@ void RcUnitWidget::on_actionRemoveServer_triggered()
     if(parent || item->text(0) == "local")
         return;
     QString lolecToRemove = item->text(0);
-    if(QMessageBox::question(this, tr("Remove RC-Unit server"), tr("Remove the RC-Unit server<%1>?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
+    if(QMessageBox::question(this, tr("Remove RC-Unit server"), tr("Do you want to remove the RC-Unit server \"%1\"?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
             != QMessageBox::Yes)
         return;
     QList<QVariantMap> values;

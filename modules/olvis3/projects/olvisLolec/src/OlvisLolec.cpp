@@ -37,7 +37,7 @@ int OlvisLolec::getFilterId(const QString &name)
 {
     FilterInfo info = OlvisCoreInterface::instance()->getFilter(name);
     if(!info.isValid())
-        throw RcError(tr("Filter not found: <%1>").arg(name));
+        throw RcError(tr("Filter not found: \"%1\"").arg(name));
     return info.id;
 }
 
@@ -45,7 +45,7 @@ int OlvisLolec::getProcessorId(const QString &name)
 {
     ProcessorInfo info = OlvisCoreInterface::instance()->getProcessor(name);
     if(!info.isValid())
-        throw RcError(tr("Processor not found: <%1>").arg(name));
+        throw RcError(tr("Processor not found: \"%1\"").arg(name));
     return info.id;
 }
 
@@ -54,7 +54,7 @@ PortId OlvisLolec::getPortId(const QString &filterName, const QString &portName)
     PortId id(getFilterId(filterName), portName);
     PortInfo info = OlvisCoreInterface::instance()->getPortInfo(id);
     if(!info.isValid())
-        throw RcError(tr("Filter <%1> has no port <%2>").arg(filterName, portName));
+        throw RcError(tr("Filter \"%1\" has no port \"%2\"").arg(filterName, portName));
     return id;
 }
 

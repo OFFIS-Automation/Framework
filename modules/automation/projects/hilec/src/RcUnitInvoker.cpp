@@ -67,7 +67,7 @@ PyObject* RcUnitInvoker::execute(PyObject* args)
     }
     catch(const std::exception& err)
     {
-        QString str = QString("Error calling <%1::%2>: %3").arg(unit).arg(method).arg(err.what());
+        QString str = QString("Error calling %1::%2: %3").arg(unit).arg(method).arg(err.what());
         PyErr_SetString(PyExc_RuntimeError, qPrintable(str));
         return 0;
     }

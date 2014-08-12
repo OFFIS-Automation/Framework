@@ -449,7 +449,7 @@ void FileEditor::on_check_reload_content()
     if(!info.exists()) // this file was deleted or moved
     {
         mOmitReloadChecks = true;
-        QString msg = tr("The file %1 was does not exist anymore.\nKeep this file in the editor?").arg(filename());
+        QString msg = tr("The file %1 was does not exist anymore.\nDo you want to keep this file in the editor?").arg(filename());
         int button = QMessageBox::question(this, tr("Keep non existing file"), msg, QMessageBox::Yes | QMessageBox::No);
         if(button == QMessageBox::Yes)
            on_text_changed();

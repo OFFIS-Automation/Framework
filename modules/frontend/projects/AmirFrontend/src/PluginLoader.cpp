@@ -85,7 +85,7 @@ void PluginLoader::load(QSplashScreen *splash)
     while(models.hasNext())
     {
         ModelPluginInterface* model = models.next().value();
-        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(model->getName()));
+        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(model->getName()), Qt::AlignHCenter);
         QApplication::processEvents();
 
         model->initialize(mPath);
@@ -95,7 +95,7 @@ void PluginLoader::load(QSplashScreen *splash)
     while(guis.hasNext())
     {
         GuiPluginInterface* gui = guis.next().value();
-        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(gui->getName()));
+        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(gui->getName()), Qt::AlignHCenter);
         QApplication::processEvents();
         models.toFront();
         while(models.hasNext())
@@ -151,7 +151,7 @@ void PluginLoader::configure(QSplashScreen *splash, PerspectiveControl *mainWind
         if(gui->requirementsMet())
         {
             gui->addElements(mainWindow);
-            splash->showMessage(QApplication::translate("SplashScreen", "Starting plugin: %1").arg(gui->getName()));
+            splash->showMessage(QApplication::translate("SplashScreen", "Starting plugin: %1").arg(gui->getName()), Qt::AlignHCenter);
             QApplication::processEvents();
             if(!nostart)
                 gui->start();

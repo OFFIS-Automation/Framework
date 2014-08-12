@@ -269,7 +269,7 @@ void FilterConnectWidget::on_deleteProcessoButton_clicked()
     if(info.isValid())
     {
         // Delete the processor / ask the user for permission
-        if(QMessageBox::question(0, tr("Delete processor"), tr("Do you really want to delete the processor \"%1\"?").arg(info.name),
+        if(QMessageBox::question(0, tr("Delete processor"), tr("Do you really want to delete the processor %1?").arg(info.name),
                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
             return;
         // User really wants to delete => go on and delete
@@ -280,7 +280,7 @@ void FilterConnectWidget::on_deleteProcessoButton_clicked()
     if(gInfo.isValid())
     {
         // Delete the makro filter / ask the user for permission
-        if(QMessageBox::question(0, tr("Delete macro filter"), tr("Do you really want to delete the macro filter \"%1\"?").arg(gInfo.name),
+        if(QMessageBox::question(0, tr("Delete macro filter"), tr("Do you really want to delete the macro filter %1?").arg(gInfo.name),
                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
             return;
         // User really wants to delete => go on and delete

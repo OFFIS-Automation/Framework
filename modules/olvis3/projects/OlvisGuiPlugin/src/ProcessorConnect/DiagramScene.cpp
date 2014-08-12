@@ -303,7 +303,7 @@ void DiagramScene::keyPressEvent(QKeyEvent *event)
 
             if(mItemMap.key(item) == 0)
                 return;     // should not happen
-            if(QMessageBox::question(0, tr("Delete processer"), tr("Do you really want to delete the processor \"%1\"?").arg(item->getName()),
+            if(QMessageBox::question(0, tr("Delete processer"), tr("Do you really want to delete the processor %1?").arg(item->getName()),
                                      QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
                 return;
             id = mItemMap.key(item);

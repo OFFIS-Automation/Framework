@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
     QString versionString = QObject::tr("Version: %1.%2 (Build %3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD);
     QPainter* painter=new QPainter(splashPicture);
-    painter->drawText(5,30, versionString);
+    painter->drawText(QRect(0, 16, 250, 20), Qt::AlignCenter, versionString);
 
     // Create splash screen
     QSettings::setDefaultFormat(QSettings::IniFormat);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     splash->show();
     TranslationLoader translator;
     translator.installSystemTranslator();
-    splash->showMessage(a.translate("splash screen", "Starting"));
+    splash->showMessage(a.translate("splash screen", "Starting"), Qt::AlignHCenter);
 
     a.processEvents();
     QDesktopWidget* desktop = a.desktop();

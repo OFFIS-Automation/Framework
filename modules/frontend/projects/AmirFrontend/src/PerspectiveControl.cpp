@@ -209,7 +209,7 @@ void PerspectiveControl::deletePerspective()
         return;
     if(mPerspectives[name].fixed)
         return;
-    if(QMessageBox::Yes != QMessageBox::question(mMaster, tr("Delete perspective"), tr("Do you want to delete the perspective \"%1\"?").arg(name), QMessageBox::Yes | QMessageBox::No))
+    if(QMessageBox::Yes != QMessageBox::question(mMaster, tr("Delete perspective"), tr("Do you want to delete the perspective %1?").arg(name), QMessageBox::Yes | QMessageBox::No))
         return;
     mPerspectives.remove(name);
     QSettings settings;

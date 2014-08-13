@@ -26,6 +26,9 @@ AddSensorTraceDialog::AddSensorTraceDialog(const QStringList& blockedItems, QWid
 {
     ui->setupUi(this);
     on_showInactive_toggled(ui->showInactive->isChecked());
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 AddSensorTraceDialog::~AddSensorTraceDialog()

@@ -27,6 +27,9 @@ AddRemoteRcServerDialog::AddRemoteRcServerDialog(const QString& projectFile, QWi
 {
     ui->setupUi(this);
     checkData();
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 AddRemoteRcServerDialog::~AddRemoteRcServerDialog()

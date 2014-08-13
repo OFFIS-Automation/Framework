@@ -32,6 +32,9 @@ ExportSensorTraceDialog::ExportSensorTraceDialog(QWidget *parent) :
     ui->space->setChecked(true);
     ui->everyUpdate->setChecked(true);
     ui->comboBox->setEnabled(false);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 ExportSensorTraceDialog::~ExportSensorTraceDialog()

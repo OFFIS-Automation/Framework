@@ -29,6 +29,9 @@ ScriptExceptionDialog::ScriptExceptionDialog(QWidget *parent) :
     qRegisterMetaType<ScriptException>("ScriptException");
     connect(HilecSingleton::hilec(), SIGNAL(scriptException(ScriptException)), SLOT(showException(ScriptException)));
     setVisible(false);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 ScriptExceptionDialog::~ScriptExceptionDialog()

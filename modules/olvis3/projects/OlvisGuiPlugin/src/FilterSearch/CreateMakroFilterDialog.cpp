@@ -22,6 +22,9 @@ CreateMakroFilterDialog::CreateMakroFilterDialog(QWidget *parent) :
     ui(new Ui::CreateMakroFilterDialog)
 {
     ui->setupUi(this);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 CreateMakroFilterDialog::~CreateMakroFilterDialog()

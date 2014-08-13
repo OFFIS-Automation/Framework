@@ -57,6 +57,9 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
                 cb->addItem(label);
         }
     }
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 EditGamepadAssignment::~EditGamepadAssignment()

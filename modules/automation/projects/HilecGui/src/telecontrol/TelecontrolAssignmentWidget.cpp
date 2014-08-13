@@ -35,6 +35,9 @@ TelecontrolAssignmentWidget::TelecontrolAssignmentWidget(QWidget *parent) :
 
     // Init view
     updateUnits(true);
+
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 TelecontrolAssignmentWidget::~TelecontrolAssignmentWidget()

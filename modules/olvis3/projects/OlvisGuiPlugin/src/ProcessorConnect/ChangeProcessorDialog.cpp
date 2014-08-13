@@ -24,6 +24,9 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
     ui(new Ui::ChangeProcessorDialog)
 {
     ui->setupUi(this);
+    // Hide help button
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     const OlvisInterface& olvis = OlvisSingleton::instance();
     mInfo = olvis.getProcessor(processorId);
     connect(this, SIGNAL(createProcessor(QString)), &olvis, SLOT(createProcessor(QString)), Qt::DirectConnection);

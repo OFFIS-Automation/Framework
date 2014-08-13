@@ -24,6 +24,7 @@
 #include <QShortcut>
 #include <QMessageBox>
 #include <QCoreApplication>
+#include <QKeySequence>
 #include <QToolTip>
 #include "qevent.h"
 
@@ -56,8 +57,7 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent, const QSt
     setupEditor();
     updateLexer();
     updateWindowTitle();
-    foreach(int line, HilecSingleton::hilec()->breakpoints(mFilename))
-    {
+    foreach(int line, HilecSingleton::hilec()->breakpoints(mFilename)){
         toggleBreakpoint(line-1);
     }
 
@@ -219,21 +219,26 @@ void FileEditor::focusInEvent(QFocusEvent *event)
 void FileEditor::keyPressEvent(QKeyEvent *event)
 {
     if(!isReadOnly()){
-        // Modifier stuff
-        if (event->key() == Qt::Key_Plus && (event->modifiers() & Qt::ControlModifier))
+        int a = event->key();
+        if ((event->key() == Qt::Key_Plus || event->key() == 93) && (event->modifiers() & Qt::ControlModifier)){
             emit increaseFontSizeRequested();
-        else if (event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier))
+        } else if (event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier)){
             emit decreaseFontSizeRequested();
-        else if (event->key() == Qt::Key_0 && (event->modifiers() & Qt::ControlModifier))
+        } else if (event->key() == Qt::Key_0 && (event->modifiers() & Qt::ControlModifier)){
             emit normalizeFontSizeRequested();
-        else if (event->key() == Qt::Key_7 && (event->modifiers() & Qt::ControlModifier))
-            prependStringToSelection("#");
-        else if (event->key() == Qt::Key_8 && (event->modifiers() & Qt::ControlModifier))
-            deleteStringInSelection("#");
-        else if (event->key() == Qt::Key_Space && (event->modifiers() & Qt::ControlModifier))
+        } else if (event->key() == Qt::Key_7 && (event->modifiers() & Qt::ControlModifier)){
+            if(filename().contains(".py")){
+               prependStringToSelection("#");
+            }
+        } else if (event->key() == Qt::Key_8 && (event->modifiers() & Qt::ControlModifier)){
+            if(filename().contains(".py")){
+               deleteStringInSelection("#");
+            }
+        } else if (event->key() == Qt::Key_Space && (event->modifiers() & Qt::ControlModifier)){
             autoCompleteFromAll();
-        else
+        } else {
             QsciScintilla::keyPressEvent(event);
+        }
     } else {
         // Propagate event
         QsciScintilla::keyPressEvent(event);

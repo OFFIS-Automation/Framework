@@ -4202,30 +4202,35 @@ QMenu *QsciScintilla::createStandardContextMenu()
         action = menu->addAction(tr("&Undo"), this, SLOT(undo()));
         set_shortcut(action, QsciCommand::Undo);
         action->setEnabled(isUndoAvailable());
+        action->setIcon(QIcon(":ProjectEditor/arrow_undo.png"));
 
         action = menu->addAction(tr("&Redo"), this, SLOT(redo()));
         set_shortcut(action, QsciCommand::Redo);
         action->setEnabled(isRedoAvailable());
-
+        action->setIcon(QIcon(":ProjectEditor/arrow_redo.png"));
         menu->addSeparator();
 
         action = menu->addAction(tr("Cu&t"), this, SLOT(cut()));
         set_shortcut(action, QsciCommand::SelectionCut);
         action->setEnabled(has_selection);
+        action->setIcon(QIcon(":ProjectEditor/cut.png"));
     }
 
     action = menu->addAction(tr("&Copy"), this, SLOT(copy()));
     set_shortcut(action, QsciCommand::SelectionCopy);
     action->setEnabled(has_selection);
+    action->setIcon(QIcon(":ProjectEditor/copy.png"));
 
     if (!read_only)
     {
         action = menu->addAction(tr("&Paste"), this, SLOT(paste()));
         set_shortcut(action, QsciCommand::Paste);
         action->setEnabled(SendScintilla(SCI_CANPASTE));
+        action->setIcon(QIcon(":ProjectEditor/paste.png"));
 
         action = menu->addAction(tr("Delete"), this, SLOT(delete_selection()));
         action->setEnabled(has_selection);
+        action->setIcon(QIcon(":ProjectEditor/page_delete.png"));
     }
 
     if (!menu->isEmpty())
@@ -4234,6 +4239,7 @@ QMenu *QsciScintilla::createStandardContextMenu()
     action = menu->addAction(tr("Select All"), this, SLOT(selectAll()));
     set_shortcut(action, QsciCommand::SelectAll);
     action->setEnabled(length() != 0);
+    action->setIcon(QIcon(":ProjectEditor/page_green.png"));
 
     return menu;
 }
@@ -4254,4 +4260,3 @@ void QsciScintilla::delete_selection()
 {
     SendScintilla(SCI_CLEAR);
 }
-

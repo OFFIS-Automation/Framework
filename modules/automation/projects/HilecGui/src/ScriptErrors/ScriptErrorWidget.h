@@ -45,11 +45,9 @@ public slots:
 private slots:
     void on_treeWidget_itemActivated(QTreeWidgetItem *item, int column);
 
-    void on_enableErrors_toggled(bool checked);
-
-    void on_enableWarnings_toggled(bool checked);
-
-    void on_enableInfos_toggled(bool checked);
+    void on_enableErrors_clicked(bool checked);
+    void on_enableWarnings_clicked(bool checked);
+    void on_enableInfos_clicked(bool checked);
 
 private:
     Ui::ScriptErrorWidget *ui;

@@ -55,6 +55,8 @@ public slots:
     void focusLine(int line);
     void setFontSize(int fontSize);
     void removeChangedFlag();
+    void commentSelection();
+    void uncommentSelection();
     int currentLine();
 
     bool findFirstOccurence(const QString &expr, bool caseSensitive, bool wholeWord, bool forward, int line);
@@ -65,6 +67,7 @@ protected:
     void focusInEvent(QFocusEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void contextMenuEvent(QContextMenuEvent *e);
 
     void prependStringToSelection(const QString& t);
     void deleteStringInSelection(const QString& t);

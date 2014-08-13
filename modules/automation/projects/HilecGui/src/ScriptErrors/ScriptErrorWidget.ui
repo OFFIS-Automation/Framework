@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Script errors</string>
+   <string>Script ptroblems</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -48,12 +48,9 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QToolButton" name="enableErrors">
-          <property name="toolTip">
-           <string>Display errors</string>
-          </property>
+         <widget class="QPushButton" name="enableErrors">
           <property name="text">
-           <string>Display Errors</string>
+           <string>Error</string>
           </property>
           <property name="icon">
            <iconset resource="../../../ProjectEditor/images/images.qrc">
@@ -65,15 +62,18 @@
           <property name="checked">
            <bool>true</bool>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="enableWarnings">
-          <property name="toolTip">
-           <string>Display warnings</string>
-          </property>
+         <widget class="QPushButton" name="enableWarnings">
           <property name="text">
-           <string>Display Warnings</string>
+           <string>Warning</string>
           </property>
           <property name="icon">
            <iconset resource="../../../ProjectEditor/images/images.qrc">
@@ -88,12 +88,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="enableInfos">
-          <property name="toolTip">
-           <string>Display bad coding</string>
-          </property>
+         <widget class="QPushButton" name="enableInfos">
           <property name="text">
-           <string>Display Bad Coding</string>
+           <string>Info</string>
           </property>
           <property name="icon">
            <iconset resource="../../../ProjectEditor/images/images.qrc">

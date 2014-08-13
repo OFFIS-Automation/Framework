@@ -426,7 +426,6 @@ void EditArea::on_searchPrev_clicked()
     search(false);
 }
 
-
 void EditArea::on_replace_clicked()
 {
     replace();

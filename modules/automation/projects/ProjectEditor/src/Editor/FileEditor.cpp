@@ -26,6 +26,7 @@
 #include <QCoreApplication>
 #include <QKeySequence>
 #include <QToolTip>
+#include <QMenu>
 #include "qevent.h"
 
 #include <Qsci/qscilexercpp.h>
@@ -162,6 +163,20 @@ void FileEditor::removeChangedFlag()
     }
 }
 
+void FileEditor::commentSelection()
+{
+    if(filename().contains(".py")){
+       prependStringToSelection("#");
+    }
+}
+
+void FileEditor::uncommentSelection()
+{
+    if(filename().contains(".py")){
+       deleteStringInSelection("#");
+    }
+}
+
 int FileEditor::currentLine()
 {
     int line, index;
@@ -219,7 +234,6 @@ void FileEditor::focusInEvent(QFocusEvent *event)
 void FileEditor::keyPressEvent(QKeyEvent *event)
 {
     if(!isReadOnly()){
-        int a = event->key();
         if ((event->key() == Qt::Key_Plus || event->key() == 93) && (event->modifiers() & Qt::ControlModifier)){
             emit increaseFontSizeRequested();
         } else if (event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier)){
@@ -227,13 +241,9 @@ void FileEditor::keyPressEvent(QKeyEvent *event)
         } else if (event->key() == Qt::Key_0 && (event->modifiers() & Qt::ControlModifier)){
             emit normalizeFontSizeRequested();
         } else if (event->key() == Qt::Key_7 && (event->modifiers() & Qt::ControlModifier)){
-            if(filename().contains(".py")){
-               prependStringToSelection("#");
-            }
+            commentSelection();
         } else if (event->key() == Qt::Key_8 && (event->modifiers() & Qt::ControlModifier)){
-            if(filename().contains(".py")){
-               deleteStringInSelection("#");
-            }
+            uncommentSelection();
         } else if (event->key() == Qt::Key_Space && (event->modifiers() & Qt::ControlModifier)){
             autoCompleteFromAll();
         } else {
@@ -257,6 +267,23 @@ void FileEditor::wheelEvent(QWheelEvent *event)
     } else {
         // Propagate event
         QsciScintilla::wheelEvent(event);
+    }
+}
+
+void FileEditor::contextMenuEvent(QContextMenuEvent *e)
+{
+    QMenu *menu = QsciScintilla::createStandardContextMenu();
+
+    if (menu){
+        // Add format menu
+        menu->addSeparator();
+        QMenu *formatMenu = menu->addMenu(tr("Format"));
+        formatMenu->addAction(QIcon(":ProjectEditor/table_row_delete.png"), "Comment selection", this, SLOT(commentSelection()), QKeySequence(Qt::CTRL | Qt::Key_7));
+        formatMenu->addAction(QIcon(":ProjectEditor/table_row_insert.png"), "Uncomment selection", this, SLOT(uncommentSelection()), QKeySequence(Qt::CTRL | Qt::Key_8));
+
+        // Display
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->popup(e->globalPos());
     }
 }
 
@@ -346,7 +373,7 @@ void FileEditor::setupEditor()
     setAutoCompletionSource(AcsAll);
     setAutoCompletionShowSingle(true);
     setAutoCompletionCaseSensitivity(false);
-    setAutoCompletionThreshold(2);
+    setAutoCompletionThreshold(3);
 
     // Misc
     setBraceMatching(SloppyBraceMatch);
@@ -420,13 +447,11 @@ void FileEditor::checkBreakpoints()
     {
         int lastLine = mBreakpointMarkers.value(markerId);
         int currentLine = markerLine(markerId);
-        if(lastLine != currentLine)
-        {
+        if(lastLine != currentLine){
             removeBreakpoint(mFilename, lastLine + 1);
-            if(currentLine < 0) // the marker is not valid anymore
+            if(currentLine < 0){ // the marker is not valid anymore
                 mBreakpointMarkers.remove(markerId);
-            else
-            {
+            } else{
                 mBreakpointMarkers[markerId] = currentLine;
                 emit addBreakpoint(mFilename, currentLine + 1);
             }
@@ -434,7 +459,7 @@ void FileEditor::checkBreakpoints()
     }
 }
 
-void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers )
+void FileEditor::on_margin_clicked(int margin, int line, Qt::KeyboardModifiers)
 {
     // editor count starts at 0, python lien cout starts at 1
     if(margin == BREAKPOINT_MARGIN || margin == LINENUMBER_MARGIN){

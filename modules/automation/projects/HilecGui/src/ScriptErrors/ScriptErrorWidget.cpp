@@ -114,19 +114,19 @@ void ScriptErrorWidget::on_treeWidget_itemActivated(QTreeWidgetItem *item, int)
     emit focusLine(file, line);
 }
 
-void ScriptErrorWidget::on_enableErrors_toggled(bool checked)
+void ScriptErrorWidget::on_enableErrors_clicked(bool checked)
 {
     mModeEnabled[ScriptCompileProblem::Error] = checked;
     updateItems();
 }
 
-void ScriptErrorWidget::on_enableWarnings_toggled(bool checked)
+void ScriptErrorWidget::on_enableWarnings_clicked(bool checked)
 {
     mModeEnabled[ScriptCompileProblem::Warning] = checked;
     updateItems();
 }
 
-void ScriptErrorWidget::on_enableInfos_toggled(bool checked)
+void ScriptErrorWidget::on_enableInfos_clicked(bool checked)
 {
     mModeEnabled[ScriptCompileProblem::Info] = checked;
     updateItems();

@@ -20,11 +20,11 @@
 #include <QObject>
 #include "RcUnitsGlobal.h"
 #include <core/RcUnitHelp.h>
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 
 
 class Gamepad;
-class LolecInterface;
+class RcUnitInterface;
 class RcUnitBase;
 class HapticInterface;
 class MasterTcInvoker;
@@ -34,7 +34,7 @@ class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit RcUnitsBase();
+    explicit RcUnitsBase(const QString& rcUnitPluginDir);
     virtual ~RcUnitsBase();
 
     RcUnitHelp getHelp(const QString &name);
@@ -67,7 +67,7 @@ private slots:
 protected:
     void loadTcMasters(const QString& configFile);
     void loadTcSensitivity(const QString &name, GamepadEndpoint* ep, const QString& configFile);
-    LolecInterface* loadPlugin(const QString& name, QString *errMsg = 0);
+    RcUnitInterface *loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;
     QString mLolecDir;

@@ -16,7 +16,7 @@
 
 
 #include "RemoteRcUnitClient.h"
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 
 RemoteRcUnitClient::RemoteRcUnitClient(QIODevice *readDevice, QIODevice *writeDevice, bool doInitialize)
     : RemoteRcUnitClientBase(readDevice, writeDevice, false),

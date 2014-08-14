@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include "GraphicsView.h"
-#include <lolecs/Pose2d.h>
+#include <rc/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
 

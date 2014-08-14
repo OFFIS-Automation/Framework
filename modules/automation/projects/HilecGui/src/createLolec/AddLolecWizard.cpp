@@ -21,7 +21,7 @@
 #include "../HilecSingleton.h"
 #include <QSettings>
 #include <QDebug>
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 
 #include <QPluginLoader>
 
@@ -36,7 +36,7 @@ AddLolecWizard::AddLolecWizard(const QString &projectFile, QWidget *parent) :
     ui->definePage->init(ui);
     ui->nameError->hide();
     ui->fileWarning->hide();
-    QDir lolecDir = QCoreApplication::applicationDirPath() + "/plugins/lolecs";
+    QDir lolecDir = QCoreApplication::applicationDirPath() + "/plugins/rcUnits";
     QStringList files = lolecDir.entryList(QStringList("*.dll") << "*.dynlib" << "*.so", QDir::Files, QDir::Name);
     foreach(QString file, files)
     {
@@ -97,7 +97,7 @@ void AddLolecWizard::on_lolecSelect_currentIndexChanged(const QString &type)
     QString found;
     QStringList names;
     names << type + ".dll" << type + ".dylib" << type + ".so";
-    QString lolecDir = QCoreApplication::applicationDirPath() + "/plugins/lolecs";
+    QString lolecDir = QCoreApplication::applicationDirPath() + "/plugins/rcUnits";
     foreach(QString name, names)
     {
         QString path = lolecDir + "/" + name;
@@ -122,7 +122,7 @@ void AddLolecWizard::on_lolecSelect_currentIndexChanged(const QString &type)
     }
     else
     {
-        mLolec = qobject_cast<LolecInterface*>(obj);
+        mLolec = qobject_cast<RcUnitInterface*>(obj);
         if(!mLolec)
         {
             QString error = tr("The selected plugin could not be loaded: %1").arg(tr("The selected module is not a valid plugin. Maybe an old version?"));

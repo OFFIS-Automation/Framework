@@ -16,7 +16,7 @@
 
 #include "OlvisLolec.h"
 
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 
 #include "ProcessorOutputListener.h"
 #include "portobserver.h"

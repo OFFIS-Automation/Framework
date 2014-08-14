@@ -20,7 +20,7 @@ CONFIG += dll
 include(../../../properties/pathes.pro)
 
 TARGET = SensorSystem
-DESTDIR = $${targetDir}/plugins/lolecs
+DESTDIR = $${targetDir}/plugins/rcUnits
 
 LIBS += -L$${targetDir}/plugins -lSensorSystem -lSensorTracer
 

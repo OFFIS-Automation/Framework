@@ -24,7 +24,7 @@ HilecPlugin::HilecPlugin()
 
 void HilecPlugin::initialize(const QString &pluginDir)
 {
-    rcControl = new RcUnits(pluginDir + "/lolecs");
+    rcControl = new RcUnits(pluginDir + "/rcUnits");
     hilecCore = new HilecCore(pluginDir + "/hilec");
 }
 

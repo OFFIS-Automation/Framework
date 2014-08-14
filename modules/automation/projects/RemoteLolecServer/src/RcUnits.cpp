@@ -54,9 +54,9 @@ protected:
 };
 
 RcUnits::RcUnits()
+    : RcUnitsBase(QDir(QCoreApplication::applicationDirPath() + "/plugins/lolecs").absolutePath())
 {
     sInst = this;
-    mLolecDir = QDir(QCoreApplication::applicationDirPath() + "/plugins/lolecs").absolutePath();
 }
 
 RcUnits::~RcUnits()

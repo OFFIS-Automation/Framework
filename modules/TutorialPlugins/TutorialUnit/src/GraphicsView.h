@@ -19,7 +19,7 @@
 
 #include <QGraphicsView>
 
-#include <lolecs/Pose2d.h>
+#include <rc/Pose2d.h>
 class Robot;
 class Circle;
 class DataProvider;

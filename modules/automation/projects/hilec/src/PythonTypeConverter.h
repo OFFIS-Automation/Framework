@@ -17,7 +17,7 @@
 #ifndef PYTHONTYPECONVERTER_H
 #define PYTHONTYPECONVERTER_H
 
-#include <lolecs/Pose2d.h>
+#include <rc/Pose2d.h>
 
 #include <QVariant>
 

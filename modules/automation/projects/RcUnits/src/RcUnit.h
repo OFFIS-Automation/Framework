@@ -23,10 +23,10 @@
 #include <QMutex>
 #include <QWaitCondition>
 
-#include <lolecs/RcStruct.h>
+#include <rc/RcStruct.h>
 #include <core/RcUnitHelp.h>
-#include <lolecs/RcUnitInterface.h>
-#include <lolecs/Pose2d.h>
+#include <rc/RcUnitInterface.h>
+#include <rc/Pose2d.h>
 
 Q_DECLARE_METATYPE(Pose2d)
 
@@ -53,7 +53,7 @@ public:
 
     void setParamNames(const QString &methodName, const QStringList &names);
 
-    bool initialize(LolecInterface* plugin);
+    bool initialize(RcUnitInterface* plugin);
     QObject* lolec() { return mLolec; }
     QVariant call(const QByteArray& method, QList<QVariant> params);
     RcUnitHelp getHelp() const;
@@ -124,7 +124,7 @@ protected:
     QString mName, mConfigFile;
     QString mDesc;
     QObject* mLolec;
-    LolecInterface* mLolecInterface;
+    RcUnitInterface* mLolecInterface;
     QMap<QString, QList<Method>> mMethods;
     QMap<int, RcWrapperFactoryItf*> mWrapperFactories;
     QMap<QString, RcUnitHelp::Struct> mStructDefs;

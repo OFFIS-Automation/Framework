@@ -21,7 +21,7 @@ TEMPLATE = lib
 CONFIG += dll
 QT += widgets
 TARGET = TutorialUnit
-DESTDIR = $${targetDir}/plugins/lolecs
+DESTDIR = $${targetDir}/plugins/rcUnits
 
 INCLUDEPATH += ../../automation/include
 

@@ -23,14 +23,15 @@
 #include <QSettings>
 #include <QDir>
 #include <QPluginLoader>
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 
 #include "telecontrol/TelecontrolFactory.h"
 #include "MasterTcInvoker.h"
 
-RcUnitsBase::RcUnitsBase() :
+RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
     QObject()
 {
+    mLolecDir = rcUnitPluginDir;
     mHaptic = 0;
     mGamepad = 0;
 }
@@ -76,7 +77,7 @@ QWidget* RcUnitsBase::lolecGui(const QString &name)
 {
     if(!mUnits.contains(name))
         return 0;
-    LolecInterface *lolecInterface = loadPlugin(mTypes[name]);
+    RcUnitInterface *lolecInterface = loadPlugin(mTypes[name]);
     if(lolecInterface)
         return lolecInterface->guiForInstance(mUnits[name]->lolec());
     return 0;
@@ -98,7 +99,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
         if(!config.isEmpty())
             config = QFileInfo(baseDir + "/" + config).absoluteFilePath();
         QString error;
-        LolecInterface* plugin = loadPlugin(type, &error);
+        RcUnitInterface* plugin = loadPlugin(type, &error);
         if(plugin)
         {
             if(plugin->prepareInstantiation())
@@ -177,7 +178,7 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *ep, co
     }
 }
 
-LolecInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
+RcUnitInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
 {
     QStringList names;
     QString found;
@@ -209,7 +210,7 @@ LolecInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
             *errMsg = loader.errorString();
         return 0;
     }
-    LolecInterface* lolec = qobject_cast<LolecInterface*>(obj);
+    RcUnitInterface* lolec = qobject_cast<RcUnitInterface*>(obj);
     if(!lolec)
     {
         if(errMsg)

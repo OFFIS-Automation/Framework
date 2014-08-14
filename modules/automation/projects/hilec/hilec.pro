@@ -57,7 +57,7 @@ amirlibs.files  += python/*
 INSTALLS       += amirlibs
 
 lolecfiles.path    = $${DESTDIR}/hilec/include
-lolecfiles.files  += ../../include/lolecs/*
+lolecfiles.files  += ../../include/rc/*
 INSTALLS       += lolecfiles
 
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
@@ -71,20 +71,13 @@ INSTALLS       += tcConfig
 
 HEADERS += \
     HilecPlugin.h \
-    ../../include/core/HilecInterface.h \
     src/HilecCore.h \
     src/PythonInterpreter.h \
     src/UserRequestParser.h \
-    ../../include/core/UserRequest.h \
-    ../../include/core/ScriptException.h \
     src/RcUnits.h \
     src/PythonPlugin.h \
     src/RcUnitInvoker.h \
-    ../../include/core/RcUnitHelp.h \
     src/OlvisSingleton.h \
-    ../../include/lolecs/RcStruct.h \
-    ../../include/lolecs/RcRepeatable.h \
-    ../../include/lolecs/RcExceptions.h \
     src/PythonDebugger.h \
     src/UserRequestManager.h \
     src/PythonTypeConverter.h \
@@ -97,14 +90,21 @@ HEADERS += \
     src/debugVariables/InstanceVarItem.h \
     src/CallStackDecoder.h \
     src/PythonLinter.h \
-    ../../include/lolecs/Pose2d.h \
+    ../../include/core/ScriptException.h \
+    ../../include/core/UserRequest.h \
+    ../../include/core/RcUnitHelp.h \
+    ../../include/core/HilecInterface.h \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
     ../../include/telecontrol/TcConfig.h \
     ../../include/core/TelecontrolConfig.h \
-    ../../include/lolecs/RcUnitInterface.h \
-    ../../include/lolecs/types/UserRcUnit.h \
-    ../../include/lolecs/types/HwRcUnit.h
+    ../../include/rc/RcStruct.h \
+    ../../include/rc/RcRepeatable.h \
+    ../../include/rc/RcExceptions.h \
+    ../../include/rc/RcUnitInterface.h \
+    ../../include/rc/types/UserRcUnit.h \
+    ../../include/rc/Pose2d.h \
+    ../../include/rc/types/HwRcUnit.h
 
 SOURCES += \
     HilecPlugin.cpp \

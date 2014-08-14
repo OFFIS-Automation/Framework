@@ -24,7 +24,7 @@
 #include <QSettings>
 #include <QDir>
 #include <QPluginLoader>
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 #include <QTcpSocket>
 
 #include "RemoteRcUnits.h"
@@ -33,12 +33,11 @@
 
 RcUnits* RcUnits::mInstance = 0;
 
-RcUnits::RcUnits(const QString &lolecDir)
+RcUnits::RcUnits(const QString &lolecDir) : RcUnitsBase(lolecDir)
 {
     if(mInstance)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
-    mLolecDir = lolecDir;
     mGamepad = 0;
     connect(this, SIGNAL(unitsUpdated()), SIGNAL(unitListUpdated()));
 }

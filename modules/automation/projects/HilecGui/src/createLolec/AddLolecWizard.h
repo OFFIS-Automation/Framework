@@ -22,7 +22,7 @@
 namespace Ui {
 class AddLolecWizard;
 }
-class LolecInterface;
+class RcUnitInterface;
 
 class AddLolecWizard : public QWizard
 {
@@ -46,7 +46,7 @@ private slots:
 private:
     Ui::AddLolecWizard *ui;
     QString mProjectFile, mFileExtension;
-    LolecInterface* mLolec;
+    RcUnitInterface* mLolec;
 };
 
 #endif // ADDLOLECWIZARD_H

@@ -17,13 +17,13 @@
 #ifndef TUTORIALUNITINTERFACE_H
 #define TUTORIALUNITINTERFACE_H
 
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 
-class TutorialUnitInterface : public QObject, public LolecInterface
+class TutorialUnitInterface : public QObject, public RcUnitInterface
 {
     Q_OBJECT
-    Q_INTERFACES(LolecInterface)
-    Q_PLUGIN_METADATA(IID LolecInterface_iid)
+    Q_INTERFACES(RcUnitInterface)
+    Q_PLUGIN_METADATA(IID RcUnitInterface_iid)
 public:
     TutorialUnitInterface();
 

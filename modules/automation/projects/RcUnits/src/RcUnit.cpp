@@ -23,7 +23,7 @@
 #include <QRectF>
 #include <QVector3D>
 #include <QVector4D>
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 #include <QDebug>
 #include "TcInvoker.h"
 #include "RcMethodInvoker.h"
@@ -147,7 +147,7 @@ RcUnitHelp RcUnit::getHelp() const
     return help;
 }
 
-bool RcUnit::initialize(LolecInterface* plugin)
+bool RcUnit::initialize(RcUnitInterface *plugin)
 {
     QMutexLocker lock(&mStartMutex);
     mLolec = 0;

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RcMethodInvoker.h"
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 
 RcMethodInvoker::RcMethodInvoker(const RcUnit::Method &method, QMap<int, RcWrapperFactoryItf *> &factories)
     : mMethod(method),

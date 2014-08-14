@@ -19,7 +19,7 @@
 #include <QStringList>
 #include <QtEndian>
 #include "remoteSignals/RemoteRcUnitClient.h"
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 #include "RemoteRcUnit.h"
 
 RemoteRcUnits::RemoteRcUnits(const QString &name, const QString &host, int port, double timeout) :

@@ -21,7 +21,7 @@ CONFIG += dll
 include(../../../properties/pathes.pro)
 
 TARGET = OlvisLolec
-DESTDIR = $${targetDir}/plugins/lolecs
+DESTDIR = $${targetDir}/plugins/rcUnits
 
 LIBS += -L$${targetDir}/plugins -lolvisCore
 
@@ -37,10 +37,10 @@ INSTALLS     += pythonFiles
 
 HEADERS += \
     src/OlvisLolec.h \
-    ../../../automation/include/lolecs/RcStruct.h \
-    ../../../automation/include/lolecs/LolecInterface.h \
-    ../../../automation/include/lolecs/RcRepeatable.h \
-    ../../../automation/include/lolecs/RcExceptions.h \
+    ../../../automation/include/rc/RcStruct.h \
+    ../../../automation/include/rc/RcUnitInterface.h \
+    ../../../automation/include/rc/RcRepeatable.h \
+    ../../../automation/include/rc/RcExceptions.h \
     src/OlvisLolecInterface.h \
     src/portobserver.h \
     src/SignalWaiter.h \

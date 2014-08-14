@@ -17,13 +17,13 @@
 #ifndef OLVISLOLECINTERFACE_H
 #define OLVISLOLECINTERFACE_H
 
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 
-class OlvisLolecInterface : public QObject, public LolecInterface
+class OlvisLolecInterface : public QObject, public RcUnitInterface
 {
     Q_OBJECT
-    Q_INTERFACES(LolecInterface)
-    Q_PLUGIN_METADATA(IID LolecInterface_iid)
+    Q_INTERFACES(RcUnitInterface)
+    Q_PLUGIN_METADATA(IID RcUnitInterface_iid)
 public:
     explicit OlvisLolecInterface();
     virtual bool needsConfigFile() const { return false; }

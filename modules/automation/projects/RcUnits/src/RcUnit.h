@@ -33,8 +33,9 @@ Q_DECLARE_METATYPE(Pose2d)
 #include "RcUnitBase.h"
 
 class TcInvoker;
-class RcUnit : public QThread, public RcUnitBase, public RcBase
+class RcUnit : public QThread, public virtual RcUnitBase, public RcBase
 {
+    Q_OBJECT
 public:
     RcUnit(const QString& name, const QString &configFile);
     virtual ~RcUnit();
@@ -70,7 +71,9 @@ public:
     virtual const HapticResponse hapticMovement(const QVector3D& targetPositions);
     void hapticMovement(HapticResponse& data, bool readOnly);
 
-
+    void acquire();// { emit callAcquire(); }
+    void release();// { emit callRelease(); }
+    void setObserver(RcUnitBaseObserver* observer) { mObserver = observer; }
 
     struct Parameter
     {
@@ -109,6 +112,11 @@ public:
     };
     QList<TcUpdateMethod> tcMethods() { return mTcMethods.values(); }
     QList<TcButtonEvent> tcButtons() { return mTcButtons; }
+signals:
+    void callAcquire();
+    void callRelease();
+private slots:
+    void hwStatusChanged(bool status);
 protected:
     void run();
     TcInvoker* mTcInvoker;
@@ -123,7 +131,7 @@ protected:
     Parameter createParamInfo(QByteArray type, QByteArray name = "");
     QString mName, mConfigFile;
     QString mDesc;
-    QObject* mRcUnit;
+    UserRcUnit* mRcUnit;
     RcUnitInterface* mRcUnitInterface;
     QMap<QString, QList<Method>> mMethods;
     QMap<int, RcWrapperFactoryItf*> mWrapperFactories;
@@ -138,7 +146,8 @@ protected:
     double mHapticSensitivity;
     double mHapticForceFactor;
     QMutex mCallMutex;
-
+    bool mHwConnected;
+    RcUnitBaseObserver* mObserver;
 };
 
 #endif // RCUNIT_H

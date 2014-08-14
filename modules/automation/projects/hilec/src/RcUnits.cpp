@@ -53,8 +53,10 @@ void RcUnits::loadConfig(const QString &filename)
     foreach(QString key, mUnits.keys())
     {
         RcUnitBase* unit = mUnits.value(key);
+        unit->setObserver(this);
         if(unit->isTelecontrolable())
             mTelecontrolRcUnits << key;
+
     }
 
     QSettings settings(filename, QSettings::IniFormat);
@@ -78,6 +80,11 @@ void RcUnits::releaseConfig()
     RcUnitsBase::releaseConfig();
     qDeleteAll(mRemoteRcUnits);
     mRemoteRcUnits.clear();
+}
+
+void RcUnits::rcUnitStatusChanged(bool)
+{
+    emit unitListUpdated(true);
 }
 
 void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStringList &oldRcUnits)

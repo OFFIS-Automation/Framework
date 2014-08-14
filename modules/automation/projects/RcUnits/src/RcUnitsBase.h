@@ -55,6 +55,9 @@ public:
     void deactivateHaptic();
     void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
 
+    void acquire(const QString& unitName);
+    void release(const QString& unitName);
+
 signals:
     void unitsUpdated();
     void telecontrolUpdated(bool gamepadActive, const QString& controlledUnit);

@@ -353,6 +353,22 @@ void RcUnitsBase::updateHaptic(const QString &unitName, double sensitivity, doub
     settings.setValue(QString("haptic/%1/forceFactor").arg(unitName), forceFactor);
 }
 
+void RcUnitsBase::acquire(const QString &unitName)
+{
+    RcUnitBase* unit = mUnits.value(unitName, 0);
+    if(!unit)
+        return;
+    unit->acquire();
+}
+
+void RcUnitsBase::release(const QString &unitName)
+{
+    RcUnitBase* unit = mUnits.value(unitName, 0);
+    if(!unit)
+        return;
+    unit->release();
+}
+
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
 {
     if(!pressed || buttonId < Tc::ButtonUp)

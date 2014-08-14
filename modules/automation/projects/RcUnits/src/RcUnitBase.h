@@ -23,6 +23,12 @@
 #include "GamepadEndpoint.h"
 #include "HapticBaseEndpoint.h"
 
+class RcUnitBaseObserver
+{
+public:
+    virtual void rcUnitStatusChanged(bool acquired) = 0;
+};
+
 class RCUNITS_EXPORT RcUnitBase : public HapticBaseEndpoint, public GamepadEndpoint
 {
 public:
@@ -34,6 +40,9 @@ public:
     virtual RcUnitHelp getHelp() const = 0;
     virtual QObject* rcUnit() = 0;
     virtual QString name() const = 0;
+    virtual void acquire() = 0;
+    virtual void release() = 0;
+    virtual void setObserver(RcUnitBaseObserver* observer) = 0;
     virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };
 

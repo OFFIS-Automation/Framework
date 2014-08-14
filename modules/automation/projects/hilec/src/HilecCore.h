@@ -94,6 +94,8 @@ public slots:
     virtual void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
     virtual QWidget* createHapticWidget();
 
+    virtual void callRcUnitAcquire(const QString& unitName);
+    virtual void callRcUnitRelease(const QString& unitName);
 protected:
     PythonInterpreter mPython;
     PythonLinter mLint;

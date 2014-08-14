@@ -23,5 +23,7 @@
         <file>gamepadAbstractWithoutNumbers.png</file>
         <file>controller_edit.png</file>
         <file>controller_add.png</file>
+        <file>connect.png</file>
+        <file>disconnect.png</file>
     </qresource>
 </RCC>

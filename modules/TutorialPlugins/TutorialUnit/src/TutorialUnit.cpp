@@ -72,7 +72,7 @@ void TutorialUnit::release()
 {
     QMutexLocker lock(&mMutex);
     mAcquired = false;
-    emit hwConnectionStatusChanged(true);
+    emit hwConnectionStatusChanged(false);
 }
 
 Pose2d TutorialUnit::getPosition()

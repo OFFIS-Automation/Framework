@@ -68,6 +68,8 @@ public slots:
     virtual void updateHaptic(const QString& unit, double sensitivity, double forceFactor) = 0;
     virtual QWidget* createHapticWidget() = 0;
 
+    virtual void callRcUnitAcquire(const QString& unitName) = 0;
+    virtual void callRcUnitRelease(const QString& unitName) = 0;
 signals:
     void newErrorStr(const QString& text);
     void newTextStr(const QString& text);

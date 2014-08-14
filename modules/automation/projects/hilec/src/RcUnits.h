@@ -22,6 +22,7 @@
 #include <QVariant>
 
 #include <RcUnitsBase.h>
+#include <RcUnitBase.h>
 
 class QXmlStreamReader;
 class RcUnitInterface;
@@ -29,7 +30,9 @@ class RcUnit;
 class Gamepad;
 class RemoteRcUnits;
 
-class RcUnits : public RcUnitsBase
+
+
+class RcUnits : public RcUnitsBase, public RcUnitBaseObserver
 {
     Q_OBJECT
 public:
@@ -38,6 +41,7 @@ public:
     static RcUnits* instance() { return mInstance; }
     void loadConfig(const QString &filename);
     void releaseConfig();
+    void rcUnitStatusChanged(bool acquired);
 signals:
     void unitListUpdated(bool partialUpdate = false);
 private slots:

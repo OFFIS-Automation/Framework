@@ -55,7 +55,12 @@ HEADERS += src/RcUnit.h \
     ../../include/telecontrol/HapticInterface.h \
     src/MasterTcInvoker.h \
     src/GamepadEndpoint.h \
-    src/HapticBaseEndpoint.h
+    src/HapticBaseEndpoint.h \
+    ../../include/rc/types/HwRcUnit.h \
+    ../../include/rc/types/RcUnitTypes.h \
+    ../../include/rc/types/RobotRcUnit.h \
+    ../../include/rc/types/SimpleRobotRcUnit.h \
+    ../../include/rc/types/UserRcUnit.h
 
 win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \

@@ -26,8 +26,8 @@ TutorialUnitGui::TutorialUnitGui(TutorialUnit *control, GraphicsView *scene) :
     ui->setupUi(this);
     connect(mController, SIGNAL(hwConnectionStatusChanged(bool)), SLOT(updateStatus(bool)));
     connect(mController, SIGNAL(positionUpdated(QPointF,qreal)), SLOT(onPositionUpdate(QPointF, qreal)));
-    connect(this, SIGNAL(connectClicked()), mController, SLOT(acquireHardware()));
-    connect(this, SIGNAL(disconnectClicked()), mController, SLOT(releaseHardware()));
+    connect(this, SIGNAL(connectClicked()), mController, SLOT(acquire()));
+    connect(this, SIGNAL(disconnectClicked()), mController, SLOT(release()));
     connect(this, SIGNAL(resetSystem()), mController, SLOT(resetSetup()));
     connect(this, SIGNAL(resetSystemRandom()), mController, SLOT(resetSetupRandom()));
     scene->show();

@@ -36,6 +36,9 @@ public:
 signals:
     void addPluginToProject();
     void projectFileChanged(QString);
+    void callRcAcquire(const QString& unitName);
+    void callRcRelease(const QString& unitName);
+
 public slots:
     void addRcServer();
     void updateRcUnits();
@@ -53,6 +56,10 @@ private slots:
     void on_actionAddServer_triggered();
 
     void on_actionRemoveServer_triggered();
+
+    void on_actionConnect_triggered();
+
+    void on_actionDisconnect_triggered();
 
 private:
     QMap<QString, QTreeWidgetItem *> readServer();

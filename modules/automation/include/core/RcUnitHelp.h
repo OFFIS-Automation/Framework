@@ -22,7 +22,7 @@
 #include <QVariant>
 #include <QStringList>
 #include "TelecontrolConfig.h"
-
+#include "../rc/types/RcUnitTypes.h"
 struct RcUnitHelp : TelecontrolConfig
 {
     QString desc;
@@ -43,6 +43,8 @@ struct RcUnitHelp : TelecontrolConfig
     QList<Struct> structs;
     QList<Method> methods;
     QVariantMap constants;
+    UserRcUnitType type;
+    bool hwConnected;
 };
 
 inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Method& helpMethod)

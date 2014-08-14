@@ -205,6 +205,16 @@ QWidget *HilecCore::createHapticWidget()
     return RcUnits::instance()->createHapticWidget();
 }
 
+void HilecCore::callRcUnitAcquire(const QString &unitName)
+{
+    RcUnits::instance()->acquire(unitName);
+}
+
+void HilecCore::callRcUnitRelease(const QString &unitName)
+{
+    RcUnits::instance()->release(unitName);
+}
+
 void HilecCore::deactivateTelecontrol()
 {
     RcUnits::instance()->deactivateTelecontrol();

@@ -47,9 +47,23 @@
       <property name="headerHidden">
        <bool>true</bool>
       </property>
+      <property name="columnCount">
+       <number>2</number>
+      </property>
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="headerStretchLastSection">
+       <bool>true</bool>
+      </attribute>
       <column>
        <property name="text">
         <string notr="true">1</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">2</string>
        </property>
       </column>
      </widget>
@@ -96,6 +110,30 @@
    </property>
    <property name="text">
     <string>remove RC-Unit server</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/connect.png</normaloff>:/hilecGui/connect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Acquire hardware</string>
+   </property>
+   <property name="toolTip">
+    <string>Acquire the hardware of the RC-Unit</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="icon">
+    <iconset resource="../../images/images.qrc">
+     <normaloff>:/hilecGui/disconnect.png</normaloff>:/hilecGui/disconnect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Release hardware</string>
+   </property>
+   <property name="toolTip">
+    <string>Release the hardware of the RC-Unit</string>
    </property>
   </action>
  </widget>

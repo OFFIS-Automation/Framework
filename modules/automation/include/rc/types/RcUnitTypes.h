@@ -15,27 +15,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#ifndef USERRCUNIT_H
-#define USERRCUNIT_H
+#ifndef RCUNITTYPES_H
+#define RCUNITTYPES_H
 
-#include <QObject>
-#include "RcUnitTypes.h"
-/*
- * This is the basic class for RcUnits.
-*/
-
-
-class UserRcUnit : public QObject
+enum UserRcUnitType
 {
-public:
-    virtual ~UserRcUnit() {}
-    virtual UserRcUnitType rcType() { return BaseRcUnitType; }
-protected:
-    UserRcUnit() {}
-
-private:
-    Q_DISABLE_COPY(UserRcUnit)
+    BaseRcUnitType,
+    HwRcUnitType,
+    SimpleRobotRcUnitType,
+    RobotRcUnitType
 };
 
 
-#endif // USERRCUNIT_H
+#endif // RCUNITTYPES_H

@@ -31,7 +31,8 @@
 
 RcUnit::RcUnit(const QString &name, const QString& configFile)
     : mName(name),
-      mConfigFile(configFile)
+      mConfigFile(configFile),
+      mObserver(0)
 
 {
     mWrapperFactories[QVariant::String] = new RcWrapperFactory<QString>("QString");
@@ -52,6 +53,7 @@ RcUnit::RcUnit(const QString &name, const QString& configFile)
     mRcUnit = 0;
     mHapticSensitivity = 1.0/64.0;
     mHapticForceFactor = 1.0/64.0;
+    mHwConnected = false;
     start();
 }
 
@@ -75,6 +77,16 @@ void RcUnit::run()
     if(mRcUnit)
     {
         setDesc(mRcUnitInterface->description());
+        if(mRcUnit->rcType() >= HwRcUnitType)
+        {
+            HwRcUnit* hwRcUnit = static_cast<HwRcUnit*>(mRcUnit);
+            if(hwRcUnit)
+            {
+                connect(mRcUnit, SIGNAL(hwConnectionStatusChanged(bool)), this, SLOT(hwStatusChanged(bool)), Qt::QueuedConnection);
+                connect(this, SIGNAL(callAcquire()), mRcUnit, SLOT(acquire()), Qt::QueuedConnection);
+                connect(this, SIGNAL(callRelease()), mRcUnit, SLOT(release()), Qt::QueuedConnection);
+            }
+        }
         exec();
         if(mRcUnit)
             mRcUnitInterface->deleteInstance(mRcUnit);
@@ -144,6 +156,8 @@ RcUnitHelp RcUnit::getHelp() const
     help.hasHaptic = hasHapticInterface();
     help.hapticSensitivity = hapticSensitivity();
     help.hapticForceFactor = hapticForceFactor();
+    help.type = mRcUnit->rcType();
+    help.hwConnected = mHwConnected;
     return help;
 }
 
@@ -425,6 +439,23 @@ void RcUnit::hapticMovement(HapticResponse &data, bool readOnly)
 {
 
     mHapticMethod.invoke(mRcUnit, Qt::DirectConnection, Q_ARG(QVector3D, data.position), Q_ARG(QVector3D, data.forces), Q_ARG(bool, readOnly));
+}
+
+void RcUnit::acquire()
+{
+    emit callAcquire();
+}
+
+void RcUnit::release()
+{
+    emit callRelease();
+}
+
+void RcUnit::hwStatusChanged(bool status)
+{
+    mHwConnected = status;
+    if(mObserver)
+        mObserver->rcUnitStatusChanged(status);
 }
 
 

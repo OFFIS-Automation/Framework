@@ -43,6 +43,9 @@ public:
     virtual void updateHapticSensitivity(double, double){}
     virtual double hapticSensitivity() const { return 0.0; }
     virtual double hapticForceFactor() const { return 0.0; }
+    void acquire();
+    void release();
+    void setObserver(RcUnitBaseObserver *observer);
 public slots:
     void handleGamepadData(const QMap<int,double>& data);
     void setGamepadButton(int id, bool pressed);

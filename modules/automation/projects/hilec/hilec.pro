@@ -106,7 +106,8 @@ HEADERS += \
     ../../include/rc/Pose2d.h \
     ../../include/rc/types/HwRcUnit.h \
     ../../include/rc/types/SimpleRobotRcUnit.h \
-    ../../include/rc/types/RobotRcUnit.h
+    ../../include/rc/types/RobotRcUnit.h \
+    ../../include/rc/types/RcUnitTypes.h
 
 SOURCES += \
     HilecPlugin.cpp \

@@ -30,8 +30,11 @@ RcUnitWidget::RcUnitWidget(QWidget *parent) :
     ui(new Ui::RcUnitWidget)
 {
     ui->setupUi(this);
-    connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits()));
-    connect(this, SIGNAL(projectFileChanged(QString)), HilecSingleton::hilec(), SLOT(loadConfig(QString)), Qt::QueuedConnection);
+    HilecInterface* hilec = HilecSingleton::hilec();
+    connect(hilec, SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits()));
+    connect(this, SIGNAL(projectFileChanged(QString)), hilec, SLOT(loadConfig(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(callRcAcquire(QString)), hilec, SLOT(callRcUnitAcquire(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(callRcRelease(QString)), hilec, SLOT(callRcUnitRelease(QString)), Qt::QueuedConnection);
 }
 
 RcUnitWidget::~RcUnitWidget()
@@ -75,8 +78,14 @@ void RcUnitWidget::updateRcUnits()
 
         QTreeWidgetItem* item = new QTreeWidgetItem(roots[help.server], QStringList(unit));
         item->setIcon(0, QIcon(":hilecGui/rcUnit.png"));
+        if(help.type == BaseRcUnitType || help.hwConnected)
+            item->setIcon(1, QIcon(":hilecGui/flag_green.png"));
+        else
+            item->setIcon(1, QIcon(":hilecGui/flag_yellow.png"));
     }
     ui->units->expandAll();
+    ui->units->resizeColumnToContents(0);
+    ui->units->resizeColumnToContents(1);
 }
 
 void RcUnitWidget::enableContent()
@@ -102,14 +111,51 @@ void RcUnitWidget::on_units_customContextMenuRequested(const QPoint &pos)
     if(item)
     {
         QTreeWidgetItem* parent = item->parent();
+        if(item->childCount() == 0)
+        {
+            const RcUnitHelp& help = HilecSingleton::hilec()->getUnitHelp(item->text(0));
+            if(help.type >= HwRcUnitType)
+            {
+                if(!help.hwConnected)
+                    menu.addAction(ui->actionConnect);
+                else
+                    menu.addAction(ui->actionDisconnect);
+            }
+        }
         if(parent && parent->text(0) == "local" && item->childCount() == 0)
             menu.addAction(ui->actionRemoveRcUnit);
         if(!parent && item->text(0) != "local")
             menu.addAction(ui->actionRemoveServer);
+    } else {
+        menu.addAction(ui->actionAddRcUnit);
+        menu.addAction(ui->actionAddServer);
     }
-    menu.addAction(ui->actionAddRcUnit);
-    menu.addAction(ui->actionAddServer);
     menu.exec(mapToGlobal(pos));
+}
+
+
+void RcUnitWidget::on_actionConnect_triggered()
+{
+    QList<QTreeWidgetItem*> items = ui->units->selectedItems();
+    if(items.empty())
+        return;
+    QTreeWidgetItem* item = items.first();
+    if(item->childCount() > 0)
+        return;
+    QString unitName = item->text(0);
+    emit callRcAcquire(unitName);
+}
+
+void RcUnitWidget::on_actionDisconnect_triggered()
+{
+    QList<QTreeWidgetItem*> items = ui->units->selectedItems();
+    if(items.empty())
+        return;
+    QTreeWidgetItem* item = items.first();
+    if(item->childCount() > 0)
+        return;
+    QString unitName = item->text(0);
+    emit callRcRelease(unitName);
 }
 
 void RcUnitWidget::on_actionAddRcUnit_triggered()
@@ -222,3 +268,4 @@ void RcUnitWidget::on_actionRemoveServer_triggered()
     settings.sync();
     emit projectFileChanged(mProjectFile);
 }
+

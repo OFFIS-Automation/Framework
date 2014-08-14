@@ -54,6 +54,21 @@ void RemoteRcUnit::updateSensitivity(const QString &unitName, double sensitivity
     mRemote.updateSensitivity(name(), unitName, sensitivity, inverts);
 }
 
+void RemoteRcUnit::acquire()
+{
+ //@TODO
+}
+
+void RemoteRcUnit::release()
+{
+    //@TODO
+}
+
+void RemoteRcUnit::setObserver(RcUnitBaseObserver *observer)
+{
+    //@TODO
+}
+
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)
 {
     mRemote.handleTcData(data, 1000);

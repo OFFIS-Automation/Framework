@@ -21,10 +21,17 @@
 #include "SimpleRobotRcUnit.h"
 #include <QVariant>
 
-class RobotRcUnit : public SimpleRobotRcUnit
+class RobotRcUnit : public HwRcUnit
 {
 public:
     virtual UserRcUnitType rcType() { return RobotRcUnitType; }
+
+    /**
+     * This operation should stop the current movement.
+     * It is called when a automation error occours or the stop button is pressed
+     * by the user. If a movement method was active, it should be ended with an RcError
+     */
+    virtual void stop() = 0;
 
     /**
      * This method is used for storing user defined position.

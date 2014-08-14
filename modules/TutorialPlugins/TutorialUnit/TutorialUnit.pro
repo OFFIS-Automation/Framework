@@ -37,7 +37,6 @@ HEADERS += \
     src/GraphicsView.h \
     ../../automation/include/rc/types/HwRcUnit.h \
     ../../automation/include/rc/types/RobotRcUnit.h \
-    ../../automation/include/rc/types/SimpleRobotRcUnit.h \
     ../../automation/include/rc/types/UserRcUnit.h
 
 SOURCES += \

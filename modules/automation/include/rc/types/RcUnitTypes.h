@@ -22,7 +22,6 @@ enum UserRcUnitType
 {
     BaseRcUnitType,
     HwRcUnitType,
-    SimpleRobotRcUnitType,
     RobotRcUnitType
 };
 

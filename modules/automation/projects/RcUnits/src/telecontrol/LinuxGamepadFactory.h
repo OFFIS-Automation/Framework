@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_LINUXGAMEPADFACTORY_HQT
-#define LOLECTOOLS_LINUXSGAMEPADFACTORY_HQT
+#ifndef RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT
+#define RCUNITTOOLS_LINUXSGAMEPADFACTORY_HQT
 
 #include "LinuxGamepad.h"
 
@@ -32,4 +32,4 @@ private:
     static Gamepad* sGamepad;
 };
 
-#endif // LOLECTOOLS_LINUXGAMEPADFACTORY_HQT
+#endif // RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT

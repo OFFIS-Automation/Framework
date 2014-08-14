@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
-#define LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
+#ifndef RCUNITTOOLS_WINDOWSGAMEPADFACTORY_HQT
+#define RCUNITTOOLS_WINDOWSGAMEPADFACTORY_HQT
 
 #include "WindowsGamepad.h"
 
@@ -35,4 +35,4 @@ private:
     static Gamepad* sGamepad;
 };
 
-#endif // LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
+#endif // RCUNITTOOLS_WINDOWSGAMEPADFACTORY_HQT

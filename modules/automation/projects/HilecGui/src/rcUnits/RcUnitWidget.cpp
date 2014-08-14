@@ -74,7 +74,7 @@ void RcUnitWidget::updateRcUnits()
             roots[help.server] = new QTreeWidgetItem(ui->units, QStringList(help.server));
 
         QTreeWidgetItem* item = new QTreeWidgetItem(roots[help.server], QStringList(unit));
-        item->setIcon(0, QIcon(":hilecGui/lolec.png"));
+        item->setIcon(0, QIcon(":hilecGui/rcUnit.png"));
     }
     ui->units->expandAll();
 }
@@ -103,21 +103,21 @@ void RcUnitWidget::on_units_customContextMenuRequested(const QPoint &pos)
     {
         QTreeWidgetItem* parent = item->parent();
         if(parent && parent->text(0) == "local" && item->childCount() == 0)
-            menu.addAction(ui->actionRemoveLolec);
+            menu.addAction(ui->actionRemoveRcUnit);
         if(!parent && item->text(0) != "local")
             menu.addAction(ui->actionRemoveServer);
     }
-    menu.addAction(ui->actionAddLolec);
+    menu.addAction(ui->actionAddRcUnit);
     menu.addAction(ui->actionAddServer);
     menu.exec(mapToGlobal(pos));
 }
 
-void RcUnitWidget::on_actionAddLolec_triggered()
+void RcUnitWidget::on_actionAddRcUnit_triggered()
 {
     emit addPluginToProject();
 }
 
-void RcUnitWidget::on_actionRemoveLolec_triggered()
+void RcUnitWidget::on_actionRemoveRcUnit_triggered()
 {
     QList<QTreeWidgetItem*> items = ui->units->selectedItems();
     if(items.empty())
@@ -128,8 +128,8 @@ void RcUnitWidget::on_actionRemoveLolec_triggered()
     QTreeWidgetItem* parent = item->parent();
     if(!parent || parent->text(0) != "local")
         return;
-    QString lolecToRemove = item->text(0);
-    if(QMessageBox::question(this, tr("Remove RC-Unit"), tr("Do you want to remove the RC-Unit %1?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
+    QString rcUnitToRemove = item->text(0);
+    if(QMessageBox::question(this, tr("Remove RC-Unit"), tr("Do you want to remove the RC-Unit %1?").arg(rcUnitToRemove), QMessageBox::Yes | QMessageBox::No)
             != QMessageBox::Yes)
         return;
     QList<QVariantMap> values;
@@ -138,7 +138,7 @@ void RcUnitWidget::on_actionRemoveLolec_triggered()
     for(int i=0; i<size; i++)
     {
         settings.setArrayIndex(i);
-        if(settings.value("name") == lolecToRemove)
+        if(settings.value("name") == rcUnitToRemove)
             continue;
         QVariantMap elements;
         QStringList keys = settings.childKeys();
@@ -187,8 +187,8 @@ void RcUnitWidget::on_actionRemoveServer_triggered()
     QTreeWidgetItem* parent = item->parent();
     if(parent || item->text(0) == "local")
         return;
-    QString lolecToRemove = item->text(0);
-    if(QMessageBox::question(this, tr("Remove RC-Unit server"), tr("Do you want to remove the RC-Unit server %1?").arg(lolecToRemove), QMessageBox::Yes | QMessageBox::No)
+    QString rcUnitToRemove = item->text(0);
+    if(QMessageBox::question(this, tr("Remove RC-Unit server"), tr("Do you want to remove the RC-Unit server %1?").arg(rcUnitToRemove), QMessageBox::Yes | QMessageBox::No)
             != QMessageBox::Yes)
         return;
     QList<QVariantMap> values;
@@ -197,7 +197,7 @@ void RcUnitWidget::on_actionRemoveServer_triggered()
     for(int i=0; i<size; i++)
     {
         settings.setArrayIndex(i);
-        if(settings.value("name") == lolecToRemove)
+        if(settings.value("name") == rcUnitToRemove)
             continue;
         QVariantMap elements;
         QStringList keys = settings.childKeys();

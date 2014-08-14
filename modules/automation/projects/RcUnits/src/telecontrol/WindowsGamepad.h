@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSGAMEPAD_HQT
-#define LOLECTOOLS_WINDOWSGAMEPAD_HQT
+#ifndef RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#define RCUNITTOOLS_WINDOWSGAMEPAD_HQT
 
 #include "Gamepad.h"
 
@@ -55,4 +55,4 @@ protected:
     void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
-#endif //LOLECTOOLS_WINDOWSGAMEPAD_HQT
+#endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT

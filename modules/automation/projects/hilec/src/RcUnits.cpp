@@ -33,7 +33,7 @@
 
 RcUnits* RcUnits::mInstance = 0;
 
-RcUnits::RcUnits(const QString &lolecDir) : RcUnitsBase(lolecDir)
+RcUnits::RcUnits(const QString &rcUnitDir) : RcUnitsBase(rcUnitDir)
 {
     if(mInstance)
         throw std::runtime_error("RcUnits already running");
@@ -54,7 +54,7 @@ void RcUnits::loadConfig(const QString &filename)
     {
         RcUnitBase* unit = mUnits.value(key);
         if(unit->isTelecontrolable())
-            mTelecontrolLolecs << key;
+            mTelecontrolRcUnits << key;
     }
 
     QSettings settings(filename, QSettings::IniFormat);
@@ -67,8 +67,8 @@ void RcUnits::loadConfig(const QString &filename)
         int port = settings.value("port").toInt();
         double timeout = settings.value("callTimeout", 5).toDouble();
         RemoteRcUnits* rl = new RemoteRcUnits(name, host, port, timeout);
-        connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteLolecsListed(QString, QStringList)));
-        mRemoteLolecs[name] = rl;
+        connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteRcUnitsListed(QString, QStringList)));
+        mRemoteRcUnits[name] = rl;
         rl->startConnect();
     }
 }
@@ -76,20 +76,20 @@ void RcUnits::loadConfig(const QString &filename)
 void RcUnits::releaseConfig()
 {
     RcUnitsBase::releaseConfig();
-    qDeleteAll(mRemoteLolecs);
-    mRemoteLolecs.clear();
+    qDeleteAll(mRemoteRcUnits);
+    mRemoteRcUnits.clear();
 }
 
-void RcUnits::onRemoteLolecsListed(const QString &remoteServerName, const QStringList &oldLolecs)
+void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStringList &oldRcUnits)
 {
-    RemoteRcUnits* rl = mRemoteLolecs.value(remoteServerName, 0);
+    RemoteRcUnits* rl = mRemoteRcUnits.value(remoteServerName, 0);
     if(!rl)
         return;
     QList<RcUnitBase*> units = rl->units();
-    QStringList lolecsToRemove = oldLolecs;
+    QStringList rcUnitsToRemove = oldRcUnits;
     foreach(RcUnitBase* unit, units)
-        lolecsToRemove << unit->name();
-    foreach(QString name, lolecsToRemove)
+        rcUnitsToRemove << unit->name();
+    foreach(QString name, rcUnitsToRemove)
     {
         RcUnitBase* old = mUnits.value(name, 0);
         if(old)

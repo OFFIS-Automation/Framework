@@ -56,9 +56,9 @@ amirlibs.path    = $${DESTDIR}/hilec/python
 amirlibs.files  += python/*
 INSTALLS       += amirlibs
 
-lolecfiles.path    = $${DESTDIR}/hilec/include
-lolecfiles.files  += ../../include/rc/*
-INSTALLS       += lolecfiles
+rcUnitfiles.path    = $${DESTDIR}/hilec/include
+rcUnitfiles.files  += ../../include/rc/*
+INSTALLS       += rcUnitfiles
 
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
 tcfiles.files  += ../../include/telecontrol/*

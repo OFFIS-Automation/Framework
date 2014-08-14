@@ -20,8 +20,8 @@
 #include "HilecSingleton.h"
 
 #include <QFileDialog>
-#include "createLolec/CreateLolecDialog.h"
-#include "createLolec/AddLolecWizard.h"
+#include "createRcUnit/CreateRcUnitDialog.h"
+#include "createRcUnit/AddRcUnitWizard.h"
 
 HilecGuiToolbar::HilecGuiToolbar(QWidget *parent) :
     QToolBar(parent),
@@ -57,32 +57,32 @@ void HilecGuiToolbar::createMenu(QMenu *menu)
 {
     if(menu->actions().size() > 0)
         menu->addSeparator();
-    menu->addAction(ui->actionLolecHelp);
-    menu->addAction(ui->actionCreateLolec);
-    menu->addAction(ui->actionAddLolec);
+    menu->addAction(ui->actionRcUnitHelp);
+    menu->addAction(ui->actionCreateRcUnit);
+    menu->addAction(ui->actionAddRcUnit);
     menu->addAction(ui->actionAddRcServer);
     menu->addAction(ui->actionCreateGamepadMapping);
 }
 
-void HilecGuiToolbar::on_actionCreateLolec_triggered()
+void HilecGuiToolbar::on_actionCreateRcUnit_triggered()
 {
-    CreateLolecDialog dialog(parentWidget());
+    CreateRcUnitDialog dialog(parentWidget());
     if(dialog.exec())
     {
         dialog.createPlugin();
     }
 }
 
-void HilecGuiToolbar::on_actionAddLolec_triggered()
+void HilecGuiToolbar::on_actionAddRcUnit_triggered()
 {
-    AddLolecWizard dialog(mConfigFile, parentWidget());
+    AddRcUnitWizard dialog(mConfigFile, parentWidget());
     if(dialog.exec())
     {
         dialog.addPlugin();
     }
 }
 
-void HilecGuiToolbar::on_actionLolecHelp_triggered()
+void HilecGuiToolbar::on_actionRcUnitHelp_triggered()
 {
     emit showHelpWidget();
 }
@@ -105,7 +105,7 @@ void HilecGuiToolbar::onScriptExecutionFinished()
 void HilecGuiToolbar::setEnabled(bool enabled)
 {
     QWidget::setEnabled(enabled);
-    ui->actionAddLolec->setEnabled(enabled);
+    ui->actionAddRcUnit->setEnabled(enabled);
     ui->actionAddRcServer->setEnabled(enabled);
     ui->actionCreateGamepadMapping->setEnabled(enabled);
 }

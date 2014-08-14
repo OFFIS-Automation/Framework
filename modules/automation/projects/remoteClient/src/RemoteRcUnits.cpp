@@ -48,10 +48,10 @@ void RemoteRcUnits::onConnected()
 {
     QMutexLocker lock(&mMutex);
     QList<RcUnitHelp> list = mClient->listUnits();
-    QList<QString> old = mLolecs.keys();
-    mLolecs.clear();
+    QList<QString> old = mRcUnits.keys();
+    mRcUnits.clear();
     foreach(const RcUnitHelp& help, list)
-        mLolecs.insert(help.unitName, help);
+        mRcUnits.insert(help.unitName, help);
     emit unitsUpdated(mName, old);
 }
 
@@ -70,8 +70,8 @@ void RemoteRcUnits::onDisconnected()
     }
     mDataMutex.unlock();
 */
-    QList<QString> old = mLolecs.keys();
-    mLolecs.clear();
+    QList<QString> old = mRcUnits.keys();
+    mRcUnits.clear();
     emit unitsUpdated(mName, old);
     mSocket->connectToHost(mHost, mPort);
 }
@@ -99,8 +99,8 @@ void RemoteRcUnits::run()
     QMutexLocker lock(&mMutex);
     mSocket->disconnect(this);
     mSocket->disconnectFromHost();
-    QList<QString> old = mLolecs.keys();
-    mLolecs.clear();
+    QList<QString> old = mRcUnits.keys();
+    mRcUnits.clear();
     emit unitsUpdated(mName, old);
     delete mClient;
     delete mSocket;
@@ -109,9 +109,9 @@ void RemoteRcUnits::run()
 QList<RcUnitBase *> RemoteRcUnits::units()
 {
     QList<RcUnitBase*> units;
-    foreach(QString name, mLolecs.keys())
+    foreach(QString name, mRcUnits.keys())
     {
-        RcUnitHelp help = mLolecs.value(name);
+        RcUnitHelp help = mRcUnits.value(name);
         help.server = mName;
         units << new RemoteRcUnit(help, *mClient);
     }

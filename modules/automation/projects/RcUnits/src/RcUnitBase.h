@@ -32,7 +32,7 @@ public:
     virtual QMap<QString, QVariant> getConstants() const = 0;
     virtual QVariant call(const QByteArray& method, QList<QVariant> params) = 0;
     virtual RcUnitHelp getHelp() const = 0;
-    virtual QObject* lolec() = 0;
+    virtual QObject* rcUnit() = 0;
     virtual QString name() const = 0;
     virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };

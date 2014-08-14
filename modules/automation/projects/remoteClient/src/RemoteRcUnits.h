@@ -43,7 +43,7 @@ public:
     void startConnect();
 
 signals:
-    void unitsUpdated(const QString& remoteServerName, const QStringList& oldLolecs);
+    void unitsUpdated(const QString& remoteServerName, const QStringList& oldRcUnits);
 public slots:
     void setTimeout(double seconds);
 
@@ -59,7 +59,7 @@ private:
     int mPort;
     double mTimeout;
     QTcpSocket* mSocket;
-    QMap<QString, RcUnitHelp> mLolecs;
+    QMap<QString, RcUnitHelp> mRcUnits;
     RemoteRcUnitClient* mClient;
     QMutex mMutex;
     QWaitCondition mStartupWait;

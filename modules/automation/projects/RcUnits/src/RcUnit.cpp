@@ -49,7 +49,7 @@ RcUnit::RcUnit(const QString &name, const QString& configFile)
     mWrapperFactories[type] = new RcWrapperFactory<Pose2d>("Pose2d");
     setObjectName("RcUnit: " + name);
     mTcInvoker = 0;
-    mLolec = 0;
+    mRcUnit = 0;
     mHapticSensitivity = 1.0/64.0;
     mHapticForceFactor = 1.0/64.0;
     start();
@@ -69,15 +69,15 @@ void RcUnit::run()
 {
     {
         QMutexLocker lock(&mStartMutex);
-        mLolec = mLolecInterface->instance(*this, mConfigFile, mName);
+        mRcUnit = mRcUnitInterface->instance(*this, mConfigFile, mName);
         mStartWait.wakeAll();
     }
-    if(mLolec)
+    if(mRcUnit)
     {
-        setDesc(mLolecInterface->description());
+        setDesc(mRcUnitInterface->description());
         exec();
-        if(mLolec)
-            mLolecInterface->deleteInstance(mLolec);
+        if(mRcUnit)
+            mRcUnitInterface->deleteInstance(mRcUnit);
     }
 }
 
@@ -150,13 +150,13 @@ RcUnitHelp RcUnit::getHelp() const
 bool RcUnit::initialize(RcUnitInterface *plugin)
 {
     QMutexLocker lock(&mStartMutex);
-    mLolec = 0;
-    mLolecInterface = plugin;
+    mRcUnit = 0;
+    mRcUnitInterface = plugin;
     start();
     mStartWait.wait(&mStartMutex);
-    if(!mLolec)
+    if(!mRcUnit)
         return false;
-    const QMetaObject* meta = mLolec->metaObject();
+    const QMetaObject* meta = mRcUnit->metaObject();
     for(int i = 0; i<meta->methodCount(); i++)
     {
         QMetaMethod method = meta->method(i);
@@ -198,8 +198,8 @@ bool RcUnit::initialize(RcUnitInterface *plugin)
         else
             mMethods[unitName] = validMethods;
     }
-    if(mLolec)
-        mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons);
+    if(mRcUnit)
+        mTcInvoker = new TcInvoker(mRcUnit, mTcMethods.values(), mTcButtons);
     return true;
 }
 
@@ -354,7 +354,7 @@ QVariant RcUnit::call(const QByteArray &name, QList<QVariant> params)
             RcMethodInvoker invoker(m, mWrapperFactories);
             if(invoker.parseArguments(params, lastError))
             {
-                invoker.execute(mLolec);
+                invoker.execute(mRcUnit);
                 return invoker.returnValue();
             }
         }
@@ -378,7 +378,7 @@ QVariant RcUnit::call(const QByteArray &name, QList<QVariant> params)
     }
     else
     {
-        value = mLolecInterface->call(mLolec, name, params);
+        value = mRcUnitInterface->call(mRcUnit, name, params);
     }
     return value;
 }
@@ -424,7 +424,7 @@ const HapticResponse RcUnit::hapticMovement(const QVector3D &targetPositions)
 void RcUnit::hapticMovement(HapticResponse &data, bool readOnly)
 {
 
-    mHapticMethod.invoke(mLolec, Qt::DirectConnection, Q_ARG(QVector3D, data.position), Q_ARG(QVector3D, data.forces), Q_ARG(bool, readOnly));
+    mHapticMethod.invoke(mRcUnit, Qt::DirectConnection, Q_ARG(QVector3D, data.position), Q_ARG(QVector3D, data.forces), Q_ARG(bool, readOnly));
 }
 
 

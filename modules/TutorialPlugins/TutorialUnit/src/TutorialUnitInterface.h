@@ -58,7 +58,7 @@ public:
     QObject* instance(RcBase& rc, const QString& configFile, const QString& name);
 	
 	/**
-	* should return a small widget with status information about the lolec instance. 
+    * should return a small widget with status information about the rcUnit instance.
 	* the method is called after instance is called and the instance object is exactly the same
 	* if the plugin has no gui, this method may return 0.
 	*/

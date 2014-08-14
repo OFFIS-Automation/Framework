@@ -37,7 +37,7 @@ public:
     virtual QStringList getTelecontrolableUnits() = 0;
     virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
-    virtual QWidget* createLolecWidget(const QString& lolec) = 0;
+    virtual QWidget* createRcUnitWidget(const QString& rcUnit) = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
     virtual QList<QPair<QString, int> > breakpoints() const = 0;

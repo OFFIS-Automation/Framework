@@ -69,7 +69,7 @@ QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFil
     }
     hasInstance = true;
 
-    TutorialUnit* lolec = new TutorialUnit();
+    TutorialUnit* unit = new TutorialUnit();
 
     // add methods that can be called from the automation:
     // rc.addMethod(methodName, shortDesc, longDesc);
@@ -92,7 +92,7 @@ QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFil
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
     rc.registerButtonEvent("openGripper", Tc::LeftShoulderLowerButton);
     rc.registerButtonEvent("closeGripper", Tc::RightShoulderLowerButton);
-    return lolec;
+    return unit;
 }
 
 QWidget* TutorialUnitInterface::guiForInstance(QObject *instance)

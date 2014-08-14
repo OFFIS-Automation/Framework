@@ -46,9 +46,9 @@ public slots:
 private slots:
     void on_units_customContextMenuRequested(const QPoint &pos);
 
-    void on_actionAddLolec_triggered();
+    void on_actionAddRcUnit_triggered();
 
-    void on_actionRemoveLolec_triggered();
+    void on_actionRemoveRcUnit_triggered();
 
     void on_actionAddServer_triggered();
 

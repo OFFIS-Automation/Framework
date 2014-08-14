@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_LINUXGAMEPAD_HQT
-#define LOLECTOOLS_LINUXGAMEPAD_HQT
+#ifndef RCUNITTOOLS_LINUXGAMEPAD_HQT
+#define RCUNITTOOLS_LINUXGAMEPAD_HQT
 
 #include "Gamepad.h"
 #include "libjoystick/joystick.h"
@@ -41,4 +41,4 @@ protected:
     QString mName;
 };
 
-#endif //LOLECTOOLS_LINUXGAMEPAD_HQT
+#endif //RCUNITTOOLS_LINUXGAMEPAD_HQT

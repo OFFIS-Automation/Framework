@@ -56,10 +56,10 @@
     </item>
    </layout>
   </widget>
-  <action name="actionAddLolec">
+  <action name="actionAddRcUnit">
    <property name="icon">
     <iconset resource="../../images/images.qrc">
-     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+     <normaloff>:/hilecGui/addRcUnit.png</normaloff>:/hilecGui/addRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Add RC-Unit</string>
@@ -68,10 +68,10 @@
     <string>add a RC-Unit to the current project</string>
    </property>
   </action>
-  <action name="actionRemoveLolec">
+  <action name="actionRemoveRcUnit">
    <property name="icon">
     <iconset resource="../../images/images.qrc">
-     <normaloff>:/hilecGui/removeLolec.png</normaloff>:/hilecGui/removeLolec.png</iconset>
+     <normaloff>:/hilecGui/removeRcUnit.png</normaloff>:/hilecGui/removeRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Remove RC-Unit</string>
@@ -83,7 +83,7 @@
   <action name="actionAddServer">
    <property name="icon">
     <iconset resource="../../images/images.qrc">
-     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+     <normaloff>:/hilecGui/addRcUnit.png</normaloff>:/hilecGui/addRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Add RC-Unit Server</string>
@@ -92,7 +92,7 @@
   <action name="actionRemoveServer">
    <property name="icon">
     <iconset resource="../../images/images.qrc">
-     <normaloff>:/hilecGui/removeLolec.png</normaloff>:/hilecGui/removeLolec.png</iconset>
+     <normaloff>:/hilecGui/removeRcUnit.png</normaloff>:/hilecGui/removeRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>remove RC-Unit server</string>

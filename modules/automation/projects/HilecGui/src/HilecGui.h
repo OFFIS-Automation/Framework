@@ -63,7 +63,7 @@ protected slots:
 protected:
     QStringList allPythonFiles(QDir dir, int depth = 1);
     MainWindowInterface* mMainWindow;
-    QList<QDockWidget*> mLolecGuis;
+    QList<QDockWidget*> mRcUnitGuis;
     // add window objects here
     HilecGuiToolbar* toolbar;
     HilecInterface* hilec;

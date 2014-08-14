@@ -64,7 +64,7 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
     HilecInterface* hilec = HilecSingleton::hilec();
     foreach(const QString& name, hilec->rcUnits())
     {
-        QWidget* w = hilec->createLolecWidget(name);
+        QWidget* w = hilec->createRcUnitWidget(name);
         if(w)
         {
             QGroupBox* box = new QGroupBox(name);

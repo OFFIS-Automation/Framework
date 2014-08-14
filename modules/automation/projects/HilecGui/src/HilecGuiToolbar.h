@@ -49,11 +49,11 @@ private slots:
     void onScriptExecutionFinished();
     void on_actionResume_triggered();
 
-    void on_actionCreateLolec_triggered();
+    void on_actionCreateRcUnit_triggered();
 
-    void on_actionAddLolec_triggered();
+    void on_actionAddRcUnit_triggered();
 
-    void on_actionLolecHelp_triggered();
+    void on_actionRcUnitHelp_triggered();
 
     void on_actionCreateGamepadMapping_triggered();
 

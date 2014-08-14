@@ -73,7 +73,7 @@ void HilecGui::initialize(const QString&)
     connect(hilec, SIGNAL(breakpointHit(QString,int)), SIGNAL(focusLine(QString,int)));
     hilec->connect(this, SIGNAL(compileFile(QString)), SLOT(compileFile(QString)), Qt::QueuedConnection);
 
-    connect(rcUnits, SIGNAL(addPluginToProject()), toolbar, SLOT(on_actionAddLolec_triggered()));
+    connect(rcUnits, SIGNAL(addPluginToProject()), toolbar, SLOT(on_actionAddRcUnit_triggered()));
     closeProject();
 }
 

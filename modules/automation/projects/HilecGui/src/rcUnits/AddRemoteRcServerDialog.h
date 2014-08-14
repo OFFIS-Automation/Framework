@@ -37,7 +37,7 @@ private slots:
     void on_name_textChanged(const QString &arg1);
     void checkData();
 
-    void on_port_valueChanged(int arg1);
+    void on_port_valueChanged(int);
 
 private:
     Ui::AddRemoteRcServerDialog *ui;

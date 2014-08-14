@@ -31,7 +31,7 @@
 RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
     QObject()
 {
-    mLolecDir = rcUnitPluginDir;
+    mRcUnitDir = rcUnitPluginDir;
     mHaptic = 0;
     mGamepad = 0;
 }
@@ -73,13 +73,13 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
 }
 
 
-QWidget* RcUnitsBase::lolecGui(const QString &name)
+QWidget* RcUnitsBase::rcUnitGui(const QString &name)
 {
     if(!mUnits.contains(name))
         return 0;
-    RcUnitInterface *lolecInterface = loadPlugin(mTypes[name]);
-    if(lolecInterface)
-        return lolecInterface->guiForInstance(mUnits[name]->lolec());
+    RcUnitInterface *rcUnitInterface = loadPlugin(mTypes[name]);
+    if(rcUnitInterface)
+        return rcUnitInterface->guiForInstance(mUnits[name]->rcUnit());
     return 0;
 }
 
@@ -118,14 +118,14 @@ void RcUnitsBase::loadConfig(const QString &filename)
                 else
                 {
                     delete rcUnit;
-                    qCritical() << tr("Could not load lolec %1 because lolec type %2 did not create a valid instance, see log information").arg(name, type);
+                    qCritical() << tr("Could not load rcUnit %1 because rcUnit type %2 did not create a valid instance, see log information").arg(name, type);
                 }
             }
             else
-                qCritical() << tr("Could not load lolec %1 because lolec type %2 has not all required data, see log information.").arg(name, type);
+                qCritical() << tr("Could not load rcUnit %1 because rcUnit type %2 has not all required data, see log information.").arg(name, type);
         }
         else
-            qCritical() << tr("Could not load lolec %1 of type %2: %3").arg(name, type, error);
+            qCritical() << tr("Could not load rcUnit %1 of type %2: %3").arg(name, type, error);
     }
     settings.endArray();
     loadTcMasters(filename);
@@ -185,7 +185,7 @@ RcUnitInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
     names << type + ".dll" << type + ".dylib" << type + ".so";
     foreach(QString name, names)
     {
-        QString path = mLolecDir + "/" + name;
+        QString path = mRcUnitDir + "/" + name;
         if(QFileInfo(path).exists())
         {
             found = path;
@@ -210,27 +210,27 @@ RcUnitInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
             *errMsg = loader.errorString();
         return 0;
     }
-    RcUnitInterface* lolec = qobject_cast<RcUnitInterface*>(obj);
-    if(!lolec)
+    RcUnitInterface* rcUnit = qobject_cast<RcUnitInterface*>(obj);
+    if(!rcUnit)
     {
         if(errMsg)
-            *errMsg = tr("The object is no valid LolecInterface. Maybe its outdated?");
+            *errMsg = tr("The object is no valid RcUnitInterface. Maybe its outdated?");
     }
-    return lolec;
+    return rcUnit;
 }
 
-QVariant RcUnitsBase::call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params)
+QVariant RcUnitsBase::call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params)
 {
-    if(!mUnits.contains(lolec))
-        throw RcError(tr("rc-unit not found: %1").arg(QString(lolec)));
-    return mUnits[lolec]->call(method, params);
+    if(!mUnits.contains(rcUnit))
+        throw RcError(tr("rc-unit not found: %1").arg(QString(rcUnit)));
+    return mUnits[rcUnit]->call(method, params);
 }
 
-QVariant RcUnitsBase::getConstants(const QByteArray &lolec)
+QVariant RcUnitsBase::getConstants(const QByteArray &rcUnit)
 {
-    if(!mUnits.contains(lolec))
-        throw RcError(tr("rc-unit not found: %1").arg(QString(lolec)));
-    return mUnits[lolec]->getConstants();
+    if(!mUnits.contains(rcUnit))
+        throw RcError(tr("rc-unit not found: %1").arg(QString(rcUnit)));
+    return mUnits[rcUnit]->getConstants();
 }
 
 void RcUnitsBase::activateTelecontrol(const QString &unitName)

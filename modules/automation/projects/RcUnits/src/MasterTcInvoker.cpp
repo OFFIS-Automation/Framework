@@ -107,7 +107,7 @@ void MasterTcInvoker::initialize(QList<RcUnitBase*> units)
         }
         if(!tempUnitButtons.empty() || !tempUnitMethods.empty())
         {
-            mInvoker[unit->name()] = new TcInvoker(unit->lolec(), tempUnitMethods, tempUnitButtons);
+            mInvoker[unit->name()] = new TcInvoker(unit->rcUnit(), tempUnitMethods, tempUnitButtons);
         }
         tempUnitButtons.clear();
         tempUnitMethods.clear();

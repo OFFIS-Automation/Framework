@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_TCCONFIG_H
-#define LOLECTOOLS_TCCONFIG_H
+#ifndef RCUNITTOOLS_TCCONFIG_H
+#define RCUNITTOOLS_TCCONFIG_H
 
 #include <QList>
 
@@ -176,4 +176,4 @@ namespace Tc
             return NoJoystick;
     }
 }
-#endif //LOLECTOOLS_TCCONFIG_H
+#endif //RCUNITTOOLS_TCCONFIG_H

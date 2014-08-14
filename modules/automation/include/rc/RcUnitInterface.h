@@ -52,7 +52,7 @@ public:
     // telecontrol interface
     /**
      * @brief registers a method to be called by the gamepad
-     * The method registered with this function is periodically called if the operator uses the gamepad for this lolec.
+     * The method registered with this function is periodically called if the operator uses the gamepad for this rcUnit.
      * The period is 10ms, the operation should not need longer than this.
      * The method must be void and must have only doubles as parameters. Each of the parameters represents a joystick.
      * The values given to this function are [-1:1]. The gamepad method should realize a relative movement with the parameter as speed.
@@ -155,7 +155,7 @@ public:
     /**
      * @brief this function should return an instance of the RC-Unit controller
      * The function is called in a dedicated thread for this RC-Unit. Using of widgets or other GUI elements will crash the application
-     * The lolec is deleted using the deleteInstance method
+     * The rcUnit is deleted using the deleteInstance method
      * @param rc the above described interface; can be used to publish method of the controller to the automation or register telecontrol methods
      * @param configFilePath a path to a config file. Will be empty if needsConfigFile returns false. The config file may or may not exist on the hard drive
      * @param name The name of the RC-Unit in the automation, can be used for sensor data or logging
@@ -164,7 +164,7 @@ public:
     virtual QObject* instance(RcBase& rc, const QString& configFilePath, const QString& name) = 0;
 
     /**
-     * @brief can return a GUI for the lolec
+     * @brief can return a GUI for the rcUnit
      * the gui should be small and compact and should privide mostly read-only information
      * this method is called in the main thread. A parent will be assinged to the gui, also the gui will be shown automatically
      * (dont call show or setVisible in this method);

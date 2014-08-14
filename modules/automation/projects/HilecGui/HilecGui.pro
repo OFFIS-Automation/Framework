@@ -51,7 +51,7 @@ HEADERS += \
     src/scriptInteraction/ScriptProgress.h \
     src/scriptInteraction/ScriptOutput.h \
     src/scriptInteraction/ScriptInput.h \
-    src/createLolec/CreateLolecDialog.h \
+    src/createRcUnit/CreateRcUnitDialog.h \
     src/telecontrol/TelecontrolWidget.h \
     src/runConfigurations/ConfigurationListWidget.h \
     src/telecontrol/TelecontrolUnitWidget.h \
@@ -62,9 +62,9 @@ HEADERS += \
     src/ScriptErrors/ScriptErrorWidget.h \
     src/scriptInteraction/ScriptStringInput.h \
     src/telecontrol/TelecontrolHapticWidget.h \
-    src/createLolec/AddLolecWizard.h \
-    src/createLolec/SelectLolecWizardPage.h \
-    src/createLolec/DefineLolecWizardPage.h \
+    src/createRcUnit/AddRcUnitWizard.h \
+    src/createRcUnit/SelectRcUnitWizardPage.h \
+    src/createRcUnit/DefineRcUnitWizardPage.h \
     src/telecontrol/TelecontrolAssignmentWidget.h \
     src/telecontrol/ShowAssignmentButton.h \
     src/telecontrol/GamepadAssignmentWidget.h \
@@ -85,7 +85,7 @@ SOURCES += \
     src/scriptInteraction/ScriptProgress.cpp \
     src/scriptInteraction/ScriptOutput.cpp \
     src/scriptInteraction/ScriptInput.cpp \
-    src/createLolec/CreateLolecDialog.cpp \
+    src/createRcUnit/CreateRcUnitDialog.cpp \
     src/telecontrol/TelecontrolWidget.cpp \
     src/runConfigurations/ConfigurationListWidget.cpp \
     src/telecontrol/TelecontrolUnitWidget.cpp \
@@ -96,9 +96,9 @@ SOURCES += \
     src/ScriptErrors/ScriptErrorWidget.cpp \
     src/scriptInteraction/ScriptStringInput.cpp \
     src/telecontrol/TelecontrolHapticWidget.cpp \
-    src/createLolec/AddLolecWizard.cpp \
-    src/createLolec/SelectLolecWizardPage.cpp \
-    src/createLolec/DefineLolecWizardPage.cpp \
+    src/createRcUnit/AddRcUnitWizard.cpp \
+    src/createRcUnit/SelectRcUnitWizardPage.cpp \
+    src/createRcUnit/DefineRcUnitWizardPage.cpp \
     src/telecontrol/TelecontrolAssignmentWidget.cpp \
     src/telecontrol/ShowAssignmentButton.cpp \
     src/telecontrol/GamepadAssignmentWidget.cpp \
@@ -116,7 +116,7 @@ FORMS += \
     src/scriptInteraction/ScriptProgress.ui \
     src/scriptInteraction/ScriptOutput.ui \
     src/scriptInteraction/ScriptInput.ui \
-    src/createLolec/CreateLolecDialog.ui \
+    src/createRcUnit/CreateRcUnitDialog.ui \
     src/telecontrol/TelecontrolWidget.ui \
     src/telecontrol/TelecontrolUnitWidget.ui \
     src/scriptInteraction/ScriptInfoPanel.ui \
@@ -126,7 +126,7 @@ FORMS += \
     src/ScriptErrors/ScriptErrorWidget.ui \
     src/scriptInteraction/ScriptStringInput.ui \
     src/telecontrol/TelecontrolHapticWidget.ui \
-    src/createLolec/AddLolecWizard.ui \
+    src/createRcUnit/AddRcUnitWizard.ui \
     src/telecontrol/TelecontrolAssignmentWidget.ui \
     src/telecontrol/ShowAssignmentButton.ui \
     src/telecontrol/GamepadAssignmentWidget.ui \
@@ -136,6 +136,9 @@ FORMS += \
 
 RESOURCES += \
     images/images.qrc
+
+SUBDIRS += \
+    ../../data/template/CustomRcUnit.pro
 
 
 

@@ -41,11 +41,11 @@ public:
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
-    QWidget * lolecGui(const QString &name);
+    QWidget * rcUnitGui(const QString &name);
     virtual void loadConfig(const QString &filename);
     virtual void releaseConfig();
-    QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
-    QVariant getConstants(const QByteArray& lolec);
+    QVariant call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params);
+    QVariant getConstants(const QByteArray& rcUnit);
     void activateTelecontrol(const QString& unit);
     void deactivateTelecontrol();
     void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
@@ -70,9 +70,9 @@ protected:
     RcUnitInterface *loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;
-    QString mLolecDir;
+    QString mRcUnitDir;
     Gamepad* mGamepad;
-    QStringList mTelecontrolLolecs;
+    QStringList mTelecontrolRcUnits;
     QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
     HapticInterface* mHaptic;
     QMap<QString, MasterTcInvoker*> mMasterGamepads;

@@ -96,9 +96,9 @@ void HilecCore::releaseConfig()
     RcUnits::instance()->releaseConfig();
 }
 
-QWidget* HilecCore::createLolecWidget(const QString &lolec)
+QWidget* HilecCore::createRcUnitWidget(const QString &rcUnit)
 {
-    return RcUnits::instance()->lolecGui(lolec);
+    return RcUnits::instance()->rcUnitGui(rcUnit);
 }
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)

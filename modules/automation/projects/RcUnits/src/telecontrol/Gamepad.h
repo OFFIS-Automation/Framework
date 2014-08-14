@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_GAMEPAD_HQT
-#define LOLECTOOLS_GAMEPAD_HQT
+#ifndef RCUNITTOOLS_GAMEPAD_HQT
+#define RCUNITTOOLS_GAMEPAD_HQT
 
 #include <QThread>
 #include <QMap>
@@ -47,4 +47,4 @@ private:
     Q_OBJECT
 };
 
-#endif //LOLECTOOLS_GAMEPAD_HQT
+#endif //RCUNITTOOLS_GAMEPAD_HQT

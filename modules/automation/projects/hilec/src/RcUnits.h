@@ -24,7 +24,7 @@
 #include <RcUnitsBase.h>
 
 class QXmlStreamReader;
-class LolecInterface;
+class RcUnitInterface;
 class RcUnit;
 class Gamepad;
 class RemoteRcUnits;
@@ -33,7 +33,7 @@ class RcUnits : public RcUnitsBase
 {
     Q_OBJECT
 public:
-    RcUnits(const QString& lolecDir);
+    RcUnits(const QString& rcUnitDir);
     virtual ~RcUnits();
     static RcUnits* instance() { return mInstance; }
     void loadConfig(const QString &filename);
@@ -41,10 +41,10 @@ public:
 signals:
     void unitListUpdated(bool partialUpdate = false);
 private slots:
-    void onRemoteLolecsListed(const QString& remoteServerName, const QStringList& oldLolecs);
+    void onRemoteRcUnitsListed(const QString& remoteServerName, const QStringList& oldRcUnits);
 private:
     static RcUnits* mInstance;
-    QMap<QString, RemoteRcUnits*> mRemoteLolecs;
+    QMap<QString, RemoteRcUnits*> mRemoteRcUnits;
 };
 
 #endif // RCUNITS_H

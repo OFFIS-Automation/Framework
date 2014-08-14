@@ -161,7 +161,7 @@ public:
      * @param name The name of the RC-Unit in the automation, can be used for sensor data or logging
      * @return the created RC-Unit object or 0 if there was an error, use qCritical() for logging purposes
      */
-    virtual QObject* instance(RcBase& rc, const QString& configFilePath, const QString& name) = 0;
+    virtual UserRcUnit* instance(RcBase& rc, const QString& configFilePath, const QString& name) = 0;
 
     /**
      * @brief can return a GUI for the rcUnit

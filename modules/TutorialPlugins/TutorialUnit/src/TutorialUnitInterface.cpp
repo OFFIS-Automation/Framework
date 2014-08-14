@@ -60,7 +60,7 @@ bool TutorialUnitInterface::createConfig(const QString& configFile, QWidget* par
 	return true;
 }
 
-QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFile */, const QString& /* name */)
+UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFile */, const QString& /* name */)
 {
     if(hasInstance)
     {

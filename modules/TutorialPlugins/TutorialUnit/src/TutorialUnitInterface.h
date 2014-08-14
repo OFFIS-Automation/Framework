@@ -55,7 +55,7 @@ public:
 	* functions to the rc object. Config file is only valid when the plugin needs a config file.
 	* the name contains the user-given name given for this instance
 	*/
-    QObject* instance(RcBase& rc, const QString& configFile, const QString& name);
+    UserRcUnit* instance(RcBase& rc, const QString& configFile, const QString& name);
 	
 	/**
     * should return a small widget with status information about the rcUnit instance.

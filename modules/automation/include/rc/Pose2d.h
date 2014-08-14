@@ -17,7 +17,6 @@
 #ifndef HILEC_POSE2D_H
 #define HILEC_POSE2D_H
 
-
 class Pose2d
 {
 public:
@@ -38,5 +37,6 @@ inline const Pose2d operator-(const Pose2d& p1, const Pose2d& p2)
 {
     return Pose2d(p1.x - p2.x, p1.y - p2.y, p1.phi - p2.phi);
 }
+
 
 #endif // HILEC_POSE2D_H

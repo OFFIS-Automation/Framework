@@ -21,8 +21,9 @@
 #include <QObject>
 #include <SensorDataWriter.h>
 #include <SensorTraceExport.h>
+#include <rc/types/UserRcUnit.h>
 
-class SensorSystemRcUnit : public QObject
+class SensorSystemRcUnit : public UserRcUnit
 {
     Q_OBJECT
 public:

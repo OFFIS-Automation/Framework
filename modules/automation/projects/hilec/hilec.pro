@@ -104,7 +104,9 @@ HEADERS += \
     ../../include/rc/RcUnitInterface.h \
     ../../include/rc/types/UserRcUnit.h \
     ../../include/rc/Pose2d.h \
-    ../../include/rc/types/HwRcUnit.h
+    ../../include/rc/types/HwRcUnit.h \
+    ../../include/rc/types/SimpleRobotRcUnit.h \
+    ../../include/rc/types/RobotRcUnit.h
 
 SOURCES += \
     HilecPlugin.cpp \

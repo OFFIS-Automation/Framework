@@ -31,7 +31,7 @@ QString OlvisRcUnitInterface::description() const
     return description;
 }
 
-QObject* OlvisRcUnitInterface::instance(RcBase &rc, const QString &configFile, const QString& /* name */)
+UserRcUnit *OlvisRcUnitInterface::instance(RcBase &rc, const QString &configFile, const QString& /* name */)
 {
     Q_UNUSED(configFile);
     if(!OlvisCoreInterface::hasInstance())

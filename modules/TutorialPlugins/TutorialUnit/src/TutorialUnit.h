@@ -22,16 +22,20 @@
 #include <rc/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
+#include <rc/types/RobotRcUnit.h>
 
-class TutorialUnit : public QObject
+class TutorialUnit : public RobotRcUnit
 {
     Q_OBJECT
 public:
     TutorialUnit();
     void setScene(GraphicsView* scene);
+    QVariant rcGetPosition();
+    void rcSetPosition(const QVariant& var);
 public slots:
-    void acquireHardware();
-    void releaseHardware();
+    void stop();
+    void acquire();
+    void release();
     Pose2d getPosition();
     void setPosition(QPointF targetPosition);
     void setPosition(double x, double y) { setPosition(QPointF(x, y)); }
@@ -47,7 +51,6 @@ public slots:
 private slots:
     void onMovementFinished();
 signals:
-    void connectStatusChanged(bool connected);
     void positionUpdated(QPointF pos, qreal rot);
 
     void moveRel(QPointF pos, int moveTime = -1);

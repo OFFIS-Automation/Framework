@@ -29,7 +29,7 @@ QString SensorSystemRcUnitInterface::description() const
     return desc;
 }
 
-QObject *SensorSystemRcUnitInterface::instance(RcBase &rc, const QString &, const QString &)
+UserRcUnit *SensorSystemRcUnitInterface::instance(RcBase &rc, const QString &, const QString &)
 {
     rc.addMethod("getAllSensors", "Retuns a list of sensor names", "Returns a list of active and inactive sensors.");
     rc.addMethod("getActiveSensors", "Retuns a list of sensor names", "Returns a list of all active sensors.");

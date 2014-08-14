@@ -29,7 +29,7 @@ public:
     virtual bool needsConfigFile() const { return false; }
     virtual QString name() const { return "Vision control unit"; }
     virtual QString description() const;
-    QObject* instance(RcBase &rc, const QString &configFile, const QString &name);
+    UserRcUnit* instance(RcBase &rc, const QString &configFile, const QString &name);
     QWidget* guiForInstance(QObject *){ return 0; }
 
 };

@@ -19,6 +19,7 @@
 #define HWRCUNIT_H
 
 #include "UserRcUnit.h"
+#include <QVariant>
 
 /*
  * This is the base class for RC-Units that wrap an external hardware.
@@ -26,19 +27,36 @@
  */
 class HwRcUnit : public UserRcUnit
 {
-    Q_OBJECT
 public:
-    virtual bool acquire() = 0;
-    virtual void release() = 0;
+    virtual UserRcUnitType rcType() { return HwRcUnitType; }
+
 public slots:
-    void acquireHardware() { emit systemStatusChanged(acquire()); }
-    void releaseHardware() { emit systemStatusChanged(false); }
+    /**
+     * The acquire method connects the RcUnit to the real hardware
+     * The methud MUST emit the hwConnectionStatusChanged signal with the connection status
+     * after the acquire operation
+     * If the acquire method was not successfull, it must throw an RcError
+     */
+    virtual void acquire() = 0;
+    /**
+     * The release method disconnects the RcUnit from the real hardware
+     * The methud MUST emit the hwConnectionStatusChanged signal with the connection status
+     * after the relelase operation
+     * If the acquire method was not successfull, it must throw an RcError
+     */
+    virtual void release() = 0;
+
 signals:
-    void systemStatusChanged(bool acquired);
+    /**
+     * emit this signal every time the connection status is changed
+     **/
+    void hwConnectionStatusChanged(bool acuired);
 protected:
     HwRcUnit() {}
-    virtual ~HwRcUnit() {}
 
+private:
+    Q_DISABLE_COPY(HwRcUnit)
+    Q_OBJECT
 };
 
 #endif // HWRCUNIT_H

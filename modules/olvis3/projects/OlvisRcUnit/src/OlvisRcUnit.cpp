@@ -23,8 +23,7 @@
 #include "SignalWaiter.h"
 
 
-OlvisRcUnit::OlvisRcUnit() :
-    QObject()
+OlvisRcUnit::OlvisRcUnit()
 {
 }
 

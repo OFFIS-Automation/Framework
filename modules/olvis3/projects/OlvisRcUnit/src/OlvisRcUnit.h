@@ -19,8 +19,9 @@
 
 #include <QObject>
 #include <OlvisCoreInterface.h>
+#include <rc/types/UserRcUnit.h>
 
-class OlvisRcUnit : public QObject
+class OlvisRcUnit : public UserRcUnit
 {
     Q_OBJECT
 public:

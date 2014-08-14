@@ -18,6 +18,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <stdexcept>
+#include <QVector3D>
 
 TutorialUnit::TutorialUnit()
 {
@@ -39,18 +40,39 @@ void TutorialUnit::setScene(GraphicsView *scene)
     connect(scene, SIGNAL(positionUpdate(QPointF,qreal)), this, SIGNAL(positionUpdated(QPointF,qreal)));
 }
 
-void TutorialUnit::acquireHardware()
+QVariant TutorialUnit::rcGetPosition()
+{
+    Pose2d pos = getPosition();
+    return QVector3D(pos.x, pos.y, pos.phi);
+}
+
+void TutorialUnit::rcSetPosition(const QVariant &var)
+{
+    if(var.canConvert(QVariant::Vector3D))
+    {
+        QVector3D vec = var.value<QVector3D>();
+        setPosition(vec.toPointF());
+        setRotation(vec.z());
+    }
+}
+
+void TutorialUnit::stop()
+{
+
+}
+
+void TutorialUnit::acquire()
 {
     QMutexLocker lock(&mMutex);
     mAcquired = true;
-    emit connectStatusChanged(true);
+    emit hwConnectionStatusChanged(true);
 }
 
-void TutorialUnit::releaseHardware()
+void TutorialUnit::release()
 {
     QMutexLocker lock(&mMutex);
     mAcquired = false;
-    emit connectStatusChanged(false);
+    emit hwConnectionStatusChanged(true);
 }
 
 Pose2d TutorialUnit::getPosition()

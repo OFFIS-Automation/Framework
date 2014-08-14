@@ -23,11 +23,25 @@
 /*
  * This is the basic class for RcUnits.
 */
+
+enum UserRcUnitType
+{
+    BaseRcUnitType,
+    HwRcUnitType,
+    SimpleRobotRcUnitType,
+    RobotRcUnitType
+};
+
 class UserRcUnit : public QObject
 {
+public:
+    virtual ~UserRcUnit() {}
+    virtual UserRcUnitType rcType() { return BaseRcUnitType; }
 protected:
     UserRcUnit() {}
-    virtual ~UserRcUnit() {}
+
+private:
+    Q_DISABLE_COPY(UserRcUnit)
 };
 
 

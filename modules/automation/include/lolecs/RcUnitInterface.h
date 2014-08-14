@@ -14,13 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECINTERFACE_H
-#define LOLECINTERFACE_H
+#ifndef RCUNITINTERFACE_H
+#define RCUNITINTERFACE_H
+
 
 #include <QObject>
 #include <QVariant>
 
 #include "RcExceptions.h"
+#include "types/HwRcUnit.h"
 #include "../telecontrol/TcConfig.h"
 
 class RcWrapperFactoryItf;
@@ -102,7 +104,7 @@ public:
 
 };
 
-class LolecInterface
+class RcUnitInterface
 {
 public:
     /**
@@ -192,11 +194,11 @@ public:
         { Q_UNUSED(instance); Q_UNUSED(params); throw RcError(QObject::tr("No such method: %1").arg(QString(methodName))); }
 
 };
-#define LolecInterface_iid "offis.automation.RcInterface/2.4"
-Q_DECLARE_INTERFACE(LolecInterface, LolecInterface_iid)
+#define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.0"
+Q_DECLARE_INTERFACE(RcUnitInterface, RcUnitInterface_iid)
 
 #if QT_VERSION < 0x050000
 #define Q_PLUGIN_METADATA(x)
 #endif
 
-#endif // LOLECINTERFACE_H
+#endif // RCUNITINTERFACE_H

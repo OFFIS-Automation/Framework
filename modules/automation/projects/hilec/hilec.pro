@@ -82,11 +82,9 @@ HEADERS += \
     src/RcUnitInvoker.h \
     ../../include/core/RcUnitHelp.h \
     src/OlvisSingleton.h \
-    ../../include/lolecs/LolecInterface.h \
     ../../include/lolecs/RcStruct.h \
     ../../include/lolecs/RcRepeatable.h \
     ../../include/lolecs/RcExceptions.h \
-    ../../include/lolecs/LolecInterface.h \
     src/PythonDebugger.h \
     src/UserRequestManager.h \
     src/PythonTypeConverter.h \
@@ -103,7 +101,10 @@ HEADERS += \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
     ../../include/telecontrol/TcConfig.h \
-    ../../include/core/TelecontrolConfig.h
+    ../../include/core/TelecontrolConfig.h \
+    ../../include/lolecs/RcUnitInterface.h \
+    ../../include/lolecs/types/UserRcUnit.h \
+    ../../include/lolecs/types/HwRcUnit.h
 
 SOURCES += \
     HilecPlugin.cpp \

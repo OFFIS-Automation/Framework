@@ -19,7 +19,7 @@
 
 #include <QStringList>
 #include <QDebug>
-#include "LolecInterface.h"
+#include "RcUnitInterface.h"
 
 class RcArgumentWrapper
 {

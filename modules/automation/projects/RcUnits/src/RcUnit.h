@@ -25,7 +25,7 @@
 
 #include <lolecs/RcStruct.h>
 #include <core/RcUnitHelp.h>
-#include <lolecs/LolecInterface.h>
+#include <lolecs/RcUnitInterface.h>
 #include <lolecs/Pose2d.h>
 
 Q_DECLARE_METATYPE(Pose2d)

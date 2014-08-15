@@ -32,11 +32,11 @@ public:
     explicit HilecGuiToolbar(QWidget *parent = 0);
     ~HilecGuiToolbar();
     void createMenu(QMenu* menu);
+    void addHelpToMenu(QMenu* menu);
 
 signals:
     void aboutToRunFile(QString);
     void runFile(QString);
-    void showHelpWidget();
     void createGamepadMapping();
     void addRcServer();
 public slots:
@@ -48,15 +48,9 @@ private slots:
     void onScriptExecutionStarted();
     void onScriptExecutionFinished();
     void on_actionResume_triggered();
-
     void on_actionCreateLolec_triggered();
-
     void on_actionAddLolec_triggered();
-
-    void on_actionLolecHelp_triggered();
-
     void on_actionCreateGamepadMapping_triggered();
-
     void on_actionAddRcServer_triggered();
 
 private:

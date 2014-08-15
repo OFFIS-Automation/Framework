@@ -33,6 +33,7 @@
     <addaction name="actionOpen_project"/>
     <addaction name="actionNew_project"/>
     <addaction name="actionClose_project"/>
+    <addaction name="actionReload_project"/>
     <addaction name="actionRecent_projects"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -143,12 +144,24 @@
     <string>About Qt</string>
    </property>
   </action>
+  <action name="actionReload_project">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/arrow_refresh.png</normaloff>:/img/arrow_refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reload project</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload the current project</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
   <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
-  <include location="../images/images.qrc"/>
   <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
+  <include location="../images/images.qrc"/>
  </resources>
  <connections>
   <connection>

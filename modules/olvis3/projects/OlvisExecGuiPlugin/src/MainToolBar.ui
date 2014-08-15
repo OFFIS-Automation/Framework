@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
-    <height>40</height>
+    <width>309</width>
+    <height>34</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,10 +22,10 @@
      <normaloff>:/olvisExecGui/play.png</normaloff>:/olvisExecGui/play.png</iconset>
    </property>
    <property name="text">
-    <string>Run configuration</string>
+    <string>Run script</string>
    </property>
    <property name="toolTip">
-    <string>Starts or resumes the current configuration</string>
+    <string>Starts or resumes the current script</string>
    </property>
   </action>
   <action name="actionStop">
@@ -37,10 +37,10 @@
      <normaloff>:/olvisExecGui/stop.png</normaloff>:/olvisExecGui/stop.png</iconset>
    </property>
    <property name="text">
-    <string>Stop execution</string>
+    <string>Stop script</string>
    </property>
    <property name="toolTip">
-    <string>Stops the  current run</string>
+    <string>Stops the current script</string>
    </property>
   </action>
   <action name="actionProblems">
@@ -194,8 +194,8 @@
   <addaction name="actionSave"/>
  </widget>
  <resources>
-  <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
   <include location="../images/images.qrc"/>
+  <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
  </resources>
  <connections>
   <connection>

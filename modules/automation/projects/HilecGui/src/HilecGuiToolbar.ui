@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Automation toolbar</string>
+   <string>Scripting toolbar</string>
   </property>
   <action name="actionResume">
    <property name="icon">
@@ -121,21 +121,6 @@
     <string>add a RC-Unit to the current project</string>
    </property>
   </action>
-  <action name="actionLolecHelp">
-   <property name="icon">
-    <iconset resource="../images/images.qrc">
-     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
-   </property>
-   <property name="text">
-    <string>Automation help</string>
-   </property>
-   <property name="toolTip">
-    <string>show automation and plugin command help</string>
-   </property>
-   <property name="shortcut">
-    <string>F1</string>
-   </property>
-  </action>
   <action name="actionAutomationRunning">
    <property name="icon">
     <iconset resource="../images/images.qrc">
@@ -176,6 +161,21 @@
    </property>
    <property name="text">
     <string>Add RC-Unit server</string>
+   </property>
+  </action>
+  <action name="actionLolecHelp">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Automation help</string>
+   </property>
+   <property name="toolTip">
+    <string>Show automation and plugin command help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <addaction name="actionResume"/>

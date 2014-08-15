@@ -24,6 +24,9 @@
    <property name="toolTip">
     <string>Open a file</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="icon">
@@ -105,6 +108,9 @@
    <property name="text">
     <string>Close current file</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
    <property name="visible">
     <bool>true</bool>
    </property>
@@ -183,6 +189,9 @@
    <property name="toolTip">
     <string>Undo the last action</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
   </action>
   <action name="actionRedo">
    <property name="enabled">
@@ -198,6 +207,9 @@
    <property name="toolTip">
     <string>Redo the last action</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
   </action>
   <action name="actionCut">
    <property name="icon">
@@ -209,6 +221,9 @@
    </property>
    <property name="toolTip">
     <string>Cut the current text</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
   <action name="actionCopy">
@@ -222,6 +237,9 @@
    <property name="toolTip">
     <string>Copy the selected text</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="actionPaste">
    <property name="icon">
@@ -233,6 +251,9 @@
    </property>
    <property name="toolTip">
     <string>Paste the copied or cut text</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
   <action name="actionZoomToNormal">

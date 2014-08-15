@@ -57,11 +57,20 @@ void HilecGuiToolbar::createMenu(QMenu *menu)
 {
     if(menu->actions().size() > 0)
         menu->addSeparator();
-    menu->addAction(ui->actionLolecHelp);
     menu->addAction(ui->actionCreateLolec);
     menu->addAction(ui->actionAddLolec);
     menu->addAction(ui->actionAddRcServer);
     menu->addAction(ui->actionCreateGamepadMapping);
+}
+
+void HilecGuiToolbar::addHelpToMenu(QMenu *menu)
+{
+    if(menu->actions().size() > 0){
+        menu->insertAction(menu->actions().first(), ui->actionLolecHelp);
+        menu->addSeparator();
+    } else {
+        menu->addAction(ui->actionLolecHelp);
+    }
 }
 
 void HilecGuiToolbar::on_actionCreateLolec_triggered()
@@ -82,11 +91,6 @@ void HilecGuiToolbar::on_actionAddLolec_triggered()
     }
 }
 
-void HilecGuiToolbar::on_actionLolecHelp_triggered()
-{
-    emit showHelpWidget();
-}
-
 void HilecGuiToolbar::onScriptExecutionStarted()
 {
     mRunning = true;
@@ -100,7 +104,6 @@ void HilecGuiToolbar::onScriptExecutionFinished()
     ui->actionAutomationIdle->setVisible(true);
     ui->actionAutomationRunning->setVisible(false);
 }
-
 
 void HilecGuiToolbar::setEnabled(bool enabled)
 {

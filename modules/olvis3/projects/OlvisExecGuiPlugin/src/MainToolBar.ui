@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Vision toolbar</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QToolBar { border: 0px }</string>
+  </property>
   <action name="actionRun">
    <property name="checkable">
     <bool>true</bool>

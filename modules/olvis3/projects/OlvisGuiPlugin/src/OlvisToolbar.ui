@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>OlvisToolbar</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QToolBar { border: 0px }</string>
+  </property>
   <action name="actionCreatePlugin">
    <property name="enabled">
     <bool>true</bool>

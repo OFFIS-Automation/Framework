@@ -34,6 +34,7 @@ PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, 
     mToolBar->setIconSize(QSize(cButtonWidth, 26));
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     mToolBar->setObjectName("perspectiveToolbar");
+    mToolBar->setStyleSheet("QToolBar { border: 0px }");
     QAction* a = mToolBar->addAction(QIcon(":/img/newPerspective.png"), tr("New\nperspective"), this, SLOT(createPerspective()));
     a->setToolTip(tr("Create new perspective from current one"));
     mResetAction = mToolBar->addAction(QIcon(":/img/resetPerspective.png"), tr("Reset\nperspective"), this, SLOT(resetPerspectives()));

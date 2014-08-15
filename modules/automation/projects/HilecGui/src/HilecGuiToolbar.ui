@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>40</height>
+    <height>34</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Scripting toolbar</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QToolBar { border: 0px }</string>
   </property>
   <action name="actionResume">
    <property name="icon">
@@ -19,10 +22,10 @@
      <normaloff>:/hilecGui/resume.png</normaloff>:/hilecGui/resume.png</iconset>
    </property>
    <property name="text">
-    <string>Start/Resume script</string>
+    <string>Start / resume script</string>
    </property>
    <property name="toolTip">
-    <string>Start/Resume script</string>
+    <string>Start / resume script</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
@@ -118,7 +121,7 @@
     <string>Add RC-Unit to project</string>
    </property>
    <property name="toolTip">
-    <string>add a RC-Unit to the current project</string>
+    <string>Add a RC-Unit to the current project</string>
    </property>
   </action>
   <action name="actionAutomationRunning">

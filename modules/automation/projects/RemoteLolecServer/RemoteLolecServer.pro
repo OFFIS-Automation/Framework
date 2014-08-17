@@ -38,8 +38,8 @@ LIBS += -L$${targetDir} -lLogWidget
 
 SIGNALDEFS = $${PWD}/../remoteClient/remoteSignals/RemoteRcUnit.signals
 SIGNALTARGET = $${PWD}/src/remoteSignals/
-SIGNALHEADER = remoteRcUnitServer.h
-SIGNALSOURCE= RemoteRcUnitsServer.cpp
+SIGNALHEADER = remoteRcUnitServerBase.h
+SIGNALSOURCE= RemoteRcUnitsServerBase.cpp
 createSignalProxy.target = $${SIGNALTARGET}$${SIGNALHEADER}
 
 

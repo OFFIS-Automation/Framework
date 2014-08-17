@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QToolBar { border: 0px }</string>
+  </property>
   <property name="iconSize">
    <size>
     <width>20</width>

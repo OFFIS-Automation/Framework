@@ -23,8 +23,6 @@
 #include <QMenuBar>
 #include <QToolBar>
 
-
-
 MainWindow::MainWindow(QWidget *parent, bool setupCentral) :
     QMainWindow(parent) , mOther(0)
 {

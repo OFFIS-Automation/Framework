@@ -149,18 +149,24 @@ QObject* HilecGui::getConnectObject()
 void HilecGui::addElements(MainWindowInterface* mainWindow)
 {
     mMainWindow = mainWindow;
-    mainWindow->addDockWidget(Qt::BottomDockWidgetArea, scriptOutput, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, scriptUi, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, rcUnits, tr("Automation"));
-    mainWindow->addDockWidget(Qt::TopDockWidgetArea, help, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, debugVars, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, callStack, tr("Automation"));
-    mainWindow->addDockWidget(Qt::BottomDockWidgetArea, errors, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, runConfigurations, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, telecontrol, tr("Automation"));
-    mainWindow->addDockWidget(Qt::TopDockWidgetArea, rcContainer, tr("Automation"));
-    mainWindow->addToolBar(toolbar, tr("Automation"));
-    toolbar->createMenu(&mainWindow->getMenu(tr("Automation")));
+    mainWindow->addToolBar(toolbar, tr("RC-Unit"));
+    mainWindow->addToolBar(toolbar, tr("Scripting"));
+
+    mainWindow->addDockWidget(Qt::BottomDockWidgetArea, scriptOutput, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, scriptUi, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::TopDockWidgetArea, help, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, debugVars, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, callStack, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::BottomDockWidgetArea, errors, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, runConfigurations, tr("Scripting"));
+
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, rcUnits, tr("RC-Unit"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, telecontrol, tr("RC-Unit"));
+    mainWindow->addDockWidget(Qt::TopDockWidgetArea, rcContainer, tr("RC-Unit"));
+
+    toolbar->createMenu(&mainWindow->getMenu(tr("RC-Unit")));
+    toolbar->addHelpToMenu(&mainWindow->getMenu(tr("Help")));
+
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Automation"));
     perspective.setCentralWidget(help, 1);
     perspective.addDockWidget(scriptOutput);

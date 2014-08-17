@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>40</height>
+    <height>34</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Automation toolbar</string>
+   <string>Scripting toolbar</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QToolBar { border: 0px }</string>
   </property>
   <action name="actionResume">
    <property name="icon">
@@ -19,10 +22,10 @@
      <normaloff>:/hilecGui/resume.png</normaloff>:/hilecGui/resume.png</iconset>
    </property>
    <property name="text">
-    <string>Start/Resume script</string>
+    <string>Start / resume script</string>
    </property>
    <property name="toolTip">
-    <string>Start/Resume script</string>
+    <string>Start / resume script</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
@@ -118,22 +121,7 @@
     <string>Add RC-Unit to project</string>
    </property>
    <property name="toolTip">
-    <string>add a RC-Unit to the current project</string>
-   </property>
-  </action>
-  <action name="actionRcUnitHelp">
-   <property name="icon">
-    <iconset resource="../images/images.qrc">
-     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
-   </property>
-   <property name="text">
-    <string>Automation help</string>
-   </property>
-   <property name="toolTip">
-    <string>show automation and plugin command help</string>
-   </property>
-   <property name="shortcut">
-    <string>F1</string>
+    <string>Add a RC-Unit to the current project</string>
    </property>
   </action>
   <action name="actionAutomationRunning">
@@ -176,6 +164,21 @@
    </property>
    <property name="text">
     <string>Add RC-Unit server</string>
+   </property>
+  </action>
+  <action name="actionLolecHelp">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/hilecGui/help.png</normaloff>:/hilecGui/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Automation help</string>
+   </property>
+   <property name="toolTip">
+    <string>Show automation and plugin command help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <addaction name="actionResume"/>

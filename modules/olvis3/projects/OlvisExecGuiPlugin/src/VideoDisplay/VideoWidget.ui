@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Video</string>
+   <string>Image and video display</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <property name="enabled">

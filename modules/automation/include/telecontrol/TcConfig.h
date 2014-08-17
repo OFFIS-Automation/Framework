@@ -105,23 +105,23 @@ namespace Tc
     {
         switch(button){
             case NorthButton:
-                return "north button";
+                return "North button";
             case SouthButton:
-                return "south button";
+                return "South button";
             case WestButton:
-                return "west button";
+                return "West button";
             case EastButton:
-                return "east button";
+                return "East button";
             case LeftShoulderUpperButton:
-                return "left shoulder upper button";
+                return "Left shoulder upper button";
             case LeftShoulderLowerButton:
-                return "left shoulder lower button";
+                return "Left shoulder lower button";
             case RightShoulderUpperButton:
-                return "right shoulder upper button";
+                return "Right shoulder upper button";
             case RightShoulderLowerButton:
-                return "right shoulder lower button";
+                return "Right shoulder lower button";
             default:
-                return "unknown button";
+                return "Unknown button";
         }
     }
 

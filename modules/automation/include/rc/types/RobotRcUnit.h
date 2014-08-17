@@ -18,7 +18,7 @@
 #ifndef ROBOTRCUNIT_H
 #define ROBOTRCUNIT_H
 
-#include "SimpleRobotRcUnit.h"
+#include "HwRcUnit.h"
 #include <QVariant>
 
 class RobotRcUnit : public HwRcUnit

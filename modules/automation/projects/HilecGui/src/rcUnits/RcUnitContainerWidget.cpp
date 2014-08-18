@@ -65,29 +65,30 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
             }
         }
     }
-
-    if(splitter)
-    {
-        ui->layout->removeWidget(splitter);
-        delete splitter;
-    }
-    mFlagWidgets.clear();
-    splitter = new QSplitter(mOrientation, this);
-    ui->layout->addWidget(splitter);
-
-
-    HilecInterface* hilec = HilecSingleton::hilec();
-    foreach(const QString& name, hilec->rcUnits())
-    {
-        RcUnitHelp help = hilec->getUnitHelp(name);
-        if(!help.flags.empty())
+    else {
+        if(splitter)
         {
-            RcUnitFlagWidget* w = new RcUnitFlagWidget(help);
-            mFlagWidgets[name] = w;
-            splitter->addWidget(w);
+            ui->layout->removeWidget(splitter);
+            delete splitter;
         }
+        mFlagWidgets.clear();
+        splitter = new QSplitter(mOrientation, this);
+        ui->layout->addWidget(splitter);
+
+
+        HilecInterface* hilec = HilecSingleton::hilec();
+        foreach(const QString& name, hilec->rcUnits())
+        {
+            RcUnitHelp help = hilec->getUnitHelp(name);
+            if(!help.flags.empty())
+            {
+                RcUnitFlagWidget* w = new RcUnitFlagWidget(help);
+                mFlagWidgets[name] = w;
+                splitter->addWidget(w);
+            }
+        }
+        splitter->addWidget(new QWidget());
     }
-    splitter->addWidget(new QWidget());
 }
 
 void RcUnitContainerWidget::unitFlagsUpdated(const QString &unitName, const QVariantList &flags)

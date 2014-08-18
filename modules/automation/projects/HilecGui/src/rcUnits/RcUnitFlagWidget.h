@@ -44,10 +44,12 @@ private slots:
     void on_connectButton_clicked(bool checked);
     void on_stopButton_clicked();
 
+    void on_groupBox_clicked(bool checked);
+
 protected:
     RcUnitHelp mHelp;
     QList<QLineEdit*> mLineEdits;
-
+    QByteArray mGeometry;
 private:
     Ui::RcUnitFlagWidget *ui;
 };

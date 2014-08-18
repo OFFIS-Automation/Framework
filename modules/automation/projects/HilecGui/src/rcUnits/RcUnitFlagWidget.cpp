@@ -40,6 +40,7 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
         QLineEdit* edit = new QLineEdit();
         edit->setMinimumWidth(100);
         edit->setAlignment(Qt::AlignRight);
+        edit->setReadOnly(true);
         ui->formLayout->addRow(def.name, edit);
         mLineEdits << edit;
     }
@@ -62,11 +63,13 @@ void RcUnitFlagWidget::updateFlags(const QVariantList &flags)
         QLineEdit* line = mLineEdits[i];
         QString content;
         if(data.canConvert(QVariant::Double))
-            content = QString::number(data.toDouble(), 'g', def.decimalPlaces);
+            content = QString::number(data.toDouble(), 'f', def.decimalPlaces);
         else
             content = data.toString();
         if(!def.unit.isEmpty())
             content += " " + def.unit;
+        if(content.isEmpty())
+            line->setText("bagga");
         line->setText(content);
     }
 }
@@ -89,5 +92,20 @@ void RcUnitFlagWidget::on_connectButton_clicked(bool checked)
 
 void RcUnitFlagWidget::on_stopButton_clicked()
 {
+
+}
+
+void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
+{
+    ui->contentWidget->setVisible(checked);
+    if(!checked)
+    {
+        mGeometry = saveGeometry();
+        setMaximumWidth(50);
+    }
+    else {
+        setMaximumWidth(INT_MAX);
+        restoreGeometry(mGeometry);
+    }
 
 }

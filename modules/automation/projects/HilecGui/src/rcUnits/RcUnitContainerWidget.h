@@ -20,6 +20,7 @@
 #include <QDockWidget>
 #include <QBoxLayout>
 #include <QSplitter>
+#include "RcUnitFlagWidget.h"
 
 namespace Ui {
     class RcUnitContainerWidget;
@@ -35,12 +36,14 @@ public:
 
 private slots:
     void updateRcUnits(bool partial);
+    void unitFlagsUpdated(const QString& unitName, const QVariantList &flags);
     void onDockLocationChanged(const Qt::DockWidgetArea &area);
 
 private:
     Ui::RcUnitContainerWidget *ui;
     QSplitter* splitter;
     Qt::Orientation mOrientation;
+    QMap<QString, RcUnitFlagWidget*> mFlagWidgets;
 };
 
 

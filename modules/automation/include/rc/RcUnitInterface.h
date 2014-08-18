@@ -172,7 +172,7 @@ public:
      * @return The main widget of the gui or 0, if there is no gui for this RC-Unit
      * The gui is automatically deleted by the automation main gui
      */
-    virtual QWidget* guiForInstance(QObject* instance) = 0;
+    //DEPCECATED virtual QWidget* guiForInstance(QObject* instance) = 0;
 
     /**
      * @brief deletes an instance created by the method instance

@@ -38,6 +38,7 @@ HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
     connect(RcUnits::instance(), SIGNAL(telecontrolUpdated(bool, QString)), SIGNAL(telecontrolUpdated(bool, QString)));
     connect(RcUnits::instance(), SIGNAL(telecontrolSensitivityChangeRequested(QString,bool)), SIGNAL(telecontrolChangeSensitivityRequested(QString,bool)));
     connect(RcUnits::instance(), SIGNAL(hapticUpdated(bool, QString)), SIGNAL(hapticUpdated(bool, QString)));
+    connect(RcUnits::instance(), SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(rcUnitFlagsUpdated(QString,QVariantList)));
 }
 
 HilecCore::~HilecCore()
@@ -96,10 +97,12 @@ void HilecCore::releaseConfig()
     RcUnits::instance()->releaseConfig();
 }
 
+/* DEPRECATED
 QWidget* HilecCore::createRcUnitWidget(const QString &rcUnit)
 {
     return RcUnits::instance()->rcUnitGui(rcUnit);
 }
+*/
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)
 {

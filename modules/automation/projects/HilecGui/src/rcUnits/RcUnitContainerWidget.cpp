@@ -15,10 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RcUnitContainerWidget.h"
+#include "RcUnitFlagWidget.h"
 #include "ui_RcUnitContainerWidget.h"
 #include "../HilecSingleton.h"
 #include <QDebug>
 #include <QGroupBox>
+#include <core/RcUnitHelp.h>
 
 RcUnitContainerWidget::RcUnitContainerWidget(QWidget *parent) :
     QDockWidget(parent),
@@ -28,6 +30,7 @@ RcUnitContainerWidget::RcUnitContainerWidget(QWidget *parent) :
     splitter = 0;
     mOrientation = Qt::Horizontal;
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
+    connect(HilecSingleton::hilec(), SIGNAL(rcUnitFlagsUpdated(QString,QVariantList)), SLOT(unitFlagsUpdated(QString,QVariantList)));
     connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
 }
 
@@ -50,13 +53,25 @@ void RcUnitContainerWidget::onDockLocationChanged(const Qt::DockWidgetArea &area
 void RcUnitContainerWidget::updateRcUnits(bool partial)
 {
     if(partial)
-        return;
+    {
+        HilecInterface* hilec = HilecSingleton::hilec();
+        foreach(const QString& name, hilec->rcUnits())
+        {
+            RcUnitFlagWidget* flagWidget = mFlagWidgets.value(name, 0);
+            if(flagWidget)
+            {
+                RcUnitHelp help = hilec->getUnitHelp(name);
+                flagWidget->unitStatusChanged(help.hwConnected);
+            }
+        }
+    }
 
     if(splitter)
     {
         ui->layout->removeWidget(splitter);
         delete splitter;
     }
+    mFlagWidgets.clear();
     splitter = new QSplitter(mOrientation, this);
     ui->layout->addWidget(splitter);
 
@@ -64,14 +79,20 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
     HilecInterface* hilec = HilecSingleton::hilec();
     foreach(const QString& name, hilec->rcUnits())
     {
-        QWidget* w = hilec->createRcUnitWidget(name);
-        if(w)
+        RcUnitHelp help = hilec->getUnitHelp(name);
+        if(!help.flags.empty())
         {
-            QGroupBox* box = new QGroupBox(name);
-            box->setLayout(new QHBoxLayout());
-            box->layout()->addWidget(w);
-            splitter->addWidget(box);
+            RcUnitFlagWidget* w = new RcUnitFlagWidget(help);
+            mFlagWidgets[name] = w;
+            splitter->addWidget(w);
         }
     }
     splitter->addWidget(new QWidget());
+}
+
+void RcUnitContainerWidget::unitFlagsUpdated(const QString &unitName, const QVariantList &flags)
+{
+    RcUnitFlagWidget* flagWidget = mFlagWidgets.value(unitName, 0);
+    if(flagWidget)
+        flagWidget->updateFlags(flags);
 }

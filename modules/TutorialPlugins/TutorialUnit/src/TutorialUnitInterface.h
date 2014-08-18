@@ -62,7 +62,7 @@ public:
 	* the method is called after instance is called and the instance object is exactly the same
 	* if the plugin has no gui, this method may return 0.
 	*/
-    QWidget* guiForInstance(QObject *instance);
+    //QWidget* guiForInstance(QObject *instance);
 
     void deleteInstance(QObject *instance);
 protected:

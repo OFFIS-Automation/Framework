@@ -41,7 +41,7 @@ public:
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
-    QWidget * rcUnitGui(const QString &name);
+//DEPRECATED    QWidget * rcUnitGui(const QString &name);
     virtual void loadConfig(const QString &filename);
     virtual void releaseConfig();
     QVariant call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params);

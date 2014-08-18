@@ -18,7 +18,7 @@
 #define TUTORIALUNIT_H
 
 #include <QObject>
-#include "GraphicsView.h"
+#include "../../TutorialCore/src/GraphicsView.h"
 #include <rc/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
@@ -32,6 +32,8 @@ public:
     void setScene(GraphicsView* scene);
     QVariant rcGetPosition();
     void rcSetPosition(const QVariant& var);
+    virtual RcFlagDefinitions rcFlagDefinitions() const;
+    virtual QVariantList rcFlags();
 public slots:
     void stop();
     void acquire();

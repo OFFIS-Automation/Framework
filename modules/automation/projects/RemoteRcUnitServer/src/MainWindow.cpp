@@ -120,6 +120,8 @@ void MainWindow::onUnitsUpdated()
 {
     foreach(QString unitName, RcUnits::instance()->unitNames())
     {
+        /*
+         * TODO
         QWidget* w = RcUnits::instance()->rcUnitGui(unitName);
         if(w)
         {
@@ -128,5 +130,6 @@ void MainWindow::onUnitsUpdated()
             addDockWidget(Qt::TopDockWidgetArea, dock);
             mRcWidgets << dock;
         }
+        */
     }
 }

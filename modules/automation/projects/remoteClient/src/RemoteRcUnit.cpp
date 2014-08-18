@@ -64,9 +64,21 @@ void RemoteRcUnit::release()
     //@TODO
 }
 
+bool RemoteRcUnit::acquired()
+{
+    //@TODO
+    return false;
+}
+
 void RemoteRcUnit::setObserver(RcUnitBaseObserver *observer)
 {
     //@TODO
+}
+
+QVariantList RemoteRcUnit::getFlags()
+{
+    //TODO
+    return QVariantList();
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)

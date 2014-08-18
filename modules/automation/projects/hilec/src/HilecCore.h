@@ -42,7 +42,7 @@ public:
     QStringList getTelecontrolableUnits();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
-    virtual QWidget* createRcUnitWidget(const QString& rcUnit);
+    //DEPRECATED virtual QWidget* createRcUnitWidget(const QString& rcUnit);
 
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0);
     virtual QList<TraceLine> getStackTrace();

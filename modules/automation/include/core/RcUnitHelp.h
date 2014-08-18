@@ -44,6 +44,7 @@ struct RcUnitHelp : TelecontrolConfig
     QList<Method> methods;
     QVariantMap constants;
     UserRcUnitType type;
+    RcFlagDefinitions flags;
     bool hwConnected;
 };
 

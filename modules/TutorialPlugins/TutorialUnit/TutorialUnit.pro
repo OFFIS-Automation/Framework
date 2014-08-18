@@ -26,29 +26,15 @@ DESTDIR = $${targetDir}/plugins/rcUnits
 INCLUDEPATH += ../../automation/include
 
 INCLUDEPATH += ../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
+LIBS += -L$${targetDir}/plugins/ -lTutorialUnitCore
 
 HEADERS += \
     src/TutorialUnitInterface.h \
     src/TutorialUnit.h \
-    src/TutorialUnitGui.h \
-    src/Robot.h \
-    src/Circle.h \
-    src/GraphicsView.h \
     ../../automation/include/rc/types/HwRcUnit.h \
     ../../automation/include/rc/types/RobotRcUnit.h \
     ../../automation/include/rc/types/UserRcUnit.h
 
 SOURCES += \
     src/TutorialUnitInterface.cpp \
-    src/TutorialUnit.cpp \
-    src/TutorialUnitGui.cpp \
-    src/Robot.cpp \
-    src/Cirlce.cpp \
-    src/GraphicsView.cpp
-
-FORMS += \
-    src/TutorialUnitGui.ui
-
-RESOURCES += \
-    images/images.qrc
+    src/TutorialUnit.cpp

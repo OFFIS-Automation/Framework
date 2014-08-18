@@ -105,9 +105,9 @@ HEADERS += \
     ../../include/rc/types/UserRcUnit.h \
     ../../include/rc/Pose2d.h \
     ../../include/rc/types/HwRcUnit.h \
-    ../../include/rc/types/SimpleRobotRcUnit.h \
     ../../include/rc/types/RobotRcUnit.h \
-    ../../include/rc/types/RcUnitTypes.h
+    ../../include/rc/types/RcUnitTypes.h \
+    src/FlagCollectorRunnable.h
 
 SOURCES += \
     HilecPlugin.cpp \
@@ -129,7 +129,8 @@ SOURCES += \
     src/debugVariables/TupleVarItem.cpp \
     src/debugVariables/InstanceVarItem.cpp \
     src/CallStackDecoder.cpp \
-    src/PythonLinter.cpp
+    src/PythonLinter.cpp \
+    src/FlagCollectorRunnable.cpp
 
 OTHER_FILES += \
     python/util.py \

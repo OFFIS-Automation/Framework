@@ -18,6 +18,10 @@
 #ifndef RCUNITTYPES_H
 #define RCUNITTYPES_H
 
+#include <QString>
+
+#include <QList>
+
 enum UserRcUnitType
 {
     BaseRcUnitType,
@@ -25,5 +29,18 @@ enum UserRcUnitType
     RobotRcUnitType
 };
 
+struct RcFlagDefinition {
+    QString name;
+    QString unit;
+    int decimalPlaces;
+    RcFlagDefinition() : decimalPlaces(2) {}
+    RcFlagDefinition(QString name) : name(name), decimalPlaces(2) {}
+    RcFlagDefinition(QString name, QString unit)  : name(name), unit(unit), decimalPlaces(2) {}
+    RcFlagDefinition(QString name, int decimalPlaces) : name(name), decimalPlaces(decimalPlaces) {}
+    RcFlagDefinition(QString name, QString unit, int decimalPlaces)
+        : name(name), unit(unit), decimalPlaces(decimalPlaces) {}
+};
+
+typedef QList<RcFlagDefinition> RcFlagDefinitions;
 
 #endif // RCUNITTYPES_H

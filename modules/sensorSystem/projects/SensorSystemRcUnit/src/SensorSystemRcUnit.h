@@ -28,6 +28,8 @@ class SensorSystemRcUnit : public UserRcUnit
     Q_OBJECT
 public:
     SensorSystemRcUnit();
+    virtual RcFlagDefinitions rcFlagDefinitions() const { return RcFlagDefinitions(); }
+    virtual QVariantList rcFlags() { return QVariantList();}
 public slots:
     QList<QString> getAllSensors();
     QList<QString> getActiveSensors();

@@ -42,7 +42,9 @@ public:
     virtual QString name() const = 0;
     virtual void acquire() = 0;
     virtual void release() = 0;
+    virtual bool acquired() = 0;
     virtual void setObserver(RcUnitBaseObserver* observer) = 0;
+    virtual QVariantList getFlags() = 0;
     virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };
 

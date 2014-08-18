@@ -20,16 +20,19 @@
 #include <QString>
 #include <QMap>
 #include <QVariant>
+#include <QThreadPool>
 
 #include <RcUnitsBase.h>
 #include <RcUnitBase.h>
+#include <QTimer>
+
 
 class QXmlStreamReader;
 class RcUnitInterface;
 class RcUnit;
 class Gamepad;
 class RemoteRcUnits;
-
+class FlagCollectorRunnable;
 
 
 class RcUnits : public RcUnitsBase, public RcUnitBaseObserver
@@ -44,11 +47,16 @@ public:
     void rcUnitStatusChanged(bool acquired);
 signals:
     void unitListUpdated(bool partialUpdate = false);
+    void flagsUpdated(const QString& name, const QVariantList& values);
 private slots:
+    void collectFlags();
     void onRemoteRcUnitsListed(const QString& remoteServerName, const QStringList& oldRcUnits);
 private:
+    QTimer mFlagTimer;
     static RcUnits* mInstance;
     QMap<QString, RemoteRcUnits*> mRemoteRcUnits;
+    QList<FlagCollectorRunnable*> mFlagCollectors;
+    QThreadPool mThreadPool;
 };
 
 #endif // RCUNITS_H

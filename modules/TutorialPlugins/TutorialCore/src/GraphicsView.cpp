@@ -60,6 +60,7 @@
 #include "Robot.h"
 #include <SensorDataSystem.h>
 #include <math.h>
+GraphicsView* GraphicsView::sInstance = 0;
 
 GraphicsView::GraphicsView()
 {
@@ -81,13 +82,16 @@ GraphicsView::GraphicsView()
     connect(&timer, SIGNAL(timeout()), SLOT(sendImage()));
     reset(false);
     timer.start(100);
-    provider = SensorSystemInterface::createProvider("tutorial/image");
+    sInstance = this;
+}
 
+GraphicsView *GraphicsView::instance()
+{
+    return sInstance;
 }
 
 GraphicsView::~GraphicsView()
 {
-    delete provider;
 }
 
 Pose2d GraphicsView::getPosition()
@@ -199,8 +203,7 @@ void GraphicsView::sendImage()
     painter.setRenderHints(QPainter::Antialiasing);
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
     render(&painter);
-    if(provider)
-        provider->update(img);
+    emit newImage(img);
 }
 
 

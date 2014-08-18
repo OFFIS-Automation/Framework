@@ -25,6 +25,7 @@ TutorialUnit::TutorialUnit()
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
+    setScene(GraphicsView::instance());
 }
 
 void TutorialUnit::setScene(GraphicsView *scene)
@@ -54,6 +55,25 @@ void TutorialUnit::rcSetPosition(const QVariant &var)
         setPosition(vec.toPointF());
         setRotation(vec.z());
     }
+}
+
+RcFlagDefinitions TutorialUnit::rcFlagDefinitions() const
+{
+    RcFlagDefinitions defs;
+    defs << RcFlagDefinition("x",1);
+    defs << RcFlagDefinition("y",1);
+    defs << RcFlagDefinition("rot",1);
+    return defs;
+}
+
+QVariantList TutorialUnit::rcFlags()
+{
+    Pose2d pos = getPosition();
+    QVariantList list;
+    list << pos.x;
+    list << pos.y;
+    list << pos.phi;
+    return list;
 }
 
 void TutorialUnit::stop()

@@ -1,45 +1,34 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_CUSTOMFILTER_H
-#define USER_CUSTOMFILTER_H
 
-#include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
-#include <ports/PolygonPort.h>
-#include <ports/RectPort.h>
-#include <ports/PointPort.h>
-#include <QMutex>
-#include <QWaitCondition>
+#include "FlagCollectorRunnable.h"
 
-
-class CustomFilter : public UserFilter
+FlagCollectorRunnable::FlagCollectorRunnable(RcUnitBase *rcUnit)
+    : mRcUnit(rcUnit)
 {
-    Q_OBJECT
-public:
-    CustomFilter();
-    virtual void initialize();
-    virtual void execute();
-public slots:
-    void onNewImage(const QImage& data);
-protected:
-    out::RgbImage mOut;
-    QMutex mMutex;
-    QImage mImg;
-    QWaitCondition mWait;
-};
+    mFinished = true;
+}
 
-#endif // USER_CUSTOMFILTER_H
+void FlagCollectorRunnable::run()
+{
+    try {
+        if(mRcUnit->acquired())
+            emit flagsUpdated(mRcUnit->name(), mRcUnit->getFlags());
+    }
+    catch(...) {}
+    mFinished = true;
+}

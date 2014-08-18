@@ -26,16 +26,27 @@ class DataProvider;
 
 #include <QTimer>
 
-class GraphicsView : public QGraphicsView
+#include <QtCore/qglobal.h>
+#include <QObject>
+
+#if defined(TUTORIAL_LIBRARY)
+#  define TUTORIALSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define TUTORIALSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+class TUTORIALSHARED_EXPORT GraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
     GraphicsView();
+    static GraphicsView* instance();
     ~GraphicsView();
     Pose2d getPosition();
 signals:
     void movementFinished();
     void positionUpdate(QPointF pos, qreal rot);
+    void newImage(const QImage& img);
 public slots:
     void reset(bool randomPositions);
     void moveRobotAbs(QPointF position, int durationInMs);
@@ -46,10 +57,10 @@ public slots:
 protected slots:
     void sendImage();
 protected:
+    static GraphicsView* sInstance;
     Robot *robot;
     QList <Circle*> objects;
     QTimer timer;
-    DataProvider* provider;
 };
 
 

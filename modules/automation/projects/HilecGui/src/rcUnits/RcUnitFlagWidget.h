@@ -1,56 +1,55 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TUTORIALUNITGUI_H
-#define TUTORIALUNITGUI_H
 
+#ifndef RCUNITFLAGWIDGET_H
+#define RCUNITFLAGWIDGET_H
+
+#include <QLineEdit>
 #include <QWidget>
 
+#include <core/RcUnitHelp.h>
 
 namespace Ui {
-    class TutorialUnitGui;
+class RcUnitFlagWidget;
 }
 
-class TutorialUnit;
-class GraphicsView;
-
-class TutorialUnitGui : public QWidget
+class RcUnitFlagWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TutorialUnitGui(TutorialUnit* control, GraphicsView* scene);
-    ~TutorialUnitGui();
+    explicit RcUnitFlagWidget(const RcUnitHelp& help);
+    ~RcUnitFlagWidget();
+    void updateFlags(const QVariantList& flags);
+    void unitStatusChanged(bool acquired);
 signals:
-    void connectClicked();
-    void disconnectClicked();
-    void resetSystem();
-    void resetSystemRandom();
-
+    void stop(const QString& unitName);
+    void acquire(const QString& unitName);
+    void release(const QString& unitName);
 private slots:
-    void updateStatus(bool connected);
-    void onPositionUpdate(QPointF p, qreal rot);
     void on_connectButton_clicked(bool checked);
-    void on_resetButton_clicked();
-    void on_resetRandomButton_clicked();
+    void on_stopButton_clicked();
+
+protected:
+    RcUnitHelp mHelp;
+    QList<QLineEdit*> mLineEdits;
 
 private:
-    TutorialUnit* mController;
-    Ui::TutorialUnitGui *ui;
-    GraphicsView* mScene;
+    Ui::RcUnitFlagWidget *ui;
 };
 
-#endif // TUTORIALUNITGUI_H
+#endif // RCUNITFLAGWIDGET_H

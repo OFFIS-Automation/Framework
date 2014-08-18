@@ -25,5 +25,6 @@
         <file>controller_add.png</file>
         <file>connect.png</file>
         <file>disconnect.png</file>
+        <file>stop.png</file>
     </qresource>
 </RCC>

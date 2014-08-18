@@ -17,5 +17,7 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS += TutorialUnit \
-        TutorialCamera
+SUBDIRS +=  TutorialCore \
+            TutorialUnit \
+            TutorialCamera
+

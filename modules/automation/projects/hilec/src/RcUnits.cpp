@@ -26,9 +26,13 @@
 #include <QPluginLoader>
 #include <rc/RcUnitInterface.h>
 #include <QTcpSocket>
+#include <QThreadPool>
 
 #include "RemoteRcUnits.h"
 #include "RemoteRcUnit.h"
+#include "FlagCollectorRunnable.h"
+
+
 
 
 RcUnits* RcUnits::mInstance = 0;
@@ -39,6 +43,9 @@ RcUnits::RcUnits(const QString &rcUnitDir) : RcUnitsBase(rcUnitDir)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
     mGamepad = 0;
+    mFlagTimer.setInterval(200);
+    mThreadPool.setMaxThreadCount(2);
+    connect(&mFlagTimer, SIGNAL(timeout()), SLOT(collectFlags()));
     connect(this, SIGNAL(unitsUpdated()), SIGNAL(unitListUpdated()));
 }
 
@@ -54,6 +61,13 @@ void RcUnits::loadConfig(const QString &filename)
     {
         RcUnitBase* unit = mUnits.value(key);
         unit->setObserver(this);
+        if(!unit->getHelp().flags.empty())
+        {
+            FlagCollectorRunnable* runnable = new FlagCollectorRunnable(unit);
+            runnable->setAutoDelete(false);
+            connect(runnable, SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(flagsUpdated(QString,QVariantList)), Qt::DirectConnection);
+            mFlagCollectors << runnable;
+        }
         if(unit->isTelecontrolable())
             mTelecontrolRcUnits << key;
 
@@ -73,10 +87,14 @@ void RcUnits::loadConfig(const QString &filename)
         mRemoteRcUnits[name] = rl;
         rl->startConnect();
     }
+    mFlagTimer.start();
 }
 
 void RcUnits::releaseConfig()
 {
+    mFlagTimer.stop();
+    qDeleteAll(mFlagCollectors);
+    mFlagCollectors.clear();
     RcUnitsBase::releaseConfig();
     qDeleteAll(mRemoteRcUnits);
     mRemoteRcUnits.clear();
@@ -85,6 +103,18 @@ void RcUnits::releaseConfig()
 void RcUnits::rcUnitStatusChanged(bool)
 {
     emit unitListUpdated(true);
+}
+
+void RcUnits::collectFlags()
+{
+    foreach(FlagCollectorRunnable* flagCollector, mFlagCollectors)
+    {
+        if(flagCollector->finished())
+        {
+            flagCollector->setIdle();
+            mThreadPool.start(flagCollector, QThread::LowestPriority);
+        }
+    }
 }
 
 void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStringList &oldRcUnits)

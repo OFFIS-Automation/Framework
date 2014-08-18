@@ -158,6 +158,7 @@ RcUnitHelp RcUnit::getHelp() const
     help.hapticForceFactor = hapticForceFactor();
     help.type = mRcUnit->rcType();
     help.hwConnected = mHwConnected;
+    help.flags = mRcUnit->rcFlagDefinitions();
     return help;
 }
 
@@ -449,6 +450,11 @@ void RcUnit::acquire()
 void RcUnit::release()
 {
     emit callRelease();
+}
+
+QVariantList RcUnit::getFlags()
+{
+    return mRcUnit->rcFlags();
 }
 
 void RcUnit::hwStatusChanged(bool status)

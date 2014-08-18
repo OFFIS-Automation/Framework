@@ -72,7 +72,7 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
     return returnList;
 }
 
-
+/* DEPCECATED
 QWidget* RcUnitsBase::rcUnitGui(const QString &name)
 {
     if(!mUnits.contains(name))
@@ -82,6 +82,7 @@ QWidget* RcUnitsBase::rcUnitGui(const QString &name)
         return rcUnitInterface->guiForInstance(mUnits[name]->rcUnit());
     return 0;
 }
+*/
 
 void RcUnitsBase::loadConfig(const QString &filename)
 {
@@ -368,6 +369,7 @@ void RcUnitsBase::release(const QString &unitName)
         return;
     unit->release();
 }
+
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
 {

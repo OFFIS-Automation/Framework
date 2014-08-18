@@ -27,6 +27,8 @@ class OlvisRcUnit : public UserRcUnit
 public:
     explicit OlvisRcUnit();
     virtual ~OlvisRcUnit();
+    virtual RcFlagDefinitions rcFlagDefinitions() const { return RcFlagDefinitions(); }
+    virtual QVariantList rcFlags() { return QVariantList();}
 public slots:
     QVariant getPortValue(const QString& filterName, const QString& portName);
     QVariant getNextPortValue(const QString& filterName, const QString& portName, double timeoutInSeconds);

@@ -30,7 +30,8 @@ INCLUDEPATH += ../../include
 
 HEADERS += \
     src/SensorSystemRcUnit.h \
-    src/SensorSystemRcUnitInterface.h
+    src/SensorSystemRcUnitInterface.h \
+    ../../../automation/include/rc/types/UserRcUnit.h
 
 SOURCES += \
     src/SensorSystemRcUnit.cpp \

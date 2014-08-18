@@ -70,7 +70,8 @@ HEADERS += \
     src/telecontrol/GamepadAssignmentWidget.h \
     src/telecontrol/EditGamepadAssignment.h \
     src/telecontrol/EditGamepadArea.h \
-    src/rcUnits/AddRemoteRcServerDialog.h
+    src/rcUnits/AddRemoteRcServerDialog.h \
+    src/rcUnits/RcUnitFlagWidget.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -104,7 +105,8 @@ SOURCES += \
     src/telecontrol/GamepadAssignmentWidget.cpp \
     src/telecontrol/EditGamepadAssignment.cpp \
     src/telecontrol/EditGamepadArea.cpp \
-    src/rcUnits/AddRemoteRcServerDialog.cpp
+    src/rcUnits/AddRemoteRcServerDialog.cpp \
+    src/rcUnits/RcUnitFlagWidget.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -132,7 +134,8 @@ FORMS += \
     src/telecontrol/GamepadAssignmentWidget.ui \
     src/telecontrol/EditGamepadAssignment.ui \
     src/telecontrol/EditGamepadArea.ui \
-    src/rcUnits/AddRemoteRcServerDialog.ui
+    src/rcUnits/AddRemoteRcServerDialog.ui \
+    src/rcUnits/RcUnitFlagWidget.ui
 
 RESOURCES += \
     images/images.qrc

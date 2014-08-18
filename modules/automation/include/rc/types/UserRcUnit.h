@@ -20,16 +20,36 @@
 
 #include <QObject>
 #include "RcUnitTypes.h"
+
+
 /*
  * This is the basic class for RcUnits.
 */
-
-
 class UserRcUnit : public QObject
 {
 public:
     virtual ~UserRcUnit() {}
     virtual UserRcUnitType rcType() { return BaseRcUnitType; }
+
+    /**
+     * This method should return a definition of flags for this
+     * RC-Unit. Flags are information that should be displayed to the user
+     * For robots, this would be the current position or gripper status,
+     * For sensors the current sensor value. If an empty rcFlagDefinitions
+     * is returned, no flags are displayed for this unit.
+     * If flag definitinos are returned, rcFlags is called periodically
+     * (5-10Hz) to collect the flag data.
+     */
+    virtual RcFlagDefinitions rcFlagDefinitions() const = 0;
+
+    /**
+     * This method is called periodically if a flag definition was returned
+     * by rcFlagDefinitions. The size if the list and the flag position must
+     * be equal to the definition.
+     * Allowed types are int, double, string and boolean. Everything else
+     * will be converted to string by the QVariant method.
+     */
+    virtual QVariantList rcFlags() = 0;
 protected:
     UserRcUnit() {}
 

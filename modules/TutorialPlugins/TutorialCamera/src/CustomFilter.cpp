@@ -16,6 +16,7 @@
 
 #include "CustomFilter.h"
 #include <opencv2/imgproc/imgproc.hpp>
+#include "../../TutorialCore/src/GraphicsView.h"
 
 
 REGISTER_FILTER(CustomFilter);
@@ -32,8 +33,7 @@ CustomFilter::CustomFilter()
 
 void CustomFilter::initialize()
 {
-    DataConsumer &c = SensorSystemInterface::consumer("tutorial/image");
-    connect(&c, SIGNAL(updated(QVariant,double,int)), SLOT(onNewImage(QVariant)));
+    connect(GraphicsView::instance(), SIGNAL(newImage(QImage)), SLOT(onNewImage(QImage)),Qt::DirectConnection);
 }
 
 void CustomFilter::execute()
@@ -53,9 +53,9 @@ void CustomFilter::execute()
     }
 }
 
-void CustomFilter::onNewImage(QVariant data)
+void CustomFilter::onNewImage(const QImage &data)
 {
     QMutexLocker lock(&mMutex);
-    mImg = data.value<QImage>();
+    mImg = data;
     mWait.wakeAll();
 }

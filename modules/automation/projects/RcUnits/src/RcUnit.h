@@ -51,7 +51,7 @@ public:
     void disconnectGamepad(QObject* gamepad);
     void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
     bool isTelecontrolable()const;
-
+    bool acquired() { return mHwConnected; }
     void setParamNames(const QString &methodName, const QStringList &names);
 
     bool initialize(RcUnitInterface* plugin);
@@ -74,6 +74,8 @@ public:
     void acquire();// { emit callAcquire(); }
     void release();// { emit callRelease(); }
     void setObserver(RcUnitBaseObserver* observer) { mObserver = observer; }
+
+    QVariantList getFlags();
 
     struct Parameter
     {

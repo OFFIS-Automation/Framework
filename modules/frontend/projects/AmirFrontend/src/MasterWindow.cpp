@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QUrl>
 #include <QDate>
+
 #include "version.h"
 #include "newProjectWizard/CreateProjectDialog.h"
 
@@ -169,43 +170,28 @@ void MasterWindow::open(const QString &projectPath)
     updateRecentProjects(projectPath);
     emit openProject(projectPath);
     ui->actionClose_project->setEnabled(true);
-/*
-    // Open build
-    const QDate today(QDate::currentDate());
-    int buildNumberForToday = ((today.year() - 2000) * 1000) + today.dayOfYear();
-    QSettings settings;
-    int skipBuild  = settings.value("skipBuild", 0).toInt();
-
-    if((buildNumberForToday-Version::BUILD) >= 14 && !(skipBuild == buildNumberForToday)){
-        QMessageBox msgBox;
-        msgBox.setWindowTitle(tr("Update OFFIS Automation Framework"));
-        msgBox.setText(tr("OFFIS Automation Framework is outdated"));
-        msgBox.setInformativeText(tr("This software version is older than 14 days. Do you want to update to the current version?"));
-        msgBox.setIcon(QMessageBox::Question);
-        QPushButton *skipButton = msgBox.addButton(tr("Skip this version"), QMessageBox::NoRole);
-        skipButton->setIcon(QIcon(":/olvisExecGui/skip.png"));
-        QPushButton *notNowButton = msgBox.addButton(tr("Not now"), QMessageBox::NoRole);
-        notNowButton->setIcon(QIcon(":/olvisExecGui/cancel.png"));
-        QPushButton *updateButton = msgBox.addButton(tr("Update"), QMessageBox::YesRole);
-        updateButton->setIcon(QIcon(":/olvisExecGui/accept.png"));
-        msgBox.setDefaultButton(updateButton);
-        msgBox.exec();
-
-        if(msgBox.clickedButton() == (QAbstractButton *)updateButton){
-            // Update this version / open browser
-            on_actionUpdate_components_triggered();
-        } else if (msgBox.clickedButton() == (QAbstractButton *)skipButton) {
-            // Skip this version
-            settings.setValue("skipBuild", buildNumberForToday);
-        }
-    }
-    */
 }
 
 void MasterWindow::on_actionClose_project_triggered()
 {
     emit closeProject();
     ui->actionClose_project->setEnabled(false);
+}
+
+void MasterWindow::on_actionReload_project_triggered()
+{
+    // Close project
+    emit closeProject();
+    // Open project
+    if(!mRecentProjects.empty()){
+        QString projectPath = mRecentProjects.first();
+        emit openProject(projectPath);
+    }
+}
+
+void MasterWindow::on_actionScripting_help_triggered()
+{
+    emit showHelpWidget();
 }
 
 void MasterWindow::on_actionAbout_OFFIS_Automation_Toolbox_triggered()

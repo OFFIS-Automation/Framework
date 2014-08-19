@@ -38,6 +38,7 @@ signals:
     void closeProject();
     void showStartScreen();
     void showAboutScreen();
+    void showHelpWidget();
 public slots:
     virtual void setVisible(bool visible);
 
@@ -49,8 +50,9 @@ private slots:
     void open(const QString &projectPath);
 
     void on_actionAbout_OFFIS_Automation_Toolbox_triggered();
-
     void on_actionAbout_Qt_triggered();
+    void on_actionReload_project_triggered();
+    void on_actionScripting_help_triggered();
 
 private:
     bool mStarted;

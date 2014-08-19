@@ -283,6 +283,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     QString definitionFile = args[1];
+    QDateTime modifyDateDefFile = QFileInfo(definitionFile).lastModified();
     QDir targetDir(args[2]);
     QStringList params;
     for(int i=3; i<args.size(); i++)
@@ -318,12 +319,29 @@ int main(int argc, char *argv[])
     file.close();
     if(!params.contains("--server-only"))
     {
-        writeClass(id, methods, includes, targetDir, className + "ClientBase", true);
+        QString baseClassName = className + "ClientBase";
+        QFileInfo headerInfo(targetDir.absoluteFilePath(baseClassName+".h"));
+        QFileInfo sourceInfo(targetDir.absoluteFilePath(baseClassName+".cpp"));
+        bool noUpdateNeeded = headerInfo.exists() && headerInfo.lastModified() > modifyDateDefFile;
+        noUpdateNeeded &= sourceInfo.exists() && sourceInfo.lastModified() > modifyDateDefFile;
+        if(noUpdateNeeded)
+            qWarning() << "Server source and header is newer than definition file; omiting file generation";
+        else
+            writeClass(id, methods, includes, targetDir, baseClassName, true);
         writeUserClass(targetDir, className + "Client");
+
     }
     if(!params.contains("--client-only"))
     {
-        writeClass(id, methods, includes, targetDir, className + "ServerBase", false);
+        QString baseClassName = className + "ServerBase";
+        QFileInfo headerInfo(targetDir.absoluteFilePath(baseClassName+".h"));
+        QFileInfo sourceInfo(targetDir.absoluteFilePath(baseClassName+".cpp"));
+        bool noUpdateNeeded = headerInfo.exists() && headerInfo.lastModified() > modifyDateDefFile;
+        noUpdateNeeded &= sourceInfo.exists() && sourceInfo.lastModified() > modifyDateDefFile;
+        if(noUpdateNeeded)
+            qWarning() << "Client source and header is newer than definition file; omiting file generation";
+        else
+            writeClass(id, methods, includes, targetDir, baseClassName, false);
         writeUserClass(targetDir, className + "Server");
     }
 

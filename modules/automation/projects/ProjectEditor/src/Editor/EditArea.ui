@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Source editor</string>
+   <string>Script editor</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -28,7 +28,7 @@
        <string/>
       </property>
       <property name="title">
-       <string>Find &amp;&amp; Replace</string>
+       <string>Find and replace</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
@@ -51,7 +51,7 @@
        <item row="1" column="3">
         <widget class="QPushButton" name="replaceNext">
          <property name="text">
-          <string>Replace &amp;&amp; Find</string>
+          <string>Replace and find</string>
          </property>
         </widget>
        </item>

@@ -42,8 +42,8 @@ private slots:
     void onNameChanged(const QString& text);
     void onRemoveCurrentConfig();
     void on_add_clicked();
-
     void on_remove_clicked();
+    void on_current_index_changed(const QString& text);
 
 private:
     EditGamepadArea *addTab(const QString& name);

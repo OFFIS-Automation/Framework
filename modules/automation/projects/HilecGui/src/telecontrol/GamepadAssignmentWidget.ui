@@ -148,7 +148,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Change Unit</string>
+        <string>Change unit</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
@@ -216,7 +216,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Adjust Gain</string>
+        <string>Adjust gain</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>

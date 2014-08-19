@@ -30,7 +30,7 @@ EditGamepadArea::EditGamepadArea(const QString &name, QWidget *parent) :
     ui->setupUi(this);
     ui->name->setText(name);
 
-    QString label = "not assigned";
+    QString label = tr("Not assigned");
 
     mJoystickUis[Tc::LeftJoystickX] = ui->leftJoystickX;
     mJoystickUis[Tc::LeftJoystickY] = ui->leftJoystickY;

@@ -38,7 +38,8 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     {
         QComboBox* box = new QComboBox();
         QLineEdit* edit = new QLineEdit();
-        box->addItem("Not assigned");
+        box->addItem(tr("Not assigned"));
+        box->setProperty("i", i);
         mButtonUis[i] = box;
         mButtonNameUis[i] = edit;
         QString label = Tc::userFriendlyStringForButton(i);
@@ -47,14 +48,21 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
         ui->buttonTabLayout->addWidget(box,rowCounter, 2);
         rowCounter++;
     }
+
+    foreach(QComboBox *cb, mButtonUis.values())
+    {
+        connect(cb, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_current_index_changed(QString)));
+    }
+
     foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
     {
         TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
         foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcButtons)
         {
             QString label = unit + "." + button.name;
-            foreach(QComboBox* cb, mButtonUis.values())
+            foreach(QComboBox* cb, mButtonUis.values()){
                 cb->addItem(label);
+            }
         }
     }
 
@@ -96,13 +104,14 @@ void EditGamepadAssignment::load(const QString &unitName, const QString &configF
         if(cb)
         {
             int index = cb->findText(label);
-            if(index >= 0)
+            if(index >= 0){
                 cb->setCurrentIndex(index);
+            }
         }
         QLineEdit* nameEdit = mButtonNameUis.value(button, 0);
-        if(nameEdit)
+        if(nameEdit){
             nameEdit->setText(name);
-
+        }
     }
     settings.endArray();
 }
@@ -162,7 +171,7 @@ void EditGamepadAssignment::onRemoveCurrentConfig()
 
 void EditGamepadAssignment::on_add_clicked()
 {
-    QString baseName = "move";
+    QString baseName = "Movement";
     QString name = baseName;
     int counter = 1;
     bool nameIsOk = false;
@@ -196,4 +205,16 @@ void EditGamepadAssignment::on_remove_clicked()
 {
     mShouldDelete = true;
     emit accept();
+}
+
+void EditGamepadAssignment::on_current_index_changed(const QString &text)
+{
+    if (QComboBox *c = qobject_cast<QComboBox *>(sender())) {
+        bool ok;
+        int i = c->property("i").toInt(&ok);
+        if (ok){
+            QLineEdit* nameEdit = mButtonNameUis.value(i, 0);
+            nameEdit->setText(text);
+        }
+    }
 }

@@ -121,9 +121,9 @@ QObject* ProjectEditor::getConnectObject()
 void ProjectEditor::addElements(MainWindowInterface* mainWindow)
 {
     // add QDockWidgets to the main Window here
-    mainWindow->addToolBar(mToolbar, tr("Automation"));
-    mainWindow->addDockWidget(Qt::LeftDockWidgetArea, mFileTree, tr("Automation"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, mEditArea, tr("Automation"));
+    mainWindow->addToolBar(mToolbar, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::LeftDockWidgetArea, mFileTree, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, mEditArea, tr("Scripting"));
 
     mToolbar->initMenu(&mainWindow->getMenu(tr("&File")));
 

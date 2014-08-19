@@ -51,7 +51,7 @@ signals:
     /**
      * emit this signal every time the connection status is changed
      **/
-    void hwConnectionStatusChanged(bool acuired);
+    void hwConnectionStatusChanged(bool acquired);
 
 protected:
     HwRcUnit() {}

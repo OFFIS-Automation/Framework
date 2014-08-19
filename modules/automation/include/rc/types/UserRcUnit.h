@@ -19,6 +19,7 @@
 #define USERRCUNIT_H
 
 #include <QObject>
+#include <QVariantList>
 #include "RcUnitTypes.h"
 
 

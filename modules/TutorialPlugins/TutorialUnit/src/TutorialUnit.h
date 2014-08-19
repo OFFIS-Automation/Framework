@@ -32,8 +32,8 @@ public:
     void setScene(GraphicsView* scene);
     QVariant rcGetPosition();
     void rcSetPosition(const QVariant& var);
-    virtual RcFlagDefinitions rcFlagDefinitions() const;
-    virtual QVariantList rcFlags();
+    RcFlagDefinitions rcFlagDefinitions() const;
+    QVariantList rcFlags();
 
 public slots:
     void stop();

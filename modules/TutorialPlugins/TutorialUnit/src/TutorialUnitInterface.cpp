@@ -101,20 +101,12 @@ QWidget *TutorialUnitInterface::settingsWidgetForInstance(UserRcUnit *instance)
     return new TutorialGui(qobject_cast<TutorialUnit*>(instance));
 }
 
-/*
-QWidget* TutorialUnitInterface::guiForInstance(QObject *instance)
-{
-
-    qobject_cast<TutorialUnit*>(instance)->setScene(scene);
-    return new TutorialUnitGui(qobject_cast<TutorialUnit*>(instance), scene);
-}
-*/
-
 void TutorialUnitInterface::deleteInstance(QObject *instance)
 {
     delete instance;
     hasInstance = false;
 }
+
 #if QT_VERSION < 0x050000
 Q_EXPORT_PLUGIN2(TutorialUnitInterface, TutorialUnitInterface)
 #endif

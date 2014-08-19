@@ -66,7 +66,7 @@ void PythonInterpreter::run()
     mFilename.toWCharArray(pName);
     Py_SetProgramName(pName);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QString(mBaseDir + ";" + mConfigDir + "/python").toWCharArray(path);
 #else
     QString(mBaseDir + ":" + mConfigDir + "/python").toWCharArray(path);

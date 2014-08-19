@@ -630,7 +630,7 @@ void QsciScintillaBase::mousePressEvent(QMouseEvent *e)
         // the modifier to be configured.
         bool shift = e->modifiers() & Qt::ShiftModifier;
         bool ctrl = e->modifiers() & Qt::ControlModifier;
-#if defined(Q_WS_X11)
+#if defined(Q_OS_X11)
         bool alt = ctrl;
 #else
         bool alt = e->modifiers() & Qt::AltModifier;

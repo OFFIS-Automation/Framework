@@ -62,7 +62,7 @@ void AddRemoteRcServerDialog::on_name_textChanged(const QString &)
 }
 
 
-void AddRemoteRcServerDialog::on_port_valueChanged(int arg1)
+void AddRemoteRcServerDialog::on_port_valueChanged(int)
 {
     checkData();
 }

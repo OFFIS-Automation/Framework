@@ -17,6 +17,7 @@
 #include <QFontMetrics>
 #include <QCheckBox>
 #include <QDialog>
+#include <QDebug>
 
 #include "RcUnitFlagWidget.h"
 #include "ui_RcUnitFlagWidget.h"
@@ -134,6 +135,7 @@ void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
 
 void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
 {
+    qDebug() << "a";
     if(mDialog){
         if(checked){
             QPoint pos = ui->settingsButton->mapToGlobal(QPoint(0,ui->settingsButton->height()));
@@ -142,9 +144,14 @@ void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
             mDialog->show();
         }
     }
+    qDebug() << "b";
 }
 
 void RcUnitFlagWidget::on_hideSettingsWidget()
 {
+    qDebug() << "c";
+    QMutexLocker waitLock(&mWaitMutex);
+    mWait.wait(&mWaitMutex, 100);
     ui->settingsButton->setChecked(false);
+    qDebug() << "d";
 }

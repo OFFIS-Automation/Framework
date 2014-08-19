@@ -20,6 +20,8 @@
 
 #include <QLineEdit>
 #include <QWidget>
+#include <QMutex>
+#include <QWaitCondition>
 
 #include <core/RcUnitHelp.h>
 
@@ -56,6 +58,8 @@ protected:
     QDialog* mDialog;
 private:
     Ui::RcUnitFlagWidget *ui;
+    QMutex mWaitMutex;
+    QWaitCondition mWait;
 };
 
 #endif // RCUNITFLAGWIDGET_H

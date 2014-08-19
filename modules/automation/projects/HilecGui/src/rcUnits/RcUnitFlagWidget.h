@@ -47,12 +47,13 @@ private slots:
     void on_stopButton_clicked();
     void on_groupBox_clicked(bool checked);
     void on_settingsButton_clicked(bool checked);
+    void on_hideSettingsWidget();
 
 protected:
     RcUnitHelp mHelp;
     QList<QLineEdit*> mLineEdits;
     QByteArray mGeometry;
-    QWidget* mDialog;
+    QDialog* mDialog;
 private:
     Ui::RcUnitFlagWidget *ui;
 };

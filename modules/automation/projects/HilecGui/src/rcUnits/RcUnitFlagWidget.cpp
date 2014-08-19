@@ -55,6 +55,7 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitWidget(help.unitName);
     if(settingsWidget){
         mDialog = new QDialog(this, Qt::Popup);
+        connect(mDialog, SIGNAL(finished(int)), this, SLOT(on_hideSettingsWidget()));
         mDialog->setLayout(new QHBoxLayout());
         mDialog->layout()->addWidget(settingsWidget);
         mDialog->hide();
@@ -138,4 +139,9 @@ void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
             mDialog->hide();
         }
     }
+}
+
+void RcUnitFlagWidget::on_hideSettingsWidget()
+{
+    ui->settingsButton->setChecked(false);
 }

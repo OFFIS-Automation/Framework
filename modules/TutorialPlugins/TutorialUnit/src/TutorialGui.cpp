@@ -25,8 +25,8 @@ TutorialGui::TutorialGui(TutorialUnit *control) :
 {
     ui->setupUi(this);
 
-    connect(this, SIGNAL(resetSystem()), mController, SLOT(resetSetup()));
-    connect(this, SIGNAL(resetSystemRandom()), mController, SLOT(resetSetupRandom()));
+    connect(this, SIGNAL(resetSystem()), mController, SLOT(resetSetup()), Qt::QueuedConnection);
+    connect(this, SIGNAL(resetSystemRandom()), mController, SLOT(resetSetupRandom()), Qt::QueuedConnection);
 }
 
 TutorialGui::~TutorialGui()

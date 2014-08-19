@@ -55,7 +55,7 @@ public:
     void setParamNames(const QString &methodName, const QStringList &names);
 
     bool initialize(RcUnitInterface* plugin);
-    QObject* rcUnit() { return mRcUnit; }
+    UserRcUnit* rcUnit() { return mRcUnit; }
     QVariant call(const QByteArray& method, QList<QVariant> params);
     RcUnitHelp getHelp() const;
     void registerStruct(int id, const QByteArray& name, const QStringList& typeNames, const QList<int>& types, RcWrapperFactoryItf* wrapper);

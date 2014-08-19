@@ -64,6 +64,8 @@ public:
 	*/
     //QWidget* guiForInstance(QObject *instance);
 
+    QWidget* settingsWidgetForInstance(UserRcUnit* instance);
+
     void deleteInstance(QObject *instance);
 protected:
     bool hasInstance;

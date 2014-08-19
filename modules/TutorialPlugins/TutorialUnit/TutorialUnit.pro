@@ -33,8 +33,13 @@ HEADERS += \
     src/TutorialUnit.h \
     ../../automation/include/rc/types/HwRcUnit.h \
     ../../automation/include/rc/types/RobotRcUnit.h \
-    ../../automation/include/rc/types/UserRcUnit.h
+    ../../automation/include/rc/types/UserRcUnit.h \
+    src/TutorialGui.h
 
 SOURCES += \
     src/TutorialUnitInterface.cpp \
-    src/TutorialUnit.cpp
+    src/TutorialUnit.cpp \
+    src/TutorialGui.cpp
+
+FORMS += \
+    src/TutorialGui.ui

@@ -23,6 +23,8 @@
 #include "GamepadEndpoint.h"
 #include "HapticBaseEndpoint.h"
 
+class UserRcUnit;
+
 class RcUnitBaseObserver
 {
 public:
@@ -38,7 +40,7 @@ public:
     virtual QMap<QString, QVariant> getConstants() const = 0;
     virtual QVariant call(const QByteArray& method, QList<QVariant> params) = 0;
     virtual RcUnitHelp getHelp() const = 0;
-    virtual QObject* rcUnit() = 0;
+    virtual UserRcUnit* rcUnit() = 0;
     virtual QString name() const = 0;
     virtual void acquire() = 0;
     virtual void release() = 0;

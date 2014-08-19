@@ -16,6 +16,7 @@
 
 #include "TutorialUnitInterface.h"
 #include "TutorialUnit.h"
+#include "TutorialGui.h"
 
 #include <QtPlugin>
 #include <QDateTime>
@@ -93,6 +94,12 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     rc.registerButtonEvent("closeGripper", Tc::RightShoulderLowerButton);
     return unit;
 }
+
+QWidget *TutorialUnitInterface::settingsWidgetForInstance(UserRcUnit *instance)
+{
+    return new TutorialGui();
+}
+
 /*
 QWidget* TutorialUnitInterface::guiForInstance(QObject *instance)
 {

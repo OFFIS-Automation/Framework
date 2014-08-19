@@ -97,12 +97,12 @@ void HilecCore::releaseConfig()
     RcUnits::instance()->releaseConfig();
 }
 
-/* DEPRECATED
+
 QWidget* HilecCore::createRcUnitWidget(const QString &rcUnit)
 {
     return RcUnits::instance()->rcUnitGui(rcUnit);
 }
-*/
+
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)
 {

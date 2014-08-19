@@ -174,6 +174,8 @@ public:
      */
     //DEPCECATED virtual QWidget* guiForInstance(QObject* instance) = 0;
 
+    virtual QWidget* settingsWidgetForInstance(UserRcUnit* instance) { Q_UNUSED(instance); return 0; }
+
     /**
      * @brief deletes an instance created by the method instance
      * The default implementation deletes the object; this should be sufficient for most scenarions

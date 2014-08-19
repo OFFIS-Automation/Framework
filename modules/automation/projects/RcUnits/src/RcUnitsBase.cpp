@@ -72,17 +72,16 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
     return returnList;
 }
 
-/* DEPCECATED
+
 QWidget* RcUnitsBase::rcUnitGui(const QString &name)
 {
     if(!mUnits.contains(name))
         return 0;
     RcUnitInterface *rcUnitInterface = loadPlugin(mTypes[name]);
     if(rcUnitInterface)
-        return rcUnitInterface->guiForInstance(mUnits[name]->rcUnit());
+        return rcUnitInterface->settingsWidgetForInstance(mUnits[name]->rcUnit());
     return 0;
 }
-*/
 
 void RcUnitsBase::loadConfig(const QString &filename)
 {

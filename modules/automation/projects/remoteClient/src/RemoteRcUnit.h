@@ -30,7 +30,7 @@ public:
     virtual ~RemoteRcUnit();
     virtual QVariant call(const QByteArray& method, QList<QVariant> params);
     virtual RcUnitHelp getHelp() const { return mHelp; }
-    virtual QObject* rcUnit() { return 0; }
+    virtual UserRcUnit* rcUnit() { return 0; }
     virtual QString name() const { return mHelp.unitName; }
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );

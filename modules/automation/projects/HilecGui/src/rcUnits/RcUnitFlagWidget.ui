@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>131</width>
-    <height>92</height>
+    <width>537</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,7 @@
       </property>
       <item>
        <widget class="QWidget" name="contentWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="contentLayout">
          <property name="spacing">
           <number>3</number>
          </property>
@@ -98,6 +98,13 @@
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="settingsButton">
+             <property name="text">
+              <string>...</string>
              </property>
             </widget>
            </item>

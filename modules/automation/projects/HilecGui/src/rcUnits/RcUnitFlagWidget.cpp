@@ -16,6 +16,7 @@
 
 #include <QFontMetrics>
 #include <QCheckBox>
+#include <QDialog>
 
 #include "RcUnitFlagWidget.h"
 #include "ui_RcUnitFlagWidget.h"
@@ -23,7 +24,8 @@
 #include "../HilecSingleton.h"
 
 RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
-    ui(new Ui::RcUnitFlagWidget)
+    ui(new Ui::RcUnitFlagWidget),
+    mDialog(0)
 {
     ui->setupUi(this);
     mHelp = help;
@@ -50,6 +52,17 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     connect(this, SIGNAL(acquire(QString)), HilecSingleton::hilec(), SLOT(callRcUnitAcquire(QString)),Qt::QueuedConnection);
     connect(this, SIGNAL(release(QString)), HilecSingleton::hilec(), SLOT(callRcUnitRelease(QString)),Qt::QueuedConnection);
     connect(this, SIGNAL(stop(QString)), HilecSingleton::hilec(), SLOT(callRcUnitStop(QString)),Qt::QueuedConnection);
+
+    QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitWidget(help.unitName);
+    if(settingsWidget) // there is a settinsg widget, do seomthing with it!
+    {
+        mDialog = new QDialog(this, Qt::Popup);
+        mDialog->setLayout(new QHBoxLayout());
+        mDialog->layout()->addWidget(settingsWidget);
+        mDialog->hide();
+    }
+    else
+        ui->settingsButton->hide();
 }
 
 RcUnitFlagWidget::~RcUnitFlagWidget()
@@ -113,4 +126,15 @@ void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
         restoreGeometry(mGeometry);
     }
 
+}
+
+void RcUnitFlagWidget::on_settingsButton_clicked()
+{
+    if(mDialog)
+    {
+        QPoint pos = ui->settingsButton->mapToGlobal(QPoint(0,ui->settingsButton->height()));
+        QSize size = mDialog->size();
+        mDialog->setGeometry(QRect(pos, size));
+        mDialog->show();
+    }
 }

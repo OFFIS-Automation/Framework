@@ -6,30 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>128</width>
+    <height>72</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="resetButton">
      <property name="text">
-      <string>PushButton</string>
+      <string>Reset setup</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../images/images.qrc">
+       <normaloff>:/TutorialPlugin/arrow_undo.png</normaloff>:/TutorialPlugin/arrow_undo.png</iconset>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="randomizeButton">
      <property name="text">
-      <string>PushButton</string>
+      <string>Randomize setup</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../images/images.qrc">
+       <normaloff>:/TutorialPlugin/arrow_switch.png</normaloff>:/TutorialPlugin/arrow_switch.png</iconset>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

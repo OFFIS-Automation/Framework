@@ -40,8 +40,7 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     } else {
         ui->connectButton->setChecked(help.hwConnected);
     }
-    foreach(const RcFlagDefinition& def, help.flags)
-    {
+    foreach(const RcFlagDefinition& def, help.flags){
         QLineEdit* edit = new QLineEdit();
         edit->setMinimumWidth(50);
         edit->setAlignment(Qt::AlignRight);
@@ -54,15 +53,14 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     connect(this, SIGNAL(stop(QString)), HilecSingleton::hilec(), SLOT(callRcUnitStop(QString)),Qt::QueuedConnection);
 
     QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitWidget(help.unitName);
-    if(settingsWidget) // there is a settinsg widget, do seomthing with it!
-    {
+    if(settingsWidget){
         mDialog = new QDialog(this, Qt::Popup);
         mDialog->setLayout(new QHBoxLayout());
         mDialog->layout()->addWidget(settingsWidget);
         mDialog->hide();
-    }
-    else
+    } else {
         ui->settingsButton->hide();
+    }
 }
 
 RcUnitFlagWidget::~RcUnitFlagWidget()
@@ -128,13 +126,16 @@ void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
 
 }
 
-void RcUnitFlagWidget::on_settingsButton_clicked()
+void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
 {
-    if(mDialog)
-    {
-        QPoint pos = ui->settingsButton->mapToGlobal(QPoint(0,ui->settingsButton->height()));
-        QSize size = mDialog->size();
-        mDialog->setGeometry(QRect(pos, size));
-        mDialog->show();
+    if(mDialog){
+        if(checked){
+            QPoint pos = ui->settingsButton->mapToGlobal(QPoint(0,ui->settingsButton->height()));
+            QSize size = mDialog->size();
+            mDialog->setGeometry(QRect(pos, size));
+            mDialog->show();
+        } else {
+            mDialog->hide();
+        }
     }
 }

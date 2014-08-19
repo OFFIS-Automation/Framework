@@ -46,8 +46,7 @@ private slots:
     void on_connectButton_clicked(bool checked);
     void on_stopButton_clicked();
     void on_groupBox_clicked(bool checked);
-
-    void on_settingsButton_clicked();
+    void on_settingsButton_clicked(bool checked);
 
 protected:
     RcUnitHelp mHelp;

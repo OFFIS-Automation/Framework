@@ -58,12 +58,10 @@ public:
     UserRcUnit* instance(RcBase& rc, const QString& configFile, const QString& name);
 	
 	/**
-    * should return a small widget with status information about the rcUnit instance.
+    * should return a small widget with settings information about the rcUnit instance.
 	* the method is called after instance is called and the instance object is exactly the same
 	* if the plugin has no gui, this method may return 0.
 	*/
-    //QWidget* guiForInstance(QObject *instance);
-
     QWidget* settingsWidgetForInstance(UserRcUnit* instance);
 
     void deleteInstance(QObject *instance);

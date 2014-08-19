@@ -23,16 +23,26 @@
 namespace Ui {
 class TutorialGui;
 }
+class TutorialUnit;
 
 class TutorialGui : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TutorialGui(QWidget *parent = 0);
+    explicit TutorialGui(TutorialUnit* control);
     ~TutorialGui();
 
+signals:
+    void resetSystem();
+    void resetSystemRandom();
+
+private slots:
+    void on_resetButton_clicked();
+    void on_randomizeButton_clicked();
+
 private:
+    TutorialUnit* mController;
     Ui::TutorialGui *ui;
 };
 

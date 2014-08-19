@@ -17,15 +17,29 @@
 
 #include "TutorialGui.h"
 #include "ui_TutorialGui.h"
+#include "TutorialUnit.h"
 
-TutorialGui::TutorialGui(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TutorialGui)
+TutorialGui::TutorialGui(TutorialUnit *control) :
+    ui(new Ui::TutorialGui),
+    mController(control)
 {
     ui->setupUi(this);
+
+    connect(this, SIGNAL(resetSystem()), mController, SLOT(resetSetup()));
+    connect(this, SIGNAL(resetSystemRandom()), mController, SLOT(resetSetupRandom()));
 }
 
 TutorialGui::~TutorialGui()
 {
     delete ui;
+}
+
+void TutorialGui::on_resetButton_clicked()
+{
+    emit resetSystem();
+}
+
+void TutorialGui::on_randomizeButton_clicked()
+{
+    emit resetSystemRandom();
 }

@@ -92,12 +92,13 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
     rc.registerButtonEvent("openGripper", Tc::LeftShoulderLowerButton);
     rc.registerButtonEvent("closeGripper", Tc::RightShoulderLowerButton);
+
     return unit;
 }
 
 QWidget *TutorialUnitInterface::settingsWidgetForInstance(UserRcUnit *instance)
 {
-    return new TutorialGui();
+    return new TutorialGui(qobject_cast<TutorialUnit*>(instance));
 }
 
 /*

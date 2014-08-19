@@ -31,10 +31,10 @@ LIBS += -L$${targetDir}/plugins/ -lTutorialUnitCore
 HEADERS += \
     src/TutorialUnitInterface.h \
     src/TutorialUnit.h \
+    src/TutorialGui.h \
     ../../automation/include/rc/types/HwRcUnit.h \
     ../../automation/include/rc/types/RobotRcUnit.h \
-    ../../automation/include/rc/types/UserRcUnit.h \
-    src/TutorialGui.h
+    ../../automation/include/rc/types/UserRcUnit.h
 
 SOURCES += \
     src/TutorialUnitInterface.cpp \
@@ -43,3 +43,6 @@ SOURCES += \
 
 FORMS += \
     src/TutorialGui.ui
+
+RESOURCES += \
+    images/images.qrc

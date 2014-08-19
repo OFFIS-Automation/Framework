@@ -26,5 +26,6 @@
         <file>connect.png</file>
         <file>disconnect.png</file>
         <file>stop.png</file>
+        <file>cog.png</file>
     </qresource>
 </RCC>

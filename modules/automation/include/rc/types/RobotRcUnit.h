@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,15 +39,15 @@ public:
      * with an assigned name.
      * @return A storable QVariant. All basic types and Qt types (QVector3D, QPointF etc.)
      * are allowed as well as QVariantLists of those types (e.g. QVariantList with several double values)
-     * If the current position cannot be sotred (e.g. sensors not initialized)
+     * If the current position cannot be stored (e.g. sensors not initialized)
      * return an invalid QVariant
      */
     virtual QVariant rcGetPosition() = 0;
 
     /**
-     * This method is used for restoring user defined position.
+     * This method is used for restoring a user defined position.
      * A user may move the robot to a specific position and store the position
-     * with an assigned name. Later, the robot should return to this position.
+     * with an assigned name. Later, the robot should be able to return to this position.
      * @param pos The position as QVariant, as returned by rcGetPosition
      */
     virtual void rcSetPosition(const QVariant& pos) = 0;

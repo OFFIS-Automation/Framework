@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,33 +41,29 @@ RcUnitContainerWidget::~RcUnitContainerWidget()
 
 void RcUnitContainerWidget::onDockLocationChanged(const Qt::DockWidgetArea &area)
 {
-    if(area == Qt::LeftDockWidgetArea || area == Qt::RightDockWidgetArea)
+    if(area == Qt::LeftDockWidgetArea || area == Qt::RightDockWidgetArea){
         mOrientation = Qt::Vertical;
-    else
+    } else {
         mOrientation = Qt::Horizontal;
-
-    if(splitter)
+    }
+    if(splitter){
         splitter->setOrientation(mOrientation);
+    }
 }
 
 void RcUnitContainerWidget::updateRcUnits(bool partial)
 {
-    if(partial)
-    {
+    if(partial){
         HilecInterface* hilec = HilecSingleton::hilec();
-        foreach(const QString& name, hilec->rcUnits())
-        {
+        foreach(const QString& name, hilec->rcUnits()){
             RcUnitFlagWidget* flagWidget = mFlagWidgets.value(name, 0);
-            if(flagWidget)
-            {
+            if(flagWidget){
                 RcUnitHelp help = hilec->getUnitHelp(name);
                 flagWidget->unitStatusChanged(help.hwConnected);
             }
         }
-    }
-    else {
-        if(splitter)
-        {
+    } else {
+        if(splitter){
             ui->layout->removeWidget(splitter);
             delete splitter;
         }
@@ -77,11 +73,9 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
 
 
         HilecInterface* hilec = HilecSingleton::hilec();
-        foreach(const QString& name, hilec->rcUnits())
-        {
+        foreach(const QString& name, hilec->rcUnits()){
             RcUnitHelp help = hilec->getUnitHelp(name);
-            if(!help.flags.empty())
-            {
+            if(!help.flags.empty()){
                 RcUnitFlagWidget* w = new RcUnitFlagWidget(help);
                 mFlagWidgets[name] = w;
                 splitter->addWidget(w);

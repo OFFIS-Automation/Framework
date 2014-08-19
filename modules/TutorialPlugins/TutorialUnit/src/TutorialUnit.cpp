@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -60,9 +60,9 @@ void TutorialUnit::rcSetPosition(const QVariant &var)
 RcFlagDefinitions TutorialUnit::rcFlagDefinitions() const
 {
     RcFlagDefinitions defs;
-    defs << RcFlagDefinition("x",1);
-    defs << RcFlagDefinition("y",1);
-    defs << RcFlagDefinition("rot",1);
+    defs << RcFlagDefinition("x", 1);
+    defs << RcFlagDefinition("y", 1);
+    defs << RcFlagDefinition("rot", 1);
     return defs;
 }
 
@@ -203,6 +203,7 @@ void TutorialUnit::onMovementFinished()
 
 void TutorialUnit::checkHAL()
 {
-    if(!mAcquired)
+    if(!mAcquired){
         throw std::runtime_error("Hardware is not acquired");
+    }
 }

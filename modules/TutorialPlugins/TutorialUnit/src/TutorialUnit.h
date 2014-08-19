@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ public:
     void rcSetPosition(const QVariant& var);
     virtual RcFlagDefinitions rcFlagDefinitions() const;
     virtual QVariantList rcFlags();
+
 public slots:
     void stop();
     void acquire();
@@ -52,15 +53,16 @@ public slots:
 
 private slots:
     void onMovementFinished();
+
 signals:
     void positionUpdated(QPointF pos, qreal rot);
-
     void moveRel(QPointF pos, int moveTime = -1);
     void moveAbs(QPointF pos, int moveTime = -1);
     void rotateAbs(double angle, int moveTime = -1);
     void rotateRel(double angle, int moveTime = -1);
     void setGripperState(bool open);
     void resetScene(bool randomPositions);
+
 protected:
     QPointF mOffset;
     double mScaling;

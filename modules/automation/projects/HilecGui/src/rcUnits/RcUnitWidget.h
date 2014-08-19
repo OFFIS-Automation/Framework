@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,17 +48,11 @@ public slots:
 
 private slots:
     void on_units_customContextMenuRequested(const QPoint &pos);
-
     void on_actionAddRcUnit_triggered();
-
     void on_actionRemoveRcUnit_triggered();
-
     void on_actionAddServer_triggered();
-
     void on_actionRemoveServer_triggered();
-
     void on_actionConnect_triggered();
-
     void on_actionDisconnect_triggered();
 
 private:

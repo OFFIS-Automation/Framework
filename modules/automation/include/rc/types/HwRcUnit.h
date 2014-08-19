@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ public slots:
      * If the acquire method was not successfull, it must throw an RcError
      */
     virtual void acquire() = 0;
+
     /**
      * The release method disconnects the RcUnit from the real hardware
      * The methud MUST emit the hwConnectionStatusChanged signal with the connection status
@@ -51,6 +52,7 @@ signals:
      * emit this signal every time the connection status is changed
      **/
     void hwConnectionStatusChanged(bool acuired);
+
 protected:
     HwRcUnit() {}
 

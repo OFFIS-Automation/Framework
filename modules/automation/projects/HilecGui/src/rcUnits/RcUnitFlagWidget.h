@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,20 +36,22 @@ public:
     ~RcUnitFlagWidget();
     void updateFlags(const QVariantList& flags);
     void unitStatusChanged(bool acquired);
+
 signals:
     void stop(const QString& unitName);
     void acquire(const QString& unitName);
     void release(const QString& unitName);
+
 private slots:
     void on_connectButton_clicked(bool checked);
     void on_stopButton_clicked();
-
     void on_groupBox_clicked(bool checked);
 
 protected:
     RcUnitHelp mHelp;
     QList<QLineEdit*> mLineEdits;
     QByteArray mGeometry;
+
 private:
     Ui::RcUnitFlagWidget *ui;
 };

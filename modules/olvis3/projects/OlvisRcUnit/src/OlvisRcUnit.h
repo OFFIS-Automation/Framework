@@ -29,6 +29,7 @@ public:
     virtual ~OlvisRcUnit();
     virtual RcFlagDefinitions rcFlagDefinitions() const { return RcFlagDefinitions(); }
     virtual QVariantList rcFlags() { return QVariantList();}
+
 public slots:
     QVariant getPortValue(const QString& filterName, const QString& portName);
     QVariant getNextPortValue(const QString& filterName, const QString& portName, double timeoutInSeconds);
@@ -53,3 +54,4 @@ protected:
 };
 
 #endif // OLVISRCUNIT_H
+

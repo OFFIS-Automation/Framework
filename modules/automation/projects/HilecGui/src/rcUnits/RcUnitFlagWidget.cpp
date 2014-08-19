@@ -135,8 +135,6 @@ void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
             QSize size = mDialog->size();
             mDialog->setGeometry(QRect(pos, size));
             mDialog->show();
-        } else {
-            mDialog->hide();
         }
     }
 }

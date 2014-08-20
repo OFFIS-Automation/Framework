@@ -11,7 +11,7 @@
 ;General
 !define VERSION "nightly-build"
 !define REGKEY "OFFIS_Automation_Toolbox"
-!define NAME "OFFIS Automation Toolbox-${VERSION}"
+!define NAME "OFFIS Automation Toolbox"
 
   Name "${NAME}"
   OutFile "OFFIS-Automation-Toolbox-Setup-${VERSION}.exe"

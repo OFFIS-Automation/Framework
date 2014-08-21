@@ -56,8 +56,6 @@ Section "!OFFIS Automation Toolbox" SecToolbox
 	File "$%AmirDevDir%\qt\bin\QtNetwork4.dll"
 	File "$%AmirDevDir%\qt\bin\QtOpenGl4.dll"
 	
-	
-	
 SectionEnd
 
 Section /o "Development version" SecDevFiles

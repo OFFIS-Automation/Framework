@@ -27,7 +27,7 @@ OlvisLolecInterface::OlvisLolecInterface()
 QString OlvisLolecInterface::description() const
 {
     QString description;
-    description += tr("An auomation plugin to control the vision part of the toolbox from the automation.");
+    description += tr("An automation plugin to control the vision part of the framework.");
     return description;
 }
 

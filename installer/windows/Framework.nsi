@@ -21,6 +21,10 @@ InstallDirRegKey HKLM "Software\${REGKEY}" "Install_Dir"
 
 Var StartMenuFolder
 
+Function LaunchFramework   
+ExecShell "" "$INSTDIR\Application.exe"   
+FunctionEnd
+
 ;--------------------------------
 ;Interface Settings
 !define MUI_ABORTWARNING
@@ -43,7 +47,7 @@ Var StartMenuFolder
 
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "Start OFFIS Automation Framework"
-!define MUI_FINISHPAGE_RUN_FUNCTION "$PROGRAMFILES\Framework.exe"
+!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchFramework"
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -54,7 +58,6 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "English"
 
- 
 ;--------------------------------
 ;Installer Sections
 !include "Framework_sections.nsi"

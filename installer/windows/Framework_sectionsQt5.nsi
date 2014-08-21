@@ -7,7 +7,7 @@ Section ""
 	Delete "vcredist_x86.exe"
 SectionEnd
 
-Section "!OFFIS Automation Toolbox" SecToolbox
+Section "!OFFIS Automation Framework" SecToolbox
 	SectionIn RO
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\gamepads.ini"
@@ -112,8 +112,8 @@ SectionEnd
 ;Descriptions
 
 ;Language strings
-LangString DESC_SecToolbox ${LANG_ENGLISH} "Files for the OFFIS automation toolbox"
-LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the Toolbox. Needed to develop own vision or automation plugins."
+LangString DESC_SecToolbox ${LANG_ENGLISH} "Files for the OFFIS Automation Framework"
+LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the OFFIS Automation Framework. Needed to develop own vision or automation plugins."
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -133,8 +133,7 @@ Section ""
 	SetShellVarContext all
 
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${Name}.lnk" "$INSTDIR\Toolbox.exe"
-;		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\RemoteServer.lnk" "$INSTDIR\RemoteLolecServer.exe"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${Name}.lnk" "$INSTDIR\Framework.exe"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${Name}.lnk" "$INSTDIR\Uninstall.exe"
     !insertmacro MUI_STARTMENU_WRITE_END
 	
@@ -161,7 +160,6 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   SetShellVarContext all
   Delete "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" 
-;  Delete "$SMPROGRAMS\$StartMenuFolder\RemoteServer.lnk" 
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall ${Name}.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
 

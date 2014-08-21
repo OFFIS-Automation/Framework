@@ -51,10 +51,15 @@ Section "!OFFIS Automation Toolbox" SecToolbox
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\*.exe"
 
-	File "$%AmirDevDir%\qt\bin\QtCore4.dll"
-	File "$%AmirDevDir%\qt\bin\QtGui4.dll"
-	File "$%AmirDevDir%\qt\bin\QtNetwork4.dll"
-	File "$%AmirDevDir%\qt\bin\QtOpenGl4.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\icudt52.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\icuin52.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\icuuc52.dll"
+	
+	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Core.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Gui.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Network.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
+	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
 SectionEnd
 
 Section /o "Development version" SecDevFiles

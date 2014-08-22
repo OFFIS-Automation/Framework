@@ -33,8 +33,18 @@ void SensorSystemGui::deinitialize()
 
 void SensorSystemGui::addElements(MainWindowInterface *mainWindow)
 {
-    //QMenu& menu = mainWindow->getMenu("&SensorSystem");
+    //QMenu& menu = mainWindow->getMenu("&Sensors");
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, mSensors, tr("Sensors"));
+}
+
+void SensorSystemGui::loadProject(const QString &projectFile)
+{
+    mSensors->load(projectFile);
+}
+
+void SensorSystemGui::closeProject()
+{
+    mSensors->clear();
 }
 
 #if QT_VERSION < 0x050000

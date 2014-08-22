@@ -44,6 +44,7 @@ signals:
 public slots:
     QString mark(const QString &markName);
     void add(const QString& item);
+    void clear();
     void remove(const QString& item);
     void newData(const QVariant& data, double timestamp, int id);
 protected:

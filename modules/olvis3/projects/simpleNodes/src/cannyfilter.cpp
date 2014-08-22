@@ -21,7 +21,7 @@ REGISTER_FILTER(CannyFilter);
 CannyFilter::CannyFilter()
 {
     setName("Canny");
-    setDesc("Canny edge filter");
+    setDesc("Canny edge filter.");
     setGroup("image/edge detection");
 
     mOut.setName("outImage");

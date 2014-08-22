@@ -112,6 +112,11 @@ bool ExportSensorTraceDialog::startAtZero()
     return ui->startAtZero->isChecked();
 }
 
+bool ExportSensorTraceDialog::addHeaders()
+{
+    return ui->titlesInFirstRow->isChecked();
+}
+
 QStringList ExportSensorTraceDialog::entriesForItems()
 {
     QStringList items;

@@ -23,7 +23,7 @@ REGISTER_FILTER(Threshold);
 Threshold::Threshold()
 {
     setName("Threshold");
-    setDesc("Thresholds an image");
+    setDesc("Thresholds an image.");
     setGroup("image/color");
 
     mOut.setName("outImage");

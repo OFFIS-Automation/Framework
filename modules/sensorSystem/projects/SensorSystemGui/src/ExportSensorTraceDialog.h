@@ -39,6 +39,7 @@ public:
     QString filename();
     QString seperator();
     bool startAtZero();
+    bool addHeaders();
     QStringList entriesForItems();
 private slots:
     void on_chooseFile_clicked();

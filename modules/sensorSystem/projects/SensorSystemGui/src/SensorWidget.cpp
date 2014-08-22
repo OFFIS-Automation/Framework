@@ -24,6 +24,7 @@
 
 #include <QFileDialog>
 #include <QSettings>
+#include <QDebug>
 
 SensorWidget::SensorWidget(QWidget *parent) :
     QDockWidget(parent),
@@ -35,15 +36,27 @@ SensorWidget::SensorWidget(QWidget *parent) :
 
     connect(&mWriter, SIGNAL(itemTraceAdded(QString)), SLOT(traceItemAdded(QString)));
     connect(&mWriter, SIGNAL(itemTraceRemoved(QString)), SLOT(traceItemRemoved(QString)));
-
-    QStringList items = QSettings().value("sensorSystemGui/selectedTraces").toStringList();
-    foreach(QString item, items)
-        mWriter.add(item);
+    setEnabled(false);
 }
 
 SensorWidget::~SensorWidget()
 {
     delete ui;
+}
+
+void SensorWidget::load(const QString &projectFile)
+{
+    mProjectFile = projectFile;
+    mSortedElements = QSettings(projectFile, QSettings::IniFormat).value("sensorSystemGui/selectedTraces").toStringList();
+    foreach(QString item, mSortedElements)
+        mWriter.add(item);
+   setEnabled(true);
+}
+
+void SensorWidget::clear()
+{
+    setEnabled(false);
+    mWriter.clear();
 }
 
 void SensorWidget::on_toolButton_clicked()
@@ -63,6 +76,7 @@ void SensorWidget::traceItemAdded(const QString& item)
     SensorWidgetLine* line = new SensorWidgetLine(item);
     connect(line, SIGNAL(removeTraceItem(QString)), &mWriter, SLOT(remove(QString)));
     connect(line, SIGNAL(selectionChanged()), SLOT(onSelectionChanged()));
+    connect(line, SIGNAL(sortWidgets(QString,QString,bool)), SLOT(sortWidgets(QString,QString,bool)));
     mElements[item] = line;
     ui->elementLayout->addWidget(line);
     storeSelection();
@@ -82,16 +96,33 @@ void SensorWidget::traceItemRemoved(const QString &name)
 
 void SensorWidget::onSelectionChanged()
 {
-    bool hasSelection = false;
+    Qt::CheckState state = checkSelection();
+    ui->exportTrace->setEnabled(state != Qt::Unchecked);
+    if(state == Qt::Checked)
+        ui->allNoneBox->setCheckState(Qt::Checked);
+    else if(state == Qt::Unchecked)
+        ui->allNoneBox->setCheckState(Qt::Unchecked);
+    else
+        ui->allNoneBox->setCheckState(Qt::PartiallyChecked);
+}
+
+Qt::CheckState SensorWidget::checkSelection()
+{
+    bool allSelected = true;
+    bool noneSelected = true;
     foreach(SensorWidgetLine* line, mElements)
     {
         if(line->isSelected())
-        {
-            hasSelection = true;
-            break;
-        }
+            noneSelected = false;
+        else
+            allSelected = false;
     }
-    ui->exportTrace->setEnabled(hasSelection);
+    if(allSelected)
+        return Qt::Checked;
+    else if (noneSelected)
+        return Qt::Unchecked;
+    else
+        return Qt::PartiallyChecked;
 
 }
 
@@ -101,10 +132,11 @@ void SensorWidget::onSelectionChanged()
 void SensorWidget::on_exportTrace_clicked()
 {
     QStringList elements;
-    foreach(SensorWidgetLine* line, mElements)
+    foreach(QString name, mSortedElements)
     {
-        if(line->isSelected())
-            elements << line->name();
+        SensorWidgetLine* line = mElements.value(name, 0);
+        if(line && line->isSelected())
+            elements << name;
     }
     mExportDialog.setElements(elements);
     QString file = QSettings().value("sensorSystemGui/lastTraceFile").toString();
@@ -119,6 +151,7 @@ void SensorWidget::on_exportTrace_clicked()
     SensorTraceExport exporter;
     exporter.setSeperator(mExportDialog.seperator());
     exporter.setStartAtZero(mExportDialog.startAtZero());
+    exporter.enableHeader(mExportDialog.addHeaders());
     QStringList entries = mExportDialog.entriesForItems();
     foreach(QString element, elements)
     {
@@ -130,8 +163,21 @@ void SensorWidget::on_exportTrace_clicked()
 
 void SensorWidget::storeSelection()
 {
-    QSettings settings;
-    settings.setValue("sensorSystemGui/selectedTraces", QStringList(mElements.keys()));
+    if(!isEnabled())
+        return;
+    QSettings settings(mProjectFile, QSettings::IniFormat);
+    QVector<QString> items;
+    items.resize(mElements.size());
+    foreach(QString name, mElements.keys())
+    {
+        int index = ui->elementLayout->indexOf(mElements.value(name));
+        if(index >= 0 && index < items.size())
+        {
+            items[index] = name;
+        }
+    }
+    mSortedElements = items.toList();
+    settings.setValue("sensorSystemGui/selectedTraces", QStringList(items.toList()));
 }
 
 void SensorWidget::on_addMarker_clicked()
@@ -139,3 +185,36 @@ void SensorWidget::on_addMarker_clicked()
     QString text = ui->markerValue->currentText();
     mWriter.mark(text);
 }
+
+void SensorWidget::on_allNoneBox_clicked()
+{
+    Qt::CheckState state = ui->allNoneBox->checkState();
+    if(state == Qt::PartiallyChecked && checkSelection() == Qt::Unchecked)
+    {
+        ui->allNoneBox->setCheckState(Qt::Checked);
+        state = Qt::Checked;
+    }
+    foreach(SensorWidgetLine* line, mElements)
+    {
+        line->setSelected(state == Qt::Checked);
+    }
+}
+
+void SensorWidget::sortWidgets(const QString &stationary, const QString &floating, bool positionAbove)
+{
+    SensorWidgetLine* w1 = mElements.value(stationary);
+    SensorWidgetLine* w2 = mElements.value(floating);
+    if(!w1 || !w2)
+        return;
+    ui->elementLayout->removeWidget(w2);
+    int pos = ui->elementLayout->indexOf(w1);
+    if(pos >= 0)
+    {
+        if(!positionAbove)
+            pos++;
+        ui->elementLayout->insertWidget(pos, w2);
+    }
+    storeSelection();
+}
+
+

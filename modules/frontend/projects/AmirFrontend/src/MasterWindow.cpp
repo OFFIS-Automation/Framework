@@ -44,7 +44,7 @@ MasterWindow::MasterWindow(QWidget *parent) :
     mRecentMenu = ui->actionRecent_projects->menu();
     updateRecentProjects();
     ui->actionClose_project->setEnabled(false);
-
+    ui->actionReload_project->setEnabled(false);
     // Start screen
     mStartScreen = new StartScreen();
     connect(this, SIGNAL(showStartScreen()), mStartScreen, SLOT(exec()), Qt::QueuedConnection);
@@ -170,22 +170,24 @@ void MasterWindow::open(const QString &projectPath)
     updateRecentProjects(projectPath);
     emit openProject(projectPath);
     ui->actionClose_project->setEnabled(true);
+    ui->actionReload_project->setEnabled(true);
 }
 
 void MasterWindow::on_actionClose_project_triggered()
 {
     emit closeProject();
+    ui->actionReload_project->setEnabled(false);
     ui->actionClose_project->setEnabled(false);
 }
 
 void MasterWindow::on_actionReload_project_triggered()
 {
     // Close project
-    emit closeProject();
+    closeProject();
     // Open project
     if(!mRecentProjects.empty()){
         QString projectPath = mRecentProjects.first();
-        emit openProject(projectPath);
+        openProject(projectPath);
     }
 }
 

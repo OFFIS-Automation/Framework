@@ -21,7 +21,7 @@ REGISTER_FILTER(FetchTemplate);
 FetchTemplate::FetchTemplate()
 {
     setName("FetchTemplate");
-    setDesc("Inverts an image");
+    setDesc("Fetches a template from the given image on the ROI position.");
     setGroup("image/reshape");
     mIn.setName("input");
     mOut.setName("output");

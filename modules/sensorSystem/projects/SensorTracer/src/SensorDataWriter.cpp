@@ -70,6 +70,18 @@ void SensorDataWriter::add(const QString &item)
     emit itemTraceAdded(item);
 }
 
+void SensorDataWriter::clear()
+{
+    QMutexLocker lock(&mDataMutex);
+    foreach(QString item, mItemNames)
+    {
+        DataConsumer& c = SensorSystemInterface::consumer(item);
+        c.disconnect(this);
+        emit itemTraceRemoved(item);
+    }
+    mItemNames.clear();
+}
+
 void SensorDataWriter::remove(const QString &item)
 {
     QMutexLocker lock(&mDataMutex);

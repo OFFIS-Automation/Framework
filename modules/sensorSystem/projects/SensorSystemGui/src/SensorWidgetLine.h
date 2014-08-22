@@ -32,22 +32,25 @@ public:
     ~SensorWidgetLine();
     QString name();
     bool isSelected();
+    void setSelected(bool selected);
 signals:
     void removeTraceItem(const QString& name);
     void selectionChanged();
+    void sortWidgets(QString stationary, QString floating, bool positionAbove);
 private slots:
     void on_toolButton_clicked();
 
     void on_checkBox_toggled(bool checked);
 
-private:
+protected:
     void startDrag();
     void mouseMoveEvent(QMouseEvent *ev);
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
-
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent* dropEvent);
+    QPoint mStartPos;
     Ui::SensorWidgetLine *ui;
-    QPointF mStartPos;
 };
 
 #endif // SENSORWIDGETLINE_H

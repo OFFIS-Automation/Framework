@@ -30,7 +30,7 @@
 #include <QDebug>
 
 SensorTraceExport::SensorTraceExport() :
-    mSeperator(","), mStartAtZero(false)
+    mSeperator(","), mStartAtZero(false), mHeader(false)
 {
 }
 void SensorTraceExport::clearElements()
@@ -43,6 +43,7 @@ void SensorTraceExport::addElement(const QString& item, bool addEntry)
 {
     DataConsumer& c = SensorSystemInterface::consumer(item);
     mIds << c.numericIdentifier();
+    mNames << item;
     if(addEntry)
         mWriteIds << c.numericIdentifier();
 }
@@ -85,6 +86,12 @@ void SensorTraceExport::exportTrace(const QString &filename)
     QTextStream output(&targetFile);
     int id = -1;
     double timestamp = 0.0;
+    output << "Time";
+    foreach(QString name, mNames)
+    {
+        output << mSeperator << name.replace(mSeperator, "-");
+    }
+    output << endl;
     QVariant data;
     bool startMarkerFound = mStartMarker.isEmpty();
     while(!input.atEnd())

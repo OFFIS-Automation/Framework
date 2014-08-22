@@ -34,7 +34,8 @@ class SensorWidget : public QDockWidget
 public:
     explicit SensorWidget(QWidget *parent = 0);
     ~SensorWidget();
-
+    void load(const QString &projectFile);
+    void clear();
 public slots:
 
 private slots:
@@ -46,13 +47,21 @@ private slots:
     void on_exportTrace_clicked();
     void on_addMarker_clicked();
 
+    void on_allNoneBox_clicked();
+    void sortWidgets(const QString& stationary, const QString& floating, bool positionAbove);
+
+
+
 protected:
+    QString mProjectFile;
+    Qt::CheckState checkSelection();
     void storeSelection();
-private:
     ExportSensorTraceDialog mExportDialog;
-    Ui::SensorWidget *ui;
     SensorDataWriter& mWriter;
+    QStringList mSortedElements;
     QMap<QString, SensorWidgetLine*> mElements;
+private:
+    Ui::SensorWidget *ui;
 
 };
 

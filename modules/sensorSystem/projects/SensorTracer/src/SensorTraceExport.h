@@ -32,6 +32,7 @@ public:
     void setSeperator(const QString& seperator);
     void exportTrace(const QString& filename);
     void setStartAtZero(bool startAtZero);
+    void enableHeader(bool enable) { mHeader = true; }
     void setMarkerRange(QString startMarker, QString endMarker);
     void clearElements();
 
@@ -42,9 +43,10 @@ protected:
     QString mSeperator;
     QMap<int, QVariant> mLastElements;
     QList<int> mIds;
+    QList<QString> mNames;
     QSet<int> mWriteIds;
     QString mStartMarker, mEndMarker;
-    bool mStartAtZero;
+    bool mStartAtZero, mHeader;
 };
 
 #endif // SENSORTRACEEXPORT_H

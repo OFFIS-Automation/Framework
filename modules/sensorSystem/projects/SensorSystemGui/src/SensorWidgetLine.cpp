@@ -26,6 +26,7 @@ SensorWidgetLine::SensorWidgetLine(const QString &title) :
 {
     ui->setupUi(this);
     ui->checkBox->setText(title);
+    setAcceptDrops(true);
 }
 
 SensorWidgetLine::~SensorWidgetLine()
@@ -39,10 +40,11 @@ void SensorWidgetLine::startDrag()
     QMimeData *mimeData = new QMimeData;
 
     mimeData->setData("application/x-sensorSystem-value", name().toLocal8Bit());
+    QPoint p1 = ui->checkBox->mapFromParent(mStartPos);
     drag->setPixmap(QPixmap::grabWidget(ui->checkBox));
-    drag->setHotSpot(QPoint(width()/2, height()/2));
+    drag->setHotSpot(p1);
     drag->setMimeData(mimeData);
-    drag->exec(Qt::CopyAction);
+    drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
 void SensorWidgetLine::mousePressEvent(QMouseEvent *ev)
 {
@@ -55,6 +57,26 @@ void SensorWidgetLine::mousePressEvent(QMouseEvent *ev)
 void SensorWidgetLine::mouseReleaseEvent(QMouseEvent *)
 {
     mStartPos = QPoint();
+}
+
+void SensorWidgetLine::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-sensorSystem-value")
+            && event->mimeData()->data("application/x-sensorSystem-value") != name().toLocal8Bit())
+    {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+    }
+}
+
+void SensorWidgetLine::dropEvent(QDropEvent *dropEvent)
+{
+    dropEvent->acceptProposedAction();
+    QPoint pos = dropEvent->pos();
+    bool positionAbove = false;
+    if(pos.y() < (ui->checkBox->height()/2))
+        positionAbove = true;
+    emit sortWidgets(name(), QString(dropEvent->mimeData()->data("application/x-sensorSystem-value")), positionAbove);
 }
 
 void SensorWidgetLine::mouseMoveEvent(QMouseEvent *ev)
@@ -72,6 +94,11 @@ QString SensorWidgetLine::name()
 bool SensorWidgetLine::isSelected()
 {
     return ui->checkBox->isChecked();
+}
+
+void SensorWidgetLine::setSelected(bool selected)
+{
+    ui->checkBox->setChecked(selected);
 }
 
 void SensorWidgetLine::on_toolButton_clicked()

@@ -37,6 +37,8 @@ public:
     virtual QObject* getConnectObject() { return this; }
     virtual void addElements(MainWindowInterface* mainWindow);
     virtual void start() {}
+    virtual void loadProject(const QString& projectFile);
+    virtual void closeProject();
 protected:
     SensorWidget* mSensors;
 };

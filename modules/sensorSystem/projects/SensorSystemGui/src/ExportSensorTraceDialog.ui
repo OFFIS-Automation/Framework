@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>318</width>
-    <height>240</height>
+    <width>371</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -150,25 +150,35 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="startLabel">
        <property name="text">
         <string>Start</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="5" column="1">
       <widget class="QComboBox" name="startMarker"/>
      </item>
-     <item row="5" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="endLabel">
        <property name="text">
         <string>End</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="6" column="1">
       <widget class="QComboBox" name="endMarker"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="titlesInFirstRow">
+       <property name="text">
+        <string>Title in first row</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

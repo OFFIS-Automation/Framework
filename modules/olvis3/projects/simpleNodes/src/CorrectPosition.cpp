@@ -21,7 +21,7 @@ REGISTER_FILTER(CorrectPosition);
 CorrectPosition::CorrectPosition()
 {
     setName("CorrectPosition");
-    setDesc("Corrects the given position by adding an offset");
+    setDesc("Corrects the given position by adding an offset.");
     setGroup("geometric/position");
     mIn.setName("input");
     mOut.setName("output");

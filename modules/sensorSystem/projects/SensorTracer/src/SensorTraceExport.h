@@ -30,7 +30,7 @@ public:
     SensorTraceExport();
     void addElement(const QString& id, bool addEntry);
     void setSeperator(const QString& seperator);
-    void exportTrace(const QString& filename);
+    bool exportTrace(const QString& filename, QString &errorMsg = QString());
     void setStartAtZero(bool startAtZero);
     void enableHeader(bool enable) { mHeader = true; }
     void setMarkerRange(QString startMarker, QString endMarker);

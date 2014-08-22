@@ -65,20 +65,22 @@ void SensorTraceExport::setMarkerRange(QString startMarker, QString endMarker)
     mEndMarker = endMarker;
 }
 
-void SensorTraceExport::exportTrace(const QString &filename)
+bool SensorTraceExport::exportTrace(const QString &filename, QString& errorMsg)
 {
     QString sourceName = QCoreApplication::applicationDirPath() + "/sensorSystem.dat";
     QFile sourceFile(sourceName);
     if(!sourceFile.open(QFile::ReadOnly))
     {
-        qCritical() << tr("Could not open system trace file for reading");
-        return;
+        errorMsg = tr("Could not open system trace file for reading");
+        qCritical() << errorMsg;
+        return false;
     }
     QFile targetFile(filename);
     if(!targetFile.open(QFile::WriteOnly | QFile::Text))
     {
-        qCritical() << tr("Could not open trace file for writing");
-        return;
+        errorMsg = tr("Could not open trace file for writing");
+        qCritical() << errorMsg;
+        return false;
     }
     bool started = false;
     double offset = 0.0;
@@ -136,6 +138,7 @@ void SensorTraceExport::exportTrace(const QString &filename)
         }
         output << endl;
     }
+    return true;
 }
 
 

@@ -21,21 +21,21 @@ REGISTER_FILTER(CorrectPosition);
 CorrectPosition::CorrectPosition()
 {
     setName("CorrectPosition");
-    setDesc("Inverts the image");
+    setDesc("Corrects the given position by adding an offset");
     setGroup("geometric/position");
     mIn.setName("input");
     mOut.setName("output");
     addInputPort(mIn);
     addOutputPort(mOut);
     mXOffset.setName("xCorrection");
-    mXOffset.setDesc("this value will be added to the x value of the position");
-    mXOffset.setRange(-100, 100);
+    mXOffset.setDesc("This value will be added to the x value of the position");
+    mXOffset.setRange(INT_MIN, INT_MAX);
     mXOffset.setDefault(0.0);
     addInputPort(mXOffset);
 
     mYOffset.setName("yCorrection");
-    mYOffset.setDesc("this value will be added to the y value of the position");
-    mYOffset.setRange(-100, 100);
+    mYOffset.setDesc("This value will be added to the y value of the position");
+    mYOffset.setRange(INT_MIN, INT_MAX);
     mYOffset.setDefault(0.0);
     addInputPort(mYOffset);
 

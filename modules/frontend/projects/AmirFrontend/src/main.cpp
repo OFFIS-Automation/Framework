@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 {
     Application a(argc, argv);
     a.setOrganizationName("OFFIS");
-    a.setApplicationName("Automation Toolbox");
+    a.setApplicationName("Automation Framework");
     a.setStyle(QStyleFactory::create("Fusion"));
 
     // Splash image

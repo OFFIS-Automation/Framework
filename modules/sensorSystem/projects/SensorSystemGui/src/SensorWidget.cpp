@@ -156,6 +156,7 @@ void SensorWidget::on_exportTrace_clicked()
         exporter.setSeperator(mExportDialog.seperator());
         exporter.setStartAtZero(mExportDialog.startAtZero());
         exporter.enableHeader(mExportDialog.addHeaders());
+        exporter.ignoreInvalids(mExportDialog.ignoreInvalids());
         QStringList entries = mExportDialog.entriesForItems();
         foreach(QString element, elements)
         {

@@ -30,7 +30,7 @@
 #include <QDebug>
 
 SensorTraceExport::SensorTraceExport() :
-    mSeperator(","), mStartAtZero(false), mHeader(false)
+    mSeperator(","), mStartAtZero(false), mHeader(false), mOnlyValidLines(true)
 {
 }
 void SensorTraceExport::clearElements()
@@ -89,6 +89,9 @@ bool SensorTraceExport::exportTrace(const QString &filename, QString& errorMsg)
     int id = -1;
     double timestamp = 0.0;
     output << "Time";
+    mLastElements.clear();
+    foreach(int id, mIds)
+        mLastElements[id] = QVariant();
     foreach(QString name, mNames)
     {
         output << mSeperator << name.replace(mSeperator, "-");
@@ -130,6 +133,20 @@ bool SensorTraceExport::exportTrace(const QString &filename, QString& errorMsg)
             started = true;
             if(mStartAtZero)
                 offset = timestamp;
+        }
+        if(mOnlyValidLines)
+        {
+            bool allValid = true;
+            foreach(int id, mIds)
+            {
+                if(!mLastElements.contains(id) || !mLastElements[id].isValid())
+                {
+                    allValid = false;
+                    break;
+                }
+            }
+            if(!allValid)
+                continue;
         }
         output << timestamp-offset;
         foreach(int id, mIds)
@@ -180,6 +197,8 @@ QString SensorTraceExport::convertToString(const QVariant &var, const QString& s
         foreach(QVariant elem, var.toList())
             strList << convertToString(elem, seperator);
         return strList.join(seperator);
+    case QVariant::Invalid:
+        return "@INVALID";
     default:
         return var.toString();
     }

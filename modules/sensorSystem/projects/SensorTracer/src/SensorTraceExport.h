@@ -33,6 +33,7 @@ public:
     bool exportTrace(const QString& filename, QString &errorMsg = QString());
     void setStartAtZero(bool startAtZero);
     void enableHeader(bool enable) { mHeader = true; }
+    void ignoreInvalids(bool ignore) { mOnlyValidLines = ignore; }
     void setMarkerRange(QString startMarker, QString endMarker);
     void clearElements();
 
@@ -46,7 +47,7 @@ protected:
     QList<QString> mNames;
     QSet<int> mWriteIds;
     QString mStartMarker, mEndMarker;
-    bool mStartAtZero, mHeader;
+    bool mStartAtZero, mHeader, mOnlyValidLines;
 };
 
 #endif // SENSORTRACEEXPORT_H

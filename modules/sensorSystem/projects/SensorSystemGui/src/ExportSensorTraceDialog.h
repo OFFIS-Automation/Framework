@@ -40,6 +40,7 @@ public:
     QString seperator();
     bool startAtZero();
     bool addHeaders();
+    bool ignoreInvalids();
     QStringList entriesForItems();
 private slots:
     void on_chooseFile_clicked();

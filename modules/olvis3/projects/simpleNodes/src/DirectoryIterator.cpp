@@ -25,8 +25,12 @@ DirectoryIterator::DirectoryIterator()
     setName("DirectoryIterator");
     setDesc("Iterates through a directory and outputs all files that fit the filter.");
     setGroup("input");
+    mNameOut.setName("file name");
+    mNameOut.setDesc("The filename only, without the path");
+    addOutputPort(mNameOut);
     mOut.setName("file");
-    mOut.setDesc("file name");
+    mOut.setDesc("the full file path");
+
     addOutputPort(mOut);
     mFilter.setName("nameFilter");
     mFilter.setMode(OptionalPortMode);
@@ -71,6 +75,9 @@ void DirectoryIterator::execute()
     }
     if(mIter.hasNext())
     {
-        mOut.send(mIter.next());
+        QFileInfo info(mIter.next());
+        mNameOut.send(info.fileName());
+        mOut.send(info);
+
     }
 }

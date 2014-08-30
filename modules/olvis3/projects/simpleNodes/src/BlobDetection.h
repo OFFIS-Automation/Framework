@@ -39,6 +39,7 @@ protected:
     in::GrayImage mIn;
     in::Integer mMinPixels, mMaxPixels;
     in::Boolean mUseAxis;
+    out::Integer mNumBlobs;
     out::Integer mNumPixels;
     out::Real mPCe;
     in::Point mOffsetIn;

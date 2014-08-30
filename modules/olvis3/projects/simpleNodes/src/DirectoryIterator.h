@@ -35,6 +35,7 @@ protected:
     in::String mFilter;
     in::Boolean mRepeat;
     out::File mOut;
+    out::String mNameOut;
 
     QDir mDir;
     QString mCurrentFilter;

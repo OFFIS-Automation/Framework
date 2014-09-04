@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TEMPLATEMATCHING_H
-#define TEMPLATEMATCHING_H
+#ifndef MULTIPLETEMPLATEMATCHING_H
+#define MULTIPLETEMPLATEMATCHING_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
@@ -25,10 +25,10 @@
 #include <ports/BooleanPort.h>
 #include <ports/RectPort.h>
 
-class TemplateMatching : public UserFilter
+class MultipleTemplateMatching : public UserFilter
 {
 public:
-    TemplateMatching();
+    MultipleTemplateMatching();
     void start();
     void execute();
 
@@ -36,18 +36,12 @@ protected:
     in::Image mImageIn, mTemplateIn;
     in::Integer mMethodIn;
     in::Real mMinScoreIn;
-    in::Boolean mSendInvalidPos;
     in::Boolean mSendResultImage, mNeedNewImage;
-    in::Integer mFastSearchRange;
     in::Point mOffsetIn;
 
-    out::Rect mFastSearchOut;
-    out::Point mPositionOut;
-    out::Real mScoreOut;
+    out::Point mPositionOuts;
+    out::Real mScoreOuts;
     out::GrayImage mResultOut;
-    out::Point mResultOffset;
-
-    cv::Point mLastPos;
 };
 
-#endif // TEMPLATEMATCHING_H
+#endif // MULTIPLETEMPLATEMATCHING_H

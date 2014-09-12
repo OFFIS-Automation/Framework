@@ -107,8 +107,8 @@ void TemplateMatching::execute()
     else if(image.channels() == 1 && tpl.channels() != 1)
         cv::cvtColor((cv::Mat)mTemplateIn, tpl, CV_RGB2GRAY);
     int searchPixels = mFastSearchRange;
-
     QRectF roi(0,0,image.cols, image.rows);
+    cv::Point2d offset(tpl.cols/2.0, tpl.rows/2.0);
     if(mLastPos.x >= 0 && searchPixels > 0)
     {
         roi = QRect(mLastPos.x - tpl.cols/2 - searchPixels,
@@ -143,8 +143,8 @@ void TemplateMatching::execute()
     mScoreOut.send(score);
     mLastPos = cv::Point(-1,-1);
 
-    cv::Point2d offset(tpl.cols/2.0, tpl.rows/2.0);
-    QPointF imageOffset = mOffsetIn;
+
+    cv::Point2d imageOffset = mOffsetIn.getValue();
 
     if(score >= (double)mMinScoreIn)
     {

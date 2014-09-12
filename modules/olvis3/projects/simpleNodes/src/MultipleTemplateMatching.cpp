@@ -90,7 +90,7 @@ void MultipleTemplateMatching::execute()
 
     cv::Mat result;
     cv::Point2d offset(tpl.cols/2.0, tpl.rows/2.0);
-    QPointF imageOffset = mOffsetIn;
+    cv::Point2d imageOffset = mOffsetIn;
     cv::matchTemplate(image, tpl, result, mMethodIn);
     cv::threshold(result, result, (double)mMinScoreIn, 1., CV_THRESH_TOZERO);
 

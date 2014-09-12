@@ -139,6 +139,11 @@ void OlvisLolec::setPortValue(const QString &filterName, const QString &portName
     }
 }
 
+bool OlvisLolec::isRunning()
+{
+    return OlvisCoreInterface::instance()->isRunning();
+}
+
 void OlvisLolec::start()
 {
     OlvisCoreInterface::instance()->start();

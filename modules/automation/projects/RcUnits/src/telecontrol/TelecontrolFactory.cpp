@@ -34,17 +34,16 @@ TelecontrolFactory::TelecontrolFactory(QObject *parent) :
     QStringList files = dir.entryList(suffixFilter, QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
     qDebug() << QDir::currentPath();
     QDir::setCurrent(QCoreApplication::applicationDirPath() + "/plugins");
-    foreach(QString file, files)
-    {
+    foreach(QString file, files){
         QString absFileName = dir.absoluteFilePath(file);
         QPluginLoader* loader = new QPluginLoader(absFileName);
         loader->setLoadHints(QLibrary::ResolveAllSymbolsHint);
         QObject* object = loader->instance();
-        if(object)
-        {
+        if(object){
             HapticInterface* haptic = qobject_cast<HapticInterface *>(object);
-            if(haptic)
+            if(haptic){
                 mHaptic = haptic;
+            }
         }
     }
 }
@@ -65,7 +64,6 @@ Gamepad *TelecontrolFactory::createGamepad()
         gamepad = LinuxGamepadFactory::createGamepad();
     #endif
 
-
     return gamepad;
 }
 
@@ -73,6 +71,3 @@ HapticInterface *TelecontrolFactory::createHaptic()
 {
     return instance().mHaptic;
 }
-
-
-

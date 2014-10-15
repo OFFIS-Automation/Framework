@@ -72,7 +72,7 @@ RcUnits * RcUnits::instance()
 QMap<QString, RcUnitHelp> RcUnits::getHelpList()
 {
     QMap<QString, RcUnitHelp> list;
-    foreach(QString name, mUnits.keys())
+    foreach(QString name, mBaseUnits.keys())
         list[name] = getHelp(name);
     return list;
 }
@@ -94,10 +94,10 @@ void RcUnits::sendAsyncError(int id, const QString &error)
 
 void RcUnits::updateSensitivity(const QString &unitName, const QString &tcName, double sens, const QList<bool> &inverts)
 {
-    RcUnitBase* unit = mUnits.value(unitName, 0);
+    RcUnitBase* unit = mBaseUnits.value(unitName, 0);
     if(!unit)
         return;
-    unit->updateSensitivity(tcName, sens, inverts);
+    unit->updateGamepadSensitivity(tcName, sens, inverts);
 }
 
 void RcUnits::handleTcData(const QMap<int, double>& data)
@@ -112,7 +112,7 @@ void RcUnits::handleTcButton(int button, bool pressed)
 
 void RcUnits::enableGamepad(const QString &unitName)
 {
-    RcUnitBase* unit = mUnits.value(unitName, 0);
+    RcUnitBase* unit = mBaseUnits.value(unitName, 0);
     if(!unit)
         return;
     unit->connectGamepad(&mGamepad);
@@ -120,7 +120,7 @@ void RcUnits::enableGamepad(const QString &unitName)
 
 void RcUnits::disableGamepad(const QString &unitName)
 {
-    RcUnitBase* unit = mUnits.value(unitName, 0);
+    RcUnitBase* unit = mBaseUnits.value(unitName, 0);
     if(!unit)
         return;
     unit->disconnectGamepad(&mGamepad);

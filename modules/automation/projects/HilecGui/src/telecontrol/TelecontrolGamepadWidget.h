@@ -14,37 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TELECONTROLHAPTICWIDGET_H
-#define TELECONTROLHAPTICWIDGET_H
+#ifndef TELECONTROLGAMEPADWIDGET_H
+#define TELECONTROLGAMEPADWIDGET_H
 
 #include <QWidget>
 #include <QCheckBox>
 #include <core/RcUnitHelp.h>
 
 namespace Ui {
-class TelecontrolHapticWidget;
+    class TelecontrolGamepadWidget;
 }
 
-class TelecontrolHapticWidget : public QWidget
+class TelecontrolGamepadWidget : public QWidget
 {
     Q_OBJECT
-    
-public:
-    explicit TelecontrolHapticWidget(QString unit, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
-    virtual ~TelecontrolHapticWidget();
 
+public:
+    explicit TelecontrolGamepadWidget(const QString& unitName, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
+    ~TelecontrolGamepadWidget();
+
+    static const int numSteps = 10;
 signals:
-    void updateHaptic(QString unit,  QString method, double sensitivity, double forceScaling, QList<bool> inverts);
+    void updateTelecontrol(QString unit, QString method, double value, QList<bool> inverts);
 
 private slots:
-    void sendHapticUpdate();
-    void on_gainSlider_sliderMoved(int position);
-    void on_forceSlider_sliderMoved(int position);
+    void on_slider_sliderMoved(int position);
+    void sendUpdate(int sliderPosition = -1);
+    void changeSlider(const QString& unit, bool increase);
 
 private:
-    Ui::TelecontrolHapticWidget *ui;
+
+    Ui::TelecontrolGamepadWidget *ui;
     QString mUnit, mMethod;
     QList<QCheckBox*> mCheckboxes;
 };
 
-#endif // TELECONTROLHAPTICWIDGET_H
+#endif // TELECONTROLGAMEPADWIDGET_H

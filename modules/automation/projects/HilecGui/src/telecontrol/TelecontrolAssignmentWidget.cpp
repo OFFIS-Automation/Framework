@@ -68,8 +68,9 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
     foreach(QString unit, units){
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
         // Check if uni has gamepad methods
-        if(help.tcJoysticks.empty() && help.tcButtons.empty())
+        if(help.tcGamepadMoves.empty() && help.tcGamepadButtons.empty()){
             continue;
+        }
 
         ui->tabWidget->setEnabled(true);
         // Create tab

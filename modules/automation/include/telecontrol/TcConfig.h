@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
-// 
+// Copyright (C) 2013-2014 OFFIS e.V.
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -47,7 +47,23 @@ namespace Tc
         RightJoystickY
     };
 
+    enum HapticAxis
+    {
+        NoAxis = -1,
+        HapticAxisX = 0,
+        HapticAxisY,
+        HapticAxisZ,
+        HapticAxisYaw,
+        HapticAxisPitch,
+        HapticAxisRoll
+    };
 
+    enum HapticButton
+    {
+        UnknownHapticButton = -1,
+        PrimaryButton = 0,
+        SecondaryButton
+    };
 
     inline QList<Joystick> joysticks()
     {
@@ -175,5 +191,118 @@ namespace Tc
         else
             return NoJoystick;
     }
+
+    inline QList<HapticAxis> hapticAxis()
+    {
+        return QList<HapticAxis>();
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1)
+    {
+        return hapticAxis() << a1;
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2)
+    {
+        return hapticAxis() << a1 << a2;
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3)
+    {
+        return hapticAxis() << a1 << a2 << a3;
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4)
+    {
+        return hapticAxis() << a1 << a2 << a3 << a4;
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4, HapticAxis a5)
+    {
+        return hapticAxis() << a1 << a2 << a3 << a4 << a5;
+    }
+
+    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4, HapticAxis a5, HapticAxis a6)
+    {
+        return hapticAxis() << a1 << a2 << a3 << a4 << a5 << a6;
+    }
+
+    inline QList<HapticAxis> allHapticAxis() {
+        return hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ, Tc::HapticAxisYaw, Tc::HapticAxisPitch, Tc::HapticAxisRoll);
+    }
+
+    inline QString stringForHapticButton(int button)
+    {
+        switch(button){
+            case PrimaryButton:
+                return "PrimaryButton";
+            case SecondaryButton:
+                return "SecondaryButton";
+            default:
+                return "UnknownButton";
+        }
+    }
+
+    inline QString userFriendlyStringForHapticButton(int button)
+    {
+        switch(button){
+            case PrimaryButton:
+                return "Primary button";
+            case SecondaryButton:
+                return "Secondary button";
+            default:
+                return "Unknown haptic button";
+        }
+    }
+
+    inline HapticButton hapticButtonFromString(QString buttonName)
+    {
+        if(buttonName == "PrimaryButton")
+            return PrimaryButton;
+        else if(buttonName == "SecondaryButton")
+            return SecondaryButton;
+        else
+            return UnknownHapticButton;
+    }
+
+    inline QString stringForHapticAxis(int axis)
+    {
+        switch(axis){
+            case HapticAxisX:
+                return "HapticAxisX";
+            case HapticAxisY:
+                return "HapticAxisY";
+            case HapticAxisZ:
+                return "HapticAxisZ";
+            case HapticAxisYaw:
+                return "HapticAxisYaw";
+            case HapticAxisPitch:
+                return "HapticAxisPitch";
+            case HapticAxisRoll:
+                return "HapticAxisRoll";
+            default:
+                return "UnknownAxis";
+        }
+    }
+
+    inline HapticAxis hapticAxisFromString(const QString& name)
+    {
+        if(name == "HapticAxisX")
+            return HapticAxisX;
+        else if(name == "HapticAxisY")
+            return HapticAxisY;
+        else if(name == "HapticAxisZ")
+            return HapticAxisZ;
+        else if(name == "HapticAxisYaw")
+            return HapticAxisYaw;
+        else if(name == "HapticAxisPitch")
+            return HapticAxisPitch;
+        else if(name == "HapticAxisRoll")
+            return HapticAxisRoll;
+        else
+            return NoAxis;
+    }
+
 }
+
 #endif //LOLECTOOLS_TCCONFIG_H

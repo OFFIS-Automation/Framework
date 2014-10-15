@@ -91,7 +91,7 @@ public slots:
 
     virtual void activateHaptic(const QString& unit);
     virtual void deactivateHaptic();
-    virtual void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
+    virtual void updateHaptic(const QString &unit, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
     virtual QWidget* createHapticWidget();
 
 protected:

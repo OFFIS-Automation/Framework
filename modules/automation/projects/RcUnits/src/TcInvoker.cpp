@@ -16,33 +16,73 @@
 
 #include "TcInvoker.h"
 #include <QVector>
+#include <QMap>
 
 
-TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcUpdateMethod>& methods,
-                     const QList<RcUnit::TcButtonEvent>& buttons)
+TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods)
     : mDevice(device)
 {
-    foreach(const RcUnit::TcUpdateMethod& m, methods)
-        mMethods.append(m);
-    foreach(const RcUnit::TcButtonEvent& e, buttons)
-        mButtons[e.buttonId] = e;
+    // Init joystick method and buttons
+    foreach(const RcUnit::TcMoveMethod& gamepadMethod, gamepadMethods){
+        mGamepadMethods.append(gamepadMethod);
+    }
+    foreach(const RcUnit::TcButtonMethod& gamepadButtonMethod, gamepadButtonMethods){
+        mGamepadButtonMethods[gamepadButtonMethod.buttonId] = gamepadButtonMethod;
+    }
+
+    // Init haptic methods and buttons
+    foreach(const RcUnit::TcMoveMethod& hapticMethod, hapticMethods){
+        mHapticMethods.append(hapticMethod);
+    }
+    foreach(const RcUnit::TcButtonMethod& hapticButtonMethod, hapticButtonMethods){
+        mHapticButtonMethods[hapticButtonMethod.buttonId] = hapticButtonMethod;
+    }
 }
 
-void TcInvoker::handleData(const QMap<int, double> &data)
+
+// Gamepad stuff
+void TcInvoker::connectGamepad(QObject *gamepad)
 {
-    foreach(int activeMethodId, mActiveMethods)
-    {
-        RcUnit::TcUpdateMethod activeMethod = mMethods.value(activeMethodId);
+    connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(handleGamepadButtonToggled(int,bool)), Qt::DirectConnection);
+    connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
+}
+
+void TcInvoker::disconnectGamepad(QObject *gamepad)
+{
+    gamepad->disconnect(this);
+    mActiveGamepadMethods.clear();
+    mCurrentGamepadActivationButton = -1;
+}
+
+void TcInvoker::setGamepadSensitivity(const QString &methodName, double sensitivity, const QList<bool>& inverts)
+{
+    QMutableListIterator<RcUnit::TcMoveMethod> iter(mGamepadMethods);
+    while(iter.hasNext()){
+        RcUnit::TcMoveMethod& method = iter.next();
+        if(method.name == methodName){
+            method.sensitivity = qMin<double>(sensitivity, 1.0);
+            for(int i=0; i< qMin(inverts.size(), method.inverts.size()); i++){
+                method.inverts[i] = inverts[i];
+            }
+            break;
+        }
+    }
+}
+
+void TcInvoker::handleGamepadData(const QMap<int, double> &data)
+{
+    foreach(int activeMethodId, mActiveGamepadMethods){
+        RcUnit::TcMoveMethod activeMethod = mGamepadMethods.value(activeMethodId);
         QVector<QGenericArgument> args(10);
         QVector<double> vals(10);
         QList<Tc::Joystick>& elems = activeMethod.joysticks;
-        for(int i=0; i<elems.size(); i++)
-        {
+        for(int i=0; i<elems.size(); i++){
             int id = elems[i];
             vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
             int invertPos = activeMethod.invertPos.value(i, i);
-            if(activeMethod.inverts.value(invertPos, false))
+            if(activeMethod.inverts.value(invertPos, false)){
                 vals[i] = -vals[i];
+            }
             args[i] = Q_ARG(double, vals[i]);
         }
         try
@@ -51,90 +91,174 @@ void TcInvoker::handleData(const QMap<int, double> &data)
         }
         catch(const std::exception& e)
         {
-            qCritical() << tr("Telecontrol update error:") << e.what();
+            qCritical() << tr("Telecontrol gamepad update error:") << e.what();
         }
         catch(...)
         {
-            qCritical() << tr("Telecontrol update error:") << tr("Unknown");
+            qCritical() << tr("Telecontrol gamepad update error:") << tr("Unknown");
         }
     }
 }
 
-void TcInvoker::setButton(int id, bool pressed)
+void TcInvoker::handleGamepadButtonToggled(int buttonId, bool pressed)
 {
-    if(pressed)
-    {
+    if(pressed){
         bool cleared = false;
-        for(int i=0;i<mMethods.size(); i++)
-        {
-            const RcUnit::TcUpdateMethod& method = mMethods[i];
-            if(method.deadMansButton == id)
-            {
-                if(!cleared)
-                {
-                    // stop current movements
-                    handleData(QMap<int, double>());
-                    mActiveMethods.clear();
-                    mCurrentActivationButton = id;
+        for(int i=0; i<mGamepadMethods.size(); i++){
+            const RcUnit::TcMoveMethod& method = mGamepadMethods[i];
+            if(method.deadMansButton == buttonId){
+                if(!cleared){
+                    // Stop current movements
+                    handleGamepadData(QMap<int, double>());
+                    mActiveGamepadMethods.clear();
+                    mCurrentGamepadActivationButton = buttonId;
                     cleared = true;
                 }
-                mActiveMethods << i;
+                mActiveGamepadMethods << i;
             }
         }
     }
-    if(!pressed && id == mCurrentActivationButton)
-    {
-        // stop current movements
-        handleData(QMap<int, double>());
-        mCurrentActivationButton = -1;
-        mActiveMethods.clear();
+    if(!pressed && buttonId == mCurrentGamepadActivationButton){
+        // Stop current movements
+        handleGamepadData(QMap<int, double>());
+        mActiveGamepadMethods.clear();
+        mCurrentGamepadActivationButton = -1;
     }
-    if(mButtons.contains(id))
-    {
-        RcUnit::TcButtonEvent& event = mButtons[id];
-        if(pressed || event.toggleMode)
-        {
+    if(mGamepadButtonMethods.contains(buttonId)){
+        RcUnit::TcButtonMethod& event = mGamepadButtonMethods[buttonId];
+        if(pressed || event.toggleMode){
             try
             {
-                event.method.invoke(mDevice,Qt::DirectConnection, Q_ARG(bool, pressed));
+                event.method.invoke(mDevice, Qt::DirectConnection, Q_ARG(bool, pressed));
             }
             catch(const std::exception& e)
             {
-                qCritical() << tr("Telecontrol button error:") << e.what();
+                qCritical() << tr("Telecontrol gamepad button error:") << e.what();
             }
             catch(...)
             {
-                qCritical() << tr("Telecontrol button error:") << tr("Unknown");
+                qCritical() << tr("Telecontrol gamepad button error:") << tr("Unknown");
             }
         }
     }
 }
 
-void TcInvoker::connectGamepad(QObject *gamepad)
+// Haptic stuff
+void TcInvoker::connectHapticDevice(QObject *hapticDevice)
 {
-    connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(setButton(int,bool)), Qt::DirectConnection);
-    connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), SLOT(handleData(QMap<int,double>)), Qt::DirectConnection);
+    // Establish signal/slot connection
+    connect(hapticDevice, SIGNAL(buttonToggled(int,bool)), SLOT(handleHapticButtonToggled(int,bool)), Qt::DirectConnection);
+    connect(hapticDevice, SIGNAL(positionUpdate(QMap<int,double>)), SLOT(handleHapticPositionData(QMap<int,double>)), Qt::DirectConnection);
+    connect(this, SIGNAL(forceUpdate(QMap<int,double>)), hapticDevice, SLOT(handleForceData(QMap<int,double>)), Qt::DirectConnection);
 }
 
-void TcInvoker::disconnectGamepad(QObject *gamepad)
+void TcInvoker::disconnectHapticDevice(QObject *hapticDevice)
 {
-    gamepad->disconnect(this);
-    mActiveMethods.clear();
-    mCurrentActivationButton = -1;
+    // Dissolve signal/slot connection
+    hapticDevice->disconnect(this);
+
+    // Reset internal values
+    mActiveHapticMethods.clear();
+    mCurrentHapticActivationButton = -1;
 }
 
-void TcInvoker::setSensitivity(const QString &methodName, double sensitivity, const QList<bool>& inverts)
+void TcInvoker::setHapticSensitivity(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
 {
-    QMutableListIterator<RcUnit::TcUpdateMethod> iter(mMethods);
-    while(iter.hasNext())
-    {
-        RcUnit::TcUpdateMethod& method = iter.next();
-        if(method.name == methodName)
-        {
+    QMutableListIterator<RcUnit::TcMoveMethod> iter(mHapticMethods);
+    while(iter.hasNext()){
+        RcUnit::TcMoveMethod& method = iter.next();
+        if(method.name == methodName){
             method.sensitivity = qMin<double>(sensitivity, 1.0);
-            for(int i=0; i<qMin(inverts.size(), method.inverts.size()); i++)
+            method.forceScaling = qMin<double>(forceScaling, 1.0);
+            for(int i=0; i< qMin(inverts.size(), method.inverts.size()); i++){
                 method.inverts[i] = inverts[i];
+            }
             break;
+        }
+    }
+}
+
+typedef QMap<int, double> QIntDoubleMap;
+void TcInvoker::handleHapticPositionData(const QMap<int, double> &data)
+{
+    foreach(int activeMethodId, mActiveHapticMethods){
+        RcUnit::TcMoveMethod activeMethod = mHapticMethods.value(activeMethodId);
+        QVector<QGenericArgument> args(6);
+        QVector<double> vals(6);
+        QList<Tc::HapticAxis>& elems = activeMethod.axes;
+        // Apply sensitivity and invert
+        for(int i=0; i<elems.size(); i++){
+            int id = elems[i];
+            vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
+            int invertPos = activeMethod.invertPos.value(i, i);
+            if(activeMethod.inverts.value(invertPos, false)){
+                vals[i] = -vals[i];
+            }
+            args[i] = Q_ARG(double, vals[i]);
+        }
+        try
+        {
+            QIntDoubleMap returnValue;
+            qRegisterMetaType<QIntDoubleMap>("QIntDoubleMap");
+            activeMethod.method.invoke(mDevice, Qt::DirectConnection, Q_RETURN_ARG(QIntDoubleMap, returnValue), args[0], args[1], args[2], args[3], args[4], args[5]);
+
+            // Apply force scaling
+            QIntDoubleMap::iterator i;
+            for (i = returnValue.begin(); i != returnValue.end(); ++i)
+                i.value() *= activeMethod.forceScaling;
+
+            emit forceUpdate(returnValue);
+        }
+        catch(const std::exception& e)
+        {
+            qCritical() << tr("Telecontrol haptic update error:") << e.what();
+        }
+        catch(...)
+        {
+            qCritical() << tr("Telecontrol haptic update error:") << tr("Unknown");
+        }
+    }
+}
+
+void TcInvoker::handleHapticButtonToggled(int buttonId, bool pressed)
+{
+    if(pressed){
+        bool cleared = false;
+        for(int i=0; i<mHapticMethods.size(); i++){
+            const RcUnit::TcMoveMethod& method = mHapticMethods[i];
+            if(method.deadMansButton == buttonId){
+                if(!cleared){
+                    // Stop current movements
+                    handleHapticPositionData(QMap<int, double>());
+                    mActiveHapticMethods.clear();
+                    mCurrentHapticActivationButton = buttonId;
+                    cleared = true;
+                }
+                mActiveHapticMethods << i;
+            }
+        }
+    }
+    if(!pressed && buttonId == mCurrentHapticActivationButton){
+        // Stop current movements
+        handleHapticPositionData(QMap<int, double>());
+        mActiveHapticMethods.clear();
+        mCurrentHapticActivationButton = -1;
+    }
+    if(mHapticButtonMethods.contains(buttonId)){
+        RcUnit::TcButtonMethod& event = mHapticButtonMethods[buttonId];
+        if(pressed || event.toggleMode){
+            try
+            {
+                event.method.invoke(mDevice, Qt::DirectConnection, Q_ARG(bool, pressed));
+            }
+            catch(const std::exception& e)
+            {
+                qCritical() << tr("Telecontrol haptic button error:") << e.what();
+            }
+            catch(...)
+            {
+                qCritical() << tr("Telecontrol haptic button error:") << tr("Unknown");
+            }
         }
     }
 }

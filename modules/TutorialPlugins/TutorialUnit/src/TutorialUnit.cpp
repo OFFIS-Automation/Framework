@@ -34,6 +34,7 @@ void TutorialUnit::setScene(GraphicsView *scene)
     connect(this, SIGNAL(rotateAbs(double,int)), scene, SLOT(rotateRobotAbs(double,int)));
     connect(this, SIGNAL(rotateRel(double,int)), scene, SLOT(rotateRobotRel(double,int)));
     connect(this, SIGNAL(setGripperState(bool)), scene, SLOT(setGripperState(bool)));
+    connect(this, SIGNAL(alternateGripperState()), scene, SLOT(alternateGripperState()));
     connect(this, SIGNAL(resetScene(bool)), scene, SLOT(reset(bool)));
     connect(scene, SIGNAL(movementFinished()), SLOT(onMovementFinished()));
     connect(scene, SIGNAL(positionUpdate(QPointF,qreal)), this, SIGNAL(positionUpdated(QPointF,qreal)));
@@ -91,10 +92,32 @@ void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
     QMutexLocker lock(&mMutex);
     checkHAL();
     QMutexLocker waitLock(&mWaitMutex);
+
     emit moveRel(QPointF(xAxis*20.0, yAxis*-20.0), 20);
     mWait.wait(&mWaitMutex, 20);
     emit rotateRel(phi*20, 1);
     mWait.wait(&mWaitMutex, 20);
+}
+
+QMap<int, double> TutorialUnit::moveHaptic(double xAxis, double yAxis, double /*zAxis*/)
+{
+    moveGamepad(xAxis, yAxis, 0);
+
+    // Create return value
+    QMap<int, double> force;
+    force[Tc::HapticAxisX] = 1.0;
+    force[Tc::HapticAxisY] = 0.0;
+    force[Tc::HapticAxisZ] = 0.0;
+    return force;
+}
+
+void TutorialUnit::alternateGripper(bool open)
+{
+    if(!open){
+        openGripper();
+    } else {
+        closeGripper();
+    }
 }
 
 void TutorialUnit::resetSetup()
@@ -137,7 +160,6 @@ void TutorialUnit::openGripper()
     QMutexLocker waitLock(&mWaitMutex);
     mWait.wait(&mWaitMutex, 300);
     emit setGripperState(true);
-    mWait.wait(&mWaitMutex, 1000);
     mWait.wait(&mWaitMutex, 300);
 }
 
@@ -148,8 +170,7 @@ void TutorialUnit::closeGripper()
     QMutexLocker waitLock(&mWaitMutex);
     mWait.wait(&mWaitMutex, 300);
     emit setGripperState(false);
-    mWait.wait(&mWaitMutex, 1000);
-    mWait.wait(&mWaitMutex, 500);
+    mWait.wait(&mWaitMutex, 300);
 }
 
 void TutorialUnit::onMovementFinished()

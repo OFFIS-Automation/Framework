@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TelecontrolUnitWidget</class>
- <widget class="QWidget" name="TelecontrolUnitWidget">
+ <class>TelecontrolGamepadWidget</class>
+ <widget class="QWidget" name="TelecontrolGamepadWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>

@@ -93,13 +93,13 @@ void LinuxGamepad::run()
         QMapIterator<int,bool> iter(buttons);
         while(iter.hasNext()){
             iter.next();
-            int id = iter.key();
+            int buttonId = iter.key();
             bool value = iter.value();
-            if(lastButtons.contains(id)){
-                if(lastButtons[id] != value) // value has changed
-                emit buttonToggled(id, value);
+            if(lastButtons.contains(buttonId)){
+                if(lastButtons[buttonId] != value) // value has changed
+                emit buttonToggled(buttonId, value);
             } else if(value) // first run, emit if pressed
-                emit buttonToggled(id, value);
+                emit buttonToggled(buttonId, value);
         }
         lastButtons = buttons;
         emit dataUpdate(joysticks);

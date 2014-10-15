@@ -37,35 +37,41 @@ RcUnitsBase::RcUnitsBase() :
 
 RcUnitsBase::~RcUnitsBase()
 {
-    qDeleteAll(mUnits);
+    qDeleteAll(mBaseUnits);
 }
 
 RcUnitHelp RcUnitsBase::getHelp(const QString &name)
 {
-    if(!mUnits.contains(name))
+    if(!mBaseUnits.contains(name))
         return RcUnitHelp();
-    return mUnits[name]->getHelp();
+    return mBaseUnits[name]->getHelp();
 }
 
 TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
 {
-    if(mUnits.contains(name))
-        return mUnits[name]->telecontrolConfig();
-    if(mMasterGamepads.contains(name))
-        return mMasterGamepads[name]->telecontrolConfig();
+    if(mBaseUnits.contains(name))
+        return mBaseUnits[name]->telecontrolConfig();
+    if(mMasterTcInvokers.contains(name))
+        return mMasterTcInvokers[name]->telecontrolConfig();
     return TelecontrolConfig();
 }
 
 QList<QString> RcUnitsBase::telecontrolableUnitNames()
 {
-    QStringList returnList = mMasterGamepads.keys();
+    QStringList returnList = mMasterTcInvokers.keys();
     foreach(QString name, unitNames())
     {
-        if(mUnitsHiddenforTc.contains(name))
+        if(mUnitsHiddenforTc.contains(name)){
             continue;
+        }
+
         TelecontrolConfig config = getTelecontrolConfig(name);
-        if(config.hasHaptic || !config.tcButtons.empty() || !config.tcJoysticks.empty())
+
+        bool hasGamepadControl = !(config.tcGamepadButtons.empty() && config.tcGamepadMoves.empty());
+        bool hasHapticControl = !(config.tcHapticButtons.empty() && config.tcHapticMoves.empty());
+        if(hasGamepadControl || hasHapticControl){
             returnList << name;
+        }
     }
     //@TODO add master gamepad controller
     return returnList;
@@ -74,11 +80,11 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
 
 QWidget* RcUnitsBase::lolecGui(const QString &name)
 {
-    if(!mUnits.contains(name))
+    if(!mBaseUnits.contains(name))
         return 0;
     LolecInterface *lolecInterface = loadPlugin(mTypes[name]);
     if(lolecInterface)
-        return lolecInterface->guiForInstance(mUnits[name]->lolec());
+        return lolecInterface->guiForInstance(mBaseUnits[name]->lolec());
     return 0;
 }
 
@@ -106,12 +112,8 @@ void RcUnitsBase::loadConfig(const QString &filename)
                 RcUnit* rcUnit = new RcUnit(name, config);
                 if(rcUnit->initialize(plugin))
                 {
-                    loadTcSensitivity(name, rcUnit, filename);
-                    QSettings teleSettings(filename, QSettings::IniFormat);
-                    double hapticSens = teleSettings.value(QString("haptic/%1/sensitivity").arg(name), rcUnit->hapticSensitivity()).toDouble();
-                    double hapticForce = teleSettings.value(QString("haptic/%1/forceFactor").arg(name), rcUnit->hapticForceFactor()).toDouble();
-                    rcUnit->updateHapticSensitivity(hapticSens, hapticForce);
-                    mUnits[name] = rcUnit;
+                    loadTcSensitivity(name, rcUnit, rcUnit, filename);
+                    mBaseUnits[name] = rcUnit;
                     mTypes[name] = type;
                 }
                 else
@@ -140,10 +142,10 @@ void RcUnitsBase::loadConfig(const QString &filename)
 void RcUnitsBase::releaseConfig()
 {
     mTypes.clear();
-    qDeleteAll(mUnits);
-    mUnits.clear();
-    qDeleteAll(mMasterGamepads);
-    mMasterGamepads.clear();
+    qDeleteAll(mBaseUnits);
+    mBaseUnits.clear();
+    qDeleteAll(mMasterTcInvokers);
+    mMasterTcInvokers.clear();
 
 }
 
@@ -156,24 +158,40 @@ void RcUnitsBase::loadTcMasters(const QString &configFile)
     foreach (QString configName, configs) {
         MasterTcInvoker* master = new MasterTcInvoker(configName);
         master->readConfig(configFile);
-        master->initialize(mUnits.values());
-        mMasterGamepads[configName] = master;
-        loadTcSensitivity(configName, master, configFile);
+        master->initialize(mBaseUnits.values());
+        mMasterTcInvokers[configName] = master;
+        loadTcSensitivity(configName, master, 0, configFile);
     }
 }
 
-void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *ep, const QString& configFile)
+void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepadEndpoint, HapticBaseEndpoint *hapticEndpoint, const QString& configFile)
 {
-    QSettings teleSettings(configFile, QSettings::IniFormat);
-    teleSettings.beginGroup(QString("telecontrol/%1").arg(name));
-    foreach(QString method, teleSettings.childGroups())
-    {
-        double sens = teleSettings.value(QString("%1/sensitivity").arg(method)).toDouble();
+    QSettings settings(configFile, QSettings::IniFormat);
+    // Joystick
+    settings.beginGroup(QString("joystick/%1").arg(name));
+    foreach(QString method, settings.childGroups()){
+        double sensitivity = settings.value(QString("%1/sensitivity").arg(method)).toDouble();
         QList<bool> inverts;
-        QStringList invertStringList = teleSettings.value(QString("%1/inverts").arg(method)).toStringList();
-        foreach(const QString& value, invertStringList)
+        QStringList invertStringList = settings.value(QString("%1/inverts").arg(method)).toStringList();
+        foreach(const QString& value, invertStringList){
             inverts << (value.toInt() != 0);
-        ep->updateSensitivity(method, sens, inverts);
+        }
+        gamepadEndpoint->updateGamepadSensitivity(method, sensitivity, inverts);
+    }
+
+    // Haptics
+    if(hapticEndpoint){
+        settings.beginGroup(QString("haptic/%1").arg(name));
+        foreach(QString method, settings.childGroups()){
+            double sensitivity = settings.value(QString("%1/sensitivity").arg(method)).toDouble();
+            double forceScaling = settings.value(QString("%1/forceScaling").arg(method)).toDouble();
+            QList<bool> inverts;
+            QStringList invertStringList = settings.value(QString("%1/inverts").arg(method)).toStringList();
+            foreach(const QString& value, invertStringList){
+                inverts << (value.toInt() != 0);
+            }
+            hapticEndpoint->updateHapticSensitivity(method, sensitivity, forceScaling, inverts);
+        }
     }
 }
 
@@ -220,19 +238,19 @@ LolecInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)
 
 QVariant RcUnitsBase::call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params)
 {
-    if(!mUnits.contains(lolec))
+    if(!mBaseUnits.contains(lolec))
         throw RcError(tr("rc-unit not found: %1").arg(QString(lolec)));
-    return mUnits[lolec]->call(method, params);
+    return mBaseUnits[lolec]->call(method, params);
 }
 
 QVariant RcUnitsBase::getConstants(const QByteArray &lolec)
 {
-    if(!mUnits.contains(lolec))
+    if(!mBaseUnits.contains(lolec))
         throw RcError(tr("rc-unit not found: %1").arg(QString(lolec)));
-    return mUnits[lolec]->getConstants();
+    return mBaseUnits[lolec]->getConstants();
 }
 
-void RcUnitsBase::activateTelecontrol(const QString &unitName)
+void RcUnitsBase::activateGamepad(const QString &unitName)
 {
     if(mGamepad == 0)
     {
@@ -243,27 +261,35 @@ void RcUnitsBase::activateTelecontrol(const QString &unitName)
             emit telecontrolUpdated(false, QString());
             return;
         }
+        // Connect buttons to allow for sensitivity update and unit switch
         connect(mGamepad,SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
         mGamepad->start();
     }
-    GamepadEndpoint* unitToActivate = mMasterGamepads.value(unitName, 0);
+    GamepadEndpoint* unitToActivate = mMasterTcInvokers.value(unitName, 0);
     if(!unitToActivate)
-        unitToActivate = mUnits.value(unitName, 0);
-    foreach(GamepadEndpoint* unit, mMasterGamepads.values())
-        unit->disconnectGamepad(mGamepad);
-    foreach(GamepadEndpoint* unit, mUnits.values())
-        unit->disconnectGamepad(mGamepad);
-    if(unitToActivate)
+        unitToActivate = mBaseUnits.value(unitName, 0);
+
+    // Connect old gamepad instances
+    foreach(GamepadEndpoint* gamepadEndpoint, mMasterTcInvokers.values()){
+        gamepadEndpoint->disconnectGamepad(mGamepad);
+    }
+    foreach(GamepadEndpoint* gamepadEndpoint, mBaseUnits.values()){
+        gamepadEndpoint->disconnectGamepad(mGamepad);
+    }
+
+    // Connect the "new" gamepad
+    if(unitToActivate){
         unitToActivate->connectGamepad(mGamepad);
+    }
     mCurrentTelecontrolledUnit = unitName;
     emit telecontrolUpdated(true, unitName);
 }
 
-void RcUnitsBase::deactivateTelecontrol()
+void RcUnitsBase::deactivateGamepad()
 {
     if(mGamepad != 0)
     {
-        foreach(RcUnitBase* unit, mUnits.values())
+        foreach(RcUnitBase* unit, mBaseUnits.values())
             unit->disconnectGamepad(mGamepad);
         mGamepad->disconnect(this);
         delete mGamepad;
@@ -272,84 +298,25 @@ void RcUnitsBase::deactivateTelecontrol()
     emit telecontrolUpdated(false, QString());
 }
 
-void RcUnitsBase::updateTelecontrol(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
+void RcUnitsBase::updateGamepad(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-
-    GamepadEndpoint* unit = mMasterGamepads.value(unitName, 0);
-    if(!unit)
-        unit = mUnits.value(unitName, 0);
-    if(!unit)
+    GamepadEndpoint* unitToUpdate = mMasterTcInvokers.value(unitName, 0);
+    if(!unitToUpdate){
+        unitToUpdate = mBaseUnits.value(unitName, 0);
+    }
+    if(!unitToUpdate){
         return;
-    unit->updateSensitivity(methodName, sensitivity, inverts);
+    }
+    unitToUpdate->updateGamepadSensitivity(methodName, sensitivity, inverts);
 
     QSettings settings(mConfigFile, QSettings::IniFormat);
     settings.beginGroup(QString("telecontrol/%1/%2").arg(unitName, methodName));
     settings.setValue("sensitivity", sensitivity);
     QStringList invertList;
-    foreach(bool invert, inverts)
+    foreach(bool invert, inverts){
         invertList << QString(invert ? "1" : "0");
+    }
     settings.setValue("inverts", invertList);
-}
-
-void RcUnitsBase::activateHaptic(const QString &unit)
-{
-    if(!mHaptic)
-    {
-        try
-        {
-            mHaptic = TelecontrolFactory::createHaptic();
-            if(!mHaptic)
-                throw std::runtime_error(tr("No haptic plugin found.").toStdString());
-            mHaptic->connectHardware(mConfigFile);
-        }
-        catch(const std::exception& e)
-        {
-            mHaptic = 0;
-            qCritical() << "Could not start haptic: " << QString(e.what());
-            emit hapticUpdated(false, QString());
-            return;
-        }
-    }
-    mHaptic->disable();
-    RcUnitBase* unitToActivate = mUnits.value(unit, 0);
-    if(unitToActivate && unitToActivate->hasHapticInterface())
-    {
-        mHaptic->setScaling(unitToActivate->hapticSensitivity(), unitToActivate->hapticForceFactor());
-        mHaptic->enable(unitToActivate);
-    }
-    mCurrentHapticUnit = unit;
-    emit hapticUpdated(true, unit);
-}
-
-QWidget *RcUnitsBase::createHapticWidget()
-{
-    if(!mHaptic)
-        return 0;
-    return mHaptic->createWidget();
-}
-
-void RcUnitsBase::deactivateHaptic()
-{
-    if(mHaptic)
-    {
-        mHaptic->disable();
-        mHaptic->releaseHardware();
-        mHaptic = 0;
-    }
-    emit hapticUpdated(false, QString());
-}
-
-void RcUnitsBase::updateHaptic(const QString &unitName, double sensitivity, double forceFactor)
-{
-    RcUnitBase* unit = mUnits.value(unitName, 0);
-    if(!unit)
-        return;
-    if(mHaptic && unitName == mCurrentHapticUnit)
-        mHaptic->setScaling(sensitivity, forceFactor);
-    unit->updateHapticSensitivity(sensitivity, forceFactor);
-    QSettings settings(mConfigFile, QSettings::IniFormat);
-    settings.setValue(QString("haptic/%1/sensitivity").arg(unitName), sensitivity);
-    settings.setValue(QString("haptic/%1/forceFactor").arg(unitName), forceFactor);
 }
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
@@ -376,5 +343,85 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
     }
     QString unit = units.value(currentId, QString());
     if(isNewUnit)
-        activateTelecontrol(unit);
+        activateGamepad(unit);
+}
+
+
+void RcUnitsBase::activateHaptic(const QString &unit)
+{
+    if(mHaptic == 0){
+        try
+        {
+            mHaptic = TelecontrolFactory::createHaptic();
+            if(!mHaptic){
+                qCritical() << tr("No haptic unit found.");
+                emit hapticUpdated(false, QString());
+                return;
+            }
+            mHaptic->connectHardware(mConfigFile);
+        }
+        catch(const std::exception& e)
+        {
+            mHaptic = 0;
+            qCritical() << "Could not start haptic: " << QString(e.what());
+            emit hapticUpdated(false, QString());
+            return;
+        }
+    }
+    mHaptic->disable();
+
+    // Connect old haptic interface instances
+    foreach(HapticEndpoint* hapticEndpoint, mBaseUnits.values()){
+        hapticEndpoint->disconnectHapticDevice(mHaptic);
+    }
+
+    // Get the linked RC-Unit
+    RcUnitBase* unitToActivate = mBaseUnits.value(unit, 0);
+
+    // Connect the "new" haptic interface
+    if(unitToActivate && unitToActivate->hasHapticControl()){
+        unitToActivate->connectHapticDevice(mHaptic);
+        mHaptic->enable();
+    }
+
+    // Store reference, emit signal to notify of connection
+    mCurrentHapticUnit = unit;
+    emit hapticUpdated(true, unit);
+}
+
+void RcUnitsBase::deactivateHaptic()
+{
+    if(mHaptic){
+        mHaptic->disable();
+        mHaptic->releaseHardware();
+        mHaptic = 0;
+    }
+    emit hapticUpdated(false, QString());
+}
+
+void RcUnitsBase::updateHaptic(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
+{
+    RcUnitBase* unitToUpdate = mBaseUnits.value(unitName, 0);
+    if(!unitToUpdate || !unitToUpdate->hasHapticControl()){
+        return;
+    }
+    unitToUpdate->updateHapticSensitivity(methodName, sensitivity, forceScaling, inverts);
+
+    QSettings settings(mConfigFile, QSettings::IniFormat);
+    settings.beginGroup(QString("haptic/%1/%2").arg(unitName, methodName));
+    settings.setValue("sensitivity", sensitivity);
+    settings.setValue("forceScaling", forceScaling);
+    QStringList invertList;
+    foreach(bool invert, inverts){
+        invertList << QString(invert ? "1" : "0");
+    }
+    settings.setValue("inverts", invertList);
+}
+
+QWidget *RcUnitsBase::createHapticWidget()
+{
+    if(mHaptic == 0){
+        return 0;
+    }
+    return mHaptic->createWidget();
 }

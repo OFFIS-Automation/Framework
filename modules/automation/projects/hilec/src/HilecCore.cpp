@@ -177,12 +177,12 @@ QList<TraceLine> HilecCore::getStackTrace()
 
 void HilecCore::activateTelecontrol(const QString &unit)
 {
-    RcUnits::instance()->activateTelecontrol(unit);
+    RcUnits::instance()->activateGamepad(unit);
 }
 
 void HilecCore::updateTelecontrol(const QString &unit, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-    RcUnits::instance()->updateTelecontrol(unit, methodName, sensitivity, inverts);
+    RcUnits::instance()->updateGamepad(unit, methodName, sensitivity, inverts);
 }
 
 void HilecCore::activateHaptic(const QString &unit)
@@ -195,9 +195,9 @@ void HilecCore::deactivateHaptic()
     RcUnits::instance()->deactivateHaptic();
 }
 
-void HilecCore::updateHaptic(const QString &unit, double sensitivity, double forceFactor)
+void HilecCore::updateHaptic(const QString &unit, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
 {
-    RcUnits::instance()->updateHaptic(unit, sensitivity, forceFactor);
+    RcUnits::instance()->updateHaptic(unit, methodName, sensitivity, forceScaling, inverts);
 }
 
 QWidget *HilecCore::createHapticWidget()
@@ -207,6 +207,6 @@ QWidget *HilecCore::createHapticWidget()
 
 void HilecCore::deactivateTelecontrol()
 {
-    RcUnits::instance()->deactivateTelecontrol();
+    RcUnits::instance()->deactivateGamepad();
 }
 

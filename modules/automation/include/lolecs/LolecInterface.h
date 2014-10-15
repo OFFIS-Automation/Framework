@@ -72,34 +72,18 @@ public:
      * @param defaultMapping the sensitive button
      * @param hiddenToUser this button assingment is hidden from the user, it is not displayed in the GUI
      */
-    virtual void registerButtonEvent(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
+    virtual void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
 
-    /**
-     * @brief registers a method that is used with the haptic interface
-     * The method must have the signature
-     * void methodName(QVector3D& positions, QVector3D& forces, bool readOnly);
-     * The positions given to this function are absolute positions, normalized to [0:1].
-     * The haptic method should run 1-10ms and then write the reached position in the @a positions parameter.
-     * If forces are applied, the msut be written into the @a forces parameter
-     * if @a readOnly is true, the operation must not perform a movement; instead just write the current values into the paramters
-     * Example:
-     * hapticMovement(QVector3D& position, QVector3D& forces, bool readOnly) {
-     *  if (!readOnly) {
-     *      mHardware->moveTo(positions, 5000);
-     *      // some more stuff
-     *  }
-     *  position = mHardware->currentPosition();
-     *  forces = mHardware->currentForces();
-     * }
-     */
-    virtual void registerHapticMethod(QString methodName) = 0;
+    // TODO: KOMMENTARE
+
+    virtual void registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
+    virtual void registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser = false) = 0;
 
     virtual void setParamNames(const QString& methodName, const QStringList& names) = 0;
     /**
      * This function should never be called directly. Instead, use the static method @a rcRegisterStruct in RcStruct.h
      */
     virtual void registerStruct(int id, const QByteArray& name, const QStringList& typeNames, const QList<int>& types, RcWrapperFactoryItf* wrapper) = 0;
-
 };
 
 class LolecInterface

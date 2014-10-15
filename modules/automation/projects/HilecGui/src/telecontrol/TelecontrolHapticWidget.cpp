@@ -16,34 +16,49 @@
 
 #include "TelecontrolHapticWidget.h"
 #include "ui_TelecontrolHapticWidget.h"
-#include "TelecontrolUnitWidget.h"
+#include "TelecontrolGamepadWidget.h"
 #include <math.h>
 
-TelecontrolHapticWidget::TelecontrolHapticWidget(QString unit, double sensitivity, double forceFactor, QWidget *parent) :
-    mUnit(unit),
+TelecontrolHapticWidget::TelecontrolHapticWidget(QString unit, const TelecontrolConfig::TcMove &method, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TelecontrolHapticWidget)
+    ui(new Ui::TelecontrolHapticWidget),
+    mUnit(unit),
+    mMethod(method.name)
 {
     ui->setupUi(this);
-    ui->positionSlider->setRange(0, TelecontrolUnitWidget::numSteps);
-    ui->positionSlider->setValue(0);
-    for(int i=TelecontrolUnitWidget::numSteps; i>0; i--)
+    ui->groupBox->setTitle(method.name);
+
+    // Setup sliders and their range
+    ui->gainSlider->setRange(0, TelecontrolGamepadWidget::numSteps);
+    ui->gainSlider->setValue(0);
+    for(int i=TelecontrolGamepadWidget::numSteps; i>0; i--)
     {
-        if( (pow(2.0, i) / pow(2.0, TelecontrolUnitWidget::numSteps)) <= sensitivity)
+        if( (pow(2.0, i) / pow(2.0, TelecontrolGamepadWidget::numSteps)) <= method.sensitivity)
         {
-            ui->positionSlider->setValue(i);
+            ui->gainSlider->setValue(i);
             break;
         }
     }
-    ui->forceSlider->setRange(0, TelecontrolUnitWidget::numSteps);
+    ui->forceSlider->setRange(0, TelecontrolGamepadWidget::numSteps);
     ui->forceSlider->setValue(0);
-    for(int i=TelecontrolUnitWidget::numSteps; i>0; i--)
+    for(int i=TelecontrolGamepadWidget::numSteps; i>0; i--)
     {
-        if( (pow(2.0, i) / pow(2.0, TelecontrolUnitWidget::numSteps)) <= forceFactor)
+        if( (pow(2.0, i) / pow(2.0, TelecontrolGamepadWidget::numSteps)) <= method.forceScaling)
         {
             ui->forceSlider->setValue(i);
             break;
         }
+    }
+
+    // Add checkbox for each haptic axes
+    for(int i=0; i<method.axeNames.size(); i++)
+    {
+        QString axisName = method.axeNames[i];
+        QCheckBox* box = new QCheckBox(axisName);
+        box->setChecked(method.inverts.value(i, false));
+        mCheckboxes << box;
+        connect(box, SIGNAL(toggled(bool)), SLOT(sendHapticUpdate()));
+        ui->invertLayout->insertWidget(i, box);
     }
 }
 
@@ -54,12 +69,21 @@ TelecontrolHapticWidget::~TelecontrolHapticWidget()
 
 void TelecontrolHapticWidget::sendHapticUpdate()
 {
-    double sensitivity = pow(2.0, ui->positionSlider->value()) / pow(2.0, TelecontrolUnitWidget::numSteps);
-    double forceFactor  = pow(2.0, ui->forceSlider->value()) / pow(2.0, TelecontrolUnitWidget::numSteps);
-    emit updateHaptic(mUnit, sensitivity, forceFactor);
+    double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
+    double forceScaling  = pow(2.0, ui->forceSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
+    QList<bool> inverts;
+    foreach(QCheckBox* box, mCheckboxes){
+        inverts << box->isChecked();
+    }
+    emit updateHaptic(mUnit, mMethod, sensitivity, forceScaling, inverts);
 }
 
-void TelecontrolHapticWidget::on_positionSlider_valueChanged(int)
+void TelecontrolHapticWidget::on_gainSlider_sliderMoved(int /*position*/)
+{
+    sendHapticUpdate();
+}
+
+void TelecontrolHapticWidget::on_forceSlider_sliderMoved(int /*position*/)
 {
     sendHapticUpdate();
 }

@@ -50,8 +50,6 @@ RcUnit::RcUnit(const QString &name, const QString& configFile)
     setObjectName("RcUnit: " + name);
     mTcInvoker = 0;
     mLolec = 0;
-    mHapticSensitivity = 1.0/64.0;
-    mHapticForceFactor = 1.0/64.0;
     start();
 }
 
@@ -81,30 +79,30 @@ void RcUnit::run()
     }
 }
 
-void RcUnit::addMethod(const QString &name, const QString &shortDesc, const QString &longDesc)
+void RcUnit::addMethod(const QString &methodName, const QString &shortDesc, const QString &longDesc)
 {
     Method m;
-    m.name = name;
+    m.name = methodName;
     m.shortDesc = shortDesc;
     m.longDesc = longDesc;
     m.configured = false;
-    mMethods[name].append(m);
+    mMethods[methodName].append(m);
 }
 
 void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
 {
-    if(mMethods.contains(methodName))
-    {
+    if(mMethods.contains(methodName)){
         QList<Method>& methods = mMethods[methodName];
-        for(int i=0;i<methods.size();i++)
-        {
+        for(int i=0;i<methods.size();i++){
             Method& method = methods[i];
-            if(method.paramNames.size() == names.size())
+            if(method.paramNames.size() == names.size()){
                 method.paramNames = names;
+            }
         }
     }
-    if(mTcMethods.contains(methodName))
-        mTcMethods[methodName].axeNames = names;
+    if(mTcGamepadMoveMethods.contains(methodName)){
+        mTcGamepadMoveMethods[methodName].axeNames = names;
+    }
 }
 
 RcUnitHelp RcUnit::getHelp() const
@@ -115,35 +113,43 @@ RcUnitHelp RcUnit::getHelp() const
     help.server = tr("local", "Server location");
     QStringList names = mMethods.keys();
     names.sort();
-    foreach(const QString& name, names)
-    {
-        foreach(const Method& m, mMethods[name])
+    foreach(const QString& name, names){
+        foreach(const Method& m, mMethods[name]){
             help.methods << m;
+        }
     }
 
     names = mStructDefs.keys();
     names.sort();
-    foreach(const QString& name, names)
-    {
+    foreach(const QString& name, names){
         help.structs << mStructDefs[name];
     }
-
-    names = mTcMethods.keys();
-    names.sort();
-    foreach(const QString& name, names)
-    {
-        help.tcJoysticks << mTcMethods[name];
-    }
-
-    foreach(const TcButtonEvent& button, mTcButtons)
-    {
-        if(!button.hideFromUser)
-            help.tcButtons << button;
-    }
     help.constants = mConstantDefs;
-    help.hasHaptic = hasHapticInterface();
-    help.hapticSensitivity = hapticSensitivity();
-    help.hapticForceFactor = hapticForceFactor();
+
+    // Joystick / gamepad
+    names = mTcGamepadMoveMethods.keys();
+    names.sort();
+    foreach(const QString& name, names){
+        help.tcGamepadMoves << mTcGamepadMoveMethods[name];
+    }
+    foreach(const TcButtonMethod& button, mTcGamepadButtonMethods){
+        if(!button.hideFromUser){
+            help.tcGamepadButtons << button;
+        }
+    }
+
+    // Haptic
+    names = mTcHapticMoveMethods.keys();
+    names.sort();
+    foreach(const QString& name, names){
+        help.tcHapticMoves << mTcHapticMoveMethods[name];
+    }
+    foreach(const TcButtonMethod& button, mTcHapticButtonMethods){
+        if(!button.hideFromUser){
+            help.tcHapticButtons << button;
+        }
+    }
+
     return help;
 }
 
@@ -156,10 +162,12 @@ bool RcUnit::initialize(LolecInterface* plugin)
     mStartWait.wait(&mStartMutex);
     if(!mLolec)
         return false;
+
+    // Wire up methods
     const QMetaObject* meta = mLolec->metaObject();
-    for(int i = 0; i<meta->methodCount(); i++)
-    {
+    for(int i = 0; i<meta->methodCount(); i++){
         QMetaMethod method = meta->method(i);
+        // Get method signature
 #if QT_VERSION < 0x050000
         QString sig = method.signature();
 #else
@@ -167,39 +175,52 @@ bool RcUnit::initialize(LolecInterface* plugin)
 #endif
         int end = sig.indexOf('(');
         sig = sig.mid(0,end);
-        if(mMethods.contains(sig))
+
+        if(mMethods.contains(sig)){
             configureRcMethod(method, sig);
-        if(mTcMethods.contains(sig))
-            configureTcMethod(method, sig);
-        for(int i=0;i<mTcButtons.size();i++)
-        {
-            TcButtonEvent& buttonEvent = mTcButtons[i];
-            if(buttonEvent.name == sig)
-            {
-                configureTcButton(buttonEvent, method);
+        }
+        if(mTcGamepadMoveMethods.contains(sig)){
+            configureGamepadMethod(method, sig);
+        }
+        for(int i=0;i<mTcGamepadButtonMethods.size();i++){
+            TcButtonMethod& buttonEvent = mTcGamepadButtonMethods[i];
+            if(buttonEvent.name == sig){
+                configureGamepadButton(buttonEvent, method);
             }
         }
-        if(sig == mHapticName)
-            configureHapticMethod(method);
+        if(mTcHapticMoveMethods.contains(sig)){
+            configureHapticMethod(method, sig);
+        }
+        for(int i=0;i<mTcHapticButtonMethods.size();i++){
+            TcButtonMethod& buttonEvent = mTcHapticButtonMethods[i];
+            if(buttonEvent.name == sig){
+                configureHapticButton(buttonEvent, method);
+            }
+        }
     }
-    foreach(QString unitName, mMethods.keys())
-    {
+
+    // Validate methods
+    foreach(QString unitName, mMethods.keys()){
         QList<Method> methods = mMethods[unitName];
         QList<Method> validMethods;
-        foreach(const Method& method, methods)
-        {
-            if(!method.configured)
+        foreach(const Method& method, methods){
+            if(!method.configured){
                 qCritical() << "Error initializing RC-Unit"  << name() << ": Method" << method.name << "is published, but not found as slot!";
-            else
+            } else {
                 validMethods << method;
+            }
         }
-        if(validMethods.empty())
+        if(validMethods.empty()){
             mMethods.remove(unitName);
-        else
+        } else {
             mMethods[unitName] = validMethods;
+        }
     }
-    if(mLolec)
-        mTcInvoker = new TcInvoker(mLolec, mTcMethods.values(), mTcButtons);
+
+    // Create a TcInvoker with the created telecontrol methods (for both gamepad and haptic)
+    if(mLolec){
+        mTcInvoker = new TcInvoker(mLolec, mTcGamepadMoveMethods.values(), mTcGamepadButtonMethods, mTcHapticMoveMethods.values(), mTcHapticButtonMethods);
+    }
     return true;
 }
 
@@ -235,61 +256,96 @@ void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
     m.configured = true;
 }
 
-void RcUnit::configureTcMethod(const QMetaMethod &method, QString sig)
+void RcUnit::configureGamepadMethod(const QMetaMethod &method, QString sig)
 {
     try
     {
-        TcUpdateMethod &m = mTcMethods[sig];
+        TcMoveMethod &gamepadMethod = mTcGamepadMoveMethods[sig];
         QList<QByteArray> types = method.parameterTypes();
-        if(types.size() != m.joysticks.size())
+        if(types.size() != gamepadMethod.joysticks.size()){
             throw std::runtime_error(tr("Number of mappings is different than number of parameters").toStdString());
-        foreach(QByteArray type, types)
-        {
-            if(type != "double")
-                throw std::runtime_error(tr("only double parameter type is supported").toStdString());
+        }
+        foreach(QByteArray type, types){
+            if(type != "double"){
+                throw std::runtime_error(tr("Only double parameter type is supported").toStdString());
+            }
         }
         QList<QByteArray> paramNames = method.parameterNames();
         QStringList axeNames;
-        for(int i=0;i<paramNames.size();i++)
-        {
-            axeNames << m.axeNames.value(i, paramNames[i]);
+        for(int i=0;i<paramNames.size();i++){
+            axeNames << gamepadMethod.axeNames.value(i, paramNames[i]);
         }
-        m.axeNames = axeNames;
-        m.method = method;
+        gamepadMethod.axeNames = axeNames;
+        gamepadMethod.method = method;
     }
     catch(const std::exception& e)
     {
-        mTcMethods.remove(sig);
-        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol method") << sig << ":" << e.what();
+        mTcGamepadMoveMethods.remove(sig);
+        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol joystick method") << sig << ":" << e.what();
     }
 }
 
-void RcUnit::configureTcButton(TcButtonEvent &m, const QMetaMethod &method)
+void RcUnit::configureGamepadButton(TcButtonMethod &buttonMethod, const QMetaMethod &method)
 {
     try
     {
         QList<QByteArray> types = method.parameterTypes();
-        m.toggleMode = types.size() > 0;
-        if(m.toggleMode && (types.size() > 1 || types[0] != "bool"))
+        buttonMethod.toggleMode = types.size() > 0;
+        if(buttonMethod.toggleMode && (types.size() > 1 || types[0] != "bool")){
             throw std::runtime_error(tr("Method must have exacly one parameter: %1").arg("(bool enable)").toStdString());
-        m.method = method;
+        }
+        buttonMethod.method = method;
     }
     catch(const std::exception& e)
     {
-        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol button event") << m.name << ":" << e.what();
+        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol joystick button event") << buttonMethod.name << ":" << e.what();
     }
 }
 
-void RcUnit::configureHapticMethod(const QMetaMethod &method)
+void RcUnit::configureHapticMethod(const QMetaMethod& method, QString sig)
 {
-    QList<QByteArray> types = method.parameterTypes();
-    if(types.size() != 3 || types[0] != "QVector3D&" || types[1] != "QVector3D&" || types[2] != "bool")
+    try
     {
-        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup haptic interface method %1 : wrong method signature (see doc)").arg(mHapticName);
-        mHapticName.clear();
-        return;
+        TcMoveMethod &hapticMethod = mTcHapticMoveMethods[sig];
+        QList<QByteArray> types = method.parameterTypes();
+        if(types.size() != hapticMethod.axes.size()){
+            throw std::runtime_error(tr("Number of mappings is different than number of parameters").toStdString());
+        }
+        foreach(QByteArray type, types){
+            if(type != "double"){
+                throw std::runtime_error(tr("Only double parameter type is supported").toStdString());
+            }
+        }
+        QList<QByteArray> paramNames = method.parameterNames();
+        QStringList axeNames;
+        for(int i=0;i<paramNames.size();i++){
+            axeNames << hapticMethod.axeNames.value(i, paramNames[i]);
+        }
+        hapticMethod.axeNames = axeNames;
+        hapticMethod.method = method;
     }
-    mHapticMethod = method;
+    catch(const std::exception& e)
+    {
+        mTcHapticMoveMethods.remove(sig);
+        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol haptic method") << sig << ":" << e.what();
+    }
+}
+
+void RcUnit::configureHapticButton(TcButtonMethod& buttonMethod, const QMetaMethod& method)
+{
+    try
+    {
+        QList<QByteArray> types = method.parameterTypes();
+        buttonMethod.toggleMode = types.size() > 0;
+        if(buttonMethod.toggleMode && (types.size() > 1 || types[0] != "bool")){
+            throw std::runtime_error(tr("Method must have exacly one parameter: %1").arg("(bool enable)").toStdString());
+        }
+        buttonMethod.method = method;
+    }
+    catch(const std::exception& e)
+    {
+        qCritical() << "RcUnit:" << mName << ": " << tr("Could not setup telecontrol joystick button event") << buttonMethod.name << ":" << e.what();
+    }
 }
 
 RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
@@ -320,8 +376,6 @@ RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
             range = QString("%1-%2").arg(p.min).arg(p.max);
         else if(p.max <= 0 && p.min != 0)
             range = QString("%1+").arg(p.min);
-
-
 
         p.sig = QString("%1[%2] %3").arg(typeName(type), range, name).trimmed();
     }
@@ -374,7 +428,6 @@ QVariant RcUnit::call(const QByteArray &name, QList<QVariant> params)
 
         }
         throw RcError(lastError);
-
     }
     else
     {
@@ -397,42 +450,10 @@ void RcUnit::registerStruct(int id, const QByteArray& name, const QStringList& t
     mStructDefs[name] = s;
 }
 
-const HapticResponse RcUnit::currentHapticData()
-{
-    HapticResponse response;
-    hapticMovement(response, true);
-    return response;
-}
-
-const HapticResponse RcUnit::hapticMovement(const QVector3D &targetPositions)
-{
-    HapticResponse response;
-    response.position.setX(qBound<float>(0.0f, targetPositions.x(), 1.0f));
-    response.position.setY(qBound<float>(0.0f, targetPositions.y(), 1.0f));
-    response.position.setZ(qBound<float>(0.0f, targetPositions.z(), 1.0f));
-    hapticMovement(response, false);
-    response.position.setX(qBound<float>(0.0, response.position.x(), 1.0));
-    response.position.setY(qBound<float>(0.0, response.position.y(), 1.0));
-    response.position.setZ(qBound<float>(0.0, response.position.z(), 1.0));
-    response.forces.setX(qBound<float>(0.0, response.forces.x(), 1.0));
-    response.forces.setY(qBound<float>(0.0, response.forces.y(), 1.0));
-    response.forces.setZ(qBound<float>(0.0, response.forces.z(), 1.0));
-
-    return response;
-}
-
-void RcUnit::hapticMovement(HapticResponse &data, bool readOnly)
-{
-
-    mHapticMethod.invoke(mLolec, Qt::DirectConnection, Q_ARG(QVector3D, data.position), Q_ARG(QVector3D, data.forces), Q_ARG(bool, readOnly));
-}
-
-
 void RcUnit::addConstant(const QString name, const QVariant &constant)
 {
     mConstantDefs[name] = constant;
 }
-
 
 QString RcUnit::typeName(QString str)
 {
@@ -455,56 +476,108 @@ QString RcUnit::typeName(int type)
 
 void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Joystick> &defaultMapping, int defaultActivateButton, double defaultSensitivity)
 {
-    TcUpdateMethod method;
+    TcMoveMethod method;
     method.name = name;
     method.joysticks = defaultMapping;
-    for(int i=0; i<defaultMapping.size(); i++)
+    for(int i=0; i<defaultMapping.size(); i++){
         method.inverts << false;
+    }
     method.deadMansButton = defaultActivateButton;
     method.sensitivity = defaultSensitivity;
-    mTcMethods[name] = method;
+    mTcGamepadMoveMethods[name] = method;
 }
 
-void RcUnit::registerButtonEvent(QString name, int defaultMapping, bool hideFromUser)
+void RcUnit::registerGamepadButtonMethod(QString name, int defaultMapping, bool hideFromUser)
 {
-    TcButtonEvent ev;
+    TcButtonMethod ev;
     ev.name = name;
     ev.buttonId = defaultMapping;
     ev.hideFromUser = hideFromUser;
-    mTcButtons << ev;
+    mTcGamepadButtonMethods << ev;
 }
 
-void RcUnit::registerHapticMethod(QString methodName)
+void RcUnit::updateGamepadSensitivity(const QString &unitName, double sensitivity, const QList<bool>& inverts)
 {
-    mHapticName = methodName;
-}
-
-void RcUnit::connectGamepad(QObject *gamepad)
-{
-    if(mTcInvoker)
-        mTcInvoker->connectGamepad(gamepad);
-}
-void RcUnit::disconnectGamepad(QObject *gamepad)
-{
-    if(mTcInvoker)
-        mTcInvoker->disconnectGamepad(gamepad);
-}
-
-void RcUnit::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool>& inverts)
-{
-    if(mTcInvoker)
-        mTcInvoker->setSensitivity(unitName, sensitivity, inverts);
-    if(mTcMethods.contains(unitName))
-    {
-        TcUpdateMethod& method = mTcMethods[unitName];
+    if(mTcInvoker){
+        mTcInvoker->setGamepadSensitivity(unitName, sensitivity, inverts);
+    }
+    if(mTcGamepadMoveMethods.contains(unitName)){
+        TcMoveMethod& method = mTcGamepadMoveMethods[unitName];
         method.sensitivity = sensitivity;
         method.inverts = inverts;
     }
 }
 
-
-bool RcUnit::isTelecontrolable() const
+void RcUnit::connectGamepad(QObject *gamepad)
 {
-    return !mTcMethods.empty() || ! mTcButtons.empty();
+    if(mTcInvoker){
+        mTcInvoker->connectGamepad(gamepad);
+    }
+}
+void RcUnit::disconnectGamepad(QObject *gamepad)
+{
+    if(mTcInvoker){
+        mTcInvoker->disconnectGamepad(gamepad);
+    }
+}
+
+bool RcUnit::hasGamepadControl() const
+{
+    return !mTcGamepadMoveMethods.empty() || !mTcGamepadButtonMethods.empty();
+}
+
+void RcUnit::registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity, double defaultForceScaling)
+{
+    TcMoveMethod method;
+    method.name = methodName;
+    method.axes = defaultMapping;
+    for(int i=0; i<defaultMapping.size(); i++){
+        method.inverts << false;
+    }
+    method.deadMansButton = defaultActivateButton;
+    method.sensitivity = defaultSensitivity;
+    method.forceScaling = defaultForceScaling;
+    mTcHapticMoveMethods[methodName] = method;
+}
+
+void RcUnit::registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser)
+{
+    TcButtonMethod buttonEvent;
+    buttonEvent.name = methodName;
+    buttonEvent.buttonId = defaultMapping;
+    buttonEvent.hideFromUser = hideFromUser;
+    mTcHapticButtonMethods << buttonEvent;
+}
+
+void RcUnit::updateHapticSensitivity(const QString& unitName, double sensitivity, double forceScaling, const QList<bool>& inverts)
+{
+    if(mTcInvoker)
+        mTcInvoker->setHapticSensitivity(unitName, sensitivity, forceScaling, inverts);
+    if(mTcHapticMoveMethods.contains(unitName))
+    {
+        TcMoveMethod& method = mTcHapticMoveMethods[unitName];
+        method.sensitivity = sensitivity;
+        method.forceScaling = forceScaling;
+        method.inverts = inverts;
+    }
+}
+
+void RcUnit::connectHapticDevice(QObject* hapticDevice)
+{
+    if(mTcInvoker){
+        mTcInvoker->connectHapticDevice(hapticDevice);
+    }
+}
+
+void RcUnit::disconnectHapticDevice(QObject* hapticDevice)
+{
+    if(mTcInvoker){
+        mTcInvoker->disconnectHapticDevice(hapticDevice);
+    }
+}
+
+bool RcUnit::hasHapticControl()const
+{
+    return !mTcHapticMoveMethods.empty() || ! mTcHapticButtonMethods.empty();
 }
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#ifndef GAMEPADCONFIG_H
-#define GAMEPADCONFIG_H
+#ifndef TELECONTROLCONFIG_H
+#define TELECONTROLCONFIG_H
 
 #include <QString>
 #include <QStringList>
@@ -32,22 +32,23 @@ struct TelecontrolConfig
         bool toggleMode;
     };
 
-    struct TcJostick
+    struct TcMove
     {
         QString name;
         int deadMansButton;
         double sensitivity;
+        double forceScaling;
         QStringList axeNames;
         QList<Tc::Joystick> joysticks;
+        QList<Tc::HapticAxis> axes;
         QList<bool> inverts;
     };
 
-    QList<TcJostick> tcJoysticks;
-    QList<TcButton> tcButtons;
+    QList<TcMove> tcGamepadMoves;
+    QList<TcButton> tcGamepadButtons;
 
-    bool hasHaptic;
-    double hapticSensitivity;
-    double hapticForceFactor;
+    QList<TcMove> tcHapticMoves;
+    QList<TcButton> tcHapticButtons;
 };
 
 inline QDataStream& operator>>(QDataStream& stream, Tc::Joystick& joystick)
@@ -58,6 +59,17 @@ inline QDataStream& operator>>(QDataStream& stream, Tc::Joystick& joystick)
     joystick = (Tc::Joystick)id;
     if(!Tc::joysticks().contains(joystick))
         joystick = Tc::NoJoystick;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream& stream, Tc::HapticAxis& axis)
+{
+
+    int id;
+    stream >> id;
+    axis = (Tc::HapticAxis)id;
+    if(!Tc::hapticAxis().contains(axis))
+        axis = Tc::NoAxis;
     return stream;
 }
 
@@ -78,51 +90,50 @@ inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcB
     return stream;
 }
 
-inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcJostick& joystick)
+inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcMove& move)
 {
-    stream >> joystick.name;
-    stream >> joystick.deadMansButton;
-    stream >> joystick.sensitivity;
-    stream >> joystick.axeNames;
-    stream >> joystick.joysticks;
-    stream >> joystick.inverts;
+    stream >> move.name;
+    stream >> move.deadMansButton;
+    stream >> move.sensitivity;
+    stream >> move.forceScaling;
+    stream >> move.axeNames;
+    stream >> move.joysticks;
+    stream >> move.axes;
+    stream >> move.inverts;
     return stream;
 }
 
-inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcJostick& joystick)
+inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcMove& move)
 {
-    stream << joystick.name;
-    stream << joystick.deadMansButton;
-    stream << joystick.sensitivity;
-    stream << joystick.axeNames;
-    stream << joystick.joysticks;
-    stream << joystick.inverts;
+    stream << move.name;
+    stream << move.deadMansButton;
+    stream << move.sensitivity;
+    stream << move.forceScaling;
+    stream << move.axeNames;
+    stream << move.joysticks;
+    stream << move.axes;
+    stream << move.inverts;
     return stream;
 }
-
 
 inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig& tc)
 {
     stream >> tc.unitName;
-    stream >> tc.tcJoysticks;
-    stream >> tc.tcButtons;
-    stream >> tc.hasHaptic;
-    stream >> tc.hapticSensitivity;
-    stream >> tc.hapticForceFactor;
+    stream >> tc.tcGamepadMoves;
+    stream >> tc.tcGamepadButtons;
+    stream >> tc.tcHapticMoves;
+    stream >> tc.tcHapticButtons;
     return stream;
 }
 
 inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig& tc)
 {
     stream << tc.unitName;
-    stream << tc.tcJoysticks;
-    stream << tc.tcButtons;
-    stream << tc.hasHaptic;
-    stream << tc.hapticSensitivity;
-    stream << tc.hapticForceFactor;
+    stream << tc.tcGamepadMoves;
+    stream << tc.tcGamepadButtons;
+    stream << tc.tcHapticMoves;
+    stream << tc.tcHapticButtons;
     return stream;
 }
 
-
-
-#endif // GAMEPADCONFIG_H
+#endif // TELECONTROLCONFIG_H

@@ -34,15 +34,15 @@ public:
     virtual QString name() const { return mHelp.unitName; }
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );
-    virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
     QMap<QString, QVariant> getConstants() const { return mHelp.constants; }
-    bool isTelecontrolable() const { return !mHelp.tcJoysticks.empty(); }
-    bool hasHapticInterface() const { return false; }
-    const HapticResponse currentHapticData() { return HapticResponse(); }
-    const HapticResponse hapticMovement(const QVector3D&) { return HapticResponse(); }
-    virtual void updateHapticSensitivity(double, double){}
-    virtual double hapticSensitivity() const { return 0.0; }
-    virtual double hapticForceFactor() const { return 0.0; }
+    bool hasGamepadControl() const { return !mHelp.tcGamepadMoves.empty(); }
+
+    void connectHapticDevice(QObject*) {}
+    void disconnectHapticDevice(QObject*) {}
+    void updateHapticSensitivity(const QString&, double, double, const QList<bool>&) {}
+    bool hasHapticControl() const { return false; }
+
 public slots:
     void handleGamepadData(const QMap<int,double>& data);
     void setGamepadButton(int id, bool pressed);

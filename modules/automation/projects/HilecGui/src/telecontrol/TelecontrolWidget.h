@@ -39,7 +39,7 @@ signals:
     void updateTelecontrol(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unitName, double sensitivity, double forceFactor);
+    void updateHaptic(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
 
 public slots:
     void clear();

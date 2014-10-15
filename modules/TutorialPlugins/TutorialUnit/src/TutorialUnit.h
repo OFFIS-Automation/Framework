@@ -22,6 +22,8 @@
 #include <lolecs/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QMap>
+#include "telecontrol/TcConfig.h"
 
 class TutorialUnit : public QObject
 {
@@ -38,7 +40,9 @@ public slots:
     void setRotation(double targetAngle);
     void openGripper();
     void closeGripper();
+    void alternateGripper(bool open);
     void moveGamepad(double xAxis, double yAxis, double phi);
+    QMap<int, double> moveHaptic(double xAxis, double yAxis, double zAxis);
     void resetSetup();
     void resetSetup(bool randomize);
     void resetSetupRandom();
@@ -56,6 +60,7 @@ signals:
     void rotateRel(double angle, int moveTime = -1);
     void setGripperState(bool open);
     void resetScene(bool randomPositions);
+
 protected:
     QPointF mOffset;
     double mScaling;

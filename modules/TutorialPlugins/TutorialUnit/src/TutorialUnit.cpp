@@ -103,7 +103,7 @@ void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
 
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    moveGamepad(axes[Tc::HapticAxisX], axes[Tc::HapticAxisY], 0);
+    moveGamepad(axes[Tc::HapticAxisX], axes[Tc::HapticAxisY], axes[Tc::HapticAxisZ]*0.5);
 
     // Create return value
     QMap<int, double> force;
@@ -117,11 +117,20 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 
     if(currentPosition.x() < workspace.left()){
         // Robot left workspace on left hand side
-        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.left())*10;
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.left())*10.0;
     } else if(workspace.right() < currentPosition.x()){
         // Robot left workspace on right hand side
-        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.right())*10;
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.right())*-10.0;
     }
+
+    if(currentPosition.y() < workspace.top()){
+        // Robot left workspace on the top
+        force[Tc::HapticAxisY] = abs(currentPosition.y()-workspace.top())*-10.0;
+    } else if(workspace.bottom() < currentPosition.y()){
+        // Robot left workspace on the bottom
+        force[Tc::HapticAxisY] = abs(currentPosition.y()-workspace.bottom())*10.0;
+    }
+
     return force;
 }
 

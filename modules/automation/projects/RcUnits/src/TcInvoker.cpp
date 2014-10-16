@@ -201,10 +201,16 @@ void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
             qRegisterMetaType<QIntDoubleMap>("QIntDoubleMap");
             activeMethod.method.invoke(mDevice, Qt::DirectConnection, Q_RETURN_ARG(QIntDoubleMap, returnValue), Q_ARG(QIntDoubleMap, argMap));
 
-            // Apply force scaling
-            QIntDoubleMap::iterator i;
-            for (i = returnValue.begin(); i != returnValue.end(); ++i){
-                i.value() *= activeMethod.forceScaling;
+            QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
+            for(int i=0; i<axesIDs.size(); i++){
+                int axesId = axesIDs[i];
+                if(returnValue.contains(axesId)){
+                    // Apply scaling and invert
+                    returnValue[axesId] *= activeMethod.forceScaling;
+                    if(activeMethod.inverts.value(i, false)){
+                        returnValue[axesId] = -returnValue[axesId];
+                    }
+                }
             }
             emit forceUpdate(returnValue);
         }

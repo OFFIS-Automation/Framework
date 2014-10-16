@@ -17,6 +17,8 @@
 #include "TutorialUnit.h"
 #include <QDebug>
 #include <QDateTime>
+#include <QPointF>
+#include <QRect>
 #include <stdexcept>
 
 TutorialUnit::TutorialUnit()
@@ -108,6 +110,18 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
     force[Tc::HapticAxisX] = 0.0;
     force[Tc::HapticAxisY] = 0.0;
     force[Tc::HapticAxisZ] = 0.0;
+
+    // Check if robot is in "bounds"
+    QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
+    QRect workspace = QRect(50,50,500,300);
+
+    if(currentPosition.x() < workspace.left()){
+        // Robot left workspace on left hand side
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.left())*10;
+    } else if(workspace.right() < currentPosition.x()){
+        // Robot left workspace on right hand side
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.right())*10;
+    }
     return force;
 }
 

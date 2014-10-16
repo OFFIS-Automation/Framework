@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -99,13 +99,13 @@ void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
     mWait.wait(&mWaitMutex, 20);
 }
 
-QMap<int, double> TutorialUnit::moveHaptic(double xAxis, double yAxis, double /*zAxis*/)
+QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    moveGamepad(xAxis, yAxis, 0);
+    moveGamepad(axes[Tc::HapticAxisX], axes[Tc::HapticAxisY], 0);
 
     // Create return value
     QMap<int, double> force;
-    force[Tc::HapticAxisX] = 1.0;
+    force[Tc::HapticAxisX] = 0.0;
     force[Tc::HapticAxisY] = 0.0;
     force[Tc::HapticAxisZ] = 0.0;
     return force;
@@ -182,6 +182,7 @@ void TutorialUnit::onMovementFinished()
 
 void TutorialUnit::checkHAL()
 {
-    if(!mAcquired)
+    if(!mAcquired){
         throw std::runtime_error("Hardware is not acquired");
+    }
 }

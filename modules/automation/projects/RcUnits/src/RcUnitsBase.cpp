@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -178,6 +178,7 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepa
         }
         gamepadEndpoint->updateGamepadSensitivity(method, sensitivity, inverts);
     }
+    settings.endGroup();
 
     // Haptics
     if(hapticEndpoint){
@@ -192,6 +193,7 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepa
             }
             hapticEndpoint->updateHapticSensitivity(method, sensitivity, forceScaling, inverts);
         }
+        settings.endGroup();
     }
 }
 

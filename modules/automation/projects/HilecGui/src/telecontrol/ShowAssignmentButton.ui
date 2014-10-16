@@ -59,7 +59,7 @@
    <item>
     <widget class="QPushButton" name="edit">
      <property name="text">
-      <string>Edit mapping</string>
+      <string>Edit assignment</string>
      </property>
      <property name="icon">
       <iconset resource="../../images/images.qrc">

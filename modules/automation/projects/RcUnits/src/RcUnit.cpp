@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -307,21 +307,14 @@ void RcUnit::configureHapticMethod(const QMetaMethod& method, QString sig)
     try
     {
         TcMoveMethod &hapticMethod = mTcHapticMoveMethods[sig];
-        QList<QByteArray> types = method.parameterTypes();
-        if(types.size() != hapticMethod.axes.size()){
-            throw std::runtime_error(tr("Number of mappings is different than number of parameters").toStdString());
+        // Check mehtod signature
+        if(method.parameterCount() > 1 || method.parameterTypes()[0] != "QMap<int,double>"){
+            throw std::runtime_error(tr("Only QMap<int,double> parameter type is supported").toStdString());
         }
-        foreach(QByteArray type, types){
-            if(type != "double"){
-                throw std::runtime_error(tr("Only double parameter type is supported").toStdString());
-            }
+        QString methodTypeName = method.typeName();
+        if(methodTypeName != "QMap<int,double>"){
+            throw std::runtime_error(tr("Only QMap<int,double> return type is supported").toStdString());
         }
-        QList<QByteArray> paramNames = method.parameterNames();
-        QStringList axeNames;
-        for(int i=0;i<paramNames.size();i++){
-            axeNames << hapticMethod.axeNames.value(i, paramNames[i]);
-        }
-        hapticMethod.axeNames = axeNames;
         hapticMethod.method = method;
     }
     catch(const std::exception& e)
@@ -531,6 +524,32 @@ void RcUnit::registerHapticMethod(QString methodName, const QList<Tc::HapticAxis
     TcMoveMethod method;
     method.name = methodName;
     method.axes = defaultMapping;
+    for(int i=0; i<defaultMapping.size(); i++){
+        QString axesName;
+        switch (defaultMapping.value(i)) {
+            case Tc::HapticAxisX:
+                axesName = "x";
+                break;
+            case Tc::HapticAxisY:
+                axesName = "y";
+                break;
+            case Tc::HapticAxisZ:
+                axesName = "z";
+                break;
+            case Tc::HapticAxisYaw:
+                axesName = "yaw";
+                break;
+            case Tc::HapticAxisPitch:
+                axesName = "pitch";
+                break;
+            case Tc::HapticAxisRoll:
+                axesName = "roll";
+                break;
+            default:
+                continue;
+        }
+        method.axeNames << axesName;
+    }
     for(int i=0; i<defaultMapping.size(); i++){
         method.inverts << false;
     }

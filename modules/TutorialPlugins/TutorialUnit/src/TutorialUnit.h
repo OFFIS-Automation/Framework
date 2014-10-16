@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ public slots:
     void closeGripper();
     void alternateGripper(bool open);
     void moveGamepad(double xAxis, double yAxis, double phi);
-    QMap<int, double> moveHaptic(double xAxis, double yAxis, double zAxis);
+    QMap<int, double> moveHaptic(QMap<int, double> axes);
     void resetSetup();
     void resetSetup(bool randomize);
     void resetSetupRandom();

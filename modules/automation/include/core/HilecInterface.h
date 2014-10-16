@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -96,9 +96,9 @@ signals:
     void scriptExecutionStarted();
     void scriptExecutionFinished();
 
-    void videoCaptureStartRequested(int frameRate);
-    void videoCaptureEndRequested(const QString& filename);
-    void saveScreenshotRequested(const QString& filename);
+    void videoCaptureStartRequested(int frameRate, int widgetIndex);
+    void videoCaptureEndRequested(const QString& filename, int widgetIndex);
+    void saveScreenshotRequested(const QString& filename, int widgetIndex);
 };
 
 

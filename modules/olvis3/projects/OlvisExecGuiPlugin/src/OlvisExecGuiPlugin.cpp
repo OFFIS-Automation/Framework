@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -67,9 +67,9 @@ void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
     videoWidget = new VideoWidget();
     if(mHilec)
     {
-        connect(mHilec, SIGNAL(videoCaptureStartRequested(int)), videoWidget, SLOT(startCapture(int)));
-        connect(mHilec, SIGNAL(videoCaptureEndRequested(QString)), videoWidget, SLOT(endCapture(QString)));
-        connect(mHilec, SIGNAL(saveScreenshotRequested(QString)), videoWidget, SLOT(saveScreenshot(QString)));
+        connect(mHilec, SIGNAL(videoCaptureStartRequested(int,int)), videoWidget, SLOT(startCapture(int,int)));
+        connect(mHilec, SIGNAL(videoCaptureEndRequested(QString,int)), videoWidget, SLOT(endCapture(QString,int)));
+        connect(mHilec, SIGNAL(saveScreenshotRequested(QString,int)), videoWidget, SLOT(saveScreenshot(QString,int)));
     }
     connect(toolbar, SIGNAL(setNumDisplays(int)), videoWidget, SLOT(updateMaxDisplays(int)), Qt::QueuedConnection);
     connect(toolbar, SIGNAL(restoreRequested()), SLOT(restore()));

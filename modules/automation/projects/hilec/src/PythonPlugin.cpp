@@ -171,30 +171,33 @@ extern "C"
     PyObject* apy_startVideoCapture(PyObject*, PyObject* args)
     {
         long fps = 0;
-        PyArg_ParseTuple(args, "l", &fps);
-        HilecCore::instance().startVideoCapture(fps);
+        int widgetIndex = 0;
+        PyArg_ParseTuple(args, "l|i", &fps, &widgetIndex);
+        HilecCore::instance().startVideoCapture(fps, widgetIndex);
         Py_RETURN_NONE;
     }
 
     PyObject* apy_endVideoCapture(PyObject*, PyObject* args)
     {
         PyObject* name = 0;
-        PyArg_ParseTuple(args, "O", &name);
+        int widgetIndex = 0;
+        PyArg_ParseTuple(args, "O|i", &name, &widgetIndex);
         QString filename = PythonTypeConverter::toString(name, true);
         if(!filename.isEmpty())
             filename = QFileInfo(filename).absoluteFilePath();
-        HilecCore::instance().endVideoCapture(filename);
+        HilecCore::instance().endVideoCapture(filename, widgetIndex);
         Py_RETURN_NONE;
     }
 
     PyObject* apy_saveScreenshot(PyObject*, PyObject* args)
     {
         PyObject* name = 0;
-        PyArg_ParseTuple(args, "O", &name);
+        int widgetIndex = 0;
+        PyArg_ParseTuple(args, "O|i", &name, &widgetIndex);
         QString filename = PythonTypeConverter::toString(name, true);
         if(!filename.isEmpty())
             filename = QFileInfo(filename).absoluteFilePath();
-        HilecCore::instance().saveScreenshot(filename);
+        HilecCore::instance().saveScreenshot(filename, widgetIndex);
         Py_RETURN_NONE;
     }
 

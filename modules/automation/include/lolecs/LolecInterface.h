@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@ public:
      */
     virtual void addConstant(const QString name, const QVariant& constant) = 0;
 
-    // telecontrol interface
     /**
      * @brief registers a method to be called by the gamepad
      * The method registered with this function is periodically called if the operator uses the gamepad for this lolec.
@@ -55,7 +54,7 @@ public:
      * The method must be void and must have only doubles as parameters. Each of the parameters represents a joystick.
      * The values given to this function are [-1:1]. The gamepad method should realize a relative movement with the parameter as speed.
      * The second parameter @a defaultMapping must have as many joystick ids as there are parameters in the method
-     * The @a defaultActivateButton is a button on the gamepad that represents the "dead-mans-switch" gamepad is only possible if this button is held down.
+     * The @a defaultActivateButton is a button on the gamepad that represents the "dead-mans-switch". Gamepad is only possible if this button is held down.
      * The @ defaultSensitivity is a factor that is multiplied to the gamepad value before is is given the the method. Range (0:1].
      * With the sensitivity, the gamepad value is scaled down. This can later be adjusted by the user.
      * Example:
@@ -74,9 +73,29 @@ public:
      */
     virtual void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
 
-    // TODO: KOMMENTARE
-
+    /**
+     * @brief registers a method to be called by the haptic device
+     * The method registered with this function is periodically called if the operator uses the haptic device for this lolec.
+     * The method must be QMap<int, double> and must have only one QMap<int, double> as parameter.
+     * The map keys should be TC::Haptic axes. The values for each axes are in range [-1:1].
+     * The haptic method should realize a relative movement with the parameter as speed.
+     * The @a defaultActivateButton is a button on the gamepad that represents the "dead-mans-switch". Haptic is only posble if this button is held down.
+     * The @ defaultSensitivity is a factor that is multiplied to the haptic value before is is given the the method. Range (0:1].
+     * The @ defaultForceScaling is a factor that is multiplied with the forces before they are applied as haptic feedback. Range (0:1].
+     * Example:
+     * QMap<int, double> moveHaptic(QMap<int, double> axes);; // values for x and y: [-1:1]
+     * registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ), Tc::PrimaryButton);
+     */
     virtual void registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
+
+    /**
+     * @brief registers a method to be called if a haptic button is pressed
+     * The method registered is called when a button is toggled or pressed.
+     * The signature can be methodName() -- method is called when the button is "clicked" (pressed and released)
+     * The signature can be methodName(bool toggled) -- method is called when the button is pressed or released
+     * @param defaultMapping the sensitive button
+     * @param hiddenToUser this button assingment is hidden from the user, it is not displayed in the GUI
+     */
     virtual void registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser = false) = 0;
 
     virtual void setParamNames(const QString& methodName, const QStringList& names) = 0;

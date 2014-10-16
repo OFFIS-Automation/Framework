@@ -179,34 +179,33 @@ void TcInvoker::setHapticSensitivity(const QString& methodName, double sensitivi
 }
 
 typedef QMap<int, double> QIntDoubleMap;
-void TcInvoker::handleHapticPositionData(const QMap<int, double> &data)
+void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
 {
     foreach(int activeMethodId, mActiveHapticMethods){
         RcUnit::TcMoveMethod activeMethod = mHapticMethods.value(activeMethodId);
-        QVector<QGenericArgument> args(6);
-        QVector<double> vals(6);
-        QList<Tc::HapticAxis>& elems = activeMethod.axes;
-        // Apply sensitivity and invert
-        for(int i=0; i<elems.size(); i++){
-            int id = elems[i];
-            vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
-            int invertPos = activeMethod.invertPos.value(i, i);
-            if(activeMethod.inverts.value(invertPos, false)){
-                vals[i] = -vals[i];
+        // Map data to the axes of the active method
+        // Required because method may not interested in all axes
+        QMap<int,double> argMap;
+        QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
+        for(int i=0; i<axesIDs.size(); i++){
+            int axesId = axesIDs[i];
+            argMap[axesId] = data.value(axesId, 0.0) * activeMethod.sensitivity;
+            if(activeMethod.inverts.value(i, false)){
+                argMap[axesId] = -argMap[axesId];
             }
-            args[i] = Q_ARG(double, vals[i]);
         }
+
         try
         {
             QIntDoubleMap returnValue;
             qRegisterMetaType<QIntDoubleMap>("QIntDoubleMap");
-            activeMethod.method.invoke(mDevice, Qt::DirectConnection, Q_RETURN_ARG(QIntDoubleMap, returnValue), args[0], args[1], args[2], args[3], args[4], args[5]);
+            activeMethod.method.invoke(mDevice, Qt::DirectConnection, Q_RETURN_ARG(QIntDoubleMap, returnValue), Q_ARG(QIntDoubleMap, argMap));
 
             // Apply force scaling
             QIntDoubleMap::iterator i;
-            for (i = returnValue.begin(); i != returnValue.end(); ++i)
+            for (i = returnValue.begin(); i != returnValue.end(); ++i){
                 i.value() *= activeMethod.forceScaling;
-
+            }
             emit forceUpdate(returnValue);
         }
         catch(const std::exception& e)

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -169,15 +169,14 @@ void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
     }
     mInUpdate = false;
     if(active && !mHapticWidget){
+        // Add haptic widget
         mHapticWidget = HilecSingleton::hilec()->createHapticWidget();
         if(mHapticWidget){
-            ui->hapticLayout->insertWidget(ui->hapticLayout->indexOf(ui->hapticTabWidget), mHapticWidget);
+            QWidget *tabWidget = ui->hapticTabWidget->currentWidget();
+            if(!tabWidget->children().contains(mHapticWidget)){
+                ((QBoxLayout *)tabWidget->layout())->insertWidget(0, mHapticWidget);
+            }
         }
-    }
-    if(!active && mHapticWidget){
-        ui->hapticLayout->removeWidget(mHapticWidget);
-        delete mHapticWidget;
-        mHapticWidget = 0;
     }
 }
 

@@ -28,7 +28,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 - [Tobias Tiemerding](https://github.com/honkmaster/)
 
 ### Former Authors
-- [Daniel Jasper](djasper@google.com)
+- [Daniel Jasper](mailto:djasper@google.com)
 
 
 ## License

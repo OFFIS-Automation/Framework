@@ -34,10 +34,10 @@ public:
     virtual ~TelecontrolHapticWidget();
 
 signals:
-    void updateHaptic(QString unit,  QString method, double sensitivity, double forceScaling, QList<bool> inverts);
+    void updateHapticParameters(QString unitName, QString method, double sensitivity, double forceScaling, QList<bool> inverts);
 
 private slots:
-    void sendHapticUpdate();
+    void sendHapticParamatersUpdate();
     void on_gainSlider_sliderMoved(int position);
     void on_forceSlider_sliderMoved(int position);
 

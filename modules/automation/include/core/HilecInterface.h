@@ -17,6 +17,7 @@
 #ifndef HILECINTERFACE_H
 #define HILECINTERFACE_H
 
+#include <QList>
 #include <QString>
 #include <QObject>
 #include <QMap>
@@ -29,12 +30,15 @@ struct RcUnitHelp;
 struct TelecontrolConfig;
 struct TelecontrolConfig;
 
+class HapticInterface;
+
 class HilecInterface : public QObject
 {
     Q_OBJECT
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
     virtual QStringList getTelecontrolableUnits() = 0;
+    virtual QMap<QString,HapticInterface*> getHapticInterfaces() = 0;
     virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;
@@ -59,14 +63,16 @@ public slots:
     virtual void stepInto() = 0;
     virtual void stepReturn() = 0;
 
-    virtual void activateTelecontrol(const QString& unit) = 0;
-    virtual void deactivateTelecontrol() = 0;
-    virtual void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
+    virtual void activateGamepad(const QString& unitName) = 0;
+    virtual void deactivateGamepad() = 0;
+    virtual void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
 
-    virtual void activateHaptic(const QString& unit) = 0;
+    virtual void activateHaptic(const QString& unitName) = 0;
     virtual void deactivateHaptic() = 0;
-    virtual void updateHaptic(const QString &unit, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
-    virtual QWidget* createHapticWidget() = 0;
+    virtual void updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
+    virtual void updateHapticAssignment(const QString &unitName, const QString& hapticInterfaceName) = 0;
+
+    virtual QWidget* createHapticWidget(const QString &unitName) = 0;
 
 signals:
     void newErrorStr(const QString& text);
@@ -88,8 +94,8 @@ signals:
     void compileError(const ScriptCompileInfo& err);
 
     void rcUnitsChanged(bool partialReload);
-    void telecontrolUpdated(bool gamepadActive, const QString& controlledUnit);
-    void telecontrolChangeSensitivityRequested(const QString& unit, bool increase);
+    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
+    void gamepadChangeSensitivityRequested(const QString& unit, bool increase);
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
     void breakpointHit(QString file, int line);

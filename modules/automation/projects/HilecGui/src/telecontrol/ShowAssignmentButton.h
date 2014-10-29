@@ -33,7 +33,6 @@ public:
 
 private slots:
     void on_show_clicked();
-
     void on_edit_clicked();
 
 signals:

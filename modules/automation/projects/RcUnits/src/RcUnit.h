@@ -95,7 +95,7 @@ public:
 
     void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0);
     void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hideFromUser = false);
-    void updateGamepadSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepadSensitivity(const QString& methodName, double sensitivity, const QList<bool>& inverts);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
     bool hasGamepadControl()const;
@@ -105,7 +105,8 @@ public:
 
     void registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0);
     void registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser = false);
-    void updateHapticSensitivity(const QString& unitName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+    void updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+    void updateHapticAssignment(const QString& hapticInterfaceName);
     void connectHapticDevice(QObject* hapticDevice);
     void disconnectHapticDevice(QObject* hapticDevice);
     bool hasHapticControl() const;
@@ -127,6 +128,7 @@ protected:
     Parameter createParamInfo(QByteArray type, QByteArray name = "");
     QString mName, mConfigFile;
     QString mDesc;
+    QString mHapticInterfaceName;
     QObject* mLolec;
     LolecInterface* mLolecInterface;
     QMap<QString, QList<Method>> mMethods;
@@ -140,7 +142,6 @@ protected:
     QMutex mStartMutex;
     QWaitCondition mStartWait;
     QMutex mCallMutex;
-
 };
 
 #endif // RCUNIT_H

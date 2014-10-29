@@ -27,22 +27,26 @@
 #endif
 
 TelecontrolFactory::TelecontrolFactory(QObject *parent) :
-    QObject(parent), mHaptic(0)
+    QObject(parent)
 {
+    // Check telecontrol folder for haptic plugins
     QDir dir(QCoreApplication::applicationDirPath() + "/plugins/telecontrol");
-    QStringList suffixFilter = QStringList("*.dll") << "*.so" << "*.dylib";
+    QStringList suffixFilter = QStringList("*.dll") << "*.so" << "*.dylib"; // Filter for DLLS (windows) and so/dylib (UNIX)
     QStringList files = dir.entryList(suffixFilter, QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
-    qDebug() << QDir::currentPath();
     QDir::setCurrent(QCoreApplication::applicationDirPath() + "/plugins");
+
+    // Iterate all dlls lying around
     foreach(QString file, files){
-        QString absFileName = dir.absoluteFilePath(file);
-        QPluginLoader* loader = new QPluginLoader(absFileName);
+        // Try to load plugin
+        QString absoluteFilePath = dir.absoluteFilePath(file);
+        QPluginLoader* loader = new QPluginLoader(absoluteFilePath);
         loader->setLoadHints(QLibrary::ResolveAllSymbolsHint);
         QObject* object = loader->instance();
         if(object){
-            HapticInterface* haptic = qobject_cast<HapticInterface *>(object);
-            if(haptic){
-                mHaptic = haptic;
+            // Check if object conforms to HapticInterface protocol (== cast successful)
+            HapticInterface* hapticInterface = qobject_cast<HapticInterface *>(object);
+            if(hapticInterface){
+                mHapticInterfaces[hapticInterface->name()] = hapticInterface;
             }
         }
     }
@@ -67,7 +71,7 @@ Gamepad *TelecontrolFactory::createGamepad()
     return gamepad;
 }
 
-HapticInterface *TelecontrolFactory::createHaptic()
+QMap<QString, HapticInterface *> TelecontrolFactory::getHapticInterfaces()
 {
-    return instance().mHaptic;
+    return instance().mHapticInterfaces;
 }

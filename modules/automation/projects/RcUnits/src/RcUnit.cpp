@@ -111,6 +111,7 @@ RcUnitHelp RcUnit::getHelp() const
     help.unitName = name();
     help.desc = mDesc;
     help.server = tr("local", "Server location");
+
     QStringList names = mMethods.keys();
     names.sort();
     foreach(const QString& name, names){
@@ -149,6 +150,7 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcHapticButtons << button;
         }
     }
+    help.tcHapticInterfaceName = mHapticInterfaceName;
 
     return help;
 }
@@ -568,17 +570,22 @@ void RcUnit::registerHapticButtonMethod(QString methodName, Tc::HapticButton def
     mTcHapticButtonMethods << buttonEvent;
 }
 
-void RcUnit::updateHapticSensitivity(const QString& unitName, double sensitivity, double forceScaling, const QList<bool>& inverts)
+void RcUnit::updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
 {
     if(mTcInvoker)
-        mTcInvoker->setHapticSensitivity(unitName, sensitivity, forceScaling, inverts);
-    if(mTcHapticMoveMethods.contains(unitName))
+        mTcInvoker->setHapticSensitivity(methodName, sensitivity, forceScaling, inverts);
+    if(mTcHapticMoveMethods.contains(methodName))
     {
-        TcMoveMethod& method = mTcHapticMoveMethods[unitName];
+        TcMoveMethod& method = mTcHapticMoveMethods[methodName];
         method.sensitivity = sensitivity;
         method.forceScaling = forceScaling;
         method.inverts = inverts;
     }
+}
+
+void RcUnit::updateHapticAssignment(const QString &hapticInterfaceName)
+{
+    mHapticInterfaceName = hapticInterfaceName;
 }
 
 void RcUnit::connectHapticDevice(QObject* hapticDevice)

@@ -19,12 +19,13 @@
 
 ShowAssignmentButton::ShowAssignmentButton(QString unit, bool hideEdit) :
     QWidget(),
+    mUnit(unit),
     ui(new Ui::ShowAssignmentButton)
 {
-    mUnit = unit;
     ui->setupUi(this);
-    if(hideEdit)
+    if(hideEdit){
         ui->edit->setEnabled(false);
+    }
 }
 
 ShowAssignmentButton::~ShowAssignmentButton()

@@ -19,6 +19,7 @@
 
 #include <QMap>
 #include <QThread>
+#include <QObject>
 
 /**
  * @brief The HapticEndpoint class
@@ -29,7 +30,8 @@ class HapticEndpoint {
 public:
     virtual void connectHapticDevice(QObject* hapticDevice) = 0;
     virtual void disconnectHapticDevice(QObject* hapticDevice) = 0;
-    virtual void updateHapticSensitivity(const QString& unitName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
+    virtual void updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
+    virtual void updateHapticAssignment(const QString& hapticInterfaceName) = 0;
     virtual bool hasHapticControl() const = 0;
 };
 
@@ -41,19 +43,16 @@ public:
 class HapticInterface : public QThread {
 public:
     /**
-     * @brief Connect to the haptic hardware.
-     * @throws std::exception if connection cannot be established.
+     * @brief Name for the haptic interface
+     * This method should return a unique name for the interface
+     * and thus should contain e.g. "vendor type (serial)".
+     * @return name of the interface
      */
-    virtual void connectHardware(const QString& configfileName) = 0;
-
-    /**
-     * @brief Disconnect from the haptic hardware.
-     */
-    virtual void releaseHardware() = 0;
+    virtual QString name() = 0;
 
     /**
      * @brief Enables the haptic device
-     * Follong this method the haptic device should send updates using
+     * Following to this method the haptic device should send updates using
      * the positionUpdate signal.
      */
     virtual void enable() = 0;
@@ -63,6 +62,11 @@ public:
      */
     virtual void disable() = 0;
 
+    /**
+     * @brief createWidget
+     * @return a widget for the haptic interface. The Widget may provide
+     * additional information and settings for the device.
+     */
     virtual QWidget* createWidget() { return 0; }
 
 public slots:

@@ -21,6 +21,8 @@
 #include <QMap>
 #include "TelecontrolAssignmentWidget.h"
 
+class HapticInterface;
+
 namespace Ui {
     class TelecontrolWidget;
 }
@@ -34,18 +36,21 @@ public:
     ~TelecontrolWidget();
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
 signals:
-    void activateTelecontrol(const QString& unitName);
-    void deactivateTelecontrol();
-    void updateTelecontrol(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+    void activateGamepad(const QString& unitName);
+    void deactivateGamepad();
+    void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
+    void updateHapticParameters(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticInterfaceName);
 
 public slots:
     void clear();
     void updateUnits(bool partialReload);
-    void onTelecontrolUpdated(bool active, const QString& activeUnit);
+    void onGamepadUpdated(bool active, const QString& activeUnit);
     void onHapticUpdated(bool active, const QString& activeUnit);
+    void onHapticAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
     void editButtonAssignment(const QString& unit = QString());
 
 private slots:

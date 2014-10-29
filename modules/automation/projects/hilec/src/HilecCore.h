@@ -40,6 +40,7 @@ public:
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     QStringList getTelecontrolableUnits();
+    QMap<QString,HapticInterface*> getHapticInterfaces();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
     virtual QWidget* createLolecWidget(const QString& lolec);
@@ -67,8 +68,6 @@ public:
     void scriptPaused(const QString& file, int line) { emit breakpointHit(file, line); }
     QString baseDir() const { return mBaseDir; }
 
-
-
 public slots:
     void runFile(const QString &filename);
     void compileFile(const QString& filename);
@@ -85,14 +84,16 @@ public slots:
     void stepInto();
     void stepReturn();
 
-    virtual void activateTelecontrol(const QString& unit);
-    virtual void deactivateTelecontrol();
-    virtual void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    virtual void activateGamepad(const QString& unitName);
+    virtual void deactivateGamepad();
+    virtual void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
-    virtual void activateHaptic(const QString& unit);
+    virtual void activateHaptic(const QString& unitName);
     virtual void deactivateHaptic();
-    virtual void updateHaptic(const QString &unit, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
-    virtual QWidget* createHapticWidget();
+    virtual void updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+    virtual void updateHapticAssignment(const QString &unitName, const QString& hapticInterfaceName);
+
+    virtual QWidget* createHapticWidget(const QString &unitName);
 
 protected:
     PythonInterpreter mPython;

@@ -40,7 +40,8 @@ public:
 
     void connectHapticDevice(QObject*) {}
     void disconnectHapticDevice(QObject*) {}
-    void updateHapticSensitivity(const QString&, double, double, const QList<bool>&) {}
+    void updateHapticParameters(const QString&, double, double, const QList<bool>&) {}
+    void updateHapticAssignment(const QString&) {}
     bool hasHapticControl() const { return false; }
 
 public slots:

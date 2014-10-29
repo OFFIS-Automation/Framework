@@ -67,7 +67,7 @@ TelecontrolHapticWidget::~TelecontrolHapticWidget()
     delete ui;
 }
 
-void TelecontrolHapticWidget::sendHapticUpdate()
+void TelecontrolHapticWidget::sendHapticParamatersUpdate()
 {
     double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
     double forceScaling  = pow(2.0, ui->forceSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
@@ -75,15 +75,15 @@ void TelecontrolHapticWidget::sendHapticUpdate()
     foreach(QCheckBox* box, mCheckboxes){
         inverts << box->isChecked();
     }
-    emit updateHaptic(mUnit, mMethod, sensitivity, forceScaling, inverts);
+    emit updateHapticParameters(mUnit, mMethod, sensitivity, forceScaling, inverts);
 }
 
 void TelecontrolHapticWidget::on_gainSlider_sliderMoved(int /*position*/)
 {
-    sendHapticUpdate();
+    sendHapticParamatersUpdate();
 }
 
 void TelecontrolHapticWidget::on_forceSlider_sliderMoved(int /*position*/)
 {
-    sendHapticUpdate();
+    sendHapticParamatersUpdate();
 }

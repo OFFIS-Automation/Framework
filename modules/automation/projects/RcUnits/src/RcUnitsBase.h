@@ -38,7 +38,8 @@ public:
     explicit RcUnitsBase();
     virtual ~RcUnitsBase();
 
-    RcUnitHelp getHelp(const QString &name);
+    RcUnitHelp getHelp(const QString &unitName);
+    QMap<QString, HapticInterface *> getHapticInterfaces();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mBaseUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
@@ -48,19 +49,21 @@ public:
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& lolec);
 
-    void activateGamepad(const QString& unit);
+    void activateGamepad(const QString& unitName);
     void deactivateGamepad();
-    void updateGamepad(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
-    void activateHaptic(const QString& unit);
+    void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unit, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
-    QWidget* createHapticWidget();
+    void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticInterfaceName);
+
+    QWidget* createHapticWidget(const QString &unitName);
 
 signals:
     void unitsUpdated();
-    void telecontrolUpdated(bool gamepadActive, const QString& controlledUnit);
-    void telecontrolSensitivityChangeRequested(const QString& unit, bool increase);
+    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
+    void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
 private slots:
@@ -76,8 +79,8 @@ protected:
     QString mLolecDir;
     Gamepad* mGamepad;
     QStringList mTelecontrolLolecs;
-    QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
-    HapticInterface* mHaptic;
+    QString mCurrentTelecontrolledUnit, mConfigFile;
+    QMap<QString, HapticInterface *> mHapticInterfaces;
     QMap<QString, MasterTcInvoker*> mMasterTcInvokers;
     QStringList mUnitsHiddenforTc;
 };

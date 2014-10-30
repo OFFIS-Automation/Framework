@@ -29,6 +29,7 @@
 #include "NumberEdit.h"
 #include "RectEdit.h"
 #include "PointEdit.h"
+#include "DateTimeEdit.h"
 
 DefaultPorts::DefaultPorts()
 {
@@ -56,6 +57,8 @@ PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
         return new RectEdit();
     else if(info.typeName == "Point")
         return new PointEdit();
+    else if(info.typeName == "DateTime")
+        return new DateTimeEdit();
     else
         return 0;
 }

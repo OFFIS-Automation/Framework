@@ -52,7 +52,8 @@ HEADERS += \
     src/DoubleEdit.h \
     src/ChoiceEdit.h \
     src/RectEdit.h \
-    src/PointEdit.h
+    src/PointEdit.h \
+    src/DateTimeEdit.h
 
 SOURCES += \
     src/DefaultPorts.cpp \
@@ -66,7 +67,8 @@ SOURCES += \
     src/DoubleEdit.cpp \
     src/ChoiceEdit.cpp \
     src/RectEdit.cpp \
-    src/PointEdit.cpp
+    src/PointEdit.cpp \
+    src/DateTimeEdit.cpp
 
 FORMS += \
     src/AbstractPortEditWidget.ui

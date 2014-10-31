@@ -51,7 +51,8 @@ SOURCES += \
     src/Histogram.cpp \
     src/HistogramPort.cpp \
     src/RgbImage.cpp \
-    src/RgbaImage.cpp
+    src/RgbaImage.cpp \
+    src/DateTimePort.cpp
 
 HEADERS += \
     ../../include/ports/IntegerPort.h \
@@ -88,7 +89,8 @@ HEADERS += \
     ../../include/ports/DefaultPortsGlobal.h \
     ../../include/ports/BooleanPort.h \
     ../../include/ports/HistogramPort.h \
-    ../../include/ports/Histogram.h
+    ../../include/ports/Histogram.h \
+    ../../include/ports/DateTimePort.h
 
 CONFIG+=dll
 

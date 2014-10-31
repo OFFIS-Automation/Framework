@@ -26,10 +26,10 @@
 class Gamepad;
 class LolecInterface;
 class RcUnitBase;
-class HapticInterface;
 class MasterTcInvoker;
 class GamepadEndpoint;
 class HapticBaseEndpoint;
+class HapticDevice;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -39,7 +39,7 @@ public:
     virtual ~RcUnitsBase();
 
     RcUnitHelp getHelp(const QString &unitName);
-    QMap<QString, HapticInterface *> getHapticInterfaces();
+    QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mBaseUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
@@ -80,7 +80,7 @@ protected:
     Gamepad* mGamepad;
     QStringList mTelecontrolLolecs;
     QString mCurrentTelecontrolledUnit, mConfigFile;
-    QMap<QString, HapticInterface *> mHapticInterfaces;
+    QMap<QString, HapticDevice *> mHapticDevices;
     QMap<QString, MasterTcInvoker*> mMasterTcInvokers;
     QStringList mUnitsHiddenforTc;
 };

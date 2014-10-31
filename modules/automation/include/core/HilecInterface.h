@@ -29,8 +29,7 @@ struct ScriptCompileInfo;
 struct RcUnitHelp;
 struct TelecontrolConfig;
 struct TelecontrolConfig;
-
-class HapticInterface;
+class HapticDevice;
 
 class HilecInterface : public QObject
 {
@@ -38,7 +37,7 @@ class HilecInterface : public QObject
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
     virtual QStringList getTelecontrolableUnits() = 0;
-    virtual QMap<QString,HapticInterface*> getHapticInterfaces() = 0;
+    virtual QMap<QString, HapticDevice *> getHapticDevices() = 0;
     virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
     virtual QWidget* createLolecWidget(const QString& lolec) = 0;

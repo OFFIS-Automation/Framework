@@ -150,7 +150,7 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcHapticButtons << button;
         }
     }
-    help.tcHapticInterfaceName = mHapticInterfaceName;
+    help.tcHapticDeviceName = mHapticInterfaceName;
 
     return help;
 }

@@ -31,14 +31,14 @@ class RCUNITS_EXPORT TelecontrolFactory : public QObject
     Q_OBJECT
 public:
     static Gamepad* createGamepad();
-    static QMap<QString, HapticInterface *> getHapticInterfaces();
+    static QMap<QString, HapticDevice *> getHapticDevices();
 
 private:
     Q_DISABLE_COPY(TelecontrolFactory)
     explicit TelecontrolFactory(QObject *parent = 0);
     static TelecontrolFactory& instance();
 
-    QMap<QString, HapticInterface *> mHapticInterfaces;
+    QMap<QString, HapticDevice *> mHapticDevices;
 };
 
 #endif // TELECONTROLFACTORY_H

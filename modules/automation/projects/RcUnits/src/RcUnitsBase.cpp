@@ -32,7 +32,7 @@
 RcUnitsBase::RcUnitsBase() :
     QObject()
 {
-    mHapticInterfaces = QMap<QString, HapticInterface *>();
+    mHapticDevices = QMap<QString, HapticDevice *>();
     mGamepad = 0;
 }
 
@@ -48,9 +48,9 @@ RcUnitHelp RcUnitsBase::getHelp(const QString &unitName)
     return mBaseUnits[unitName]->getHelp();
 }
 
- QMap<QString, HapticInterface *> RcUnitsBase::getHapticInterfaces()
+ QMap<QString, HapticDevice *> RcUnitsBase::getHapticDevices()
 {
-    return mHapticInterfaces;
+    return mHapticDevices;
 }
 
 TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
@@ -360,23 +360,23 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
 
 void RcUnitsBase::activateHaptic(const QString &unitName)
 {
-    if(mHapticInterfaces.empty()){
-        mHapticInterfaces = TelecontrolFactory::getHapticInterfaces();
-        if(mHapticInterfaces.empty()){
+    if(mHapticDevices.empty()){
+        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             emit hapticUpdated(false, QString());
             return;
         }
     }
 
-    QString currentHapticInterfaceName = getHelp(unitName).tcHapticInterfaceName;
-    if(mHapticInterfaces.keys().contains(currentHapticInterfaceName)){
-        HapticInterface *hapticInterface = mHapticInterfaces[currentHapticInterfaceName];
-        hapticInterface->disable();
+    QString currentHapticDeviceName = getHelp(unitName).tcHapticDeviceName;
+    if(mHapticDevices.keys().contains(currentHapticDeviceName)){
+        HapticDevice *hapticDevice = mHapticDevices[currentHapticDeviceName];
+        hapticDevice->disable();
 
         // Connect old haptic interface instances
         foreach(HapticEndpoint* hapticEndpoint, mBaseUnits.values()){
-            hapticEndpoint->disconnectHapticDevice(hapticInterface);
+            hapticEndpoint->disconnectHapticDevice(hapticDevice);
         }
 
         // Get the linked RC-Unit
@@ -384,8 +384,8 @@ void RcUnitsBase::activateHaptic(const QString &unitName)
 
         // Connect the "new" haptic interface
         if(unitToActivate && unitToActivate->hasHapticControl()){
-            unitToActivate->connectHapticDevice(hapticInterface);
-            hapticInterface->enable();
+            unitToActivate->connectHapticDevice(hapticDevice);
+            hapticDevice->enable();
         }
     }
 
@@ -437,18 +437,18 @@ void RcUnitsBase::updateHapticAssignment(const QString &unitName, const QString 
 
 QWidget *RcUnitsBase::createHapticWidget(const QString &unitName)
 {
-    if(mHapticInterfaces.empty()){
-        mHapticInterfaces = TelecontrolFactory::getHapticInterfaces();
-        if(mHapticInterfaces.empty()){
+    if(mHapticDevices.empty()){
+        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             return 0;
         }
     }
 
-    QString currentHapticInterfaceName = getHelp(unitName).tcHapticInterfaceName;
-    if(mHapticInterfaces.keys().contains(currentHapticInterfaceName)){
-        HapticInterface *hapticInterface = mHapticInterfaces[currentHapticInterfaceName];
-        return hapticInterface->createWidget();
+    QString currentHapticDeviceName = getHelp(unitName).tcHapticDeviceName;
+    if(mHapticDevices.keys().contains(currentHapticDeviceName)){
+        HapticDevice *hapticDevice = mHapticDevices[currentHapticDeviceName];
+        return hapticDevice->createWidget();
     }
 
     return 0;

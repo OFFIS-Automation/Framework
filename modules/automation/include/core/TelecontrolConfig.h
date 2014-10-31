@@ -50,7 +50,7 @@ struct TelecontrolConfig
 
     QList<TcMove> tcHapticMoves;
     QList<TcButton> tcHapticButtons;
-    QString tcHapticInterfaceName;
+    QString tcHapticDeviceName;
 };
 
 inline QDataStream& operator>>(QDataStream& stream, Tc::Joystick& joystick)
@@ -125,7 +125,7 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig& tc)
     stream >> tc.tcGamepadButtons;
     stream >> tc.tcHapticMoves;
     stream >> tc.tcHapticButtons;
-    stream >> tc.tcHapticInterfaceName;
+    stream >> tc.tcHapticDeviceName;
     return stream;
 }
 
@@ -136,7 +136,7 @@ inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig& tc)
     stream << tc.tcGamepadButtons;
     stream << tc.tcHapticMoves;
     stream << tc.tcHapticButtons;
-    stream << tc.tcHapticInterfaceName;
+    stream << tc.tcHapticDeviceName;
     return stream;
 }
 

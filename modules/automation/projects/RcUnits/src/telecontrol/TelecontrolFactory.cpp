@@ -46,7 +46,9 @@ TelecontrolFactory::TelecontrolFactory(QObject *parent) :
             // Check if object conforms to HapticInterface protocol (== cast successful)
             HapticInterface* hapticInterface = qobject_cast<HapticInterface *>(object);
             if(hapticInterface){
-                mHapticInterfaces[hapticInterface->name()] = hapticInterface;
+                foreach(HapticDevice *hapticDevice, hapticInterface->availableDevices()){
+                    mHapticDevices[hapticDevice->name()] = hapticDevice;
+                }
             }
         }
     }
@@ -71,7 +73,7 @@ Gamepad *TelecontrolFactory::createGamepad()
     return gamepad;
 }
 
-QMap<QString, HapticInterface *> TelecontrolFactory::getHapticInterfaces()
+QMap<QString, HapticDevice *> TelecontrolFactory::getHapticDevices()
 {
-    return instance().mHapticInterfaces;
+    return instance().mHapticDevices;
 }

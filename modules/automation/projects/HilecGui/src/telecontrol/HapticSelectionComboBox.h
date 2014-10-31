@@ -12,7 +12,7 @@ class HapticSelectionComboBox : public QWidget
 {
     Q_OBJECT
 public:
-    explicit HapticSelectionComboBox(const QString& unitName, QStringList hapticInterfaces, const QString &currentHapticInterfaceName);
+    explicit HapticSelectionComboBox(const QString& unitName, QStringList hapticInterfaces, const QString &currentHapticDeviceName);
     ~HapticSelectionComboBox();
 
 signals:
@@ -22,7 +22,7 @@ private slots:
     void on_availableInterfaces_currentIndexChanged(int index);
 
 private:
-    QStringList mHapticInterfaces;
+    QStringList mHapticDevices;
     Ui::HapticSelectionComboBox *ui;
     QString mUnitName;
 };

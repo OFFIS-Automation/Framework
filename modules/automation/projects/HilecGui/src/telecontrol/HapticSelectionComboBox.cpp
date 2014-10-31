@@ -1,22 +1,22 @@
 #include "HapticSelectionComboBox.h"
 #include "ui_HapticSelectionComboBox.h"
 
-HapticSelectionComboBox::HapticSelectionComboBox(const QString &unitName, QStringList hapticInterfaces, const QString& currentHapticInterfaceName) :
+HapticSelectionComboBox::HapticSelectionComboBox(const QString &unitName, QStringList mHapticDevices, const QString& currentHapticDeviceName) :
     QWidget(),
-    mHapticInterfaces(hapticInterfaces),
+    mHapticDevices(mHapticDevices),
     mUnitName(unitName),
     ui(new Ui::HapticSelectionComboBox)
 {
     ui->setupUi(this);
 
     // Fill comboBox
-    for(int i=0; i < mHapticInterfaces.count(); i++) {
-        ui->availableInterfaces->addItem(mHapticInterfaces.at(i));
+    for(int i=0; i < mHapticDevices.count(); i++) {
+        ui->availableInterfaces->addItem(mHapticDevices.at(i));
     }
 
-    int indexOfCurrentHapticInterfaceName = ui->availableInterfaces->findText(currentHapticInterfaceName);
-    if(indexOfCurrentHapticInterfaceName >= 0){
-        ui->availableInterfaces->setCurrentIndex(indexOfCurrentHapticInterfaceName);
+    int indexOfCurrentHapticDeviceName = ui->availableInterfaces->findText(currentHapticDeviceName);
+    if(indexOfCurrentHapticDeviceName >= 0){
+        ui->availableInterfaces->setCurrentIndex(indexOfCurrentHapticDeviceName);
     }
 }
 
@@ -27,9 +27,9 @@ HapticSelectionComboBox::~HapticSelectionComboBox()
 
 void HapticSelectionComboBox::on_availableInterfaces_currentIndexChanged(int index)
 {
-    QString hapticInterfaceName = 0;
+    QString hapticDeviceName = 0;
     if(index > 0){
-        hapticInterfaceName =  mHapticInterfaces.at(index-1);
+        hapticDeviceName =  mHapticDevices.at(index-1);
     }
-    emit hapticSelected(mUnitName, hapticInterfaceName);
+    emit hapticSelected(mUnitName, hapticDeviceName);
 }

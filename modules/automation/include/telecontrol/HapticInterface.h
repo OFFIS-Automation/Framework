@@ -19,6 +19,7 @@
 
 #include <QMap>
 #include <QThread>
+#include <QMap>
 #include <QObject>
 
 /**
@@ -37,14 +38,13 @@ public:
 
 /**
  * @brief The HapticDevice class
- * When subclassing, the constructor should always work and raise no errors nor warnings
- * use the connectHardware method to check for the existance of the interface
+ * The haptic interface should return at least one instace of this claas
  */
-class HapticInterface : public QThread {
+class HapticDevice : public QThread {
 public:
     /**
-     * @brief Name for the haptic interface
-     * This method should return a unique name for the interface
+     * @brief Name for the haptic device
+     * This method should return a unique name for the device
      * and thus should contain e.g. "vendor type (serial)".
      * @return name of the interface
      */
@@ -63,7 +63,7 @@ public:
     virtual void disable() = 0;
 
     /**
-     * @brief createWidget
+     * @brief Should create a widget for the device of appropriate
      * @return a widget for the haptic interface. The Widget may provide
      * additional information and settings for the device.
      */
@@ -71,24 +71,29 @@ public:
 
 public slots:
     /**
-     * @brief handleForceData
+     * @brief Handle given force data
      * @param data Force data which should be applied to the given axis. Each double value is in range [-1,1].
      */
-    virtual void handleForceData(const QMap<int,double>& data) = 0;
+    virtual void handleForceUpdate(const QMap<int,double>& data) = 0;
 
 signals:
     /**
-     * @brief Send position update.
+     * @brief Send position update
      * @param data Position data for the axis on the haptic device. Double value should be in range [-1,1].
      */
-    void positionUpdate(const QMap<int,double>& data);
+    void positionUpdated(const QMap<int,double>& data);
 
     /**
-     * @brief Send update about a toogled button.
+     * @brief Send update about a toogled button
      * @param buttonId
      * @param pressed
      */
     void buttonToggled(int buttonId, bool pressed);
+};
+
+class HapticInterface : public QObject {
+public:
+    virtual QList<HapticDevice *> availableDevices() = 0;
 };
 
 #define HapticInterface_iid "com.amir.hilec.HapticInterface/2.0"

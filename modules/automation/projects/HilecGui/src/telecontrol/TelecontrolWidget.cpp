@@ -127,8 +127,8 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
             page->setLayout(layout);
 
             // Add haptic device selection combobox
-            QStringList hapticInterfaces = HilecSingleton::hilec()->getHapticInterfaces().keys();
-            HapticSelectionComboBox *comboBox = new HapticSelectionComboBox(unit, hapticInterfaces, help.tcHapticInterfaceName);
+            QStringList hapticDevices = HilecSingleton::hilec()->getHapticDevices().keys();
+            HapticSelectionComboBox *comboBox = new HapticSelectionComboBox(unit, hapticDevices, help.tcHapticDeviceName);
             connect(comboBox, SIGNAL(hapticSelected(QString,QString)), this, SLOT(onHapticAssignmentUpdate(QString,QString)));
             layout->addWidget(comboBox);
 

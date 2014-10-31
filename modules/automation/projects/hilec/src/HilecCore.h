@@ -40,7 +40,7 @@ public:
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     QStringList getTelecontrolableUnits();
-    QMap<QString,HapticInterface*> getHapticInterfaces();
+    QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
     virtual QWidget* createLolecWidget(const QString& lolec);

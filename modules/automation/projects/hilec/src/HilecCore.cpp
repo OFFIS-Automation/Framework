@@ -76,9 +76,9 @@ QStringList HilecCore::getTelecontrolableUnits()
     return RcUnits::instance()->telecontrolableUnitNames();
 }
 
-QMap<QString, HapticInterface *> HilecCore::getHapticInterfaces()
+QMap<QString, HapticDevice *> HilecCore::getHapticDevices()
 {
-    return TelecontrolFactory::getHapticInterfaces();
+    return TelecontrolFactory::getHapticDevices();
 }
 
 TelecontrolConfig HilecCore::getTelecontrolConfig(const QString &name)

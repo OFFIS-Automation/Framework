@@ -21,7 +21,7 @@
 #include "libjoystick/joystick.h"
 #include <QMap>
 
-class LinuxGamepadFactory;
+class LinuxTelecontrolFactory;
 class LinuxGamepad : public Gamepad
 {
 public:
@@ -37,7 +37,7 @@ protected:
     float correctedValue(float v);
 
     Joystick mDevice;
-    friend class LinuxGamepadFactory;
+    friend class LinuxTelecontrolFactory;
     QString mName;
 };
 

@@ -51,12 +51,13 @@ public:
 
     void activateGamepad(const QString& unitName);
     void deactivateGamepad();
-    void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepadAssignment(const QString& unitName, const QString& gamepadDeviceName);
 
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
     void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
-    void updateHapticAssignment(const QString& unitName, const QString& hapticInterfaceName);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticDeviceName);
 
     QWidget* createHapticWidget(const QString &unitName);
 
@@ -77,7 +78,7 @@ protected:
     QMap<QString, RcUnitBase*> mBaseUnits;
     QMap<QString, QString> mTypes;
     QString mLolecDir;
-    Gamepad* mGamepad;
+    QMap<QString, Gamepad *> mGamepadDevices;
     QStringList mTelecontrolLolecs;
     QString mCurrentTelecontrolledUnit, mConfigFile;
     QMap<QString, HapticDevice *> mHapticDevices;

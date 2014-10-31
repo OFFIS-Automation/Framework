@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HapticSelectionComboBox</class>
- <widget class="QWidget" name="HapticSelectionComboBox">
+ <class>TelecontrolSelectionComboBox</class>
+ <widget class="QWidget" name="TelecontrolSelectionComboBox">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>233</width>
     <height>20</height>
    </rect>
   </property>
@@ -30,10 +30,10 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QComboBox" name="availableInterfaces">
+    <widget class="QComboBox" name="availableDevices">
      <item>
       <property name="text">
-       <string>No haptic device connected</string>
+       <string>No haptic device assigned</string>
       </property>
      </item>
     </widget>

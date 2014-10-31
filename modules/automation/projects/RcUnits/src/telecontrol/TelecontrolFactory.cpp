@@ -21,15 +21,47 @@
 #include <QPluginLoader>
 
 #ifdef Q_OS_WIN
-#include "WindowsGamepadFactory.h"
+#include "WindowsTelecontrolFactory.h"
 #elif defined(Q_OS_LINUX)
-#include "LinuxGamepadFactory.h"
+#include "LinuxTelecontrolFactory.h"
 #endif
 
 TelecontrolFactory::TelecontrolFactory(QObject *parent) :
     QObject(parent)
 {
-    // Check telecontrol folder for haptic plugins
+    loadHapticDevices();
+}
+
+TelecontrolFactory &TelecontrolFactory::instance()
+{
+    static TelecontrolFactory factory;
+    return factory;
+}
+
+QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
+{
+    QMap<QString, Gamepad *> gamepadDevices = QMap<QString, Gamepad *>();
+
+    #ifdef Q_OS_WIN
+        gamepadDevices = WindowsTelecontrolFactory::getGamepadDevices();
+    #elif defined(Q_OS_LINUX)
+        #pragma warning(Fix me)
+        //gamepad = LinuxTelecontrolFactory::createGamepad();
+    #endif
+
+    return gamepadDevices;
+}
+
+QMap<QString, HapticDevice *> TelecontrolFactory::getHapticDevices()
+{
+    return instance().loadHapticDevices();
+}
+
+// Helper
+QMap<QString, HapticDevice *> TelecontrolFactory::loadHapticDevices()
+{
+    QMap<QString, HapticDevice *> hapticDevices = QMap<QString, HapticDevice *>();
+    // Check telecontrol folder for haptic plugins (haptic plugins are not proviced by default)
     QDir dir(QCoreApplication::applicationDirPath() + "/plugins/telecontrol");
     QStringList suffixFilter = QStringList("*.dll") << "*.so" << "*.dylib"; // Filter for DLLS (windows) and so/dylib (UNIX)
     QStringList files = dir.entryList(suffixFilter, QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
@@ -47,33 +79,10 @@ TelecontrolFactory::TelecontrolFactory(QObject *parent) :
             HapticInterface* hapticInterface = qobject_cast<HapticInterface *>(object);
             if(hapticInterface){
                 foreach(HapticDevice *hapticDevice, hapticInterface->availableDevices()){
-                    mHapticDevices[hapticDevice->name()] = hapticDevice;
+                    hapticDevices[hapticDevice->name()] = hapticDevice;
                 }
             }
         }
     }
-}
-
-TelecontrolFactory &TelecontrolFactory::instance()
-{
-    static TelecontrolFactory factory;
-    return factory;
-}
-
-Gamepad *TelecontrolFactory::createGamepad()
-{
-    Gamepad* gamepad = 0;
-
-    #ifdef Q_OS_WIN
-        gamepad = WindowsGamepadFactory::createGamepad();
-    #elif defined(Q_OS_LINUX)
-        gamepad = LinuxGamepadFactory::createGamepad();
-    #endif
-
-    return gamepad;
-}
-
-QMap<QString, HapticDevice *> TelecontrolFactory::getHapticDevices()
-{
-    return instance().mHapticDevices;
+    return hapticDevices;
 }

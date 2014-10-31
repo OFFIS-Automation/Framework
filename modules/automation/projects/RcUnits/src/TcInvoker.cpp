@@ -54,7 +54,7 @@ void TcInvoker::disconnectGamepad(QObject *gamepad)
     mCurrentGamepadActivationButton = -1;
 }
 
-void TcInvoker::setGamepadSensitivity(const QString &methodName, double sensitivity, const QList<bool>& inverts)
+void TcInvoker::setGamepadParameters(const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
     QMutableListIterator<RcUnit::TcMoveMethod> iter(mGamepadMethods);
     while(iter.hasNext()){
@@ -162,7 +162,7 @@ void TcInvoker::disconnectHapticDevice(QObject *hapticDevice)
     mCurrentHapticActivationButton = -1;
 }
 
-void TcInvoker::setHapticSensitivity(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
+void TcInvoker::setHapticParamaters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
 {
     QMutableListIterator<RcUnit::TcMoveMethod> iter(mHapticMethods);
     while(iter.hasNext()){

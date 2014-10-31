@@ -76,6 +76,11 @@ QStringList HilecCore::getTelecontrolableUnits()
     return RcUnits::instance()->telecontrolableUnitNames();
 }
 
+QMap<QString, Gamepad *> HilecCore::getGamepadDevices()
+{
+    return TelecontrolFactory::getGamepadDevices();
+}
+
 QMap<QString, HapticDevice *> HilecCore::getHapticDevices()
 {
     return TelecontrolFactory::getHapticDevices();
@@ -190,9 +195,14 @@ void HilecCore::deactivateGamepad()
     RcUnits::instance()->deactivateGamepad();
 }
 
-void HilecCore::updateGamepad(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
+void HilecCore::updateGamepadParameters(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-    RcUnits::instance()->updateGamepad(unitName, methodName, sensitivity, inverts);
+    RcUnits::instance()->updateGamepadParameters(unitName, methodName, sensitivity, inverts);
+}
+
+void HilecCore::updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName)
+{
+    RcUnits::instance()->updateGamepadAssignment(unitName, gamepadDeviceName);
 }
 
 void HilecCore::activateHaptic(const QString &unitName)
@@ -210,9 +220,9 @@ void HilecCore::updateHapticParameters(const QString &unitName, const QString &m
     RcUnits::instance()->updateHapticParameters(unitName, methodName, sensitivity, forceScaling, inverts);
 }
 
-void HilecCore::updateHapticAssignment(const QString &unitName, const QString &hapticInterfaceName)
+void HilecCore::updateHapticAssignment(const QString &unitName, const QString &hapticDeviceName)
 {
-    RcUnits::instance()->updateHapticAssignment(unitName, hapticInterfaceName);
+    RcUnits::instance()->updateHapticAssignment(unitName, hapticDeviceName);
 }
 
 QWidget *HilecCore::createHapticWidget(const QString &unitName)

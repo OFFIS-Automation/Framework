@@ -138,6 +138,7 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcGamepadButtons << button;
         }
     }
+    help.tcGamepadDeviceName = mGamepadDeviceName;
 
     // Haptic
     names = mTcHapticMoveMethods.keys();
@@ -150,7 +151,7 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcHapticButtons << button;
         }
     }
-    help.tcHapticDeviceName = mHapticInterfaceName;
+    help.tcHapticDeviceName = mHapticDeviceName;
 
     return help;
 }
@@ -491,16 +492,21 @@ void RcUnit::registerGamepadButtonMethod(QString name, int defaultMapping, bool 
     mTcGamepadButtonMethods << ev;
 }
 
-void RcUnit::updateGamepadSensitivity(const QString &unitName, double sensitivity, const QList<bool>& inverts)
+void RcUnit::updateGamepadParameters(const QString &unitName, double sensitivity, const QList<bool>& inverts)
 {
     if(mTcInvoker){
-        mTcInvoker->setGamepadSensitivity(unitName, sensitivity, inverts);
+        mTcInvoker->setGamepadParameters(unitName, sensitivity, inverts);
     }
     if(mTcGamepadMoveMethods.contains(unitName)){
         TcMoveMethod& method = mTcGamepadMoveMethods[unitName];
         method.sensitivity = sensitivity;
         method.inverts = inverts;
     }
+}
+
+void RcUnit::updateGamepadAssignment(const QString &gamepadDeviceName)
+{
+    mGamepadDeviceName = gamepadDeviceName;
 }
 
 void RcUnit::connectGamepad(QObject *gamepad)
@@ -573,7 +579,7 @@ void RcUnit::registerHapticButtonMethod(QString methodName, Tc::HapticButton def
 void RcUnit::updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)
 {
     if(mTcInvoker)
-        mTcInvoker->setHapticSensitivity(methodName, sensitivity, forceScaling, inverts);
+        mTcInvoker->setHapticParamaters(methodName, sensitivity, forceScaling, inverts);
     if(mTcHapticMoveMethods.contains(methodName))
     {
         TcMoveMethod& method = mTcHapticMoveMethods[methodName];
@@ -583,9 +589,9 @@ void RcUnit::updateHapticParameters(const QString& methodName, double sensitivit
     }
 }
 
-void RcUnit::updateHapticAssignment(const QString &hapticInterfaceName)
+void RcUnit::updateHapticAssignment(const QString &hapticDeviceName)
 {
-    mHapticInterfaceName = hapticInterfaceName;
+    mHapticDeviceName = hapticDeviceName;
 }
 
 void RcUnit::connectHapticDevice(QObject* hapticDevice)

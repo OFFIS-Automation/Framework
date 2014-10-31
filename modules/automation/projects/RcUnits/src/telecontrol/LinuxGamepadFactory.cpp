@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "LinuxGamepadFactory.h"
+#include "LinuxTelecontrolFactory.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -24,19 +24,19 @@
 #include <telecontrol/GamepadInterface.h>
 #include <stdexcept>
 
-Gamepad* LinuxGamepadFactory::sGamepad;
+Gamepad* LinuxTelecontrolFactory::sGamepad;
 
-LinuxGamepadFactory::LinuxGamepadFactory(){}
+LinuxTelecontrolFactory::LinuxTelecontrolFactory(){}
 
-LinuxGamepadFactory::~LinuxGamepadFactory(){}
+LinuxTelecontrolFactory::~LinuxTelecontrolFactory(){}
 
-LinuxGamepadFactory &LinuxGamepadFactory::instance()
+LinuxTelecontrolFactory &LinuxTelecontrolFactory::instance()
 {
-    static LinuxGamepadFactory factory;
+    static LinuxTelecontrolFactory factory;
     return factory;
 }
 
-Gamepad* LinuxGamepadFactory::createGamepad()
+Gamepad* LinuxTelecontrolFactory::createGamepad()
 {
 	// force constructor/destructor call to acquire/release sDirectInput
     instance();

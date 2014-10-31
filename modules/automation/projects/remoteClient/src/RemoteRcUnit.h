@@ -34,7 +34,8 @@ public:
     virtual QString name() const { return mHelp.unitName; }
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );
-    virtual void updateGamepadSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadParameters(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadAssignment(const QString& gamepadDeviceName);
     QMap<QString, QVariant> getConstants() const { return mHelp.constants; }
     bool hasGamepadControl() const { return !mHelp.tcGamepadMoves.empty(); }
 

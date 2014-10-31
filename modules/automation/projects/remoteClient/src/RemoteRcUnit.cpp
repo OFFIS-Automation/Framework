@@ -49,9 +49,14 @@ void RemoteRcUnit::disconnectGamepad(QObject *gamepad)
     mRemote.disableTelecontrol(name());
 }
 
-void RemoteRcUnit::updateGamepadSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
+void RemoteRcUnit::updateGamepadParameters(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
-    mRemote.updateSensitivity(name(), unitName, sensitivity, inverts);
+    mRemote.updateGamepadParameters(name(), unitName, sensitivity, inverts);
+}
+
+void RemoteRcUnit::updateGamepadAssignment(const QString &gamepadDeviceName)
+{
+    mRemote.updateGamepadAssignment(gamepadDeviceName);
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)

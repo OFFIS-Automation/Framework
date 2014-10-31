@@ -54,38 +54,27 @@ void WindowsGamepad::createMapping()
         QStringList guids = settings.value("guids").toStringList();
         if(guids.contains(mGuid))
         {
-            if(settings.value("type").toString().toLower() == "xbox")
-            {
+            mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
+            mButtonMapping[Tc::WestButton]  = settings.value("WestButton").toInt();
+            mButtonMapping[Tc::EastButton]  = settings.value("EastButton").toInt();
+            mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
+            mButtonMapping[Tc::LeftShoulderUpperButton]  = settings.value("LeftShoulderUpperButton").toInt();
+            mButtonMapping[Tc::LeftShoulderLowerButton]  = settings.value("LeftShoulderLowerButton").toInt();
+            mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+            mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+            mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+
+            if(settings.value("type").toString().toLower() == "xbox"){
                 mGamepadType = XBoxGamepad;
-                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
-                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
-                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
-                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
-                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
-                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
-                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
-                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
-                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
-            }
-            else
-            {
+            } else {
                 mGamepadType = DefaultGamepad;
-                mButtonMapping[Tc::NorthButton] = settings.value("NorthButton").toInt();
-                mButtonMapping[Tc::WestButton] = settings.value("WestButton").toInt();
-                mButtonMapping[Tc::EastButton] = settings.value("EastButton").toInt();
-                mButtonMapping[Tc::SouthButton] = settings.value("SouthButton").toInt();
-                mButtonMapping[Tc::LeftShoulderUpperButton] = settings.value("LeftShoulderUpperButton").toInt();
-                mButtonMapping[Tc::LeftShoulderLowerButton] = settings.value("LeftShoulderLowerButton").toInt();
-                mButtonMapping[Tc::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
-                mButtonMapping[Tc::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
-                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
             }
             return;
         }
         settings.endGroup();
     }
-    qWarning() << "no gamepad mapping found for" << mName << "guid:" << mGuid;
-    qWarning() << "add an entry with its guid into the mapping file <gamepads.ini> in the root directory";
+    qWarning() << "No gamepad mapping found for" << mName << "guid:" << mGuid;
+    qWarning() << "Add an entry with its guid into the mapping file <gamepads.ini> in the root directory";
     throw std::runtime_error("Gamepad mapping not found!");
 }
 
@@ -224,7 +213,7 @@ BOOL CALLBACK WindowsGamepad::enumObject(const DIDEVICEOBJECTINSTANCE* inst, VOI
         diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER); 
         diprg.diph.dwHow        = DIPH_BYID; 
         diprg.diph.dwObj        = inst->dwType; // Specify the enumerated axis
-                diprg.lMin              = -gamepad->getResolution();
+        diprg.lMin              = -gamepad->getResolution();
         diprg.lMax              = +gamepad->getResolution();
     
         // Set the range for the axis

@@ -27,11 +27,11 @@ public:
     TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
-    void setGamepadSensitivity(const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void setGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
     void connectHapticDevice(QObject* hapticDevice);
     void disconnectHapticDevice(QObject* hapticDevice);
-    void setHapticSensitivity(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+    void setHapticParamaters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
 
 public slots:
     void handleGamepadData(const QMap<int,double>& data);

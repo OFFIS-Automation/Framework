@@ -126,10 +126,10 @@ void MasterTcInvoker::disconnectGamepad(QObject *gamepad)
         invoker->disconnectGamepad(gamepad);
 }
 
-void MasterTcInvoker::updateGamepadSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
+void MasterTcInvoker::updateGamepadParameters(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
     foreach(TcInvoker* invoker, mInvoker)
-        invoker->setGamepadSensitivity(unitName, sensitivity, inverts);
+        invoker->setGamepadParameters(unitName, sensitivity, inverts);
     for(int i=0;i<mWrappers.size(); i++)
     {
         JoystickWrap& wrap = mWrappers[i];

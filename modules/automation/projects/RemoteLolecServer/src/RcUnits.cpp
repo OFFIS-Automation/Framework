@@ -97,7 +97,7 @@ void RcUnits::updateSensitivity(const QString &unitName, const QString &tcName, 
     RcUnitBase* unit = mBaseUnits.value(unitName, 0);
     if(!unit)
         return;
-    unit->updateGamepadSensitivity(tcName, sens, inverts);
+    unit->updateGamepadParameters(tcName, sens, inverts);
 }
 
 void RcUnits::handleTcData(const QMap<int, double>& data)

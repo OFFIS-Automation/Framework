@@ -37,7 +37,7 @@
       </property>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Gamepads</string>
+        <string>Gamepads / Joysticks</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">

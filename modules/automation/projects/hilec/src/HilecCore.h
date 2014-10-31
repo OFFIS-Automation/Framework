@@ -40,6 +40,7 @@ public:
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     QStringList getTelecontrolableUnits();
+    QMap<QString, Gamepad *> getGamepadDevices();
     QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
@@ -86,7 +87,8 @@ public slots:
 
     virtual void activateGamepad(const QString& unitName);
     virtual void deactivateGamepad();
-    virtual void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName);
 
     virtual void activateHaptic(const QString& unitName);
     virtual void deactivateHaptic();

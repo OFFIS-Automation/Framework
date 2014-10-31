@@ -38,7 +38,8 @@ public:
 signals:
     void activateGamepad(const QString& unitName);
     void deactivateGamepad();
-    void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+    void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+    void updateGamepadAssignment(const QString& unitName, const QString& hapticInterfaceName);
 
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
@@ -48,10 +49,13 @@ signals:
 public slots:
     void clear();
     void updateUnits(bool partialReload);
+    void editButtonAssignment(const QString& unit = QString());
+
     void onGamepadUpdated(bool active, const QString& activeUnit);
+    void onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
+
     void onHapticUpdated(bool active, const QString& activeUnit);
     void onHapticAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
-    void editButtonAssignment(const QString& unit = QString());
 
 private slots:
     void on_gamepadTabWidget_currentChanged(int index);

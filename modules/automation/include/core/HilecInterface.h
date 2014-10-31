@@ -17,19 +17,25 @@
 #ifndef HILECINTERFACE_H
 #define HILECINTERFACE_H
 
+// Project headers
+#include "ScriptException.h"
+
+// QT headers
 #include <QList>
 #include <QString>
 #include <QObject>
 #include <QMap>
 #include <QAbstractItemModel>
-#include "ScriptException.h"
+
 
 struct UserRequest;
 struct ScriptCompileInfo;
 struct RcUnitHelp;
 struct TelecontrolConfig;
 struct TelecontrolConfig;
+
 class HapticDevice;
+class Gamepad;
 
 class HilecInterface : public QObject
 {
@@ -37,6 +43,7 @@ class HilecInterface : public QObject
 public:
     virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
     virtual QStringList getTelecontrolableUnits() = 0;
+    virtual QMap<QString, Gamepad *> getGamepadDevices() = 0;
     virtual QMap<QString, HapticDevice *> getHapticDevices() = 0;
     virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
@@ -64,7 +71,8 @@ public slots:
 
     virtual void activateGamepad(const QString& unitName) = 0;
     virtual void deactivateGamepad() = 0;
-    virtual void updateGamepad(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
+    virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
+    virtual void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName) = 0;
 
     virtual void activateHaptic(const QString& unitName) = 0;
     virtual void deactivateHaptic() = 0;

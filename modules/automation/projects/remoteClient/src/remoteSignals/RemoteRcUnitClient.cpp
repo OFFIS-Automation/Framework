@@ -88,12 +88,19 @@ void RemoteRcUnitClient::setTcButton(int buttonId, const bool &pressed, uint tim
     waitTcCall(id, timeout);
 }
 
-void RemoteRcUnitClient::updateSensitivity(const QString &unitName, const QString &tcName,
-                                           double sensitivity, const QList<bool> &inverts, uint timeout)
+void RemoteRcUnitClient::updateGamepadParameters(const QString &unitName, const QString &tcName, double sensitivity, const QList<bool> &inverts, uint timeout)
 {
     QMutexLocker lock(&mMutex);
     uint id = mNextId++;
-    RemoteRcUnitClientBase::updateTcSensitivity(id, unitName, tcName, sensitivity, inverts);
+    RemoteRcUnitClientBase::updateGamepadParameters(id, unitName, tcName, sensitivity, inverts);
+    waitTcCall(id, timeout);
+}
+
+void RemoteRcUnitClient::updateGamepadAssignment(const QString &gamepadDeviceName, uint timeout)
+{
+    QMutexLocker lock(&mMutex);
+    uint id = mNextId++;
+    RemoteRcUnitClientBase::updateGamepadAssignment(id, gamepadDeviceName);
     waitTcCall(id, timeout);
 }
 

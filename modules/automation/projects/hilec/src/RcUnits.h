@@ -26,7 +26,6 @@
 class QXmlStreamReader;
 class LolecInterface;
 class RcUnit;
-class Gamepad;
 class RemoteRcUnits;
 
 class RcUnits : public RcUnitsBase

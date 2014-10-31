@@ -39,7 +39,6 @@ RcUnits::RcUnits(const QString &lolecDir)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
     mLolecDir = lolecDir;
-    mGamepad = 0;
     connect(this, SIGNAL(unitsUpdated()), SIGNAL(unitListUpdated()));
 }
 

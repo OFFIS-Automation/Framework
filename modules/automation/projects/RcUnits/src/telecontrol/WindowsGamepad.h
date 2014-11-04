@@ -38,7 +38,7 @@ protected:
     void createMapping();
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
-    int mMax, mMin;
+    float mMax, mMin;
 
     static BOOL CALLBACK enumObject(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext);
 

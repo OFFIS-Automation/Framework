@@ -114,19 +114,11 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
     if(mGamepadType == ConnexionJoystick){
         // Axes
         joysticks[Tc::JoystickX] = correctedValue(float(status.lX));
-        joysticks[Tc::JoystickY] = correctedValue(-float(status.lY));
-        joysticks[Tc::JoystickZ] = correctedValue(float(status.lZ));
-        joysticks[Tc::JoystickYaw] = correctedValue(-float(status.lRz)); // Yaw = Rotation around z axes
-        joysticks[Tc::JoystickPitch] = correctedValue(float(status.lRy)); // Pitch = Rotation around y axes
+        joysticks[Tc::JoystickY] = correctedValue(float(status.lY));
+        joysticks[Tc::JoystickZ] = correctedValue(-float(status.lZ));
+        joysticks[Tc::JoystickYaw] = correctedValue(float(status.lRz)); // Yaw = Rotation around z axes
+        joysticks[Tc::JoystickPitch] = correctedValue(-float(status.lRy)); // Pitch = Rotation around y axes
         joysticks[Tc::JoystickRoll] = correctedValue(-float(status.lRx)); // Roll = Rotation around x axes
-
-        if(status.lY < mMin)
-            mMin = status.lY;
-        if(status.lY > mMax)
-            mMax = status.lY;
-
-        qDebug() << mMin << " " << mMax;
-
         // Buttons
         for(int i=Tc::WestButton; i<= Tc::EastButton; i++){
             assingButton(buttons, status.rgbButtons, i);

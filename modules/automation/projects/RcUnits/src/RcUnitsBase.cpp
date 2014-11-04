@@ -350,7 +350,7 @@ void RcUnitsBase::updateGamepadAssignment(const QString &unitName, const QString
         return;
     }
     unitToUpdate->updateGamepadAssignment(gamepadDeviceName);
-    activateHaptic(unitName);
+    activateGamepad(unitName);
 
     QSettings settings(mConfigFile, QSettings::IniFormat);
     settings.beginGroup(QString("gamepad/%1").arg(unitName));

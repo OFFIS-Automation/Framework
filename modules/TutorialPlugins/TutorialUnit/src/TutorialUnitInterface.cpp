@@ -91,6 +91,8 @@ QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFil
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
+    rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::WestButton);
+
     rc.registerGamepadButtonMethod("openGripper", Tc::LeftShoulderLowerButton);
     rc.registerGamepadButtonMethod("closeGripper", Tc::RightShoulderLowerButton);
 

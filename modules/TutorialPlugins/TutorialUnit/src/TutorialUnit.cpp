@@ -89,16 +89,21 @@ void TutorialUnit::setRotation(double targetAngle)
     mWait.wait(&mWaitMutex, 5000);
 }
 
-void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
+void TutorialUnit::moveGamepad(double x, double y, double phi)
 {
     QMutexLocker lock(&mMutex);
     checkHAL();
     QMutexLocker waitLock(&mWaitMutex);
 
-    emit moveRel(QPointF(xAxis*20.0, yAxis*-20.0), 20);
+    emit moveRel(QPointF(x*20.0, y*-20.0), 20);
     mWait.wait(&mWaitMutex, 20);
     emit rotateRel(phi*20, 1);
     mWait.wait(&mWaitMutex, 20);
+}
+
+void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
+{
+    moveGamepad(x, y, yaw);
 }
 
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)

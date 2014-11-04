@@ -34,6 +34,7 @@ private:
     static LPDIRECTINPUT8 sDirectInput;
     static QMap<QString, Gamepad *> sGamepadDevices;
     static QStringList specialControllerNames;
+    static QStringList disallowedControllerNames;
 };
 
 #endif // LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT

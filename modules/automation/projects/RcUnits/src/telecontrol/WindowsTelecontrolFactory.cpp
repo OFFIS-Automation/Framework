@@ -27,9 +27,8 @@
 
 QMap<QString, Gamepad *> WindowsTelecontrolFactory::sGamepadDevices;
 LPDIRECTINPUT8 WindowsTelecontrolFactory::sDirectInput;
-QStringList WindowsTelecontrolFactory::specialControllerNames = QStringList() << "SpaceNavigator" << "SpaceNavigator for Notebooks"
-                                                                              << "SpaceTraveler USB" << "SpaceExplorer" << "SpacePilot"
-                                                                              << "3Dconnexion KMJ Emulator";
+QStringList WindowsTelecontrolFactory::disallowedControllerNames = QStringList() << "3Dconnexion KMJ Emulator";
+
 
 WindowsTelecontrolFactory::WindowsTelecontrolFactory()
 {
@@ -68,25 +67,21 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
     try
     {
         QString name = QString::fromWCharArray(inst->tszInstanceName).trimmed();
-        if(specialControllerNames.contains(name)){
-            qWarning() << tr("Special controller found (") << name << ") which is not supported.";
+        QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
+
+        if(disallowedControllerNames.contains(name)){
+            qWarning() << tr("Device not supported:") << " " << name;
             return DIENUM_CONTINUE;
+        }
+
+        WindowsGamepad* gamepad = new WindowsGamepad(name, guid);
+        HRESULT hr = sDirectInput->CreateDevice(inst->guidInstance, &gamepad->mDevice, NULL);
+        if(FAILED(hr) || !gamepad->initialize()){
+            delete gamepad;
+            sDirectInput->Release();
+            throw std::runtime_error(qPrintable(tr("Error initializing gamepad: %1").arg(name)));
         } else {
-            WindowsGamepad* gamepad;
-            QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
-            gamepad = new WindowsGamepad(name, guid);
-            if(!gamepad)
-                throw std::runtime_error(qPrintable(tr("No wrapper for device: %1").arg(name)));
-
-            HRESULT hr = sDirectInput->CreateDevice(inst->guidInstance, &gamepad->mDevice, NULL);
-            if(FAILED(hr) || !gamepad->initialize()){
-                delete gamepad;
-                sDirectInput->Release();
-                throw std::runtime_error(qPrintable(tr("Error initializing gamepad: %1").arg(name)));
-            } else {
-                sGamepadDevices[name] = gamepad;
-            }
-
+            sGamepadDevices[name] = gamepad;
         }
     }
     catch(const std::exception& e)

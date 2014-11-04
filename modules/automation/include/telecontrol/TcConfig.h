@@ -44,7 +44,13 @@ namespace Tc
         LeftJoystickX = 0,
         LeftJoystickY,
         RightJoystickX,
-        RightJoystickY
+        RightJoystickY,
+        JoystickX,
+        JoystickY,
+        JoystickZ,
+        JoystickYaw,
+        JoystickPitch,
+        JoystickRoll
     };
 
     enum HapticAxis

@@ -35,7 +35,7 @@ public:
 
     static const int numSteps = 10;
 signals:
-    void updateTelecontrol(QString unit, QString method, double value, QList<bool> inverts);
+    void updateGamepadParameters(QString unit, QString method, double value, QList<bool> inverts);
 
 private slots:
     void on_slider_sliderMoved(int position);

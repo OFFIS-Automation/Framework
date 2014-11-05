@@ -67,7 +67,7 @@ void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes)
         inverts << box->isChecked();
-    emit updateTelecontrol(mUnit, mMethod, sensitivity, inverts);
+    emit updateGamepadParameters(mUnit, mMethod, sensitivity, inverts);
 }
 
 void TelecontrolGamepadWidget::changeSlider(const QString &unit, bool increase)

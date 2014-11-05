@@ -114,7 +114,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
     if(mGamepadType == ConnexionJoystick){
         // Axes
         joysticks[Tc::JoystickX] = correctedValue(float(status.lX));
-        joysticks[Tc::JoystickY] = correctedValue(float(status.lY));
+        joysticks[Tc::JoystickY] = correctedValue(-float(status.lY));
         joysticks[Tc::JoystickZ] = correctedValue(-float(status.lZ));
         joysticks[Tc::JoystickYaw] = correctedValue(float(status.lRz)); // Yaw = Rotation around z axes
         joysticks[Tc::JoystickPitch] = correctedValue(-float(status.lRy)); // Pitch = Rotation around y axes
@@ -168,6 +168,8 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 
 float WindowsGamepad::correctedValue(float v)
 {
+    return v;
+
     v /= (float)getResolution();
     if(v >-0.1 && v < 0.1)
         return 0.0;
@@ -180,8 +182,6 @@ WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
     mGuid(guid)
 {
     mDevice = 0;
-    mMax = 0;
-    mMin = INT_MAX;
 }
 
 int WindowsGamepad::getResolution() const

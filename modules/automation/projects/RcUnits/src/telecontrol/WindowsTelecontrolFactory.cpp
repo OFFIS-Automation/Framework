@@ -29,7 +29,6 @@ QMap<QString, Gamepad *> WindowsTelecontrolFactory::sGamepadDevices;
 LPDIRECTINPUT8 WindowsTelecontrolFactory::sDirectInput;
 QStringList WindowsTelecontrolFactory::disallowedControllerNames = QStringList() << "3Dconnexion KMJ Emulator";
 
-
 WindowsTelecontrolFactory::WindowsTelecontrolFactory()
 {
 	sDirectInput = 0;

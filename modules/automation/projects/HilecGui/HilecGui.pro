@@ -71,7 +71,8 @@ HEADERS += \
     src/telecontrol/EditGamepadAssignment.h \
     src/telecontrol/EditGamepadArea.h \
     src/rcUnits/AddRemoteRcServerDialog.h \
-    src/telecontrol/TelecontrolSelectionComboBox.h
+    src/telecontrol/TelecontrolSelectionComboBox.h \
+    src/telecontrol/ConnexionAssignmentWidget.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -106,7 +107,8 @@ SOURCES += \
     src/telecontrol/EditGamepadAssignment.cpp \
     src/telecontrol/EditGamepadArea.cpp \
     src/rcUnits/AddRemoteRcServerDialog.cpp \
-    src/telecontrol/TelecontrolSelectionComboBox.cpp
+    src/telecontrol/TelecontrolSelectionComboBox.cpp \
+    src/telecontrol/ConnexionAssignmentWidget.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -135,7 +137,8 @@ FORMS += \
     src/telecontrol/EditGamepadArea.ui \
     src/rcUnits/AddRemoteRcServerDialog.ui \
     src/telecontrol/TelecontrolGamepadWidget.ui \
-    src/telecontrol/TelecontrolSelectionComboBox.ui
+    src/telecontrol/TelecontrolSelectionComboBox.ui \
+    src/telecontrol/ConnexionAssignmentWidget.ui
 
 RESOURCES += \
     images/images.qrc

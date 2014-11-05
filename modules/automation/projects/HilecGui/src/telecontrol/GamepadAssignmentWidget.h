@@ -18,7 +18,7 @@
 #define GAMEPADASSIGNMENTWIDGET_H
 
 #include <QWidget>
-#include <QLabel>
+#include <QWidget>
 #include "telecontrol/TcConfig.h"
 
 namespace Ui {

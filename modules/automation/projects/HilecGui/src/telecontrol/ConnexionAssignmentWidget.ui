@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>695</width>
-    <height>355</height>
+    <height>409</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -286,6 +286,22 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
+      <spacer name="verticalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>14</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string/>
@@ -294,6 +310,50 @@
         <pixmap resource="../../images/images.qrc">:/hilecGui/connexionAbstract.png</pixmap>
        </property>
       </widget>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="button3LabelDesc">
+         <property name="styleSheet">
+          <string notr="true">color : lightgray;</string>
+         </property>
+         <property name="text">
+          <string>Left button:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="button2LabelDesc">
+         <property name="styleSheet">
+          <string notr="true">color : lightgray;</string>
+         </property>
+         <property name="text">
+          <string>Right button:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="button3Label">
+         <property name="styleSheet">
+          <string notr="true">color : lightgray;</string>
+         </property>
+         <property name="text">
+          <string>Not assigned</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="button2Label">
+         <property name="styleSheet">
+          <string notr="true">color : lightgray;</string>
+         </property>
+         <property name="text">
+          <string>Not assigned</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <spacer name="verticalSpacer">

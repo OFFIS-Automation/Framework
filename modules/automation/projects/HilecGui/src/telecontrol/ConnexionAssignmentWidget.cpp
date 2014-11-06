@@ -26,16 +26,57 @@ ConnexionAssignmentWidget::ConnexionAssignmentWidget(const QString &unit, QWidge
 {
     ui->setupUi(this);
 
-    // Colors
     QStringList colors = QStringList() << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
+    TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
+
+    // Buttons
+    if(!help.tcGamepadButtons.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcGamepadButtons){
+            QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
+            QLabel *label = this->findChild<QLabel *>(labelName);
+            if(label){
+                QString text = label->text();
+                if(text == "Not assigned"){
+                    text.clear();
+                } else if(!text.isEmpty()){
+                    text += "; ";
+                }
+                label->setText(text + buttonMethod.name);
+                label->setStyleSheet("QLabel { color : black; }");
+
+                // Also change desc string style
+                QString labelName = QString("button%1LabelDesc").arg(buttonMethod.buttonId);
+                QLabel *label = this->findChild<QLabel *>(labelName);
+                if(label){
+                    label->setStyleSheet("QLabel { color : black; }");
+                }
+            }
+        }
+    }
+
 
     // Joystick
-    TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
     if(!help.tcGamepadMoves.empty()){
         int colorCounter = 0;
         foreach(RcUnitHelp::TcMove joystickMethod, help.tcGamepadMoves){
             QString color = colors.value(colorCounter);
             colorCounter = (colorCounter + 1) % colors.size();
+
+            // Deadmans button
+            QString labelName = QString("button%1Label").arg(joystickMethod.deadMansButton);
+            QLabel *label = this->findChild<QLabel *>(labelName);
+            if(label){
+                QString currentText = label->text();
+                if(currentText == "Not assigned"){
+                    currentText.clear();
+                } else if(!currentText.isEmpty()){
+                    currentText += "; ";
+                }
+                QString text = "<span style='color: %1;'>%2</span>";
+                label->setText(currentText + text.arg(color, tr("Dead-man's control: ") + joystickMethod.name));
+            }
+
+            // Assign labels
             for(int i=0;i < joystickMethod.joysticks.size(); i++){
                 Tc::Joystick joystick = joystickMethod.joysticks[i];
                 QString name = joystickMethod.axeNames.value(i);
@@ -46,7 +87,7 @@ ConnexionAssignmentWidget::ConnexionAssignmentWidget(const QString &unit, QWidge
                     continue;
                 }
                 QLabel *label = findChild<QLabel *>(labelName);
-                if(label != NULL){
+                if(label){
                     QString currentText = label->text();
                     if(currentText.compare("Not assigned") == 0){
                         // Replace placeholder and set correct color

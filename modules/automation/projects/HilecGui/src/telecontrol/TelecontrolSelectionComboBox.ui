@@ -33,7 +33,7 @@
     <widget class="QComboBox" name="availableDevices">
      <item>
       <property name="text">
-       <string>No haptic device assigned</string>
+       <string>No device assigned</string>
       </property>
      </item>
     </widget>

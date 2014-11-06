@@ -34,6 +34,10 @@ namespace Tc
         LeftShoulderLowerButton,
         RightShoulderUpperButton,
         RightShoulderLowerButton,
+        FootboardNorthButton,
+        FootboardSouthButton,
+        FootboardEastButton,
+        FootboardWestButton,
         ButtonEnumEnd,
         ButtonEnumFirst = NorthButton
     };

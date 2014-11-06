@@ -17,11 +17,16 @@
 #include "TcInvoker.h"
 #include <QVector>
 #include <QMap>
+#include <QCoreApplication>
+#include <QKeyEvent>
 
 
 TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods)
     : mDevice(device)
 {
+    // Install key event handler
+    qApp->installEventFilter(this);
+
     // Init joystick method and buttons
     foreach(const RcUnit::TcMoveMethod& gamepadMethod, gamepadMethods){
         mGamepadMethods.append(gamepadMethod);
@@ -39,6 +44,34 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepad
     }
 }
 
+bool TcInvoker::eventFilter(QObject *watched, QEvent *event)
+{
+    Q_UNUSED(watched);
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease){
+        QKeyEvent *keyEvent = (QKeyEvent *)event;
+        if(keyEvent->isAutoRepeat())
+            return false;
+
+        switch (keyEvent->key()) {
+        case Qt::Key_F2:
+            handleGamepadButtonToggled(Tc::FootboardWestButton, event->type() == QEvent::KeyPress);
+            break;
+        case Qt::Key_F3:
+            handleGamepadButtonToggled(Tc::FootboardNorthButton, event->type() == QEvent::KeyPress);
+            break;
+        case Qt::Key_F4:
+            handleGamepadButtonToggled(Tc::FootboardEastButton, event->type() == QEvent::KeyPress);
+            break;
+        case Qt::Key_F5:
+            handleGamepadButtonToggled(Tc::FootboardSouthButton, event->type() == QEvent::KeyPress);
+            break;
+        default:
+            break;
+        }
+        return true;
+    }
+    return false;
+}
 
 // Gamepad stuff
 void TcInvoker::connectGamepad(QObject *gamepad)
@@ -102,11 +135,12 @@ void TcInvoker::handleGamepadData(const QMap<int, double> &data)
 
 void TcInvoker::handleGamepadButtonToggled(int buttonId, bool pressed)
 {
+    qDebug() << buttonId << "," << pressed;
     if(pressed){
         bool cleared = false;
         for(int i=0; i<mGamepadMethods.size(); i++){
             const RcUnit::TcMoveMethod& method = mGamepadMethods[i];
-            if(method.deadMansButton == buttonId){
+            if(method.deadMansButton == buttonId && !mActiveGamepadMethods.contains(i)){
                 if(!cleared){
                     // Stop current movements
                     handleGamepadData(QMap<int, double>());

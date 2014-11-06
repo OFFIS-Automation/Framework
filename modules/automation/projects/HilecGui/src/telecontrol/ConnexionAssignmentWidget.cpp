@@ -41,8 +41,11 @@ ConnexionAssignmentWidget::ConnexionAssignmentWidget(const QString &unit, QWidge
                 QString name = joystickMethod.axeNames.value(i);
 
                 // Append method to joystick
-                QString labelName = this->labelNameForJoystick(joystick);
-                QLabel *label = this->findChild<QLabel *>(labelName);
+                QString labelName = labelNameForJoystick(joystick);
+                if(labelName.length() == 0){
+                    continue;
+                }
+                QLabel *label = findChild<QLabel *>(labelName);
                 if(label != NULL){
                     QString currentText = label->text();
                     if(currentText.compare("Not assigned") == 0){

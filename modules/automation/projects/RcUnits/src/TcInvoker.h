@@ -34,6 +34,8 @@ public:
     void setHapticParamaters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
 
 public slots:
+    virtual bool eventFilter (QObject * watched, QEvent * event);
+
     void handleGamepadData(const QMap<int,double>& data);
     void handleGamepadButtonToggled(int buttonId, bool pressed);
 

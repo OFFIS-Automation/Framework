@@ -195,13 +195,29 @@ void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
     mInUpdate = false;
 
     if(active){
-        // Add haptic widget
-        mHapticWidget = HilecSingleton::hilec()->createHapticWidget(activeUnit);
-        if(mHapticWidget){
-            QWidget *tabWidget = ui->hapticTabWidget->currentWidget();
-            if(!tabWidget->children().contains(mHapticWidget)){
-                ((QBoxLayout *)tabWidget->layout())->insertWidget(1, mHapticWidget);
+        QWidget *hapticWidget = HilecSingleton::hilec()->createHapticWidget(activeUnit);
+        QWidget *tabWidget = ui->hapticTabWidget->currentWidget();
+
+        // Remove mHapticWidget
+        QBoxLayout *layout = (QBoxLayout *)tabWidget->layout();
+        if(tabWidget->children().contains(mHapticWidget)){
+            unsigned int i = 0;
+            while (QLayoutItem* item = layout->itemAt(i)){
+                if (item->widget() == mHapticWidget){
+                    layout->removeItem(item);
+                    item->widget()->deleteLater();
+                    mHapticWidget = 0;
+                    break;
+                } else {
+                    i++;
+                }
             }
+        }
+
+        if(hapticWidget){
+            // Store refernce for later usage
+            mHapticWidget = hapticWidget;
+            layout->insertWidget(1, mHapticWidget);
         }
     }
 }

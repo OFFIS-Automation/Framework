@@ -50,6 +50,7 @@ public slots:
     void clear();
     void updateUnits(bool partialReload);
     void editButtonAssignment(const QString& unit = QString());
+    void openButtonAssignment(const QString& unit);
 
     void onGamepadUpdated(bool active, const QString& activeUnit);
     void onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
@@ -60,7 +61,6 @@ public slots:
 private slots:
     void on_gamepadTabWidget_currentChanged(int index);
     void on_hapticTabWidget_currentChanged(int index);
-    void on_openButtonAssignment_clicked(QString unit);
 
 private:
     static const int sHapticIndexOffset = 1024;

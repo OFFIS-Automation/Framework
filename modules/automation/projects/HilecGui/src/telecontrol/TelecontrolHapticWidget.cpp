@@ -57,7 +57,7 @@ TelecontrolHapticWidget::TelecontrolHapticWidget(QString unit, const Telecontrol
         QCheckBox* box = new QCheckBox(axisName);
         box->setChecked(method.inverts.value(i, false));
         mCheckboxes << box;
-        connect(box, SIGNAL(toggled(bool)), SLOT(sendHapticUpdate()));
+        connect(box, SIGNAL(toggled(bool)), SLOT(sendHapticParamatersUpdate()));
         ui->invertLayout->insertWidget(i, box);
     }
 }

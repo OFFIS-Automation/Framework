@@ -183,7 +183,7 @@ void TcInvoker::connectHapticDevice(QObject *hapticDevice)
     // Establish signal/slot connection
     connect(hapticDevice, SIGNAL(buttonToggled(int,bool)), SLOT(handleHapticButtonToggled(int,bool)), Qt::DirectConnection);
     connect(hapticDevice, SIGNAL(positionUpdated(QMap<int,double>)), SLOT(handleHapticPositionData(QMap<int,double>)), Qt::DirectConnection);
-    connect(this, SIGNAL(forceUpdate(QMap<int,double>)), hapticDevice, SLOT(handleForceData(QMap<int,double>)), Qt::DirectConnection);
+    connect(this, SIGNAL(forceUpdate(QMap<int,double>)), hapticDevice, SLOT(handleForceUpdate(QMap<int,double>)), Qt::DirectConnection);
 }
 
 void TcInvoker::disconnectHapticDevice(QObject *hapticDevice)

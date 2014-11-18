@@ -36,7 +36,6 @@ void TutorialUnit::setScene(GraphicsView *scene)
     connect(this, SIGNAL(rotateAbs(double,int)), scene, SLOT(rotateRobotAbs(double,int)));
     connect(this, SIGNAL(rotateRel(double,int)), scene, SLOT(rotateRobotRel(double,int)));
     connect(this, SIGNAL(setGripperState(bool)), scene, SLOT(setGripperState(bool)));
-    connect(this, SIGNAL(alternateGripperState()), scene, SLOT(alternateGripperState()));
     connect(this, SIGNAL(resetScene(bool)), scene, SLOT(reset(bool)));
     connect(scene, SIGNAL(movementFinished()), SLOT(onMovementFinished()));
     connect(scene, SIGNAL(positionUpdate(QPointF,qreal)), this, SIGNAL(positionUpdated(QPointF,qreal)));

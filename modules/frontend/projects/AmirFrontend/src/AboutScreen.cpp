@@ -47,10 +47,3 @@ void AboutScreen::on_supportButton_clicked()
     QString url = QString("http://www.automation.offis.de");
     QDesktopServices::openUrl(QUrl(url));
 }
-
-void AboutScreen::on_reportProblem_clicked()
-{
-    QString versionString = QString("%1.%2 (Build %3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD);
-    QString mailto = QString("mailto:claas.diederichs@uni-oldenburg.de?subject=Error report OFFIS Automation Framework (%1)").arg(versionString);
-    QDesktopServices::openUrl(QUrl(mailto));
-}

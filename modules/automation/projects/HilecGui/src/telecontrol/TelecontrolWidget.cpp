@@ -108,7 +108,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
 
             // Add assignment button
             ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
-            connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
+            connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(openButtonAssignment(QString)));
             connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
             layout->addWidget(button);
 
@@ -222,16 +222,6 @@ void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
     emit activateHaptic(unit);
 }
 
-void TelecontrolWidget::on_openButtonAssignment_clicked(QString unit)
-{
-    if(!mTelecontrolAssignmentWidget){
-        mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
-    }
-    mTelecontrolAssignmentWidget->switchToUnit(unit);
-    mTelecontrolAssignmentWidget->show();
-
-}
-
 void TelecontrolWidget::editButtonAssignment(const QString &unit)
 {
     EditGamepadAssignment edit(this);
@@ -242,6 +232,16 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
         edit.saveConfig(mConfigFile);
         QMessageBox::information(this, tr("Relaod required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
     }
+}
+
+void TelecontrolWidget::openButtonAssignment(const QString &unit)
+{
+    if(!mTelecontrolAssignmentWidget){
+        mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
+    }
+    mTelecontrolAssignmentWidget->switchToUnit(unit);
+    mTelecontrolAssignmentWidget->show();
+
 }
 
 

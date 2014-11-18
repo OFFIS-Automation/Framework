@@ -52,7 +52,6 @@ private slots:
     void on_actionAbout_OFFIS_Automation_Toolbox_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionReload_project_triggered();
-    void on_actionScripting_help_triggered();
 
 private:
     bool mStarted;

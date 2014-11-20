@@ -117,6 +117,11 @@ bool ExportSensorTraceDialog::addHeaders()
     return ui->titlesInFirstRow->isChecked();
 }
 
+bool ExportSensorTraceDialog::ignoreInvalids()
+{
+    return ui->onlyValidLines->isChecked();
+}
+
 QStringList ExportSensorTraceDialog::entriesForItems()
 {
     QStringList items;

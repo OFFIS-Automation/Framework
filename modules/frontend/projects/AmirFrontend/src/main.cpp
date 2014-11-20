@@ -38,7 +38,6 @@ int main(int argc, char *argv[])
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
     a.setStyle(QStyleFactory::create("Fusion"));
-
     // Splash image
     QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
     QString versionString = QObject::tr("Version: %1.%2 (Build %3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD);
@@ -47,6 +46,13 @@ int main(int argc, char *argv[])
 
     // Create splash screen
     QSettings::setDefaultFormat(QSettings::IniFormat);
+    QFileInfo settingsFile(QSettings().fileName());
+    if(!settingsFile.exists())
+    {
+        QFileInfo oldFile = settingsFile.dir().absoluteFilePath("Automation Toolbox.ini");
+        if(oldFile.exists())
+            QFile::rename(oldFile.absoluteFilePath(), settingsFile.absoluteFilePath());
+    }
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(*splashPicture);
     // Show

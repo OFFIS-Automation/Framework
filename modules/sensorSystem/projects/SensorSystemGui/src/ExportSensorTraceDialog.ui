@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>371</width>
-    <height>284</height>
+    <width>386</width>
+    <height>311</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="writeEntryLabel">
        <property name="text">
-        <string>Write entry</string>
+        <string>Write line</string>
        </property>
       </widget>
      </item>
@@ -133,44 +133,7 @@
        </item>
       </layout>
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="nLabel">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="1">
-      <widget class="QCheckBox" name="startAtZero">
-       <property name="text">
-        <string>First entry starts at zero</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="startLabel">
-       <property name="text">
-        <string>Start</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="startMarker"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="endLabel">
-       <property name="text">
-        <string>End</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QComboBox" name="endMarker"/>
-     </item>
-     <item row="4" column="1">
       <widget class="QCheckBox" name="titlesInFirstRow">
        <property name="text">
         <string>Title in first row</string>
@@ -179,6 +142,52 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="startLabel">
+       <property name="text">
+        <string>Start</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="startMarker"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="startAtZero">
+       <property name="toolTip">
+        <string>The first entry will habe the timestamp 0 instead of the seconds elapsed since the start of the program</string>
+       </property>
+       <property name="text">
+        <string>First line starts at zero seconds</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QCheckBox" name="onlyValidLines">
+       <property name="toolTip">
+        <string>If checked, every line will only have valid entries. If unchecked, if one or more values are undefined, the will appear as @INVALID in the trace file</string>
+       </property>
+       <property name="text">
+        <string>Skip lines with invalid entries</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="endLabel">
+       <property name="text">
+        <string>End</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QComboBox" name="endMarker"/>
      </item>
     </layout>
    </item>

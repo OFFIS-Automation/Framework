@@ -30,7 +30,7 @@ BlobDetection::BlobDetection()
     mIn.setName("input");
     addInputPort(mIn);
     mMinPixels.setName("minPixels");
-    mMinPixels.setRange(1, INT_MAX);
+    mMinPixels.setRange(0, INT_MAX);
     mMinPixels.setDefault(0);
     mMaxPixels.setName("maxPixels");
     mMaxPixels.setRange(1, INT_MAX);
@@ -38,6 +38,8 @@ BlobDetection::BlobDetection()
     mUseAxis.setName("useMainAxis");
     mUseAxis.setDesc("Enables the calculation of the objecst main axis and PCe value.");
     mUseAxis.setDefault(true);
+    mNumBlobs.setName("numBlobs");
+    addOutputPort(mNumBlobs);
     addInputPort(mMinPixels);
     addInputPort(mMaxPixels);
     addInputPort(mUseAxis);
@@ -65,6 +67,7 @@ void BlobDetection::execute()
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(image, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+    int numBlobs = 0;
     for(uint i = 0; i< contours.size(); i++ )
     {
         if(hierarchy[i][3] >= 0) // this is an inner contour
@@ -73,7 +76,7 @@ void BlobDetection::execute()
         cv::Moments mom = cv::moments(contour, true);
         if(mom.m00 > mMaxPixels || mom.m00 < mMinPixels)
             continue;
-
+        numBlobs++;
         cv::Rect r = cv::boundingRect(contour);
 
         double alpha = 0.0;
@@ -127,6 +130,6 @@ void BlobDetection::execute()
         mRects.send(rect);
         mNumPixels.send(mom.m00);
     }
-
+    mNumBlobs.send(numBlobs);
 }
 

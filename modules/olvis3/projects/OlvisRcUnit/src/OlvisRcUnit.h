@@ -40,6 +40,7 @@ public slots:
     QVariant getFutureProcessorOutput(const QString& processorName, double timeoutInSeconds, int skipValues);
 
     void setPortValue(const QString& filterName, const QString& paramName, QVariant var);
+    bool isRunning();
     void start();
     void stop();
     void pauseProcessor(const QString& name);

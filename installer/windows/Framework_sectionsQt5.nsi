@@ -51,15 +51,15 @@ Section "!OFFIS Automation Framework" SecToolbox
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\*.exe"
 
-	File "C:\Qt\5.3\msvc2010_opengl\bin\icudt52.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\icuin52.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\icuuc52.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icudt52.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuin52.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuuc52.dll"
 	
-	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Core.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Gui.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Network.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
-	File "C:\Qt\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Core.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Gui.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Network.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
 SectionEnd
 
 Section /o "Development version" SecDevFiles

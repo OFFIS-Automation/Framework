@@ -35,6 +35,7 @@ OverlayFactory::OverlayFactory()
     mStringOverlays.insert("String");
     mStringOverlays.insert("File");
     mStringOverlays.insert("Directory");
+	mStringOverlays.insert("DateTime");
     mGraphOverlays.insert("Integer");
     mGraphOverlays.insert("Real");
     mGraphOverlays.insert("Boolean");

@@ -42,6 +42,8 @@ UserRcUnit *OlvisRcUnitInterface::instance(RcBase &rc, const QString &configFile
     rc.addMethod("setPortValue", tr("Sets a port value"), tr("Sets a port value, only possible for input ports. For connected ports, the value is not set. Instead, the default value is set."));
     rc.addMethod("pauseProcessor", tr("Pauses a processor"), tr("Pauses a processor, can be restarted with resumeProcessor."));
     rc.addMethod("resumeProcessor", tr("Resumes a processor"), tr("Restarts a previously paused processor. Does nothing if the processor is running."));
+
+    rc.addMethod("isRunning", tr("Returns the running status"), tr("Returns wether the Vision system is ruunning or stopped/finished"));
     rc.addMethod("start", tr("Starts vision if not running"), tr("Starts vision chain if not running. Start all processors if vision was not running."));
     rc.addMethod("stop", tr("Stops vision if running"), tr("Stops the vision chain if running. Stops all processors."));
 

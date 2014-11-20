@@ -39,6 +39,7 @@ protected:
     in::Boolean mSendInvalidPos;
     in::Boolean mSendResultImage, mNeedNewImage;
     in::Integer mFastSearchRange;
+    in::Point mOffsetIn;
 
     out::Rect mFastSearchOut;
     out::Point mPositionOut;

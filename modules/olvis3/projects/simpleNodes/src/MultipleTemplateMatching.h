@@ -14,34 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DIRECTORYITERATOR_H
-#define DIRECTORYITERATOR_H
+#ifndef MULTIPLETEMPLATEMATCHING_H
+#define MULTIPLETEMPLATEMATCHING_H
 
 #include <filter/PluginInterface.h>
-#include <ports/DirectoryPort.h>
-#include <ports/FilePort.h>
-#include <ports/StringPort.h>
+#include <ports/ImagePort.h>
+#include <ports/IntegerPort.h>
+#include <ports/PointPort.h>
+#include <ports/RealPort.h>
 #include <ports/BooleanPort.h>
+#include <ports/RectPort.h>
 
-
-class DirectoryIterator : public UserFilter
+class MultipleTemplateMatching : public UserFilter
 {
 public:
-    DirectoryIterator();
-    virtual void execute();
+    MultipleTemplateMatching();
     void start();
+    void execute();
+
 protected:
-    in::Directory mIn;
-    in::String mFilter;
-    in::Boolean mRepeat;
-    out::File mOut;
-    out::String mNameOut;
+    in::Image mImageIn, mTemplateIn;
+    in::Integer mMethodIn;
+    in::Real mMinScoreIn;
+    in::Boolean mSendResultImage, mNeedNewImage;
+    in::Point mOffsetIn;
 
-    QDir mDir;
-    QString mCurrentFilter;
-    QFileInfoList mFileList;
-    QListIterator<QFileInfo> mIter;
-
+    out::Point mPositionOuts;
+    out::Real mScoreOuts;
+    out::GrayImage mResultOut;
 };
 
-#endif // DIRECTORYITERATOR_H
+#endif // MULTIPLETEMPLATEMATCHING_H

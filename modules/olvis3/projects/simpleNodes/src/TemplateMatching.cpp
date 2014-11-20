@@ -57,6 +57,11 @@ TemplateMatching::TemplateMatching()
     mSendResultImage.setDefault(false);
     addInputPort(mSendResultImage);
 
+    mOffsetIn.setName("offset");
+    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
+    mOffsetIn.setDefault(QPointF(0.0, 0.0));
+    addInputPort(mOffsetIn);
+
     mResultOut.setName("result");
     mResultOut.setDesc("The result image from the template matching operation. Only sent if the port <send result image> is set to true");
     addOutputPort(mResultOut);
@@ -102,8 +107,8 @@ void TemplateMatching::execute()
     else if(image.channels() == 1 && tpl.channels() != 1)
         cv::cvtColor((cv::Mat)mTemplateIn, tpl, CV_RGB2GRAY);
     int searchPixels = mFastSearchRange;
-    cv::Point2d offset(tpl.cols/2.0, tpl.rows/2.0);
     QRectF roi(0,0,image.cols, image.rows);
+    cv::Point2d offset(tpl.cols/2.0, tpl.rows/2.0);
     if(mLastPos.x >= 0 && searchPixels > 0)
     {
         roi = QRect(mLastPos.x - tpl.cols/2 - searchPixels,
@@ -124,21 +129,26 @@ void TemplateMatching::execute()
     cv::minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
     double score = 0.0;
     cv::Point2d pos;
+
     if(mMethodIn == CV_TM_SQDIFF_NORMED)
     {
         score = 1.0 - minVal;
-        pos = offset + cv::Point2d((CvPoint)minLoc);
+        pos = cv::Point2d((CvPoint)minLoc);
     }
     else
     {
         score = maxVal;
-        pos = offset + cv::Point2d((CvPoint)maxLoc);
+        pos = cv::Point2d((CvPoint)maxLoc);
     }
     mScoreOut.send(score);
     mLastPos = cv::Point(-1,-1);
+
+
+    cv::Point2d imageOffset = mOffsetIn.getValue();
+
     if(score >= (double)mMinScoreIn)
     {
-        mPositionOut.send(pos);
+        mPositionOut.send(offset + imageOffset + pos);
         if(mFastSearchRange)
             mLastPos = pos;
     }
@@ -148,7 +158,7 @@ void TemplateMatching::execute()
     {
         result.convertTo(result, CV_8UC1, 255);
         mResultOut.send(result);
-        mResultOffset.send(offset);
+        mResultOffset.send(offset+imageOffset);
     }
     mFastSearchOut.send(roi);
 

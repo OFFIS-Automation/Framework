@@ -82,7 +82,8 @@ SOURCES += \
     src/BrighnessContrast.cpp \
     src/BackgroundSubstraction.cpp \
     src/ColorExtraction.cpp \
-    src/VignettingCorrection.cpp
+    src/VignettingCorrection.cpp \
+    src/MultipleTemplateMatching.cpp
 
 HEADERS += \ 
     src/BlobDetection.h \
@@ -126,7 +127,8 @@ HEADERS += \
     src/BrighnessContrast.h \
     src/BackgroundSubstraction.h \
     src/ColorExtraction.h \
-    src/VignettingCorrection.h
+    src/VignettingCorrection.h \
+    src/MultipleTemplateMatching.h
 
 RESOURCES += \
     images/images.qrc

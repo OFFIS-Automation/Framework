@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QDebug>
+#include <QMessageBox>
 
 SensorWidget::SensorWidget(QWidget *parent) :
     QDockWidget(parent),
@@ -142,23 +143,35 @@ void SensorWidget::on_exportTrace_clicked()
     QString file = QSettings().value("sensorSystemGui/lastTraceFile").toString();
     mExportDialog.setFilename(file);
     mExportDialog.setMarker(mWriter.marker());
-    if(mExportDialog.exec() != QDialog::Accepted)
-        return;
-    QString filename = mExportDialog.filename();
-    if(filename.isEmpty())
-        return;
-    QSettings().setValue("sensorSystemGui/lastTraceFile", filename);
-    SensorTraceExport exporter;
-    exporter.setSeperator(mExportDialog.seperator());
-    exporter.setStartAtZero(mExportDialog.startAtZero());
-    exporter.enableHeader(mExportDialog.addHeaders());
-    QStringList entries = mExportDialog.entriesForItems();
-    foreach(QString element, elements)
+    bool error = true;
+    while(error)
     {
-        exporter.addElement(element, entries.contains(element));
+        if(mExportDialog.exec() != QDialog::Accepted)
+            return;
+        QString filename = mExportDialog.filename();
+        if(filename.isEmpty())
+            return;
+        QSettings().setValue("sensorSystemGui/lastTraceFile", filename);
+        SensorTraceExport exporter;
+        exporter.setSeperator(mExportDialog.seperator());
+        exporter.setStartAtZero(mExportDialog.startAtZero());
+        exporter.enableHeader(mExportDialog.addHeaders());
+        exporter.ignoreInvalids(mExportDialog.ignoreInvalids());
+        QStringList entries = mExportDialog.entriesForItems();
+        foreach(QString element, elements)
+        {
+            exporter.addElement(element, entries.contains(element));
+        }
+        exporter.setMarkerRange(mExportDialog.startMarker(), mExportDialog.endMarker());
+        QString errorMsg;
+        if(!exporter.exportTrace(filename, errorMsg))
+        {
+            QMessageBox::warning(this, tr("Error exporting trace"), errorMsg);
+            error = true;
+        }
+        else
+            error = false;
     }
-    exporter.setMarkerRange(mExportDialog.startMarker(), mExportDialog.endMarker());
-    exporter.exportTrace(filename);
 }
 
 void SensorWidget::storeSelection()

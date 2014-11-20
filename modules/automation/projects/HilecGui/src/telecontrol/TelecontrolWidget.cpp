@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,17 +16,22 @@
 
 #include "TelecontrolWidget.h"
 #include "ui_TelecontrolWidget.h"
-#include <core/RcUnitHelp.h>
+
+// QT headers
 #include <QDebug>
 #include <QFormLayout>
 #include <QCheckBox>
-#include "TelecontrolUnitWidget.h"
-#include "TelecontrolHapticWidget.h"
-#include "ShowAssignmentButton.h"
-#include "EditGamepadAssignment.h"
-#include "../HilecSingleton.h"
 #include <QMessageBox>
 #include <cmath>
+
+// Project releated headers
+#include "TelecontrolGamepadWidget.h"
+#include "TelecontrolHapticWidget.h"
+#include "ShowAssignmentButton.h"
+#include "TelecontrolSelectionComboBox.h"
+#include "EditGamepadAssignment.h"
+#include "../HilecSingleton.h"
+#include <core/RcUnitHelp.h>
 
 TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
     QDockWidget(parent),
@@ -36,16 +41,17 @@ TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
     ui->gamepadTabWidget->setEnabled(false);
     ui->hapticGroupBox->setVisible(false);
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateUnits(bool)));
-    connect(HilecSingleton::hilec(), SIGNAL(telecontrolUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
+    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(bool, QString)), SLOT(onGamepadUpdated(bool, QString)));
     connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(bool, QString)), SLOT(onHapticUpdated(bool, QString)));
 
-    connect(this, SIGNAL(activateTelecontrol(QString)), HilecSingleton::hilec(), SLOT(activateTelecontrol(QString)), Qt::QueuedConnection);
-    connect(this, SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)), HilecSingleton::hilec(), SLOT(updateTelecontrol(QString,QString,double, QList<bool>)),Qt::QueuedConnection);
-    connect(this, SIGNAL(deactivateTelecontrol()), HilecSingleton::hilec(), SLOT(deactivateTelecontrol()), Qt::QueuedConnection);
-
+    connect(this, SIGNAL(activateGamepad(QString)), HilecSingleton::hilec(), SLOT(activateGamepad(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(updateGamepadParameters(QString,QString,double, QList<bool>)), HilecSingleton::hilec(), SLOT(updateGamepadParameters(QString,QString,double, QList<bool>)),Qt::QueuedConnection);
+    connect(this, SIGNAL(updateGamepadAssignment(QString,QString)), HilecSingleton::hilec(), SLOT(updateGamepadAssignment(QString,QString)), Qt::DirectConnection);
+    connect(this, SIGNAL(deactivateGamepad()), HilecSingleton::hilec(), SLOT(deactivateGamepad()), Qt::QueuedConnection);
     connect(this, SIGNAL(activateHaptic(QString)), HilecSingleton::hilec(), SLOT(activateHaptic(QString)), Qt::QueuedConnection);
-    connect(this, SIGNAL(updateHaptic(QString, double, double)), HilecSingleton::hilec(), SLOT(updateHaptic(QString,double, double)),Qt::QueuedConnection);
     connect(this, SIGNAL(deactivateHaptic()), HilecSingleton::hilec(), SLOT(deactivateHaptic()), Qt::QueuedConnection);
+    connect(this, SIGNAL(updateHapticParameters(QString,QString,double,double,QList<bool>)), HilecSingleton::hilec(), SLOT(updateHapticParameters(QString,QString,double,double,QList<bool>)),Qt::QueuedConnection);
+    connect(this, SIGNAL(updateHapticAssignment(QString,QString)), HilecSingleton::hilec(), SLOT(updateHapticAssignment(QString,QString)), Qt::DirectConnection);
 
     mInUpdate = false;
     mHapticWidget = 0;
@@ -85,39 +91,65 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
     foreach(QString unit, units)
     {
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        if(!help.tcJoysticks.empty() || !help.tcButtons.empty())
+        if(!help.tcGamepadMoves.empty() || !help.tcGamepadButtons.empty())
         {
             ui->gamepadTabWidget->setEnabled(true);
+
+            // Setup a layout container
             QWidget* page = new QWidget;
             QVBoxLayout* layout = new QVBoxLayout();
             page->setLayout(layout);
+
+            // Add device selection combobox
+            QStringList gamepadDevices = HilecSingleton::hilec()->getGamepadDevices().keys();
+            TelecontrolSelectionComboBox *comboBox = new TelecontrolSelectionComboBox(unit, gamepadDevices, help.tcGamepadDeviceName);
+            connect(comboBox, SIGNAL(telecontrolSelected(QString,QString)), this, SLOT(onGamepadAssignmentUpdate(QString,QString)));
+            layout->addWidget(comboBox);
+
             // Add assignment button
             ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
-            connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(on_openButtonAssignment_clicked(QString)));
+            connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(openButtonAssignment(QString)));
             connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
             layout->addWidget(button);
 
             // Add slider, gain, .. for each method
-            foreach(RcUnitHelp::TcJostick method, help.tcJoysticks)
-            {
-                TelecontrolUnitWidget* unitWidget = new TelecontrolUnitWidget(unit, method);
-                connect(unitWidget, SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)), SIGNAL(updateTelecontrol(QString,QString,double, QList<bool>)));
-                layout->addWidget(unitWidget);
-                connect(HilecSingleton::hilec(), SIGNAL(telecontrolChangeSensitivityRequested(QString,bool)), unitWidget, SLOT(changeSlider(QString,bool)));
+            foreach(RcUnitHelp::TcMove method, help.tcGamepadMoves){
+                TelecontrolGamepadWidget* gamepadWidget = new TelecontrolGamepadWidget(unit, method);
+                connect(gamepadWidget, SIGNAL(updateGamepadParameters(QString,QString,double,QList<bool>)), SIGNAL(updateGamepadParameters(QString,QString,double, QList<bool>)));
+                layout->addWidget(gamepadWidget);
+                connect(HilecSingleton::hilec(), SIGNAL(gamepadChangeSensitivityRequested(QString,bool)), gamepadWidget, SLOT(changeSlider(QString,bool)));
             }
             layout->addStretch(1);
-            int index = ui->gamepadTabWidget->addTab(page, QIcon(":/hilecGui/controller.png"),unit);
+            int index = ui->gamepadTabWidget->addTab(page, QIcon(":/hilecGui/controller.png"), unit);
             mUnitIndexes[index] = unit;
         }
-        if(help.hasHaptic)
+        if(!help.tcHapticMoves.empty() || !help.tcHapticButtons.empty())
         {
             ui->hapticGroupBox->setVisible(true);
-            TelecontrolHapticWidget* haptic = new TelecontrolHapticWidget(unit, help.hapticSensitivity, help.hapticForceFactor);
-            connect(haptic, SIGNAL(updateHaptic(QString,double, double)), SIGNAL(updateHaptic(QString,double, double)));
-            int index = ui->hapticTabWidget->addTab(haptic, QIcon(":/hilecGui/joystick.png"),unit);
+            ui->hapticTabWidget->setEnabled(true);
+
+            // Setup a layout container
+            QWidget* page = new QWidget;
+            QVBoxLayout* layout = new QVBoxLayout();
+            page->setLayout(layout);
+
+            // Add device selection combobox
+            QStringList hapticDevices = HilecSingleton::hilec()->getHapticDevices().keys();
+            TelecontrolSelectionComboBox *comboBox = new TelecontrolSelectionComboBox(unit, hapticDevices, help.tcHapticDeviceName);
+            connect(comboBox, SIGNAL(telecontrolSelected(QString,QString)), this, SLOT(onHapticAssignmentUpdate(QString,QString)));
+            layout->addWidget(comboBox);
+
+            // Add slider, gain, .. for each method
+            foreach(RcUnitHelp::TcMove method, help.tcHapticMoves){
+                TelecontrolHapticWidget* hapticWidget = new TelecontrolHapticWidget(unit, method);
+                connect(hapticWidget, SIGNAL(updateHapticParameters(QString,QString,double,double,QList<bool>)), SIGNAL(updateHapticParameters(QString,QString,double,double,QList<bool>)));
+                layout->addWidget(hapticWidget);
+            }
+
+            layout->addStretch(1);
+            int index = ui->hapticTabWidget->addTab(page, QIcon(":/hilecGui/joystick.png"), unit);
             mUnitIndexes[sHapticIndexOffset + index] = unit;
         }
-
     }
 }
 
@@ -127,10 +159,10 @@ void TelecontrolWidget::on_gamepadTabWidget_currentChanged(int index)
     if(mInUpdate)
         return;
     QString unit = mUnitIndexes.value(index);
-    emit activateTelecontrol(unit);
+    emit activateGamepad(unit);
 }
 
-void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &activeUnit)
+void TelecontrolWidget::onGamepadUpdated(bool active, const QString &activeUnit)
 {
     mInUpdate = true;
 
@@ -142,46 +174,68 @@ void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &activeU
     mInUpdate = false;
 }
 
+void TelecontrolWidget::onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName)
+{
+    // Emit to inform core system, then update GUI
+    emit updateGamepadAssignment(unitName, hapticInterfaceName);
+    onGamepadUpdated(true, unitName);
+}
+
 void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
 {
     mInUpdate = true;
 
-    if(active)
-    {
+    if(active){
         int id = mUnitIndexes.key(activeUnit,0);
-        if (id > sHapticIndexOffset) id -= sHapticIndexOffset;
+        if (id > sHapticIndexOffset){
+            id -= sHapticIndexOffset;
+        }
         ui->hapticTabWidget->setCurrentIndex(id);
     }
     mInUpdate = false;
-    if(active && !mHapticWidget)
-    {
-        mHapticWidget = HilecSingleton::hilec()->createHapticWidget();
-        if(mHapticWidget)
-            ui->hapticLayout->insertWidget(ui->hapticLayout->indexOf(ui->hapticTabWidget), mHapticWidget);
+
+    if(active){
+        QWidget *hapticWidget = HilecSingleton::hilec()->createHapticWidget(activeUnit);
+        QWidget *tabWidget = ui->hapticTabWidget->currentWidget();
+
+        // Remove mHapticWidget
+        QBoxLayout *layout = (QBoxLayout *)tabWidget->layout();
+        if(tabWidget->children().contains(mHapticWidget)){
+            unsigned int i = 0;
+            while (QLayoutItem* item = layout->itemAt(i)){
+                if (item->widget() == mHapticWidget){
+                    layout->removeItem(item);
+                    item->widget()->deleteLater();
+                    mHapticWidget = 0;
+                    break;
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        if(hapticWidget){
+            // Store refernce for later usage
+            mHapticWidget = hapticWidget;
+            layout->insertWidget(1, mHapticWidget);
+        }
     }
-    if(!active && mHapticWidget)
-    {
-        ui->hapticLayout->removeWidget(mHapticWidget);
-        delete mHapticWidget;
-        mHapticWidget = 0;
-    }
+}
+
+void TelecontrolWidget::onHapticAssignmentUpdate(const QString &unitName, const QString &hapticDeviceName)
+{
+    // Emit to inform core system, then update GUI
+    emit updateHapticAssignment(unitName, hapticDeviceName);
+    onHapticUpdated(true, unitName);
 }
 
 void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
 {
-    if(mInUpdate)
+    if(mInUpdate){
         return;
+    }
     QString unit = mUnitIndexes.value(sHapticIndexOffset + index);
     emit activateHaptic(unit);
-}
-
-void TelecontrolWidget::on_openButtonAssignment_clicked(QString unit)
-{
-    if(!mTelecontrolAssignmentWidget)
-        mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
-    mTelecontrolAssignmentWidget->switchToUnit(unit);
-    mTelecontrolAssignmentWidget->show();
-
 }
 
 void TelecontrolWidget::editButtonAssignment(const QString &unit)
@@ -194,6 +248,16 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
         edit.saveConfig(mConfigFile);
         QMessageBox::information(this, tr("Relaod required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
     }
+}
+
+void TelecontrolWidget::openButtonAssignment(const QString &unit)
+{
+    if(!mTelecontrolAssignmentWidget){
+        mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
+    }
+    mTelecontrolAssignmentWidget->switchToUnit(unit);
+    mTelecontrolAssignmentWidget->show();
+
 }
 
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,15 +27,14 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
     ui->setupUi(this);
 
     // Colors
-    QStringList colors;
-    colors << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
+    QStringList colors = QStringList() << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
 
     // get unit
     TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
 
     // Buttons
-    if(!help.tcButtons.empty()){
-        foreach(RcUnitHelp::TcButton buttonMethod, help.tcButtons){
+    if(!help.tcGamepadButtons.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcGamepadButtons){
             QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
             QLabel *label = this->findChild<QLabel *>(labelName);
             if(label != NULL){
@@ -48,14 +47,13 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
                 label->setText(text + buttonMethod.name);
                 label->setStyleSheet("QLabel { color : black; }");
             }
-
         }
     }
 
     // Joystick
-    if(!help.tcJoysticks.empty()){
+    if(!help.tcGamepadMoves.empty()){
         int colorCounter = 0;
-        foreach(RcUnitHelp::TcJostick joystickMethod, help.tcJoysticks){
+        foreach(RcUnitHelp::TcMove joystickMethod, help.tcGamepadMoves){
             QString color = colors.value(colorCounter);
             colorCounter = (colorCounter + 1) % colors.size();
             // Deadmans button

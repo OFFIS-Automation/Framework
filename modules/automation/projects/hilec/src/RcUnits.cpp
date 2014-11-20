@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@ RcUnits::RcUnits(const QString &lolecDir)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
     mLolecDir = lolecDir;
-    mGamepad = 0;
     connect(this, SIGNAL(unitsUpdated()), SIGNAL(unitListUpdated()));
 }
 
@@ -51,10 +50,10 @@ void RcUnits::loadConfig(const QString &filename)
 {
     mConfigFile = filename;
     RcUnitsBase::loadConfig(filename);
-    foreach(QString key, mUnits.keys())
+    foreach(QString key, mBaseUnits.keys())
     {
-        RcUnitBase* unit = mUnits.value(key);
-        if(unit->isTelecontrolable())
+        RcUnitBase* unit = mBaseUnits.value(key);
+        if(unit->hasGamepadControl())
             mTelecontrolLolecs << key;
     }
 
@@ -92,23 +91,23 @@ void RcUnits::onRemoteLolecsListed(const QString &remoteServerName, const QStrin
         lolecsToRemove << unit->name();
     foreach(QString name, lolecsToRemove)
     {
-        RcUnitBase* old = mUnits.value(name, 0);
+        RcUnitBase* old = mBaseUnits.value(name, 0);
         if(old)
         {
             // if this is a local unit, dont delete, dont overwrite
             if(dynamic_cast<RcUnit*>(old))
                 continue;
             // else, delete
-            mUnits.take(name);
+            mBaseUnits.take(name);
             delete old;
         }
     }
     foreach(RcUnitBase* unit, units)
     {
-        if(mUnits.contains(unit->name())) // local unit with same name is here
+        if(mBaseUnits.contains(unit->name())) // local unit with same name is here
             delete unit;
         else
-            mUnits[unit->name()] = unit;
+            mBaseUnits[unit->name()] = unit;
     }
 
     emit unitListUpdated(true);

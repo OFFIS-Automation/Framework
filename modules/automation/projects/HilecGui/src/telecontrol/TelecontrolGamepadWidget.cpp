@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "TelecontrolUnitWidget.h"
-#include "ui_TelecontrolUnitWidget.h"
+#include "TelecontrolGamepadWidget.h"
+#include "ui_TelecontrolGamepadWidget.h"
 #include <QCheckBox>
 #include <QDebug>
 #include <cmath>
 
-TelecontrolUnitWidget::TelecontrolUnitWidget(const QString& unit, const TelecontrolConfig::TcJostick &method, QWidget *parent) :
+TelecontrolGamepadWidget::TelecontrolGamepadWidget(const QString& unitName, const TelecontrolConfig::TcMove &method, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TelecontrolUnitWidget),
-    mUnit(unit),
+    ui(new Ui::TelecontrolGamepadWidget),
+    mUnit(unitName),
     mMethod(method.name)
 {
     ui->setupUi(this);
@@ -49,17 +49,17 @@ TelecontrolUnitWidget::TelecontrolUnitWidget(const QString& unit, const Telecont
     }
 }
 
-TelecontrolUnitWidget::~TelecontrolUnitWidget()
+TelecontrolGamepadWidget::~TelecontrolGamepadWidget()
 {
     delete ui;
 }
 
-void TelecontrolUnitWidget::on_slider_sliderMoved(int position)
+void TelecontrolGamepadWidget::on_slider_sliderMoved(int position)
 {
     sendUpdate(position);
 }
 
-void TelecontrolUnitWidget::sendUpdate(int sliderPosition)
+void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
 {
     if(sliderPosition < 0)
         sliderPosition = ui->slider->value();
@@ -67,10 +67,10 @@ void TelecontrolUnitWidget::sendUpdate(int sliderPosition)
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes)
         inverts << box->isChecked();
-    emit updateTelecontrol(mUnit, mMethod, sensitivity, inverts);
+    emit updateGamepadParameters(mUnit, mMethod, sensitivity, inverts);
 }
 
-void TelecontrolUnitWidget::changeSlider(const QString &unit, bool increase)
+void TelecontrolGamepadWidget::changeSlider(const QString &unit, bool increase)
 {
     if(unit != mUnit)
         return;

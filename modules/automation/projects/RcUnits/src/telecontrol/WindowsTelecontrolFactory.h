@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,25 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
-#define LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
+#ifndef LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#define LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
 
 #include "WindowsGamepad.h"
 
-class WindowsGamepadFactory : public QObject
+class WindowsTelecontrolFactory : public QObject
 {
 public:
-    static Gamepad* createGamepad();
-    virtual ~WindowsGamepadFactory();
+    static  QMap<QString, Gamepad *>  getGamepadDevices();
+    virtual ~WindowsTelecontrolFactory();
 private:
-    static WindowsGamepadFactory& instance();
+    static WindowsTelecontrolFactory& instance();
 
-    WindowsGamepadFactory();
+    WindowsTelecontrolFactory();
 
     static BOOL CALLBACK enumDevices(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext);
 
     static LPDIRECTINPUT8 sDirectInput;
-    static Gamepad* sGamepad;
+    static QMap<QString, Gamepad *> sGamepadDevices;
+    static QStringList specialControllerNames;
+    static QStringList disallowedControllerNames;
 };
 
-#endif // LOLECTOOLS_WINDOWSGAMEPADFACTORY_HQT
+#endif // LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -87,11 +87,19 @@ QObject* TutorialUnitInterface::instance(RcBase &rc, const QString & /*configFil
     rc.addMethod("resetSetup", "Resets the setup", "Places the robot and the spheres to the start positions.");
     rc.addMethod("resetSetupRandom", "Resets the setup", "Places the robot at the start position and the spheres at random positions.");
     rc.addMethod("randomizeCoordinateSystem", "Sets the coordinate system randomly", "The coordinate system of the robot will be no longer in sync with the image processing coordinate system.<br />Any reset command will reset the coordinate system.");
+
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
-    rc.registerButtonEvent("openGripper", Tc::LeftShoulderLowerButton);
-    rc.registerButtonEvent("closeGripper", Tc::RightShoulderLowerButton);
+    rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::FootboardNorthButton);
+
+    rc.registerGamepadButtonMethod("openGripper", Tc::LeftShoulderLowerButton);
+    rc.registerGamepadButtonMethod("closeGripper", Tc::RightShoulderLowerButton);
+
+    // if you support haptic, add your haptic method here
+    rc.registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ), Tc::PrimaryButton);
+    rc.registerHapticButtonMethod("alternateGripper", Tc::SecondaryButton);
+
     return lolec;
 }
 
@@ -108,5 +116,6 @@ void TutorialUnitInterface::deleteInstance(QObject *instance)
     hasInstance = false;
 }
 #if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(TutorialUnitInterface, TutorialUnitInterface)
+Q_EXPORT_PLUGIN2(TutorialUnitInterface,
+TutorialUnitInterface)
 #endif

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ class GamepadWrapper : public QObject
 public:
     explicit GamepadWrapper(QObject *parent = 0);
     void handleData(const QMap<int, double>& data) { emit dataUpdate(data); }
-    void handleButton(int button, bool pressed) { emit buttonToggled(button, pressed); }
+    void handleButton(int buttonId, bool pressed) { emit buttonToggled(buttonId, pressed); }
 signals:
-    void buttonToggled(int button, bool pressend);
+    void buttonToggled(int buttonId, bool pressed);
     void dataUpdate(const QMap<int,double>& data);
 public slots:
 

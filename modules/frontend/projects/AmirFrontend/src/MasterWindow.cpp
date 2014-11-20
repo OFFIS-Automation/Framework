@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -189,11 +189,6 @@ void MasterWindow::on_actionReload_project_triggered()
         QString projectPath = mRecentProjects.first();
         openProject(projectPath);
     }
-}
-
-void MasterWindow::on_actionScripting_help_triggered()
-{
-    emit showHelpWidget();
 }
 
 void MasterWindow::on_actionAbout_OFFIS_Automation_Toolbox_triggered()

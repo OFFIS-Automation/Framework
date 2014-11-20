@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,9 +26,10 @@
 class Gamepad;
 class LolecInterface;
 class RcUnitBase;
-class HapticInterface;
 class MasterTcInvoker;
 class GamepadEndpoint;
+class HapticBaseEndpoint;
+class HapticDevice;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -37,28 +38,33 @@ public:
     explicit RcUnitsBase();
     virtual ~RcUnitsBase();
 
-    RcUnitHelp getHelp(const QString &name);
+    RcUnitHelp getHelp(const QString &unitName);
+    QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
-    QList<QString> unitNames() { return mUnits.keys(); }
+    QList<QString> unitNames() { return mBaseUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
     QWidget * lolecGui(const QString &name);
     virtual void loadConfig(const QString &filename);
     virtual void releaseConfig();
     QVariant call(const QByteArray &lolec, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& lolec);
-    void activateTelecontrol(const QString& unit);
-    void deactivateTelecontrol();
-    void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
-    void activateHaptic(const QString& unit);
-    QWidget* createHapticWidget();
+    void activateGamepad(const QString& unitName);
+    void deactivateGamepad();
+    void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepadAssignment(const QString& unitName, const QString& gamepadDeviceName);
+
+    void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
+    void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticDeviceName);
+
+    QWidget* createHapticWidget(const QString &unitName);
 
 signals:
     void unitsUpdated();
-    void telecontrolUpdated(bool gamepadActive, const QString& controlledUnit);
-    void telecontrolSensitivityChangeRequested(const QString& unit, bool increase);
+    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
+    void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
 private slots:
@@ -66,16 +72,17 @@ private slots:
 
 protected:
     void loadTcMasters(const QString& configFile);
-    void loadTcSensitivity(const QString &name, GamepadEndpoint* ep, const QString& configFile);
+    void loadTcSensitivity(const QString &name, GamepadEndpoint *gamepadEndpoint, HapticBaseEndpoint *hapticEndpoint, const QString& configFile);
+
     LolecInterface* loadPlugin(const QString& name, QString *errMsg = 0);
-    QMap<QString, RcUnitBase*> mUnits;
+    QMap<QString, RcUnitBase*> mBaseUnits;
     QMap<QString, QString> mTypes;
     QString mLolecDir;
-    Gamepad* mGamepad;
+    QMap<QString, Gamepad *> mGamepadDevices;
     QStringList mTelecontrolLolecs;
-    QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
-    HapticInterface* mHaptic;
-    QMap<QString, MasterTcInvoker*> mMasterGamepads;
+    QString mCurrentTelecontrolledUnit, mConfigFile;
+    QMap<QString, HapticDevice *> mHapticDevices;
+    QMap<QString, MasterTcInvoker*> mMasterTcInvokers;
     QStringList mUnitsHiddenforTc;
 };
 

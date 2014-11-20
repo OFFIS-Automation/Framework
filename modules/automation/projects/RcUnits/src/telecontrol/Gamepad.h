@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public:
     void stop();
 signals:
     void dataUpdate(const QMap<int,double>& data);
-    void buttonToggled(int id, bool pressed);
+    void buttonToggled(int buttonId, bool pressed);
 
 protected:
     Gamepad();

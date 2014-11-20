@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -50,15 +50,10 @@ private slots:
 
     void on_listWidget_itemChanged(QListWidgetItem *item);
     void on_listWidget_fileDropped(const QString& file);
-
     void on_actionRun_triggered();
-
     void on_actionDelete_triggered();
-
     void on_actionRename_triggered();
-
     void on_actionAdd_triggered();
-
 
 private:
     void keyPressEvent(QKeyEvent *event);

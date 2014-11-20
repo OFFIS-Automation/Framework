@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -65,7 +65,6 @@ int main(int argc, char *argv[])
     QDesktopWidget* desktop = a.desktop();
     bool multiScreen = desktop->screenCount() > 1;
     int retVal;
-    QStringList argList = a.arguments();
     if(a.arguments().contains("--singleScreen"))
         multiScreen = false;
     bool noload = a.arguments().contains("--noload");

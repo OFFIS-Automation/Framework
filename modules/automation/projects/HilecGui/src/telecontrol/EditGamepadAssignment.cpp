@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
     {
         TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcButtons)
+        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcGamepadButtons)
         {
             QString label = unit + "." + button.name;
             foreach(QComboBox* cb, mButtonUis.values()){

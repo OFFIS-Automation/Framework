@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <lolecs/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QMap>
+#include "telecontrol/TcConfig.h"
 
 class TutorialUnit : public QObject
 {
@@ -38,7 +40,10 @@ public slots:
     void setRotation(double targetAngle);
     void openGripper();
     void closeGripper();
-    void moveGamepad(double xAxis, double yAxis, double phi);
+    void alternateGripper(bool open);
+    void moveGamepad(double x, double y, double phi);
+    void moveGamepad3d(double x, double y, double yaw);
+    QMap<int, double> moveHaptic(QMap<int, double> axes);
     void resetSetup();
     void resetSetup(bool randomize);
     void resetSetupRandom();
@@ -56,6 +61,7 @@ signals:
     void rotateRel(double angle, int moveTime = -1);
     void setGripperState(bool open);
     void resetScene(bool randomPositions);
+
 protected:
     QPointF mOffset;
     double mScaling;

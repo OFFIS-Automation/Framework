@@ -53,7 +53,8 @@ namespace Tc
         JoystickZ,
         JoystickYaw,
         JoystickPitch,
-        JoystickRoll
+        JoystickRoll,
+        TriggerJoystick
     };
 
     enum HapticAxis

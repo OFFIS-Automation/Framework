@@ -18,6 +18,8 @@
 #define TELECONTROLHAPTICWIDGET_H
 
 #include <QWidget>
+#include <QCheckBox>
+#include <core/RcUnitHelp.h>
 
 namespace Ui {
 class TelecontrolHapticWidget;
@@ -28,19 +30,22 @@ class TelecontrolHapticWidget : public QWidget
     Q_OBJECT
     
 public:
-    explicit TelecontrolHapticWidget(QString unit, double sensitivity, double forceFactor, QWidget *parent = 0);
+
+    explicit TelecontrolHapticWidget(QString unit, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
     virtual ~TelecontrolHapticWidget();
+
 signals:
-    void updateHaptic(QString unit, double sens, double forceFactor);
+    void updateHapticParameters(QString unitName, QString method, double sensitivity, double forceScaling, QList<bool> inverts);
+
 private slots:
-
-    void sendHapticUpdate();
-
-    void on_positionSlider_valueChanged(int value);
+    void sendHapticParamatersUpdate();
+    void on_gainSlider_sliderMoved(int position);
+    void on_forceSlider_sliderMoved(int position);
 
 private:
     Ui::TelecontrolHapticWidget *ui;
-    QString mUnit;
+    QString mUnit, mMethod;
+    QList<QCheckBox*> mCheckboxes;
 };
 
 #endif // TELECONTROLHAPTICWIDGET_H

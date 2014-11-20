@@ -22,6 +22,7 @@
 #include <QMap>
 
 #include "GamepadEndpoint.h"
+#include "HapticBaseEndpoint.h"
 #include "RcUnitsGlobal.h"
 #include "RcUnit.h"
 
@@ -33,10 +34,13 @@ public:
     virtual ~MasterTcInvoker();
     void readConfig(const QString& configFile);
     void initialize(QList<RcUnitBase *> units);
+
     virtual void connectGamepad(QObject* gamepad);
     virtual void disconnectGamepad(QObject* gamepad);
-    virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
-    virtual bool isTelecontrolable() const { return true; }
+    virtual void updateGamepadParameters(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadAssignment(const QString& gamepadDeviceName){ Q_UNUSED(gamepadDeviceName) }
+    virtual bool hasGamepadControl() const { return true; }
+
     virtual TelecontrolConfig telecontrolConfig() const;
 signals:
     
@@ -44,7 +48,7 @@ private slots:
 
 private:
 
-    struct JoystickWrap : TelecontrolConfig::TcJostick
+    struct JoystickWrap : TelecontrolConfig::TcMove
     {
         struct Target
         {
@@ -66,8 +70,8 @@ private:
     QList<ButtonWrap> mButtonWrappers;
 
     QMap<QString, TcInvoker*> mInvoker;
-    QList<RcUnit::TcUpdateMethod> tempUnitMethods;
-    QList<RcUnit::TcButtonEvent> tempUnitButtons;
+    QList<RcUnit::TcMoveMethod> tempUnitGamepadMethods;
+    QList<RcUnit::TcButtonMethod> tempUnitGamepadButtonMethods;
 
     QString mName, mConfigFile;
     void setupWrapper(RcUnit *unit, JoystickWrap &wrap);

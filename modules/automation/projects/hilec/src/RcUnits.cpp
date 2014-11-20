@@ -42,7 +42,6 @@ RcUnits::RcUnits(const QString &rcUnitDir) : RcUnitsBase(rcUnitDir)
     if(mInstance)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
-    mGamepad = 0;
     mFlagTimer.setInterval(200);
     mThreadPool.setMaxThreadCount(2);
     connect(&mFlagTimer, SIGNAL(timeout()), SLOT(collectFlags()));
@@ -68,9 +67,8 @@ void RcUnits::loadConfig(const QString &filename)
             connect(runnable, SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(flagsUpdated(QString,QVariantList)), Qt::DirectConnection);
             mFlagCollectors << runnable;
         }
-        if(unit->isTelecontrolable())
+        if(unit->hasGamepadControl())
             mTelecontrolRcUnits << key;
-
     }
 
     QSettings settings(filename, QSettings::IniFormat);

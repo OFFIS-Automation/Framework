@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD
 #ifndef RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT
 #define RCUNITTOOLS_LINUXSGAMEPADFACTORY_HQT
 
@@ -28,8 +29,28 @@ private:
     static LinuxGamepadFactory& instance();
 
     LinuxGamepadFactory();
+=======
+#ifndef LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+#define LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+
+#include "LinuxGamepad.h"
+
+class LinuxTelecontrolFactory : public QObject
+{
+public:
+    static Gamepad* createGamepad();
+    virtual ~LinuxTelecontrolFactory();
+private:
+    static LinuxTelecontrolFactory& instance();
+
+    LinuxTelecontrolFactory();
+>>>>>>> Haptic
 
     static Gamepad* sGamepad;
 };
 
+<<<<<<< HEAD
 #endif // RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT
+=======
+#endif // LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+>>>>>>> Haptic

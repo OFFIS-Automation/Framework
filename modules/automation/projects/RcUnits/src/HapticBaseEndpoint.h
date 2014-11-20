@@ -23,10 +23,11 @@
 class HapticBaseEndpoint : public HapticEndpoint
 {
 public:
-    virtual bool hasHapticInterface() const = 0;
-    virtual void updateHapticSensitivity(double sensitivity, double forceFactor) = 0;
-    virtual double hapticSensitivity() const = 0;
-    virtual double hapticForceFactor() const = 0;
+    virtual void connectHapticDevice(QObject* hapticDevice) = 0;
+    virtual void disconnectHapticDevice(QObject* hapticDevice) = 0;
+    virtual void updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
+    virtual void updateHapticAssignment(const QString& hapticDeviceName) = 0;
+    virtual bool hasHapticControl() const = 0;
 };
 
 #endif // HAPTICBASEENDPOINT_H

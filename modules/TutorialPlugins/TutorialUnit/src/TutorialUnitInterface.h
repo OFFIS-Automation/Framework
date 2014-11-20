@@ -24,6 +24,7 @@ class TutorialUnitInterface : public QObject, public RcUnitInterface
     Q_OBJECT
     Q_INTERFACES(RcUnitInterface)
     Q_PLUGIN_METADATA(IID RcUnitInterface_iid)
+
 public:
     TutorialUnitInterface();
 

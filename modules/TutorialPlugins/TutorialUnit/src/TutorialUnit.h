@@ -45,7 +45,10 @@ public slots:
     void setRotation(double targetAngle);
     void openGripper();
     void closeGripper();
-    void moveGamepad(double xAxis, double yAxis, double phi);
+    void alternateGripper(bool open);
+    void moveGamepad(double x, double y, double phi);
+    void moveGamepad3d(double x, double y, double yaw);
+    QMap<int, double> moveHaptic(QMap<int, double> axes);
     void resetSetup();
     void resetSetup(bool randomize);
     void resetSetupRandom();

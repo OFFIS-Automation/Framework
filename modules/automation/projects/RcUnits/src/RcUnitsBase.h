@@ -26,9 +26,10 @@
 class Gamepad;
 class RcUnitInterface;
 class RcUnitBase;
-class HapticInterface;
 class MasterTcInvoker;
 class GamepadEndpoint;
+class HapticBaseEndpoint;
+class HapticDevice;
 
 class RCUNITS_EXPORT RcUnitsBase : public QObject
 {
@@ -37,7 +38,8 @@ public:
     explicit RcUnitsBase(const QString& rcUnitPluginDir);
     virtual ~RcUnitsBase();
 
-    RcUnitHelp getHelp(const QString &name);
+    RcUnitHelp getHelp(const QString &unitName);
+    QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     QList<QString> unitNames() { return mUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
@@ -46,22 +48,26 @@ public:
     virtual void releaseConfig();
     QVariant call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& rcUnit);
-    void activateTelecontrol(const QString& unit);
-    void deactivateTelecontrol();
-    void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
-    void activateHaptic(const QString& unit);
-    QWidget* createHapticWidget();
+    void activateGamepad(const QString& unitName);
+    void deactivateGamepad();
+    void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    void updateGamepadAssignment(const QString& unitName, const QString& gamepadDeviceName);
+
+    void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
+    void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticDeviceName);
+
+    QWidget* createHapticWidget(const QString &unitName);
 
     void acquire(const QString& unitName);
     void release(const QString& unitName);
 
 signals:
     void unitsUpdated();
-    void telecontrolUpdated(bool gamepadActive, const QString& controlledUnit);
-    void telecontrolSensitivityChangeRequested(const QString& unit, bool increase);
+    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
+    void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
 private slots:
@@ -69,16 +75,18 @@ private slots:
 
 protected:
     void loadTcMasters(const QString& configFile);
-    void loadTcSensitivity(const QString &name, GamepadEndpoint* ep, const QString& configFile);
+    void loadTcSensitivity(const QString &name, GamepadEndpoint *gamepadEndpoint, HapticBaseEndpoint *hapticEndpoint, const QString& configFile);
+
     RcUnitInterface *loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;
     QString mRcUnitDir;
-    Gamepad* mGamepad;
+    QMap<QString, Gamepad *> mGamepadDevices;
     QStringList mTelecontrolRcUnits;
-    QString mCurrentTelecontrolledUnit, mConfigFile, mCurrentHapticUnit;
-    HapticInterface* mHaptic;
-    QMap<QString, MasterTcInvoker*> mMasterGamepads;
+    QString mCurrentTelecontrolledUnit, mConfigFile;
+
+    QMap<QString, HapticDevice *> mHapticDevices;
+    QMap<QString, MasterTcInvoker*> mMasterTcInvokers;
     QStringList mUnitsHiddenforTc;
 };
 

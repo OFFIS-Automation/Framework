@@ -38,7 +38,7 @@ public:
     void stop();
 signals:
     void dataUpdate(const QMap<int,double>& data);
-    void buttonToggled(int id, bool pressed);
+    void buttonToggled(int buttonId, bool pressed);
 
 protected:
     Gamepad();

@@ -34,7 +34,6 @@ public:
 private slots:
     void on_closeButton_clicked();
     void on_supportButton_clicked();
-    void on_reportProblem_clicked();
 
 private:
     Ui::AboutScreen *ui;

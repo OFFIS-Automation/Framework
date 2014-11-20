@@ -54,7 +54,7 @@ EditGamepadArea::EditGamepadArea(const QString &name, QWidget *parent) :
     foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
     {
         TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        foreach(const TelecontrolConfig::TcJostick& joystick, tcConfig.tcJoysticks)
+        foreach(const TelecontrolConfig::TcMove& joystick, tcConfig.tcGamepadMoves)
         {
             foreach(QString param, joystick.axeNames)
             {

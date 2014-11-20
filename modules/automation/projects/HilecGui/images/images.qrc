@@ -20,12 +20,12 @@
         <file>gamepadAbstract.png</file>
         <file>controller_error.png</file>
         <file>controller_info.png</file>
-        <file>gamepadAbstractWithoutNumbers.png</file>
         <file>controller_edit.png</file>
         <file>controller_add.png</file>
         <file>connect.png</file>
         <file>disconnect.png</file>
         <file>stop.png</file>
         <file>cog.png</file>
+        <file>connexionAbstract.png</file>
     </qresource>
 </RCC>

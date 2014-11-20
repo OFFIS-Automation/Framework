@@ -86,25 +86,34 @@ void VideoWidget::updateMaxDisplays(int maxDisplays)
     changeView(0,mMaximized);
 }
 
-void VideoWidget::startCapture(int fps)
+void VideoWidget::startCapture(int fps, int widgetIndex)
 {
     if(mWidgets.empty())
         return;
-    mWidgets[0]->recordVideo(fps);
+    if(widgetIndex > mWidgets.count())
+        throw std::runtime_error("widgetIndex out of bounds");
+
+    mWidgets[widgetIndex]->recordVideo(fps);
 }
 
-void VideoWidget::endCapture(const QString &filename)
+void VideoWidget::endCapture(const QString &filename, int widgetIndex)
 {
     if(mWidgets.empty())
         return;
-    mWidgets[0]->endVideoRecording(filename);
+    if(widgetIndex > mWidgets.count())
+        throw std::runtime_error("widgetIndex out of bounds");
+
+    mWidgets[widgetIndex]->endVideoRecording(filename);
 }
 
-void VideoWidget::saveScreenshot(const QString &filename)
+void VideoWidget::saveScreenshot(const QString &filename, int widgetIndex)
 {
     if(mWidgets.empty())
         return;
-    mWidgets[0]->screenshotWithFileName(filename);
+    if(widgetIndex > mWidgets.count())
+        throw std::runtime_error("widgetIndex out of bounds");
+
+    mWidgets[widgetIndex]->screenshotWithFileName(filename);
 }
 
 void VideoWidget::createDisplay()

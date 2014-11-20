@@ -30,7 +30,6 @@
 class QXmlStreamReader;
 class RcUnitInterface;
 class RcUnit;
-class Gamepad;
 class RemoteRcUnits;
 class FlagCollectorRunnable;
 

@@ -50,15 +50,10 @@ private slots:
 
     void on_listWidget_itemChanged(QListWidgetItem *item);
     void on_listWidget_fileDropped(const QString& file);
-
     void on_actionRun_triggered();
-
     void on_actionDelete_triggered();
-
     void on_actionRename_triggered();
-
     void on_actionAdd_triggered();
-
 
 private:
     void keyPressEvent(QKeyEvent *event);

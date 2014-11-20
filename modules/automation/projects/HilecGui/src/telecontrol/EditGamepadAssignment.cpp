@@ -57,7 +57,7 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
     {
         TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcButtons)
+        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcGamepadButtons)
         {
             QString label = unit + "." + button.name;
             foreach(QComboBox* cb, mButtonUis.values()){

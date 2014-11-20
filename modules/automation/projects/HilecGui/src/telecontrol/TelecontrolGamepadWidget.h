@@ -14,30 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TELECONTROLUNITWIDGET_H
-#define TELECONTROLUNITWIDGET_H
+
+#ifndef TELECONTROLGAMEPADWIDGET_H
+#define TELECONTROLGAMEPADWIDGET_H
 
 #include <QWidget>
 #include <QCheckBox>
 #include <core/RcUnitHelp.h>
 
 namespace Ui {
-    class TelecontrolUnitWidget;
+    class TelecontrolGamepadWidget;
 }
 
-
-
-class TelecontrolUnitWidget : public QWidget
+class TelecontrolGamepadWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TelecontrolUnitWidget(const QString& unitName, const RcUnitHelp::TcJostick& method, QWidget *parent = 0);
-    ~TelecontrolUnitWidget();
+    explicit TelecontrolGamepadWidget(const QString& unitName, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
+    ~TelecontrolGamepadWidget();
 
     static const int numSteps = 10;
 signals:
-    void updateTelecontrol(QString unit, QString method, double value, QList<bool> inverts);
+    void updateGamepadParameters(QString unit, QString method, double value, QList<bool> inverts);
 
 private slots:
     void on_slider_sliderMoved(int position);
@@ -46,9 +45,10 @@ private slots:
 
 private:
 
-    Ui::TelecontrolUnitWidget *ui;
+    Ui::TelecontrolGamepadWidget *ui;
     QString mUnit, mMethod;
     QList<QCheckBox*> mCheckboxes;
 };
 
-#endif // TELECONTROLUNITWIDGET_H
+#endif // TELECONTROLGAMEPADWIDGET_H
+

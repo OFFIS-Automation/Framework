@@ -21,6 +21,8 @@
 #include <QMap>
 #include "TelecontrolAssignmentWidget.h"
 
+class HapticInterface;
+
 namespace Ui {
     class TelecontrolWidget;
 }
@@ -34,24 +36,31 @@ public:
     ~TelecontrolWidget();
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
 signals:
-    void activateTelecontrol(const QString& unitName);
-    void deactivateTelecontrol();
-    void updateTelecontrol(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+    void activateGamepad(const QString& unitName);
+    void deactivateGamepad();
+    void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
+    void updateGamepadAssignment(const QString& unitName, const QString& hapticInterfaceName);
+
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
-    void updateHaptic(const QString& unitName, double sensitivity, double forceFactor);
+    void updateHapticParameters(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
+    void updateHapticAssignment(const QString& unitName, const QString& hapticInterfaceName);
 
 public slots:
     void clear();
     void updateUnits(bool partialReload);
-    void onTelecontrolUpdated(bool active, const QString& activeUnit);
-    void onHapticUpdated(bool active, const QString& activeUnit);
     void editButtonAssignment(const QString& unit = QString());
+    void openButtonAssignment(const QString& unit);
+
+    void onGamepadUpdated(bool active, const QString& activeUnit);
+    void onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
+
+    void onHapticUpdated(bool active, const QString& activeUnit);
+    void onHapticAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
 
 private slots:
     void on_gamepadTabWidget_currentChanged(int index);
     void on_hapticTabWidget_currentChanged(int index);
-    void on_openButtonAssignment_clicked(QString unit);
 
 private:
     static const int sHapticIndexOffset = 1024;

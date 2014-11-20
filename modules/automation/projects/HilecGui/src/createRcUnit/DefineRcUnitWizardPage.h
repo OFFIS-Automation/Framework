@@ -30,6 +30,7 @@ class DefineRcUnitWizardPage : public QWizardPage
 public:
     explicit DefineRcUnitWizardPage(QWidget *parent = 0);
     void init(Ui::AddRcUnitWizard* ui);
+
     void setHasError(bool error);
     bool isComplete() const;
 signals:

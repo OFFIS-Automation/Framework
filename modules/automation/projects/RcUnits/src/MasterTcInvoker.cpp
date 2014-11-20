@@ -82,8 +82,8 @@ void MasterTcInvoker::readConfig(const QString &configFile)
 
 void MasterTcInvoker::initialize(QList<RcUnitBase*> units)
 {
-    tempUnitButtons.clear();
-    tempUnitMethods.clear();
+    tempUnitGamepadButtonMethods.clear();
+    tempUnitGamepadMethods.clear();
     foreach(RcUnitBase* baseUnit, units)
     {
         RcUnit* unit = dynamic_cast<RcUnit*>(baseUnit);
@@ -96,21 +96,21 @@ void MasterTcInvoker::initialize(QList<RcUnitBase*> units)
         {
             if(wrap.targetUnit != unit->name())
                 continue;
-            foreach(RcUnit::TcButtonEvent event, unit->tcButtons())
+            foreach(RcUnit::TcButtonMethod event, unit->tcGamepadButtonMethods())
             {
                 if(event.name == wrap.targetMethod)
                 {
                     event.buttonId = wrap.buttonId;
-                    tempUnitButtons << event;
+                    tempUnitGamepadButtonMethods << event;
                 }
             }
         }
-        if(!tempUnitButtons.empty() || !tempUnitMethods.empty())
+        if(!tempUnitGamepadButtonMethods.empty() || !tempUnitGamepadMethods.empty())
         {
-            mInvoker[unit->name()] = new TcInvoker(unit->rcUnit(), tempUnitMethods, tempUnitButtons);
+            mInvoker[unit->name()] = new TcInvoker(unit->rcUnit(), tempUnitGamepadMethods, tempUnitGamepadButtonMethods, QList<RcUnit::TcMoveMethod>(), QList<RcUnit::TcButtonMethod>());
         }
-        tempUnitButtons.clear();
-        tempUnitMethods.clear();
+        tempUnitGamepadButtonMethods.clear();
+        tempUnitGamepadMethods.clear();
     }
 }
 
@@ -126,10 +126,10 @@ void MasterTcInvoker::disconnectGamepad(QObject *gamepad)
         invoker->disconnectGamepad(gamepad);
 }
 
-void MasterTcInvoker::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
+void MasterTcInvoker::updateGamepadParameters(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
     foreach(TcInvoker* invoker, mInvoker)
-        invoker->setSensitivity(unitName, sensitivity, inverts);
+        invoker->setGamepadParameters(unitName, sensitivity, inverts);
     for(int i=0;i<mWrappers.size(); i++)
     {
         JoystickWrap& wrap = mWrappers[i];
@@ -144,12 +144,11 @@ void MasterTcInvoker::updateSensitivity(const QString &unitName, double sensitiv
 TelecontrolConfig MasterTcInvoker::telecontrolConfig() const
 {
     TelecontrolConfig config;
-    config.hasHaptic = false;
     config.unitName = mName;
     foreach(const JoystickWrap& wrap, mWrappers)
-        config.tcJoysticks << wrap;
+        config.tcGamepadMoves << wrap;
     foreach(const ButtonWrap wrap, mButtonWrappers)
-        config.tcButtons << wrap;
+        config.tcGamepadButtons << wrap;
     return config;
 }
 
@@ -157,10 +156,10 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
 {
     QString unitName = unit->name();
     QMap<int, int> oldActivationButtons;
-    foreach(const RcUnit::TcUpdateMethod& method, unit->tcMethods())
+    foreach(const RcUnit::TcMoveMethod& method, unit->tcGamepadMethods())
     {
         bool configured = false;
-        RcUnit::TcUpdateMethod newMethod = method;
+        RcUnit::TcMoveMethod newMethod = method;
         newMethod.name = wrap.name;
         newMethod.inverts = wrap.inverts;
         for(int i=0;i<newMethod.joysticks.size(); i++)
@@ -189,13 +188,13 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
         if(configured)
         {
             oldActivationButtons[method.deadMansButton] = newMethod.deadMansButton;
-            tempUnitMethods << newMethod;
+            tempUnitGamepadMethods << newMethod;
         }
     }
 
-    foreach(const RcUnit::TcButtonEvent& event, unit->tcButtons())
+    foreach(const RcUnit::TcButtonMethod& event, unit->tcGamepadButtonMethods())
     {
-        RcUnit::TcButtonEvent newEvent = event;
+        RcUnit::TcButtonMethod newEvent = event;
         // we need to include hidden buttons that are the same as deadManscontrols, even if they are not specified;
         // they might be needed to prepare or stop the movement
         int newbuttonId = oldActivationButtons.value(event.buttonId, -1);
@@ -203,7 +202,7 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
         {
             // this is such a case
             newEvent.buttonId = newbuttonId;
-            tempUnitButtons << newEvent;
+            tempUnitGamepadButtonMethods << newEvent;
         }
     }
 

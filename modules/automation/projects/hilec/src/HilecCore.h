@@ -40,6 +40,8 @@ public:
     QList<int> breakpoints(const QString& filename) const;
     RcUnitHelp getUnitHelp(const QString& name);
     QStringList getTelecontrolableUnits();
+    QMap<QString, Gamepad *> getGamepadDevices();
+    QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
     virtual QStringList rcUnits();
     virtual QWidget* createRcUnitWidget(const QString& rcUnit);
@@ -53,9 +55,9 @@ public:
     void updateProgress(int id, int progress) { emit progressBarUpdated(id, progress); }
     void removeProgress(int id) { emit progressBarRemoved(id); }
 
-    void startVideoCapture(int fps) { emit videoCaptureStartRequested(fps); }
-    void endVideoCapture(const QString& filename) { emit videoCaptureEndRequested(filename); }
-    void saveScreenshot(const QString& filename) { emit saveScreenshotRequested(filename); }
+    void startVideoCapture(int fps, int widgetIndex) { emit videoCaptureStartRequested(fps, widgetIndex); }
+    void endVideoCapture(const QString& filename, int widgetIndex) { emit videoCaptureEndRequested(filename, widgetIndex); }
+    void saveScreenshot(const QString& filename, int widgetIndex) { emit saveScreenshotRequested(filename, widgetIndex); }
     void createInfoPanel(int id, const QString& title, const QStringList& names) { emit newInfoPanel(id, title, names); }
     void updateInfoPanel(int id, const QStringList& values) { emit infoPanelUpdated(id, values); }
     void removeInfoPanel(int id) { emit infoPanelRemoved(id); }
@@ -66,8 +68,6 @@ public:
     void raiseCompileError(const ScriptCompileInfo& err) { emit compileError(err); }
     void scriptPaused(const QString& file, int line) { emit breakpointHit(file, line); }
     QString baseDir() const { return mBaseDir; }
-
-
 
 public slots:
     void runFile(const QString &filename);
@@ -85,14 +85,17 @@ public slots:
     void stepInto();
     void stepReturn();
 
-    virtual void activateTelecontrol(const QString& unit);
-    virtual void deactivateTelecontrol();
-    virtual void updateTelecontrol(const QString& unit, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    virtual void activateGamepad(const QString& unitName);
+    virtual void deactivateGamepad();
+    virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName);
 
-    virtual void activateHaptic(const QString& unit);
+    virtual void activateHaptic(const QString& unitName);
     virtual void deactivateHaptic();
-    virtual void updateHaptic(const QString& unit, double sensitivity, double forceFactor);
-    virtual QWidget* createHapticWidget();
+    virtual void updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+    virtual void updateHapticAssignment(const QString &unitName, const QString& hapticInterfaceName);
+
+    virtual QWidget* createHapticWidget(const QString &unitName);
 
     virtual void callRcUnitAcquire(const QString& unitName);
     virtual void callRcUnitRelease(const QString& unitName);

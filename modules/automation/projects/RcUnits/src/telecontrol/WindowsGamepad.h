@@ -24,7 +24,7 @@
 #include <dinput.h>
 #include <QMap>
 
-class WindowsGamepadFactory;
+class WindowsTelecontrolFactory;
 class WindowsGamepad : public Gamepad
 {
 public:
@@ -43,11 +43,12 @@ protected:
 
     LPDIRECTINPUTDEVICE8 mDevice;
     DIJOYSTATE2 mState;
-    friend class WindowsGamepadFactory;
+    friend class WindowsTelecontrolFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
     bool mSwitchZJoysticks;
     enum Type {
+        ConnexionJoystick,
         XBoxGamepad,
         DefaultGamepad
     } mGamepadType;

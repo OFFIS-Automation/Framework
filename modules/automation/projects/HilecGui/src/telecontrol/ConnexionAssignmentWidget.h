@@ -1,44 +1,45 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2014 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "ShowAssignmentButton.h"
-#include "ui_ShowAssignmentButton.h"
+#ifndef CONNEXIONASSIGNMENTWIDGET_H
+#define CONNEXIONASSIGNMENTWIDGET_H
 
-ShowAssignmentButton::ShowAssignmentButton(QString unit, bool hideEdit) :
-    QWidget(),
-    mUnit(unit),
-    ui(new Ui::ShowAssignmentButton)
-{
-    ui->setupUi(this);
-    if(hideEdit){
-        ui->edit->setEnabled(false);
-    }
+#include <QWidget>
+#include <QLabel>
+#include "telecontrol/TcConfig.h"
+
+namespace Ui {
+class ConnexionAssignmentWidget;
 }
 
-ShowAssignmentButton::~ShowAssignmentButton()
+class ConnexionAssignmentWidget : public QWidget
 {
-    delete ui;
-}
+    Q_OBJECT
 
-void ShowAssignmentButton::on_show_clicked()
-{
-    emit openButtonAssignment(mUnit);
-}
+public:
+    explicit ConnexionAssignmentWidget(const QString &unit, QWidget *parent = 0);
+    ~ConnexionAssignmentWidget();
 
-void ShowAssignmentButton::on_edit_clicked()
-{
-    emit editButtonAssignment(mUnit);
-}
+private:
+    Ui::ConnexionAssignmentWidget *ui;
+    QString mUnit;
+
+protected:
+    QString labelNameForJoystick(Tc::Joystick joystick);
+
+};
+
+#endif // CONNEXIONASSIGNMENTWIDGET_H

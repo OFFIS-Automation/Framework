@@ -65,7 +65,6 @@ int main(int argc, char *argv[])
     QDesktopWidget* desktop = a.desktop();
     bool multiScreen = desktop->screenCount() > 1;
     int retVal;
-    QStringList argList = a.arguments();
     if(a.arguments().contains("--singleScreen"))
         multiScreen = false;
     bool noload = a.arguments().contains("--noload");

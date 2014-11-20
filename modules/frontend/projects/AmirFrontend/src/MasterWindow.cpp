@@ -191,11 +191,6 @@ void MasterWindow::on_actionReload_project_triggered()
     }
 }
 
-void MasterWindow::on_actionScripting_help_triggered()
-{
-    emit showHelpWidget();
-}
-
 void MasterWindow::on_actionAbout_OFFIS_Automation_Toolbox_triggered()
 {
     emit showAboutScreen();

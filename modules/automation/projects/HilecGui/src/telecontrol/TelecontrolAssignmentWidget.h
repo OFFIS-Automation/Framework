@@ -43,6 +43,7 @@ public slots:
 private:
     Ui::TelecontrolAssignmentWidget *ui;
     QMap<int, QString> mUnitIndexes;
+    static QStringList connexionControllerNames;
 };
 
 #endif // TELECONTROLASSIGNMENTWIDGET_H

@@ -37,7 +37,6 @@ templates.files  += ../../data/pylint_config.txt
 templates.files  += ../../data/compile.bat
 INSTALLS       += templates
 
-
 HEADERS += \
     src/HilecGui.h \
     src/HilecSingleton.h \
@@ -112,7 +111,6 @@ SOURCES += \
     src/telecontrol/TelecontrolSelectionComboBox.cpp \
     src/telecontrol/ConnexionAssignmentWidget.cpp
 
-
 FORMS += \
     src/debugVars/DebugVariables.ui \
     src/exception/ScriptExceptionDialog.ui \
@@ -147,19 +145,3 @@ FORMS += \
 
 RESOURCES += \
     images/images.qrc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

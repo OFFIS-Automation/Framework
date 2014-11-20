@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
-#define LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#ifndef RCUNITTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#define RCUNITTOOLS_WINDOWSTELECONTROLFACTORY_HQT
 
 #include "WindowsGamepad.h"
 
@@ -37,4 +37,4 @@ private:
     static QStringList disallowedControllerNames;
 };
 
-#endif // LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#endif // RCUNITTOOLS_WINDOWSTELECONTROLFACTORY_HQT

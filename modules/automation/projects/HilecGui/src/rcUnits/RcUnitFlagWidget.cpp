@@ -78,15 +78,14 @@ void RcUnitFlagWidget::updateFlags(const QVariantList &flags)
         RcFlagDefinition def = mHelp.flags.value(i);
         QLineEdit* line = mLineEdits[i];
         QString content;
-        if(data.type() == QVariant::Bool){
+        if(data.type() == QVariant::Bool || data.type() == QVariant::String)
             content = data.toString();
-        } else {
-            if(data.canConvert(QVariant::Double)){
-                content = QString::number(data.toDouble(), 'f', def.decimalPlaces);
-            }else {
-                content = data.toString();
-            }
+        else if(data.canConvert(QVariant::Double)){
+            content = QString::number(data.toDouble(), 'f', def.decimalPlaces);
+        }else {
+            content = data.toString();
         }
+
 
         if(!def.unit.isEmpty()){
             content += " " + def.unit;

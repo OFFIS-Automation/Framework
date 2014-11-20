@@ -138,16 +138,12 @@ void OlvisRcUnit::setPortValue(const QString &filterName, const QString &portNam
     }
 }
 
-<<<<<<< HEAD:modules/olvis3/projects/OlvisRcUnit/src/OlvisRcUnit.cpp
-void OlvisRcUnit::start()
-=======
-bool OlvisLolec::isRunning()
+bool OlvisRcUnit::isRunning()
 {
     return OlvisCoreInterface::instance()->isRunning();
 }
 
-void OlvisLolec::start()
->>>>>>> master:modules/olvis3/projects/olvisLolec/src/OlvisLolec.cpp
+void OlvisRcUnit::start()
 {
     OlvisCoreInterface::instance()->start();
 

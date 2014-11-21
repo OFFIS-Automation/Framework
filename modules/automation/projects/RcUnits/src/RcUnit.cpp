@@ -246,9 +246,12 @@ bool RcUnit::initialize(RcUnitInterface *plugin)
 void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
 {
     QList<Method>& methods = mMethods[sig];
-    if(methods.last().configured)
+    if(methods.last().configured) // there is already a method, this is overloading
+    {
+        if(methods.last().arguments.size() == method.parameterTypes().size())
+            return; // overloading not possible with the same number of arguments
         addMethod(methods.last().name, methods.last().shortDesc, methods.last().longDesc);
-
+    }
     Method& m = methods.last();
     QByteArray retType = method.typeName();
     m.hasReturn = !retType.isEmpty();

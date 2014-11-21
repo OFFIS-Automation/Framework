@@ -18,8 +18,6 @@
 
 #include "../HilecSingleton.h"
 
-#include <core/RcUnitHelp.h>
-
 
 RcHelpCreator::RcHelpCreator(const QString &name)
 {
@@ -50,9 +48,22 @@ RcHelpCreator::RcHelpCreator(const QString &name)
         mStream << "<br />} </p>";
     }
     mStream << "<h2>" << tr("Methods", "Programming") << "</h2>";
+    // restructure methods due to overloading
+    QMap<QString, OverloadedMethod> newStructure;
     foreach(const RcUnitHelp::Method& m, help.methods)
     {
-        mStream << "<p><strong>" << m.sig << "</strong> " << m.shortDesc;
-        mStream << "<br />" << m.longDesc << "</p> </hr />";
+        if(!newStructure.contains(m.name))
+            newStructure[m.name].method = m;
+        else
+            newStructure[m.name].overloadedSignatures << m.sig;
+    }
+    foreach(const OverloadedMethod& m, newStructure)
+    {
+        mStream << "<p><strong>" << m.method.sig;
+        foreach(QString sig, m.overloadedSignatures)
+            mStream << ",<br />" << sig;
+
+        mStream << "</strong> "<< m.method.shortDesc;
+        mStream << "<br />" << m.method.longDesc << "</p> </hr />";
     }
 }

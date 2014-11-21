@@ -130,6 +130,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         if(mGamepadType == XBoxGamepad){
             joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRx));
             joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lRy));
+            joysticks[Tc::TriggerJoystick] = correctedValue(-float(status.lZ));
         } else if(mSwitchZJoysticks){
             joysticks[Tc::RightJoystickX] = correctedValue(float(status.lRz));
             joysticks[Tc::RightJoystickY] = correctedValue(-float(status.lZ));
@@ -168,8 +169,6 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 
 float WindowsGamepad::correctedValue(float v)
 {
-    return v;
-
     v /= (float)getResolution();
     if(v >-0.1 && v < 0.1)
         return 0.0;

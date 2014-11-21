@@ -36,6 +36,7 @@ struct TelecontrolConfig
     struct TcMove
     {
         QString name;
+        int numSensitivityScalingTicks;
         int deadMansButton;
         double sensitivity;
         double forceScaling;
@@ -43,6 +44,7 @@ struct TelecontrolConfig
         QList<Tc::Joystick> joysticks;
         QList<Tc::HapticAxis> axes;
         QList<bool> inverts;
+        TcMove() : numSensitivityScalingTicks(10) {}
     };
 
     QList<TcMove> tcGamepadMoves;

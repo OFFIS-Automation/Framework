@@ -63,7 +63,7 @@ public:
      * void moveByGamepad(double x, double y); // values for x and y: [-1:1]
      * registerGamepadMethod("moveByGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY), Tc::Button5, 0.0125);
      */
-    virtual void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0) = 0;
+    virtual void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
 
     /**
      * @brief registers a method to be called if a gamepad button is pressed
@@ -199,7 +199,7 @@ public:
         { Q_UNUSED(instance); Q_UNUSED(params); throw RcError(QObject::tr("No such method: %1").arg(QString(methodName))); }
 
 };
-#define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.0"
+#define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.1"
 Q_DECLARE_INTERFACE(RcUnitInterface, RcUnitInterface_iid)
 
 #if QT_VERSION < 0x050000

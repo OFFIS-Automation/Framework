@@ -510,10 +510,11 @@ QString RcUnit::typeName(int type)
     return typeName(QString(QMetaType::typeName(type)));
 }
 
-void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Joystick> &defaultMapping, int defaultActivateButton, double defaultSensitivity)
+void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Joystick> &defaultMapping, int defaultActivateButton, double defaultSensitivity, int numSensTicks)
 {
     TcMoveMethod method;
     method.name = name;
+    method.numSensitivityScalingTicks = numSensTicks;
     method.joysticks = defaultMapping;
     for(int i=0; i<defaultMapping.size(); i++){
         method.inverts << false;

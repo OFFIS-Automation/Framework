@@ -98,7 +98,7 @@ public:
     QList<TcMoveMethod> tcGamepadMethods() { return mTcGamepadMoveMethods.values(); }
     QList<TcButtonMethod> tcGamepadButtonMethods() { return mTcGamepadButtonMethods; }
 
-    void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0);
+    void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10);
     void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hideFromUser = false);
     void updateGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);
     void updateGamepadAssignment(const QString& gamepadDeviceName);

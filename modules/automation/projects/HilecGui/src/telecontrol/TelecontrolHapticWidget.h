@@ -33,7 +33,7 @@ public:
 
     explicit TelecontrolHapticWidget(QString unit, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
     virtual ~TelecontrolHapticWidget();
-
+    const static int numForceSteps = 10;
 signals:
     void updateHapticParameters(QString unitName, QString method, double sensitivity, double forceScaling, QList<bool> inverts);
 

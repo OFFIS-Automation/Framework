@@ -34,7 +34,6 @@ public:
     explicit TelecontrolGamepadWidget(const QString& unitName, const RcUnitHelp::TcMove& method, QWidget *parent = 0);
     ~TelecontrolGamepadWidget();
 
-    static const int numSteps = 10;
 signals:
     void updateGamepadParameters(QString unit, QString method, double value, QList<bool> inverts);
 

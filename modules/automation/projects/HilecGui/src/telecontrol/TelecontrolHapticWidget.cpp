@@ -30,21 +30,21 @@ TelecontrolHapticWidget::TelecontrolHapticWidget(QString unit, const Telecontrol
     ui->groupBox->setTitle(method.name);
 
     // Setup sliders and their range
-    ui->gainSlider->setRange(0, TelecontrolGamepadWidget::numSteps);
+    ui->gainSlider->setRange(0, method.numSensitivityScalingTicks);
     ui->gainSlider->setValue(0);
-    for(int i=TelecontrolGamepadWidget::numSteps; i>0; i--)
+    for(int i=method.numSensitivityScalingTicks; i>0; i--)
     {
-        if( (pow(2.0, i) / pow(2.0, TelecontrolGamepadWidget::numSteps)) <= method.sensitivity)
+        if( (pow(2.0, i) / pow(2.0, method.numSensitivityScalingTicks)) <= method.sensitivity)
         {
             ui->gainSlider->setValue(i);
             break;
         }
     }
-    ui->forceSlider->setRange(0, TelecontrolGamepadWidget::numSteps);
+    ui->forceSlider->setRange(0, numForceSteps);
     ui->forceSlider->setValue(0);
-    for(int i=TelecontrolGamepadWidget::numSteps; i>0; i--)
+    for(int i = numForceSteps; i>0; i--)
     {
-        if( (pow(2.0, i) / pow(2.0, TelecontrolGamepadWidget::numSteps)) <= method.forceScaling)
+        if( (pow(2.0, i) / pow(2.0, numForceSteps)) <= method.forceScaling)
         {
             ui->forceSlider->setValue(i);
             break;
@@ -71,8 +71,8 @@ TelecontrolHapticWidget::~TelecontrolHapticWidget()
 
 void TelecontrolHapticWidget::sendHapticParamatersUpdate()
 {
-    double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
-    double forceScaling  = pow(2.0, ui->forceSlider->value()) / pow(2.0, TelecontrolGamepadWidget::numSteps);
+    double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, ui->gainSlider->maximum()+1);
+    double forceScaling  = pow(2.0, ui->forceSlider->value()) / pow(2.0, numForceSteps);
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes){
         inverts << box->isChecked();

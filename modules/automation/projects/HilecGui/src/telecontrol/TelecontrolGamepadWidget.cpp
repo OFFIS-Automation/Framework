@@ -28,11 +28,11 @@ TelecontrolGamepadWidget::TelecontrolGamepadWidget(const QString& unitName, cons
 {
     ui->setupUi(this);
     ui->groupBox->setTitle(method.name);
-    ui->slider->setRange(0, numSteps);
+    ui->slider->setRange(0, method.numSensitivityScalingTicks);
     ui->slider->setValue(0);
-    for(int i=numSteps; i>0; i--)
+    for(int i=method.numSensitivityScalingTicks; i>0; i--)
     {
-        if( (powf(2.0, i) / powf(2.0, numSteps)) <= method.sensitivity)
+        if( (powf(2.0, i) / powf(2.0, method.numSensitivityScalingTicks)) <= method.sensitivity)
         {
             ui->slider->setValue(i);
             break;
@@ -63,7 +63,7 @@ void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
 {
     if(sliderPosition < 0)
         sliderPosition = ui->slider->value();
-    double sensitivity = powf(2.0, sliderPosition) / powf(2.0, numSteps);
+    double sensitivity = powf(2.0, sliderPosition) / powf(2.0, ui->slider->maximum()+1);
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes)
         inverts << box->isChecked();

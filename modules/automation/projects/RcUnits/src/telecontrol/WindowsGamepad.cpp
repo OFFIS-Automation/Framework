@@ -144,8 +144,9 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
             assingButton(buttons, status.rgbButtons, i);
         }
         if(mGamepadType == XBoxGamepad){
-            buttons[Tc::LeftShoulderLowerButton] = float(status.lZ) > 0.8;
-            buttons[Tc::RightShoulderLowerButton] = float(status.lZ) < -0.8;
+            buttons[Tc::LeftShoulderLowerButton] = float(status.lZ) > 0.2;
+            buttons[Tc::RightShoulderLowerButton] = float(status.lZ) < -0.2;
+            buttons[Tc::TriggerButton] = buttons[Tc::LeftShoulderLowerButton] || buttons[Tc::RightShoulderLowerButton];
         }
 
         bool up = false, down = false, left = false, right = false;

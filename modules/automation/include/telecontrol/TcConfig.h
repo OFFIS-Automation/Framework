@@ -37,6 +37,7 @@ namespace Tc
         FootboardSouthButton,
         FootboardEastButton,
         FootboardWestButton,
+        TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
         ButtonEnumEnd,
         ButtonEnumFirst = NorthButton
     };

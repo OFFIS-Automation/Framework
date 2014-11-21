@@ -32,13 +32,16 @@ class GamepadAssignmentWidget : public QWidget
 public:
     explicit GamepadAssignmentWidget(const QString &unit, QWidget *parent = 0);
     ~GamepadAssignmentWidget();
-    
+
+protected:
+    QString labelNameForJoystick(int joystick);
+    void setButtonLabel(int buttonId, const QString& name, const QString &color = "black");
+    void setJoystickLabel(int joystickId, const QString& unit, const QString name, const QString& color);
+
 private:
     Ui::GamepadAssignmentWidget *ui;
     QString mUnit;
 
-protected:
-    QString labelNameForJoystick(Tc::Joystick joystick);
 
 };
 

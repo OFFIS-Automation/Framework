@@ -63,7 +63,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5PrintSupport.dll"
 	
 	SetOutPath "$INSTDIR\platforms"
-	File /r "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\plugins\platforms"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\plugins\platforms\*"
 SectionEnd
 
 Section /o "Development version" SecDevFiles

@@ -55,8 +55,7 @@ Gamepad* WindowsGamepadFactory::createGamepad()
 	sGamepad = 0;
 	HRESULT hr;
 	
-	hr = sDirectInput->EnumDevices( DI8DEVCLASS_GAMECTRL, 
-                WindowsGamepadFactory::enumDevices, 0 , DIEDFL_ATTACHEDONLY );
+	hr = sDirectInput->EnumDevices( DI8DEVCLASS_GAMECTRL, WindowsGamepadFactory::enumDevices, 0 , DIEDFL_ATTACHEDONLY );
     return sGamepad;
 }
 

@@ -21,7 +21,6 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 * [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
 
-
 ## Authors
 ### Current Authors
 - [Claas Diederichs](https://github.com/claasd/)
@@ -29,7 +28,6 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ### Former Authors
 - [Daniel Jasper](djasper@google.com)
-
 
 ## License
 

@@ -57,7 +57,7 @@ FunctionEnd
 ;Languages
 
 !insertmacro MUI_LANGUAGE "English"
-
+ 
 ;--------------------------------
 ;Installer Sections
-!include "Framework_sections.nsi"
+!include "Framework_sectionsQt5.nsi"

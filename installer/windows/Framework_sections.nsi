@@ -51,10 +51,19 @@ Section "!OFFIS Automation Framework" SecToolbox
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\*.exe"
 
-	File "$%AmirDevDir%\qt\bin\QtCore4.dll"
-	File "$%AmirDevDir%\qt\bin\QtGui4.dll"
-	File "$%AmirDevDir%\qt\bin\QtNetwork4.dll"
-	File "$%AmirDevDir%\qt\bin\QtOpenGl4.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icudt52.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuin52.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuuc52.dll"
+	
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Core.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Gui.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Network.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5PrintSupport.dll"
+	
+	SetOutPath "$INSTDIR\platforms"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\plugins\platforms\*"
 SectionEnd
 
 Section /o "Development version" SecDevFiles
@@ -107,8 +116,8 @@ SectionEnd
 ;Descriptions
 
 ;Language strings
-LangString DESC_SecToolbox ${LANG_ENGLISH} "Files for the OFFIS automation toolbox"
-LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the Toolbox. Needed to develop own vision or automation plugins."
+LangString DESC_SecToolbox ${LANG_ENGLISH} "Files for the OFFIS Automation Framework"
+LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the OFFIS Automation Framework. Needed to develop own vision or automation plugins."
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN

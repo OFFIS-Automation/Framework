@@ -22,7 +22,7 @@ InstallDirRegKey HKLM "Software\${REGKEY}" "Install_Dir"
 Var StartMenuFolder
 
 Function LaunchFramework   
-ExecShell "" "$INSTDIR\Application.exe"   
+ExecShell "" "$INSTDIR\Framework.exe"   
 FunctionEnd
 
 ;--------------------------------
@@ -60,4 +60,4 @@ FunctionEnd
  
 ;--------------------------------
 ;Installer Sections
-!include "Framework_sectionsQt5.nsi"
+!include "Framework_sections.nsi"

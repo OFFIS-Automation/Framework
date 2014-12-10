@@ -53,7 +53,7 @@ TemplateMatching::TemplateMatching()
     addInputPort(mSendInvalidPos);
 
     mSendResultImage.setName("send result image");
-    mSendResultImage.setDesc("Set this to true if the result image of the template matching should be send on the port >result>");
+    mSendResultImage.setDesc("Set this to true if the result image of the template matching should be send on the port <result>");
     mSendResultImage.setDefault(false);
     addInputPort(mSendResultImage);
 

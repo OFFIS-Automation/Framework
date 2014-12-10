@@ -36,7 +36,7 @@ public:
         addInputPort(mIn);
 
         mKSize.setName("kSize");
-        mKSize.setDesc("Size of the used kernel for template matching");
+        mKSize.setDesc("Size of the used kernel for operation");
         mKSize.setDefault(3);
         mKSize.setRange(1,255);
         mKSize.setOnlyOdd();

@@ -47,6 +47,7 @@ SOURCES += \
     src/ColorCorrection.cpp \
     src/CorrectPosition.cpp \
     src/Delay.cpp \
+    src/Denoising.cpp \
     src/DirectoryIterator.cpp \
     src/FetchTemplate.cpp \
     src/FlipImage.cpp \
@@ -92,6 +93,7 @@ HEADERS += \
     src/ColorCorrection.h \
     src/CorrectPosition.h \
     src/Delay.h \
+    src/Denoising.h \
     src/DirectoryIterator.h \
     src/FetchTemplate.h \
     src/FlipImage.h \

@@ -41,6 +41,7 @@ LIBS += -L$${targetDir}/plugins/ -lSensorSystem
 include(../../../properties/opencv.pro)
 
 SOURCES += \ 
+    src/BilateralFilter.cpp \
     src/BlobDetection.cpp \
     src/Blur.cpp \
     src/cannyfilter.cpp \
@@ -87,6 +88,7 @@ SOURCES += \
     src/MultipleTemplateMatching.cpp
 
 HEADERS += \ 
+    src/BilateralFilter.h \
     src/BlobDetection.h \
     src/Blur.h \
     src/cannyfilter.h \

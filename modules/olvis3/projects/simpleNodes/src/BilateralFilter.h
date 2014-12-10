@@ -14,26 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef THRESHOLD_H
-#define THRESHOLD_H
+#ifndef BILATERAL_H
+#define BILATERAL_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
-#include <ports/BooleanPort.h>
+#include <ports/RealPort.h>
 
-class Threshold : public UserFilter
+
+class Bilateral : public UserFilter
 {
 public:
-    Threshold();
+    Bilateral();
     virtual void execute();
 protected:
-    in::GrayImage mIn;
-    in::Integer mThreshold;
-    in::Integer mMode;
-    out::GrayImage mOut;
-    bool mInvert;
+    in::Image mIn;
+    out::Image mOut;
+    in::Integer mD;
+    in::Real mSigmaColor, mSigmaSpace;
 };
 
 
-#endif // THRESHOLD_H
+#endif // BILATERAL_H

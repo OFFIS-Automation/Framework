@@ -41,7 +41,7 @@ public:
      * If flag definitinos are returned, rcFlags is called periodically
      * (5-10Hz) to collect the flag data.
      */
-    virtual RcFlagDefinitions rcFlagDefinitions() const = 0;
+    virtual RcFlagDefinitions rcFlagDefinitions() const {return RcFlagDefinitions();}
 
     /**
      * This method is called periodically if a flag definition was returned
@@ -50,7 +50,7 @@ public:
      * Allowed types are int, double, string and boolean. Everything else
      * will be converted to string using the QVariant method.
      */
-    virtual QVariantList rcFlags() = 0;
+    virtual QVariantList rcFlags() { return QVariantList(); }
 
 protected:
     UserRcUnit() {}

@@ -42,7 +42,7 @@ public:
      * If the current position cannot be stored (e.g. sensors not initialized)
      * return an invalid QVariant
      */
-    virtual QVariant rcGetPosition() = 0;
+    virtual QVariant rcGetPosition() { return QVariant(); }
 
     /**
      * This method is used for restoring a user defined position.
@@ -50,7 +50,7 @@ public:
      * with an assigned name. Later, the robot should be able to return to this position.
      * @param pos The position as QVariant, as returned by rcGetPosition
      */
-    virtual void rcSetPosition(const QVariant& pos) = 0;
+    virtual void rcSetPosition(const QVariant& pos) {}
 
 protected:
     RobotRcUnit() {}

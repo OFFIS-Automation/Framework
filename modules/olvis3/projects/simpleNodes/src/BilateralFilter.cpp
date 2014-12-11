@@ -46,7 +46,7 @@ Bilateral::Bilateral()
     addInputPort(mSigmaSpace);
 }
 
-void Denoising::execute()
+void Bilateral::execute()
 {
     int kD = mD;
     int kSigmaColor = mSigmaColor;

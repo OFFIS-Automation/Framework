@@ -22,7 +22,7 @@ InstallDirRegKey HKLM "Software\${REGKEY}" "Install_Dir"
 Var StartMenuFolder
 
 Function LaunchFramework   
-ExecShell "" "$INSTDIR\Application.exe"   
+ExecShell "" "$INSTDIR\Framework.exe"   
 FunctionEnd
 
 ;--------------------------------
@@ -57,7 +57,7 @@ FunctionEnd
 ;Languages
 
 !insertmacro MUI_LANGUAGE "English"
-
+ 
 ;--------------------------------
 ;Installer Sections
 !include "Framework_sections.nsi"

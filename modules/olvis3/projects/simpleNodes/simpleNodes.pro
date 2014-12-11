@@ -41,12 +41,14 @@ LIBS += -L$${targetDir}/plugins/ -lSensorSystem
 include(../../../properties/opencv.pro)
 
 SOURCES += \ 
+    src/BilateralFilter.cpp \
     src/BlobDetection.cpp \
     src/Blur.cpp \
     src/cannyfilter.cpp \
     src/ColorCorrection.cpp \
     src/CorrectPosition.cpp \
     src/Delay.cpp \
+    src/Denoising.cpp \
     src/DirectoryIterator.cpp \
     src/FetchTemplate.cpp \
     src/FlipImage.cpp \
@@ -86,12 +88,14 @@ SOURCES += \
     src/MultipleTemplateMatching.cpp
 
 HEADERS += \ 
+    src/BilateralFilter.h \
     src/BlobDetection.h \
     src/Blur.h \
     src/cannyfilter.h \
     src/ColorCorrection.h \
     src/CorrectPosition.h \
     src/Delay.h \
+    src/Denoising.h \
     src/DirectoryIterator.h \
     src/FetchTemplate.h \
     src/FlipImage.h \

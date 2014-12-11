@@ -234,7 +234,7 @@ void FileEditor::focusInEvent(QFocusEvent *event)
 void FileEditor::keyPressEvent(QKeyEvent *event)
 {
     if(!isReadOnly()){
-        if ((event->key() == Qt::Key_Plus || event->key() == 93) && (event->modifiers() & Qt::ControlModifier)){
+        if (event->key() == Qt::Key_Plus && (event->modifiers() & Qt::ControlModifier)){
             emit increaseFontSizeRequested();
         } else if (event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier)){
             emit decreaseFontSizeRequested();

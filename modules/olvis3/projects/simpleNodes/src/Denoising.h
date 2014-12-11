@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,26 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef THRESHOLD_H
-#define THRESHOLD_H
+#ifndef DENOISING_H
+#define DENOISING_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
-#include <ports/BooleanPort.h>
 
-class Threshold : public UserFilter
+class Denoising : public UserFilter
 {
 public:
-    Threshold();
+    Denoising();
     virtual void execute();
 protected:
     in::GrayImage mIn;
-    in::Integer mThreshold;
-    in::Integer mMode;
     out::GrayImage mOut;
-    bool mInvert;
+    in::Integer mTemplateWindowSize , mSearchWindowSize, mH;
 };
 
 
-#endif // THRESHOLD_H
+#endif // DENOISING_H

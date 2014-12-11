@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_LINUXGAMEPADFACTORY_HQT
-#define LOLECTOOLS_LINUXSGAMEPADFACTORY_HQT
+<<<<<<< HEAD
+#ifndef RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT
+#define RCUNITTOOLS_LINUXSGAMEPADFACTORY_HQT
 
 #include "LinuxGamepad.h"
 
@@ -28,8 +29,28 @@ private:
     static LinuxGamepadFactory& instance();
 
     LinuxGamepadFactory();
+=======
+#ifndef LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+#define LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+
+#include "LinuxGamepad.h"
+
+class LinuxTelecontrolFactory : public QObject
+{
+public:
+    static Gamepad* createGamepad();
+    virtual ~LinuxTelecontrolFactory();
+private:
+    static LinuxTelecontrolFactory& instance();
+
+    LinuxTelecontrolFactory();
+>>>>>>> Haptic
 
     static Gamepad* sGamepad;
 };
 
-#endif // LOLECTOOLS_LINUXGAMEPADFACTORY_HQT
+<<<<<<< HEAD
+#endif // RCUNITTOOLS_LINUXGAMEPADFACTORY_HQT
+=======
+#endif // LOLECTOOLS_LINUXTELECONTROLFACTORY_HQT
+>>>>>>> Haptic

@@ -100,10 +100,10 @@
     <string>Shift+F11</string>
    </property>
   </action>
-  <action name="actionCreateLolec">
+  <action name="actionCreateRcUnit">
    <property name="icon">
     <iconset resource="../images/images.qrc">
-     <normaloff>:/hilecGui/lolec.png</normaloff>:/hilecGui/lolec.png</iconset>
+     <normaloff>:/hilecGui/rcUnit.png</normaloff>:/hilecGui/rcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Create automation plugin</string>
@@ -112,10 +112,10 @@
     <string>Create templates to implement your own RC-Unit</string>
    </property>
   </action>
-  <action name="actionAddLolec">
+  <action name="actionAddRcUnit">
    <property name="icon">
     <iconset resource="../images/images.qrc">
-     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+     <normaloff>:/hilecGui/addRcUnit.png</normaloff>:/hilecGui/addRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Add RC-Unit to project</string>
@@ -160,7 +160,7 @@
   <action name="actionAddRcServer">
    <property name="icon">
     <iconset resource="../images/images.qrc">
-     <normaloff>:/hilecGui/addLolec.png</normaloff>:/hilecGui/addLolec.png</iconset>
+     <normaloff>:/hilecGui/addRcUnit.png</normaloff>:/hilecGui/addRcUnit.png</iconset>
    </property>
    <property name="text">
     <string>Add RC-Unit server</string>

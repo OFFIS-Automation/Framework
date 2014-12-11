@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,72 +27,37 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
     ui->setupUi(this);
 
     // Colors
-    QStringList colors;
-    colors << "blue" << "darkGreen" << "lighblue" << "green" << "darkred";
+    QStringList colors = QStringList() << "blue" << "darkGreen" << "darkred"  << "cyan" << "green";
 
     // get unit
     TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
 
     // Buttons
-    if(!help.tcButtons.empty()){
-        foreach(RcUnitHelp::TcButton buttonMethod, help.tcButtons){
-            QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
-            QLabel *label = this->findChild<QLabel *>(labelName);
-            if(label != NULL){
-                QString text = label->text();
-                if(text == "Not assigned"){
-                    text.clear();
-                } else if(!text.isEmpty()){
-                    text += "; ";
-                }
-                label->setText(text + buttonMethod.name);
-                label->setStyleSheet("QLabel { color : black; }");
-            }
-
+    if(!help.tcGamepadButtons.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcGamepadButtons){
+            setButtonLabel(buttonMethod.buttonId, buttonMethod.name);
         }
     }
 
     // Joystick
-    if(!help.tcJoysticks.empty()){
+    if(!help.tcGamepadMoves.empty()){
         int colorCounter = 0;
-        foreach(RcUnitHelp::TcJostick joystickMethod, help.tcJoysticks){
+        foreach(RcUnitHelp::TcMove joystickMethod, help.tcGamepadMoves){
             QString color = colors.value(colorCounter);
             colorCounter = (colorCounter + 1) % colors.size();
             // Deadmans button
-            QString labelName = QString("button%1Label").arg(joystickMethod.deadMansButton);
-            QLabel *label = this->findChild<QLabel *>(labelName);
-            if(label != NULL){
-                QString currentText = label->text();
-                if(currentText == "Not assigned"){
-                    currentText.clear();
-                } else if(!currentText.isEmpty()){
-                    currentText += "; ";
-                }
-                QString text = "<span style='color: %1;'>%2</span>";
-                label->setText(currentText + text.arg(color, tr("Dead-man's control: ") + joystickMethod.name));
-            }
+            setButtonLabel(joystickMethod.deadMansButton, "Dead-man's control: " + joystickMethod.name, color);
+
             for(int i=0;i < joystickMethod.joysticks.size(); i++){
                 Tc::Joystick joystick = joystickMethod.joysticks[i];
                 QString name = joystickMethod.axeNames.value(i);
-
-                // Append method to joystick
-                labelName = this->labelNameForJoystick(joystick);
-                QLabel *label = this->findChild<QLabel *>(labelName);
-                if(label != NULL){
-                    QString currentText = label->text();
-                    if(currentText.compare("Not assigned") == 0){
-                        // Replace placeholder and set correct color
-                        currentText.clear();
-                        label->setStyleSheet("QLabel { color : black; }");
-                    } else {
-                        if(currentText.length() > 0){
-                            currentText.append("; ");
-                        }
-                    }
-                    QString text = "<span style='color: %1;'>%2.%3</span>";
-                    currentText.append(text.arg(color, joystickMethod.name, name));
-                    label->setText(currentText);
+                if(joystick == Tc::TriggerJoystick)
+                {
+                    setButtonLabel(Tc::LeftShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
+                    setButtonLabel(Tc::RightShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
                 }
+                else
+                    setJoystickLabel(joystick, joystickMethod.name, name, color);
             }
         }
     }
@@ -103,7 +68,7 @@ GamepadAssignmentWidget::~GamepadAssignmentWidget()
     delete ui;
 }
 
-QString GamepadAssignmentWidget::labelNameForJoystick(Tc::Joystick joystick)
+QString GamepadAssignmentWidget::labelNameForJoystick(int joystick)
 {
     switch (joystick) {
     case Tc::LeftJoystickX:
@@ -112,8 +77,50 @@ QString GamepadAssignmentWidget::labelNameForJoystick(Tc::Joystick joystick)
         return QString("leftStickYLabel");
     case Tc::RightJoystickX:
         return QString("rightStickXLabel");
-    default:
+    case Tc::RightJoystickY:
         return QString("rightStickYLabel");
+    default:
+        return QString("Unknown");
+
     }
 
+}
+
+void GamepadAssignmentWidget::setButtonLabel(int buttonId, const QString &name, const QString& color)
+{
+    QString labelName = QString("button%1Label").arg(buttonId);
+    QLabel *label = this->findChild<QLabel *>(labelName);
+    if(label != NULL){
+        QString currentText = label->text();
+        if(currentText == "Not assigned"){
+            currentText.clear();
+            label->setStyleSheet("QLabel { color : black; }");
+        } else if(!currentText.isEmpty()){
+            currentText += "; ";
+        }
+        QString text = "<span style='color: %1;'>%2</span>";
+        label->setText(currentText + text.arg(color, name));
+    }
+}
+
+void GamepadAssignmentWidget::setJoystickLabel(int joystickId, const QString& unit, const QString name, const QString &color)
+{
+    // Append method to joystick
+    QString labelName = this->labelNameForJoystick(joystickId);
+    QLabel *label = this->findChild<QLabel *>(labelName);
+    if(label != NULL){
+        QString currentText = label->text();
+        if(currentText.compare("Not assigned") == 0){
+            // Replace placeholder and set correct color
+            currentText.clear();
+            label->setStyleSheet("QLabel { color : black; }");
+        } else {
+            if(currentText.length() > 0){
+                currentText.append("; ");
+            }
+        }
+        QString text = "<span style='color: %1;'>%2.%3</span>";
+        currentText.append(text.arg(color, unit, name));
+        label->setText(currentText);
+    }
 }

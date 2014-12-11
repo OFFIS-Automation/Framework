@@ -20,7 +20,7 @@ CONFIG += ordered
 SUBDIRS += projects/SensorSystemCore \
     projects/SensorTracer \
     projects/SensorSystemGui \
-    projects/SensorSystemLolec
+    projects/SensorSystemRcUnit
 
 include(../properties/pathes.pro)
 

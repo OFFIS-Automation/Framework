@@ -44,6 +44,7 @@ win32-msvc*{
     createSignalProxy.commands = $${PWD}/../../../../subtree/qt-remote-signals/bin/qtRemoteSignals $$SIGNALDEFS $$SIGNALTARGET --client-only
 }
 createSignalProxy.depends = FORCE
+createSignalProxy.variable_out = HEADERS
 QMAKE_EXTRA_TARGETS += createSignalProxy
 PRE_TARGETDEPS += $${SIGNALTARGET}$${SIGNALHEADER}
 

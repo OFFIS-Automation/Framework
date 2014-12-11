@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include <QDockWidget>
 #include <QBoxLayout>
 #include <QSplitter>
+#include "RcUnitFlagWidget.h"
 
 namespace Ui {
     class RcUnitContainerWidget;
@@ -35,12 +36,14 @@ public:
 
 private slots:
     void updateRcUnits(bool partial);
+    void unitFlagsUpdated(const QString& unitName, const QVariantList &flags);
     void onDockLocationChanged(const Qt::DockWidgetArea &area);
 
 private:
     Ui::RcUnitContainerWidget *ui;
     QSplitter* splitter;
     Qt::Orientation mOrientation;
+    QMap<QString, RcUnitFlagWidget*> mFlagWidgets;
 };
 
 

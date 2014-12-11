@@ -51,10 +51,9 @@ HEADERS += \
     src/scriptInteraction/ScriptProgress.h \
     src/scriptInteraction/ScriptOutput.h \
     src/scriptInteraction/ScriptInput.h \
-    src/createLolec/CreateLolecDialog.h \
+    src/createRcUnit/CreateRcUnitDialog.h \
     src/telecontrol/TelecontrolWidget.h \
     src/runConfigurations/ConfigurationListWidget.h \
-    src/telecontrol/TelecontrolUnitWidget.h \
     src/scriptInteraction/ScriptInfoPanel.h \
     src/HilecGuiToolbar.h \
     src/rcUnits/RcUnitContainerWidget.h \
@@ -62,15 +61,19 @@ HEADERS += \
     src/ScriptErrors/ScriptErrorWidget.h \
     src/scriptInteraction/ScriptStringInput.h \
     src/telecontrol/TelecontrolHapticWidget.h \
-    src/createLolec/AddLolecWizard.h \
-    src/createLolec/SelectLolecWizardPage.h \
-    src/createLolec/DefineLolecWizardPage.h \
+    src/createRcUnit/AddRcUnitWizard.h \
+    src/createRcUnit/SelectRcUnitWizardPage.h \
+    src/createRcUnit/DefineRcUnitWizardPage.h \
+    src/telecontrol/TelecontrolGamepadWidget.h \
     src/telecontrol/TelecontrolAssignmentWidget.h \
     src/telecontrol/ShowAssignmentButton.h \
     src/telecontrol/GamepadAssignmentWidget.h \
     src/telecontrol/EditGamepadAssignment.h \
     src/telecontrol/EditGamepadArea.h \
-    src/rcUnits/AddRemoteRcServerDialog.h
+    src/rcUnits/AddRemoteRcServerDialog.h \
+    src/rcUnits/RcUnitFlagWidget.h \
+    src/telecontrol/TelecontrolSelectionComboBox.h \
+    src/telecontrol/ConnexionAssignmentWidget.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -85,10 +88,10 @@ SOURCES += \
     src/scriptInteraction/ScriptProgress.cpp \
     src/scriptInteraction/ScriptOutput.cpp \
     src/scriptInteraction/ScriptInput.cpp \
-    src/createLolec/CreateLolecDialog.cpp \
+    src/createRcUnit/CreateRcUnitDialog.cpp \
     src/telecontrol/TelecontrolWidget.cpp \
     src/runConfigurations/ConfigurationListWidget.cpp \
-    src/telecontrol/TelecontrolUnitWidget.cpp \
+    src/telecontrol/TelecontrolGamepadWidget.cpp \
     src/scriptInteraction/ScriptInfoPanel.cpp \
     src/HilecGuiToolbar.cpp \
     src/rcUnits/RcUnitContainerWidget.cpp \
@@ -96,15 +99,19 @@ SOURCES += \
     src/ScriptErrors/ScriptErrorWidget.cpp \
     src/scriptInteraction/ScriptStringInput.cpp \
     src/telecontrol/TelecontrolHapticWidget.cpp \
-    src/createLolec/AddLolecWizard.cpp \
-    src/createLolec/SelectLolecWizardPage.cpp \
-    src/createLolec/DefineLolecWizardPage.cpp \
+    src/createRcUnit/AddRcUnitWizard.cpp \
+    src/createRcUnit/SelectRcUnitWizardPage.cpp \
+    src/createRcUnit/DefineRcUnitWizardPage.cpp \
     src/telecontrol/TelecontrolAssignmentWidget.cpp \
     src/telecontrol/ShowAssignmentButton.cpp \
     src/telecontrol/GamepadAssignmentWidget.cpp \
     src/telecontrol/EditGamepadAssignment.cpp \
     src/telecontrol/EditGamepadArea.cpp \
-    src/rcUnits/AddRemoteRcServerDialog.cpp
+    src/rcUnits/AddRemoteRcServerDialog.cpp \
+    src/rcUnits/RcUnitFlagWidget.cpp \
+    src/telecontrol/TelecontrolSelectionComboBox.cpp \
+    src/telecontrol/ConnexionAssignmentWidget.cpp
+
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -116,9 +123,8 @@ FORMS += \
     src/scriptInteraction/ScriptProgress.ui \
     src/scriptInteraction/ScriptOutput.ui \
     src/scriptInteraction/ScriptInput.ui \
-    src/createLolec/CreateLolecDialog.ui \
+    src/createRcUnit/CreateRcUnitDialog.ui \
     src/telecontrol/TelecontrolWidget.ui \
-    src/telecontrol/TelecontrolUnitWidget.ui \
     src/scriptInteraction/ScriptInfoPanel.ui \
     src/HilecGuiToolbar.ui \
     src/rcUnits/RcUnitContainerWidget.ui \
@@ -126,16 +132,22 @@ FORMS += \
     src/ScriptErrors/ScriptErrorWidget.ui \
     src/scriptInteraction/ScriptStringInput.ui \
     src/telecontrol/TelecontrolHapticWidget.ui \
-    src/createLolec/AddLolecWizard.ui \
+    src/createRcUnit/AddRcUnitWizard.ui \
     src/telecontrol/TelecontrolAssignmentWidget.ui \
     src/telecontrol/ShowAssignmentButton.ui \
     src/telecontrol/GamepadAssignmentWidget.ui \
     src/telecontrol/EditGamepadAssignment.ui \
     src/telecontrol/EditGamepadArea.ui \
-    src/rcUnits/AddRemoteRcServerDialog.ui
+    src/rcUnits/AddRemoteRcServerDialog.ui \
+    src/rcUnits/RcUnitFlagWidget.ui \
+    src/telecontrol/TelecontrolGamepadWidget.ui \
+    src/telecontrol/TelecontrolSelectionComboBox.ui \
+    src/telecontrol/ConnexionAssignmentWidget.ui
+
 
 RESOURCES += \
     images/images.qrc
+
 
 
 

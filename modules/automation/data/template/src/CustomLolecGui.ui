@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomLolecGui</class>
- <widget class="QWidget" name="CustomLolecGui">
+ <class>CustomRcUnitGui</class>
+ <widget class="QWidget" name="CustomRcUnitGui">
   <property name="geometry">
    <rect>
     <x>0</x>

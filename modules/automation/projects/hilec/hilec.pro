@@ -56,9 +56,9 @@ amirlibs.path    = $${DESTDIR}/hilec/python
 amirlibs.files  += python/*
 INSTALLS       += amirlibs
 
-lolecfiles.path    = $${DESTDIR}/hilec/include
-lolecfiles.files  += ../../include/lolecs/*
-INSTALLS       += lolecfiles
+rcUnitfiles.path    = $${DESTDIR}/hilec/include
+rcUnitfiles.files  += ../../include/rc/*
+INSTALLS       += rcUnitfiles
 
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
 tcfiles.files  += ../../include/telecontrol/*
@@ -71,22 +71,13 @@ INSTALLS       += tcConfig
 
 HEADERS += \
     HilecPlugin.h \
-    ../../include/core/HilecInterface.h \
     src/HilecCore.h \
     src/PythonInterpreter.h \
     src/UserRequestParser.h \
-    ../../include/core/UserRequest.h \
-    ../../include/core/ScriptException.h \
     src/RcUnits.h \
     src/PythonPlugin.h \
     src/RcUnitInvoker.h \
-    ../../include/core/RcUnitHelp.h \
     src/OlvisSingleton.h \
-    ../../include/lolecs/LolecInterface.h \
-    ../../include/lolecs/RcStruct.h \
-    ../../include/lolecs/RcRepeatable.h \
-    ../../include/lolecs/RcExceptions.h \
-    ../../include/lolecs/LolecInterface.h \
     src/PythonDebugger.h \
     src/UserRequestManager.h \
     src/PythonTypeConverter.h \
@@ -99,11 +90,24 @@ HEADERS += \
     src/debugVariables/InstanceVarItem.h \
     src/CallStackDecoder.h \
     src/PythonLinter.h \
-    ../../include/lolecs/Pose2d.h \
+    ../../include/core/ScriptException.h \
+    ../../include/core/UserRequest.h \
+    ../../include/core/RcUnitHelp.h \
+    ../../include/core/HilecInterface.h \
     ../../include/telecontrol/GamepadInterface.h \
     ../../include/telecontrol/HapticInterface.h \
     ../../include/telecontrol/TcConfig.h \
-    ../../include/core/TelecontrolConfig.h
+    ../../include/core/TelecontrolConfig.h \
+    ../../include/rc/RcStruct.h \
+    ../../include/rc/RcRepeatable.h \
+    ../../include/rc/RcExceptions.h \
+    ../../include/rc/RcUnitInterface.h \
+    ../../include/rc/types/UserRcUnit.h \
+    ../../include/rc/Pose2d.h \
+    ../../include/rc/types/HwRcUnit.h \
+    ../../include/rc/types/RobotRcUnit.h \
+    ../../include/rc/types/RcUnitTypes.h \
+    src/FlagCollectorRunnable.h
 
 SOURCES += \
     HilecPlugin.cpp \
@@ -125,7 +129,8 @@ SOURCES += \
     src/debugVariables/TupleVarItem.cpp \
     src/debugVariables/InstanceVarItem.cpp \
     src/CallStackDecoder.cpp \
-    src/PythonLinter.cpp
+    src/PythonLinter.cpp \
+    src/FlagCollectorRunnable.cpp
 
 OTHER_FILES += \
     python/util.py \

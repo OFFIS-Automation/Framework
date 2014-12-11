@@ -69,6 +69,7 @@
             </widget>
            </item>
            <item>
+
             <widget class="QPushButton" name="openSettingsButton">
              <property name="text">
               <string>Settings</string>
@@ -96,6 +97,7 @@
        </widget>
       </item>
       <item>
+
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
          <string>Connections</string>

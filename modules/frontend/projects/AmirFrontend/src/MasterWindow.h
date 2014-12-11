@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ private slots:
     void on_actionAbout_OFFIS_Automation_Toolbox_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionReload_project_triggered();
-    void on_actionScripting_help_triggered();
 
 private:
     bool mStarted;

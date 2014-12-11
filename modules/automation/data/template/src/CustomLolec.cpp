@@ -1,26 +1,26 @@
-#include "CustomLolec.h"
+#include "CustomRcUnit.h"
 #include <QDebug>
 
-CustomLolec::CustomLolec()
+CustomRcUnit::CustomRcUnit()
 {
 }
 
-void CustomLolec::acquireHardware()
+void CustomRcUnit::acquireHardware()
 {
     //@TODO: implement
-    qDebug() << "CustomLolec" << "connect called";
+    qDebug() << "CustomRcUnit" << "connect called";
     bool success = true;
     emit connectStatusChanged(success);
 }
 
-void CustomLolec::releaseHardware()
+void CustomRcUnit::releaseHardware()
 {
     //@TODO: implement
-    qDebug() << "CustomLolec" << "disconnect called";
+    qDebug() << "CustomRcUnit" << "disconnect called";
     emit connectStatusChanged(false);
 }
 
-void CustomLolec::moveGamepad(double xAxis, double yAxis)
+void CustomRcUnit::moveGamepad(double xAxis, double yAxis)
 {
     //if this is connected to a gamepad method, the values for xAxis and yAxis are between -1.0 and 1.0
     //@TODO: implement

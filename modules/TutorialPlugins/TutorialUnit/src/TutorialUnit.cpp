@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,13 +17,19 @@
 #include "TutorialUnit.h"
 #include <QDebug>
 #include <QDateTime>
+#include <QPointF>
+#include <QRect>
 #include <stdexcept>
+#include <QVector3D>
+
+#include <telecontrol/TcConfig.h>
 
 TutorialUnit::TutorialUnit()
 {
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
+    setScene(GraphicsView::instance());
 }
 
 void TutorialUnit::setScene(GraphicsView *scene)
@@ -39,18 +45,58 @@ void TutorialUnit::setScene(GraphicsView *scene)
     connect(scene, SIGNAL(positionUpdate(QPointF,qreal)), this, SIGNAL(positionUpdated(QPointF,qreal)));
 }
 
-void TutorialUnit::acquireHardware()
+QVariant TutorialUnit::rcGetPosition()
+{
+    Pose2d pos = getPosition();
+    return QVector3D(pos.x, pos.y, pos.phi);
+}
+
+void TutorialUnit::rcSetPosition(const QVariant &var)
+{
+    if(var.canConvert(QVariant::Vector3D))
+    {
+        QVector3D vec = var.value<QVector3D>();
+        setPosition(vec.toPointF());
+        setRotation(vec.z());
+    }
+}
+
+RcFlagDefinitions TutorialUnit::rcFlagDefinitions() const
+{
+    RcFlagDefinitions defs;
+    defs << RcFlagDefinition("x", 1);
+    defs << RcFlagDefinition("y", 1);
+    defs << RcFlagDefinition("rot", 1);
+    return defs;
+}
+
+QVariantList TutorialUnit::rcFlags()
+{
+    Pose2d pos = getPosition();
+    QVariantList list;
+    list << pos.x;
+    list << pos.y;
+    list << pos.phi;
+    return list;
+}
+
+void TutorialUnit::stop()
+{
+
+}
+
+void TutorialUnit::acquire()
 {
     QMutexLocker lock(&mMutex);
     mAcquired = true;
-    emit connectStatusChanged(true);
+    emit hwConnectionStatusChanged(true);
 }
 
-void TutorialUnit::releaseHardware()
+void TutorialUnit::release()
 {
     QMutexLocker lock(&mMutex);
     mAcquired = false;
-    emit connectStatusChanged(false);
+    emit hwConnectionStatusChanged(false);
 }
 
 Pose2d TutorialUnit::getPosition()
@@ -86,15 +132,63 @@ void TutorialUnit::setRotation(double targetAngle)
     mWait.wait(&mWaitMutex, 5000);
 }
 
-void TutorialUnit::moveGamepad(double xAxis, double yAxis, double phi)
+void TutorialUnit::moveGamepad(double x, double y, double phi)
 {
     QMutexLocker lock(&mMutex);
     checkHAL();
     QMutexLocker waitLock(&mWaitMutex);
-    emit moveRel(QPointF(xAxis*20.0, yAxis*-20.0), 20);
+
+    emit moveRel(QPointF(x*20.0, y*-20.0), 20);
     mWait.wait(&mWaitMutex, 20);
     emit rotateRel(phi*20, 1);
     mWait.wait(&mWaitMutex, 20);
+}
+
+void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
+{
+    moveGamepad(x, y, yaw);
+}
+
+QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
+{
+    moveGamepad(axes[Tc::HapticAxisX], axes[Tc::HapticAxisY], axes[Tc::HapticAxisZ]*0.5);
+
+    // Create return value
+    QMap<int, double> force;
+    force[Tc::HapticAxisX] = 0.0;
+    force[Tc::HapticAxisY] = 0.0;
+    force[Tc::HapticAxisZ] = 0.0;
+
+    // Check if robot is in "bounds"
+    QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
+    QRect workspace = QRect(50,50,500,300);
+
+    if(currentPosition.x() < workspace.left()){
+        // Robot left workspace on left hand side
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.left())*10.0;
+    } else if(workspace.right() < currentPosition.x()){
+        // Robot left workspace on right hand side
+        force[Tc::HapticAxisX] = abs(currentPosition.x()-workspace.right())*-10.0;
+    }
+
+    if(currentPosition.y() < workspace.top()){
+        // Robot left workspace on the top
+        force[Tc::HapticAxisY] = abs(currentPosition.y()-workspace.top())*-10.0;
+    } else if(workspace.bottom() < currentPosition.y()){
+        // Robot left workspace on the bottom
+        force[Tc::HapticAxisY] = abs(currentPosition.y()-workspace.bottom())*10.0;
+    }
+
+    return force;
+}
+
+void TutorialUnit::alternateGripper(bool open)
+{
+    if(!open){
+        openGripper();
+    } else {
+        closeGripper();
+    }
 }
 
 void TutorialUnit::resetSetup()
@@ -137,7 +231,6 @@ void TutorialUnit::openGripper()
     QMutexLocker waitLock(&mWaitMutex);
     mWait.wait(&mWaitMutex, 300);
     emit setGripperState(true);
-    mWait.wait(&mWaitMutex, 1000);
     mWait.wait(&mWaitMutex, 300);
 }
 
@@ -148,8 +241,7 @@ void TutorialUnit::closeGripper()
     QMutexLocker waitLock(&mWaitMutex);
     mWait.wait(&mWaitMutex, 300);
     emit setGripperState(false);
-    mWait.wait(&mWaitMutex, 1000);
-    mWait.wait(&mWaitMutex, 500);
+    mWait.wait(&mWaitMutex, 300);
 }
 
 void TutorialUnit::onMovementFinished()
@@ -161,6 +253,7 @@ void TutorialUnit::onMovementFinished()
 
 void TutorialUnit::checkHAL()
 {
-    if(!mAcquired)
+    if(!mAcquired){
         throw std::runtime_error("Hardware is not acquired");
+    }
 }

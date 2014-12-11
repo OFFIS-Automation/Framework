@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,13 +32,16 @@ class GamepadAssignmentWidget : public QWidget
 public:
     explicit GamepadAssignmentWidget(const QString &unit, QWidget *parent = 0);
     ~GamepadAssignmentWidget();
-    
+
+protected:
+    QString labelNameForJoystick(int joystick);
+    void setButtonLabel(int buttonId, const QString& name, const QString &color = "black");
+    void setJoystickLabel(int joystickId, const QString& unit, const QString name, const QString& color);
+
 private:
     Ui::GamepadAssignmentWidget *ui;
     QString mUnit;
 
-protected:
-    QString labelNameForJoystick(Tc::Joystick joystick);
 
 };
 

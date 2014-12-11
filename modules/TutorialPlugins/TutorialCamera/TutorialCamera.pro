@@ -20,11 +20,13 @@ include(../../properties/opencv.pro)
 
 DESTDIR = $${targetDir}/plugins/olvisPlugins
 INCLUDEPATH += ../../olvis3/include
+INCLUDEPATH += ../../automation/include
 
 LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts -lolvisPlugin
+LIBS += -L$${targetDir}/plugins/ -lTutorialUnitCore
 
-INCLUDEPATH += ../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = lib
 CONFIG += dll

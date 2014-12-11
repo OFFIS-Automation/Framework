@@ -1,10 +1,10 @@
-#include "CustomLolecGui.h"
-#include "ui_CustomLolecGui.h"
-#include "CustomLolec.h"
+#include "CustomRcUnitGui.h"
+#include "ui_CustomRcUnitGui.h"
+#include "CustomRcUnit.h"
 
-CustomLolecGui::CustomLolecGui(CustomLolec* controller, QWidget *parent) :
+CustomRcUnitGui::CustomRcUnitGui(CustomRcUnit* controller, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CustomLolecGui),
+    ui(new Ui::CustomRcUnitGui),
     mController(controller)
 {
     ui->setupUi(this);
@@ -13,12 +13,12 @@ CustomLolecGui::CustomLolecGui(CustomLolec* controller, QWidget *parent) :
     connect(this, SIGNAL(disconnectClicked()), mController, SLOT(releaseHardware()));
 }
 
-CustomLolecGui::~CustomLolecGui()
+CustomRcUnitGui::~CustomRcUnitGui()
 {
     delete ui;
 }
 
-void CustomLolecGui::on_connectButton_clicked(bool checked)
+void CustomRcUnitGui::on_connectButton_clicked(bool checked)
 {
     if(checked)
         emit connectClicked();

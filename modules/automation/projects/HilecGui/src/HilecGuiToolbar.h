@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,8 +48,8 @@ private slots:
     void onScriptExecutionStarted();
     void onScriptExecutionFinished();
     void on_actionResume_triggered();
-    void on_actionCreateLolec_triggered();
-    void on_actionAddLolec_triggered();
+    void on_actionCreateRcUnit_triggered();
+    void on_actionAddRcUnit_triggered();
     void on_actionCreateGamepadMapping_triggered();
     void on_actionAddRcServer_triggered();
 

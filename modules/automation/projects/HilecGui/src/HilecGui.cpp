@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ void HilecGui::initialize(const QString&)
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
     connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
-    connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
+    //connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
     connect(toolbar, SIGNAL(addRcServer()), rcUnits, SLOT(addRcServer()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
@@ -73,7 +73,7 @@ void HilecGui::initialize(const QString&)
     connect(hilec, SIGNAL(breakpointHit(QString,int)), SIGNAL(focusLine(QString,int)));
     hilec->connect(this, SIGNAL(compileFile(QString)), SLOT(compileFile(QString)), Qt::QueuedConnection);
 
-    connect(rcUnits, SIGNAL(addPluginToProject()), toolbar, SLOT(on_actionAddLolec_triggered()));
+    connect(rcUnits, SIGNAL(addPluginToProject()), toolbar, SLOT(on_actionAddRcUnit_triggered()));
     closeProject();
 }
 

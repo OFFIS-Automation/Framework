@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RcMethodInvoker.h"
-#include <lolecs/RcExceptions.h>
+#include <rc/RcExceptions.h>
 
 RcMethodInvoker::RcMethodInvoker(const RcUnit::Method &method, QMap<int, RcWrapperFactoryItf *> &factories)
     : mMethod(method),

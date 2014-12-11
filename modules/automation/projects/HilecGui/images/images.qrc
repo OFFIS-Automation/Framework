@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/hilecGui">
-        <file>lolec.png</file>
+        <file>rcUnit.png</file>
         <file>resume.png</file>
         <file>stepinto.png</file>
         <file>stepover.png</file>
@@ -15,13 +15,17 @@
         <file>flag_yellow.png</file>
         <file>joystick.png</file>
         <file>joystick_delete.png</file>
-        <file>addLolec.png</file>
-        <file>removeLolec.png</file>
+        <file>addRcUnit.png</file>
+        <file>removeRcUnit.png</file>
         <file>gamepadAbstract.png</file>
         <file>controller_error.png</file>
         <file>controller_info.png</file>
-        <file>gamepadAbstractWithoutNumbers.png</file>
         <file>controller_edit.png</file>
         <file>controller_add.png</file>
+        <file>connect.png</file>
+        <file>disconnect.png</file>
+        <file>stop.png</file>
+        <file>cog.png</file>
+        <file>connexionAbstract.png</file>
     </qresource>
 </RCC>

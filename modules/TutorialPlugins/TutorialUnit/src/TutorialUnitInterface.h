@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,13 +17,14 @@
 #ifndef TUTORIALUNITINTERFACE_H
 #define TUTORIALUNITINTERFACE_H
 
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 
-class TutorialUnitInterface : public QObject, public LolecInterface
+class TutorialUnitInterface : public QObject, public RcUnitInterface
 {
     Q_OBJECT
-    Q_INTERFACES(LolecInterface)
-    Q_PLUGIN_METADATA(IID LolecInterface_iid)
+    Q_INTERFACES(RcUnitInterface)
+    Q_PLUGIN_METADATA(IID RcUnitInterface_iid)
+
 public:
     TutorialUnitInterface();
 
@@ -55,14 +56,14 @@ public:
 	* functions to the rc object. Config file is only valid when the plugin needs a config file.
 	* the name contains the user-given name given for this instance
 	*/
-    QObject* instance(RcBase& rc, const QString& configFile, const QString& name);
+    UserRcUnit* instance(RcBase& rc, const QString& configFile, const QString& name);
 	
 	/**
-	* should return a small widget with status information about the lolec instance. 
+    * should return a small widget with settings information about the rcUnit instance.
 	* the method is called after instance is called and the instance object is exactly the same
 	* if the plugin has no gui, this method may return 0.
 	*/
-    QWidget* guiForInstance(QObject *instance);
+    QWidget* settingsWidgetForInstance(UserRcUnit* instance);
 
     void deleteInstance(QObject *instance);
 protected:

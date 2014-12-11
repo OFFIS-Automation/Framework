@@ -1,13 +1,13 @@
-#ifndef CUSTOMLOLEC_H
-#define CUSTOMLOLEC_H
+#ifndef CUSTOMRCUNIT_H
+#define CUSTOMRCUNIT_H
 
 #include <QObject>
 
-class CustomLolec : public QObject
+class CustomRcUnit : public QObject
 {
     Q_OBJECT
 public:
-    CustomLolec();
+    CustomRcUnit();
 public slots:
     void acquireHardware();
     void releaseHardware();
@@ -17,4 +17,4 @@ signals:
     void connectStatusChanged(bool connected);
 };
 
-#endif // CUSTOMLOLEC_H
+#endif // CUSTOMRCUNIT_H

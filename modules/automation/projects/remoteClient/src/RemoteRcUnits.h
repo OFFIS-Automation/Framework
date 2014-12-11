@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public:
     void startConnect();
 
 signals:
-    void unitsUpdated(const QString& remoteServerName, const QStringList& oldLolecs);
+    void unitsUpdated(const QString& remoteServerName, const QStringList& oldRcUnits);
 public slots:
     void setTimeout(double seconds);
 
@@ -59,7 +59,7 @@ private:
     int mPort;
     double mTimeout;
     QTcpSocket* mSocket;
-    QMap<QString, RcUnitHelp> mLolecs;
+    QMap<QString, RcUnitHelp> mRcUnits;
     RemoteRcUnitClient* mClient;
     QMutex mMutex;
     QWaitCondition mStartupWait;

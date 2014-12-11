@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <QVariant>
 #include <QStringList>
 #include "TelecontrolConfig.h"
+#include "../rc/types/RcUnitTypes.h"
 
 struct RcUnitHelp : TelecontrolConfig
 {
@@ -43,6 +44,9 @@ struct RcUnitHelp : TelecontrolConfig
     QList<Struct> structs;
     QList<Method> methods;
     QVariantMap constants;
+    UserRcUnitType type;
+    RcFlagDefinitions flags;
+    bool hwConnected;
 };
 
 inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Method& helpMethod)

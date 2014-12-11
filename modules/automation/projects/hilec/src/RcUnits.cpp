@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,22 +24,27 @@
 #include <QSettings>
 #include <QDir>
 #include <QPluginLoader>
-#include <lolecs/LolecInterface.h>
+#include <rc/RcUnitInterface.h>
 #include <QTcpSocket>
+#include <QThreadPool>
 
 #include "RemoteRcUnits.h"
 #include "RemoteRcUnit.h"
+#include "FlagCollectorRunnable.h"
+
+
 
 
 RcUnits* RcUnits::mInstance = 0;
 
-RcUnits::RcUnits(const QString &lolecDir)
+RcUnits::RcUnits(const QString &rcUnitDir) : RcUnitsBase(rcUnitDir)
 {
     if(mInstance)
         throw std::runtime_error("RcUnits already running");
     mInstance = this;
-    mLolecDir = lolecDir;
-    mGamepad = 0;
+    mFlagTimer.setInterval(200);
+    mThreadPool.setMaxThreadCount(2);
+    connect(&mFlagTimer, SIGNAL(timeout()), SLOT(collectFlags()));
     connect(this, SIGNAL(unitsUpdated()), SIGNAL(unitListUpdated()));
 }
 
@@ -54,8 +59,16 @@ void RcUnits::loadConfig(const QString &filename)
     foreach(QString key, mUnits.keys())
     {
         RcUnitBase* unit = mUnits.value(key);
-        if(unit->isTelecontrolable())
-            mTelecontrolLolecs << key;
+        unit->setObserver(this);
+        if(!unit->getHelp().flags.empty())
+        {
+            FlagCollectorRunnable* runnable = new FlagCollectorRunnable(unit);
+            runnable->setAutoDelete(false);
+            connect(runnable, SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(flagsUpdated(QString,QVariantList)), Qt::DirectConnection);
+            mFlagCollectors << runnable;
+        }
+        if(unit->hasGamepadControl())
+            mTelecontrolRcUnits << key;
     }
 
     QSettings settings(filename, QSettings::IniFormat);
@@ -68,29 +81,50 @@ void RcUnits::loadConfig(const QString &filename)
         int port = settings.value("port").toInt();
         double timeout = settings.value("callTimeout", 5).toDouble();
         RemoteRcUnits* rl = new RemoteRcUnits(name, host, port, timeout);
-        connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteLolecsListed(QString, QStringList)));
-        mRemoteLolecs[name] = rl;
+        connect(rl, SIGNAL(unitsUpdated(QString, QStringList)), SLOT(onRemoteRcUnitsListed(QString, QStringList)));
+        mRemoteRcUnits[name] = rl;
         rl->startConnect();
     }
+    mFlagTimer.start();
 }
 
 void RcUnits::releaseConfig()
 {
+    mFlagTimer.stop();
+    qDeleteAll(mFlagCollectors);
+    mFlagCollectors.clear();
     RcUnitsBase::releaseConfig();
-    qDeleteAll(mRemoteLolecs);
-    mRemoteLolecs.clear();
+    qDeleteAll(mRemoteRcUnits);
+    mRemoteRcUnits.clear();
 }
 
-void RcUnits::onRemoteLolecsListed(const QString &remoteServerName, const QStringList &oldLolecs)
+void RcUnits::rcUnitStatusChanged(bool)
 {
-    RemoteRcUnits* rl = mRemoteLolecs.value(remoteServerName, 0);
+    emit unitListUpdated(true);
+}
+
+void RcUnits::collectFlags()
+{
+    foreach(FlagCollectorRunnable* flagCollector, mFlagCollectors)
+    {
+        if(flagCollector->finished())
+        {
+            flagCollector->setIdle();
+            mThreadPool.start(flagCollector, QThread::LowestPriority);
+        }
+    }
+}
+
+void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStringList &oldRcUnits)
+{
+    RemoteRcUnits* rl = mRemoteRcUnits.value(remoteServerName, 0);
     if(!rl)
         return;
     QList<RcUnitBase*> units = rl->units();
-    QStringList lolecsToRemove = oldLolecs;
+    QStringList rcUnitsToRemove = oldRcUnits;
     foreach(RcUnitBase* unit, units)
-        lolecsToRemove << unit->name();
-    foreach(QString name, lolecsToRemove)
+        rcUnitsToRemove << unit->name();
+    foreach(QString name, rcUnitsToRemove)
     {
         RcUnitBase* old = mUnits.value(name, 0);
         if(old)

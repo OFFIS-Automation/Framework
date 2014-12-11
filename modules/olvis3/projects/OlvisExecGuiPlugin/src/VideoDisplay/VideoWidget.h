@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ public:
 public slots:
     void changeView(VideoDisplayWidget* source, bool updateMaximized = true);
     void updateMaxDisplays(int maxDisplays);
-    void startCapture(int fps);
-    void endCapture(const QString& filename);
-    void saveScreenshot(const QString& filename);
+    void startCapture(int fps, int widgetIndex = 0);
+    void endCapture(const QString& filename, int widgetIndex = 0);
+    void saveScreenshot(const QString& filename, int widgetIndex = 0);
 
 private:
     void createDisplay();

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,31 +20,42 @@
 #include <QString>
 #include <QMap>
 #include <QVariant>
+#include <QThreadPool>
 
 #include <RcUnitsBase.h>
+#include <RcUnitBase.h>
+#include <QTimer>
+
 
 class QXmlStreamReader;
-class LolecInterface;
+class RcUnitInterface;
 class RcUnit;
-class Gamepad;
 class RemoteRcUnits;
+class FlagCollectorRunnable;
 
-class RcUnits : public RcUnitsBase
+
+class RcUnits : public RcUnitsBase, public RcUnitBaseObserver
 {
     Q_OBJECT
 public:
-    RcUnits(const QString& lolecDir);
+    RcUnits(const QString& rcUnitDir);
     virtual ~RcUnits();
     static RcUnits* instance() { return mInstance; }
     void loadConfig(const QString &filename);
     void releaseConfig();
+    void rcUnitStatusChanged(bool acquired);
 signals:
     void unitListUpdated(bool partialUpdate = false);
+    void flagsUpdated(const QString& name, const QVariantList& values);
 private slots:
-    void onRemoteLolecsListed(const QString& remoteServerName, const QStringList& oldLolecs);
+    void collectFlags();
+    void onRemoteRcUnitsListed(const QString& remoteServerName, const QStringList& oldRcUnits);
 private:
+    QTimer mFlagTimer;
     static RcUnits* mInstance;
-    QMap<QString, RemoteRcUnits*> mRemoteLolecs;
+    QMap<QString, RemoteRcUnits*> mRemoteRcUnits;
+    QList<FlagCollectorRunnable*> mFlagCollectors;
+    QThreadPool mThreadPool;
 };
 
 #endif // RCUNITS_H

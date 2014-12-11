@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ private slots:
     void on_name_textChanged(const QString &arg1);
     void checkData();
 
-    void on_port_valueChanged(int arg1);
+    void on_port_valueChanged(int);
 
 private:
     Ui::AddRemoteRcServerDialog *ui;

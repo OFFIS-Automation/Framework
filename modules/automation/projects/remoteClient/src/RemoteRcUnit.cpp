@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,9 +49,41 @@ void RemoteRcUnit::disconnectGamepad(QObject *gamepad)
     mRemote.disableTelecontrol(name());
 }
 
-void RemoteRcUnit::updateSensitivity(const QString &unitName, double sensitivity, const QList<bool> &inverts)
+void RemoteRcUnit::updateGamepadParameters(const QString &unitName, double sensitivity, const QList<bool> &inverts)
 {
-    mRemote.updateSensitivity(name(), unitName, sensitivity, inverts);
+    mRemote.updateGamepadParameters(name(), unitName, sensitivity, inverts);
+}
+
+void RemoteRcUnit::updateGamepadAssignment(const QString &gamepadDeviceName)
+{
+    mRemote.updateGamepadAssignment(gamepadDeviceName);
+}
+
+void RemoteRcUnit::acquire()
+{
+ //@TODO
+}
+
+void RemoteRcUnit::release()
+{
+    //@TODO
+}
+
+bool RemoteRcUnit::acquired()
+{
+    //@TODO
+    return false;
+}
+
+void RemoteRcUnit::setObserver(RcUnitBaseObserver *observer)
+{
+    //@TODO
+}
+
+QVariantList RemoteRcUnit::getFlags()
+{
+    //TODO
+    return QVariantList();
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)

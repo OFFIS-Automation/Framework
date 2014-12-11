@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,19 +30,30 @@ public:
     virtual ~RemoteRcUnit();
     virtual QVariant call(const QByteArray& method, QList<QVariant> params);
     virtual RcUnitHelp getHelp() const { return mHelp; }
-    virtual QObject* lolec() { return 0; }
+    virtual UserRcUnit* rcUnit() { return 0; }
     virtual QString name() const { return mHelp.unitName; }
+
+    void acquire();
+    void release();
+    bool acquired();
+    void setObserver(RcUnitBaseObserver *observer);
+    QVariantList getFlags();
+
+
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );
-    virtual void updateSensitivity(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadParameters(const QString& unitName, double sensitivity, const QList<bool>& inverts);
+    virtual void updateGamepadAssignment(const QString& gamepadDeviceName);
     QMap<QString, QVariant> getConstants() const { return mHelp.constants; }
-    bool isTelecontrolable() const { return !mHelp.tcJoysticks.empty(); }
-    bool hasHapticInterface() const { return false; }
-    const HapticResponse currentHapticData() { return HapticResponse(); }
-    const HapticResponse hapticMovement(const QVector3D&) { return HapticResponse(); }
-    virtual void updateHapticSensitivity(double, double){}
-    virtual double hapticSensitivity() const { return 0.0; }
-    virtual double hapticForceFactor() const { return 0.0; }
+
+    bool hasGamepadControl() const { return !mHelp.tcGamepadMoves.empty(); }
+
+    void connectHapticDevice(QObject*) {}
+    void disconnectHapticDevice(QObject*) {}
+    void updateHapticParameters(const QString&, double, double, const QList<bool>&) {}
+    void updateHapticAssignment(const QString&) {}
+    bool hasHapticControl() const { return false; }
+
 public slots:
     void handleGamepadData(const QMap<int,double>& data);
     void setGamepadButton(int id, bool pressed);

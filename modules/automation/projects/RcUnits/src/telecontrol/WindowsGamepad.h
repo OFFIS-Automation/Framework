@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSGAMEPAD_HQT
-#define LOLECTOOLS_WINDOWSGAMEPAD_HQT
+#ifndef RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#define RCUNITTOOLS_WINDOWSGAMEPAD_HQT
 
 #include "Gamepad.h"
 
@@ -24,7 +24,7 @@
 #include <dinput.h>
 #include <QMap>
 
-class WindowsGamepadFactory;
+class WindowsTelecontrolFactory;
 class WindowsGamepad : public Gamepad
 {
 public:
@@ -43,11 +43,12 @@ protected:
 
     LPDIRECTINPUTDEVICE8 mDevice;
     DIJOYSTATE2 mState;
-    friend class WindowsGamepadFactory;
+    friend class WindowsTelecontrolFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
     bool mSwitchZJoysticks;
     enum Type {
+        ConnexionJoystick,
         XBoxGamepad,
         DefaultGamepad
     } mGamepadType;
@@ -55,4 +56,4 @@ protected:
     void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
-#endif //LOLECTOOLS_WINDOWSGAMEPAD_HQT
+#endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT

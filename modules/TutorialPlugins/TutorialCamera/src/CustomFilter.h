@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include <ports/PolygonPort.h>
 #include <ports/RectPort.h>
 #include <ports/PointPort.h>
-#include <SensorDataSystem.h>
 #include <QMutex>
 #include <QWaitCondition>
 
@@ -35,7 +34,7 @@ public:
     virtual void initialize();
     virtual void execute();
 public slots:
-    void onNewImage(QVariant data);
+    void onNewImage(const QImage& data);
 protected:
     out::RgbImage mOut;
     QMutex mMutex;

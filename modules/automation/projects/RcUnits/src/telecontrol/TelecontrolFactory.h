@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,22 +17,28 @@
 #ifndef TELECONTROLFACTORY_H
 #define TELECONTROLFACTORY_H
 
+// QT headers
 #include <QObject>
-#include "Gamepad.h"
-#include <telecontrol/HapticInterface.h>
+#include <QMap>
 
-class TelecontrolFactory : public QObject
+// Project related headers
+#include "Gamepad.h"
+#include "telecontrol/HapticInterface.h"
+#include "../RcUnitsGlobal.h"
+
+class RCUNITS_EXPORT TelecontrolFactory : public QObject
 {
     Q_OBJECT
 public:
-    static Gamepad* createGamepad();
-    static HapticInterface* createHaptic();
+    static QMap<QString, Gamepad *> getGamepadDevices();
+    static QMap<QString, HapticDevice *> getHapticDevices();
+
 private:
     Q_DISABLE_COPY(TelecontrolFactory)
     explicit TelecontrolFactory(QObject *parent = 0);
     static TelecontrolFactory& instance();
+    QMap<QString, HapticDevice *> loadHapticDevices();
 
-    HapticInterface* mHaptic;
 };
 
 #endif // TELECONTROLFACTORY_H

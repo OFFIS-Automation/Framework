@@ -14,12 +14,12 @@ void RemoteRcUnitClientBase::listUnits()
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::callMethod(uint callId, const QByteArray& unit, const QByteArray& method, const QVariantList& params)
+void RemoteRcUnitClientBase::callMethod(uint id, const QByteArray& unit, const QByteArray& method, const QVariantList& params)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)3;
-	stream << callId;
+    stream << id;
 	stream << unit;
 	stream << method;
 	stream << params;
@@ -67,17 +67,27 @@ void RemoteRcUnitClientBase::setTcButton(uint id, int buttonId, const bool& pres
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::updateTcSensitivity(uint id, const QString& unitName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
+void RemoteRcUnitClientBase::updateGamepadParameters(uint id, const QString& methodName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
 	stream << id;
-	stream << unitName;
+    stream << methodName;
 	stream << sensName;
 	stream << sensitivity;
 	stream << inverts;
-	transmitSignal(msgData);
+    transmitSignal(msgData);
+}
+
+void RemoteRcUnitClientBase::updateGamepadAssignment(uint id, const QString &gamepadDeviceName)
+{
+    QByteArray msgData;
+    QDataStream stream(&msgData, QIODevice::WriteOnly);
+    stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
+    stream << id;
+    stream << gamepadDeviceName;
+    transmitSignal(msgData);
 }
 
 void RemoteRcUnitClientBase::processRemoteInputs(const QByteArray& data)

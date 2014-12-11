@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,6 +23,14 @@
 #include "GamepadEndpoint.h"
 #include "HapticBaseEndpoint.h"
 
+class UserRcUnit;
+
+class RcUnitBaseObserver
+{
+public:
+    virtual void rcUnitStatusChanged(bool acquired) = 0;
+};
+
 class RCUNITS_EXPORT RcUnitBase : public HapticBaseEndpoint, public GamepadEndpoint
 {
 public:
@@ -32,8 +40,13 @@ public:
     virtual QMap<QString, QVariant> getConstants() const = 0;
     virtual QVariant call(const QByteArray& method, QList<QVariant> params) = 0;
     virtual RcUnitHelp getHelp() const = 0;
-    virtual QObject* lolec() = 0;
+    virtual UserRcUnit* rcUnit() = 0;
     virtual QString name() const = 0;
+    virtual void acquire() = 0;
+    virtual void release() = 0;
+    virtual bool acquired() = 0;
+    virtual void setObserver(RcUnitBaseObserver* observer) = 0;
+    virtual QVariantList getFlags() = 0;
     virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
 };
 

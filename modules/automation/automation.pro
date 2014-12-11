@@ -23,7 +23,7 @@ SUBDIRS += projects/hilec
 SUBDIRS += projects/HilecGui
 SUBDIRS += projects/QScintilla
 SUBDIRS += projects/ProjectEditor
-SUBDIRS += projects/RemoteLolecServer
+SUBDIRS += projects/RemoteRcUnitServer
 
 include(../properties/pathes.pro)
 

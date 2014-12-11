@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,18 +24,42 @@ class TcInvoker : public QObject
 {
     Q_OBJECT
 public:
-    TcInvoker(QObject* device, const QList<RcUnit::TcUpdateMethod>& methods, const QList<RcUnit::TcButtonEvent>& buttons);
+    TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
-    void setSensitivity(const QString& method, double sensitivity, const QList<bool>& inverts);
+    void setGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);
+
+    void connectHapticDevice(QObject* hapticDevice);
+    void disconnectHapticDevice(QObject* hapticDevice);
+    void setHapticParamaters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
+
 public slots:
-    void handleData(const QMap<int,double>& data);
-    void setButton(int id, bool pressed);
+    virtual bool eventFilter (QObject * watched, QEvent * event);
+
+    void handleGamepadData(const QMap<int,double>& data);
+    void handleGamepadButtonToggled(int buttonId, bool pressed);
+
+    void handleHapticPositionData(const QMap<int,double>& data);
+    void handleHapticButtonToggled(int buttonId, bool pressed);
+
+signals:
+    /**
+     * @brief Send force update.
+     * @param data Force data for the axis on a haptic device. Double value should be in range [-1,1].
+     */
+    void forceUpdate(const QMap<int,double>& data);
+
 protected:
-    QList<RcUnit::TcUpdateMethod> mMethods;
-    QList<int> mActiveMethods;
-    QMap<int, RcUnit::TcButtonEvent> mButtons;
-    int mCurrentActivationButton;
+    QList<RcUnit::TcMoveMethod> mGamepadMethods;
+    QList<int> mActiveGamepadMethods;
+    QMap<int, RcUnit::TcButtonMethod> mGamepadButtonMethods;
+    int mCurrentGamepadActivationButton;
+
+    QList<RcUnit::TcMoveMethod> mHapticMethods;
+    QList<int> mActiveHapticMethods;
+    QMap<int, RcUnit::TcButtonMethod> mHapticButtonMethods;
+    int mCurrentHapticActivationButton;
+
     QObject* mDevice;
 };
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,15 +18,19 @@
 #include "ui_TelecontrolAssignmentWidget.h"
 
 #include "GamepadAssignmentWidget.h"
+#include "ConnexionAssignmentWidget.h"
+
 #include <core/RcUnitHelp.h>
 #include "../HilecSingleton.h"
+
+QStringList TelecontrolAssignmentWidget::connexionControllerNames = QStringList() << "SpaceNavigator" << "SpaceNavigator for Notebooks"  << "SpaceTraveler USB" << "SpaceExplorer" << "SpacePilot";
 
 TelecontrolAssignmentWidget::TelecontrolAssignmentWidget(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TelecontrolAssignmentWidget)
 {
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    this->setWindowTitle(tr("Gamepad button assignment"));
+    this->setWindowTitle(tr("Telecontrol assignment"));
     ui->setupUi(this);
 
     // Signal / Slot stuff
@@ -68,17 +72,24 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
     foreach(QString unit, units){
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
         // Check if uni has gamepad methods
-        if(help.tcJoysticks.empty() && help.tcButtons.empty())
+        if(help.tcGamepadMoves.empty() && help.tcGamepadButtons.empty()){
             continue;
+        }
 
         ui->tabWidget->setEnabled(true);
+
         // Create tab
         QWidget* page = new QWidget;
         QVBoxLayout* layout = new QVBoxLayout();
         page->setLayout(layout);
-        layout->addWidget(new GamepadAssignmentWidget(unit, this));
-        int index = ui->tabWidget->addTab(page, QIcon(":/hilecGui/controller_info.png"), unit);
+        if(connexionControllerNames.contains(help.tcGamepadDeviceName)){
+            layout->addWidget(new ConnexionAssignmentWidget(unit, this));
+        } else {
+            layout->addWidget(new GamepadAssignmentWidget(unit, this));
+        }
+
         // Store index in QMap for later usage
+        int index = ui->tabWidget->addTab(page, QIcon(":/hilecGui/controller_info.png"), unit);
         mUnitIndexes[index] = unit;
     }
 }

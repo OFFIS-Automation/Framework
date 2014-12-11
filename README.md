@@ -1,4 +1,4 @@
-# OFFIS-Automation-Framework
+# OFFIS Automation Framework
 The OFFIS Automation Framework enables rapid prototyping of vision-based automation systems, significantly reducing design times. The most common image processing algorithms are supplied with the software. Complex image processing pipelines can be created in just a few minutes. The automation environment allows for interaction with the image processing from automation scripts enabling powerful applications. Additionally, remote-controlled-units can be used providing a high-level access to real hardware components such as stages, axes, robots or tools. 
 
 More information can be found at: [http://automation.offis.de/](http://automation.offis.de/) 
@@ -21,13 +21,19 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 * [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
 
+
+# Scientific publications
+
+* [A Rapid Automation Framework for Applications on the Micro- and Nanoscale](http://www.araa.asn.au/acra/acra2013/papers/pap110s1-file1.pdf)
+* [A Flexible and Compact High Precision Micro-Factory for Low Volume Production and Lab-Automation](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6840168)
+
 ## Authors
 ### Current Authors
 - [Claas Diederichs](https://github.com/claasd/)
 - [Tobias Tiemerding](https://github.com/honkmaster/)
 
 ### Former Authors
-- [Daniel Jasper](djasper@google.com)
+- [Daniel Jasper](mailto:djasper@google.com)
 
 ## License
 

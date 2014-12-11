@@ -1,37 +1,37 @@
-#include "CustomLolecInterface.h"
-#include "CustomLolec.h"
-#include "CustomLolecGui.h"
+#include "CustomRcUnitInterface.h"
+#include "CustomRcUnit.h"
+#include "CustomRcUnitGui.h"
 
 #include <QtPlugin>
 #include <QDateTime>
 #include <QSettings>
 #include <QDebug>
 
-CustomLolecInterface::CustomLolecInterface()
+CustomRcUnitInterface::CustomRcUnitInterface()
 {
   // do nothing here
 }
 
-bool CustomLolecInterface::needsConfigFile() const
+bool CustomRcUnitInterface::needsConfigFile() const
 {
 	// return false if you do not need a config file
 	return true;
 }
 
-QString CustomLolecInterface::name() const
+QString CustomRcUnitInterface::name() const
 {
-	return "CustomLolec";
+	return "CustomRcUnit";
 }
-QString CustomLolecInterface::description() const
+QString CustomRcUnitInterface::description() const
 {
 	QString desc;
-    desc += "Auto generated description for the <strong>CustomLolec</strong> automation addon";
+    desc += "Auto generated description for the <strong>CustomRcUnit</strong> automation addon";
     desc += "<br />"; // hml line break
     desc += "<em>This should be rewritten by the user</em>";
 	return desc;
 }
 
-bool CustomLolecInterface::createConfig(const QString& configFile, QWidget* parentForGuis)
+bool CustomRcUnitInterface::createConfig(const QString& configFile, QWidget* parentForGuis)
 {
 	Q_UNUSED(parentForGuis); // ignore the gui and supress a warning about unused variables
 	
@@ -42,16 +42,16 @@ bool CustomLolecInterface::createConfig(const QString& configFile, QWidget* pare
 	return true;
 }
 
-QObject* CustomLolecInterface::instance(RcBase &rc, const QString &configFile, const QString& name)
+QObject* CustomRcUnitInterface::instance(RcBase &rc, const QString &configFile, const QString& name)
 {
 
     //@TODO: do someting with the config file if you need it.
 	QSettings settings(configFile, QSettings::IniFormat);
 	QDateTime creationDate = settings.value("creationDate").toDateTime();
 
-	qDebug() << "This instance of <CustomLolec> was created at "  << creationDate;
+	qDebug() << "This instance of <CustomRcUnit> was created at "  << creationDate;
 	
-    CustomLolec* lolec = new CustomLolec();
+    CustomRcUnit* rcUnit = new CustomRcUnit();
 
     // add methods that can be called from the automation:
     // rc.addMethod(methodName, shortDesc, longDesc);
@@ -64,12 +64,12 @@ QObject* CustomLolecInterface::instance(RcBase &rc, const QString &configFile, c
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
     //rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY), Tc::LeftShoulderUpperButton);
 
-    return lolec;
+    return rcUnit;
 }
 
-QWidget* CustomLolecInterface::guiForInstance(QObject *instance)
+QWidget* CustomRcUnitInterface::guiForInstance(QObject *instance)
 {
-    return new CustomLolecGui(qobject_cast<CustomLolec*>(instance));
+    return new CustomRcUnitGui(qobject_cast<CustomRcUnit*>(instance));
 }
 
-Q_EXPORT_PLUGIN2(CustomLolecInterface, CustomLolecInterface)
+Q_EXPORT_PLUGIN2(CustomRcUnitInterface, CustomRcUnitInterface)

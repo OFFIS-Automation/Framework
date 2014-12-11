@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_LINUXGAMEPAD_HQT
-#define LOLECTOOLS_LINUXGAMEPAD_HQT
+#ifndef RCUNITTOOLS_LINUXGAMEPAD_HQT
+#define RCUNITTOOLS_LINUXGAMEPAD_HQT
 
 #include "Gamepad.h"
 #include "libjoystick/joystick.h"
 #include <QMap>
 
-class LinuxGamepadFactory;
+class LinuxTelecontrolFactory;
 class LinuxGamepad : public Gamepad
 {
 public:
@@ -37,8 +37,8 @@ protected:
     float correctedValue(float v);
 
     Joystick mDevice;
-    friend class LinuxGamepadFactory;
+    friend class LinuxTelecontrolFactory;
     QString mName;
 };
 
-#endif //LOLECTOOLS_LINUXGAMEPAD_HQT
+#endif //RCUNITTOOLS_LINUXGAMEPAD_HQT

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include <QString>
 #include <QTextStream>
 
+#include <core/RcUnitHelp.h>
+
 class RcHelpCreator : public QObject
 {
 public:
@@ -28,6 +30,11 @@ public:
 protected:
     QTextStream mStream;
     QString mBuffer;
+    struct OverloadedMethod
+    {
+        RcUnitHelp::Method method;
+        QStringList overloadedSignatures;
+    };
 };
 
 #endif // RCHELPCREATOR_H

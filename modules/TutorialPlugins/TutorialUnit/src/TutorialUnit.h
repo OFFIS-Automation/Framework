@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2014 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,27 +18,37 @@
 #define TUTORIALUNIT_H
 
 #include <QObject>
-#include "GraphicsView.h"
-#include <lolecs/Pose2d.h>
+#include "../../TutorialCore/src/GraphicsView.h"
+#include <rc/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
+#include <rc/types/RobotRcUnit.h>
 
-class TutorialUnit : public QObject
+class TutorialUnit : public RobotRcUnit
 {
     Q_OBJECT
 public:
     TutorialUnit();
     void setScene(GraphicsView* scene);
+    QVariant rcGetPosition();
+    void rcSetPosition(const QVariant& var);
+    RcFlagDefinitions rcFlagDefinitions() const;
+    QVariantList rcFlags();
+
 public slots:
-    void acquireHardware();
-    void releaseHardware();
+    void stop();
+    void acquire();
+    void release();
     Pose2d getPosition();
     void setPosition(QPointF targetPosition);
     void setPosition(double x, double y) { setPosition(QPointF(x, y)); }
     void setRotation(double targetAngle);
     void openGripper();
     void closeGripper();
-    void moveGamepad(double xAxis, double yAxis, double phi);
+    void alternateGripper(bool open);
+    void moveGamepad(double x, double y, double phi);
+    void moveGamepad3d(double x, double y, double yaw);
+    QMap<int, double> moveHaptic(QMap<int, double> axes);
     void resetSetup();
     void resetSetup(bool randomize);
     void resetSetupRandom();
@@ -46,16 +56,16 @@ public slots:
 
 private slots:
     void onMovementFinished();
-signals:
-    void connectStatusChanged(bool connected);
-    void positionUpdated(QPointF pos, qreal rot);
 
+signals:
+    void positionUpdated(QPointF pos, qreal rot);
     void moveRel(QPointF pos, int moveTime = -1);
     void moveAbs(QPointF pos, int moveTime = -1);
     void rotateAbs(double angle, int moveTime = -1);
     void rotateRel(double angle, int moveTime = -1);
     void setGripperState(bool open);
     void resetScene(bool randomPositions);
+
 protected:
     QPointF mOffset;
     double mScaling;

@@ -22,9 +22,9 @@ DepthMapWriter::DepthMapWriter()
 {
     setName("DepthMapWriter");
     setDesc("Inverts the image");
-    setGroup("user");
-    mIn.setName("input");
-    mOut.setName("output");
+    setGroup("depth map");
+    mIn.setName("imageIn");
+    mOut.setName("imageOut");
     addInputPort(mIn);
     addOutputPort(mOut);
 }

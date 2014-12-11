@@ -27,7 +27,7 @@ ImageOutput::ImageOutput()
     mImage.setName("inImage");
     mImage.setDesc("Image input port");
     addInputPort(mImage);
-    mFile.setName("inFile");
+    mFile.setName("outFile");
     mFile.setDesc("File to write");
     mFile.setFilter("*.jpg *.png *.bmp");
     addInputPort(mFile);

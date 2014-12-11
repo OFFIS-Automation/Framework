@@ -78,6 +78,7 @@ bool RemoteRcUnit::acquired()
 void RemoteRcUnit::setObserver(RcUnitBaseObserver *observer)
 {
     //@TODO
+    Q_UNUSED(observer)
 }
 
 QVariantList RemoteRcUnit::getFlags()

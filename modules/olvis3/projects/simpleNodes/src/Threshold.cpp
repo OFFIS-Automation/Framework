@@ -26,15 +26,15 @@ Threshold::Threshold()
     setDesc("Thresholds an image.");
     setGroup("image/color");
 
-    mOut.setName("outImage");
+    mOut.setName("imageOut");
     mOut.setDesc("Image output port");
     addOutputPort(mOut);
 
-    mIn.setName("inImage");
+    mIn.setName("imageIn");
     mIn.setDesc("Image input");
     addInputPort(mIn);
 
-    mThreshold.setName("inThreshold");
+    mThreshold.setName("threshold");
     mThreshold.setDesc("Threshold value");
     mThreshold.setDefault(128);
     mThreshold.setRange(0, 255);

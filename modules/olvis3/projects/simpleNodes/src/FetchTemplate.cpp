@@ -22,13 +22,13 @@ FetchTemplate::FetchTemplate()
 {
     setName("FetchTemplate");
     setDesc("Fetches a template from the given image on the ROI position.");
-    setGroup("image/reshape");
-    mIn.setName("input");
-    mOut.setName("output");
+    setGroup("image/object detection");
+    mIn.setName("imageIn");
+    mOut.setName("templateOut");
     addInputPort(mIn);
     addOutputPort(mOut);
 
-    mRoi.setName("newRoi");
+    mRoi.setName("roi");
     mRoi.setDesc("Region where the template is extracted. Only applied when changed.");
     mRoi.setMode(SingleShotPortMode);
     mRoi.setDisplayVisibility(false);

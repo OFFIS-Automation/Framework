@@ -20,7 +20,7 @@ REGISTER_FILTER(RectInput);
 
 RectInput::RectInput()
 {
-    setName("RectInput");
+    setName("Rect");
     setDesc("Input filter for the automation.");
     setGroup("automation/input");
     mIn.setName("input rect");

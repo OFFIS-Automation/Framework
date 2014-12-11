@@ -24,7 +24,7 @@ REGISTER_FILTER(VideoInput);
 
 VideoInput::VideoInput()
 {
-    setName("AviInput");
+    setName("VideoInput");
     setDesc("Reads a video data stream and outsputs the single frames (with variable frame rate). The fps-rate of this processor in always >= the requested fps.");
     setGroup("input");
 

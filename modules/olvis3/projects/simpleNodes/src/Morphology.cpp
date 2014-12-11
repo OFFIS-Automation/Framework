@@ -23,7 +23,7 @@ REGISTER_FILTER(Morphology);
 Morphology::Morphology()
 {
     setName("Morphology");
-    setGroup("image/convert");
+    setGroup("image/math");
 
     mOperation.setName("operation");
     mOperation.setDesc("Perform the selected morphology operation.");

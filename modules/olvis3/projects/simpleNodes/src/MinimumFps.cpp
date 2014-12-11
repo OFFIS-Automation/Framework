@@ -29,7 +29,7 @@ MinimumFps::MinimumFps()
     mFps.setRange(0.1,1000.0);
     mFps.setDefault(5.0);
     addInputPort(mFps);
-    mMode.setName("Mode");
+    mMode.setName("mode");
     mMode.setDesc("Active wait is cpu-time consuming, but on most systems more precise than sleep wait");
     mMode.addChoice(SleepMode, "Sleep wait");
     mMode.addChoice(ActiveWaitMode, "Active wait");

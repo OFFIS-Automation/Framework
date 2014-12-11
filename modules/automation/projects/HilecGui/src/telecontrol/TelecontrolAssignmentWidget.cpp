@@ -96,6 +96,7 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
 
 void TelecontrolAssignmentWidget::switchToUnit(QString unit)
 {
+    updateUnits(false);
     int id = mUnitIndexes.key(unit, -1);
     if(id >= 0)
         ui->tabWidget->setCurrentIndex(id);

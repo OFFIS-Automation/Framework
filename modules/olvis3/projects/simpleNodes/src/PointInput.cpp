@@ -23,9 +23,9 @@ PointInput::PointInput(bool list)
 {
     mAsList = list;
     if(list)
-        setName("PointListInput");
+        setName("PointList");
     else
-        setName("PointInput");
+        setName("Point");
     setDesc("Input filter for the automation.");
     setGroup("automation/input");
     mIn.setName("input point");

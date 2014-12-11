@@ -23,7 +23,7 @@ VarianceFilter::VarianceFilter()
     setName("Variance");
     setDesc("Calculates the variance inside the imageor region of interest.");
     setGroup("image/analysis");
-    mIn.setName("input");
+    mIn.setName("imageIn");
     mVarianceOut.setName("variance");
     mMeanOut.setName("mean grayscale");
     mRoiIn.setMode(OptionalPortMode);

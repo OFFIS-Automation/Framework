@@ -22,7 +22,7 @@ RectInput::RectInput()
 {
     setName("RectInput");
     setDesc("Input filter for the automation.");
-    setGroup("hilec/input");
+    setGroup("automation/input");
     mIn.setName("input rect");
     mIn.setMode(SingleShotPortMode);
     mOut.setName("output");

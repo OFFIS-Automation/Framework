@@ -23,7 +23,7 @@ Bilateral::Bilateral()
 {
     setName("Bilateral filter");
     setDesc("Removes noise from a given image by applying the bilateral filter to an image.");
-    setGroup("image/convert");
+    setGroup("image/noise");
 
     mIn.setName("inImage");
     mIn.setDesc("Image input port");

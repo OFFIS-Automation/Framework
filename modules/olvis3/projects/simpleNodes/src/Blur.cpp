@@ -22,6 +22,7 @@ Blur::Blur()
 {
     setName("Blur");
     setDesc("Smoothes image using a normalized box filter.");
+    setGroup("image/noise");
 }
 
 void Blur::execute()

@@ -24,7 +24,7 @@ Denoising::Denoising()
 {
     setName("Denoising (very slow)");
     setDesc("Removes noise from a given image. (Noise is expected to be gaussian).");
-    setGroup("image/convert");
+    setGroup("image/noise");
 
     mOut.setName("outImage");
     mOut.setDesc("Image output port");

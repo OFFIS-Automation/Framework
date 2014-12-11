@@ -23,6 +23,7 @@ Invert::Invert()
     setName("InvertImage");
     setDesc("Inverts each channel of the image");
     setGroup("image/color");
+
     addInputPort(mIn);
     addOutputPort(mOut);
 }

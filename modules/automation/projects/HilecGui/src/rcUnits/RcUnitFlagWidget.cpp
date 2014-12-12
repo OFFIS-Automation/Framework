@@ -43,7 +43,7 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     }
     foreach(const RcFlagDefinition& def, help.flags){
         QLineEdit* edit = new QLineEdit();
-        edit->setMinimumWidth(50);
+        edit->setMinimumWidth(70);
         edit->setAlignment(Qt::AlignRight);
         edit->setReadOnly(true);
         ui->formLayout->addRow(def.name, edit);
@@ -126,7 +126,7 @@ void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
         float checkboxWidth = 20.0;
         setMaximumWidth(titleWidth + checkboxWidth);
     } else {
-        setMaximumWidth(INT_MAX);
+        setMaximumWidth(SHRT_MAX);
         restoreGeometry(mGeometry);
     }
 

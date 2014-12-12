@@ -44,7 +44,7 @@ QString TutorialUnitInterface::description() const
 {
 	QString desc;
     desc += "This RC-Unit is a virtual robot that can be used to learn the automation.";
-    desc += "<br />"; // hml line break
+    desc += "<br/>"; // hml line break
     desc += "";
 	return desc;
 }
@@ -75,8 +75,8 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     // rc.addMethod(methodName, shortDesc, longDesc);
     // method name must match the real method name exactly
 
-    rc.addMethod("acquireHardware", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands");
-    rc.addMethod("releaseHardware", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called");
+    rc.addMethod("acquire", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands");
+    rc.addMethod("release", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called");
 
     rc.addMethod("getPosition", "Returns the current position", "Returns he current robot position and rotation");
     rc.addMethod("setPosition", "Move robot to fixed position", "Move the robot to a absolute x/y coordinate");

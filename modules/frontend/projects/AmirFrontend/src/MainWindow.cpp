@@ -157,6 +157,11 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
     }
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+    QMainWindow::keyPressEvent(e);
+}
+
 
 QStringList MainWindow::saveDocks()
 {

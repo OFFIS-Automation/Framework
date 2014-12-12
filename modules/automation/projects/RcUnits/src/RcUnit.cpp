@@ -28,6 +28,7 @@
 #include "TcInvoker.h"
 #include "RcMethodInvoker.h"
 #include <QDebug>
+#include <rc/types/RobotRcUnit.h>
 
 RcUnit::RcUnit(const QString &name, const QString& configFile)
     : mName(name),
@@ -83,7 +84,11 @@ void RcUnit::run()
                 connect(mRcUnit, SIGNAL(hwConnectionStatusChanged(bool)), this, SLOT(hwStatusChanged(bool)), Qt::QueuedConnection);
                 connect(this, SIGNAL(callAcquire()), mRcUnit, SLOT(acquire()), Qt::QueuedConnection);
                 connect(this, SIGNAL(callRelease()), mRcUnit, SLOT(release()), Qt::QueuedConnection);
+                RobotRcUnit* robotRcUnit = static_cast<RobotRcUnit*>(hwRcUnit);
+                if(robotRcUnit)
+                    connect(this, SIGNAL(callStop()), mRcUnit, SLOT(stop()), Qt::QueuedConnection);
             }
+
         }
         exec();
         if(mRcUnit)
@@ -474,6 +479,11 @@ void RcUnit::acquire()
 void RcUnit::release()
 {
     emit callRelease();
+}
+
+void RcUnit::stop()
+{
+    emit callStop();
 }
 
 QVariantList RcUnit::getFlags()

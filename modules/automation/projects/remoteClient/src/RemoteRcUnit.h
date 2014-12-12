@@ -35,6 +35,7 @@ public:
 
     void acquire();
     void release();
+    void stop();
     bool acquired();
     void setObserver(RcUnitBaseObserver *observer);
     QVariantList getFlags();

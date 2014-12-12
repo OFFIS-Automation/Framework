@@ -46,6 +46,7 @@ public slots:
 signals:
     void aboutToClose();
 protected:
+    void keyPressEvent(QKeyEvent*);
     QDockWidget* takeoverDock(const QString& name, MainWindow* other);
     void updateDockWidget(QDockWidget* d);
     QWidget* mCentral;

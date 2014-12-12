@@ -373,6 +373,14 @@ void RcUnitsBase::release(const QString &unitName)
     unit->release();
 }
 
+void RcUnitsBase::stop(const QString &unitName)
+{
+    RcUnitBase* unit = mUnits.value(unitName, 0);
+    if(!unit)
+        return;
+    unit->stop();
+}
+
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed)
 {

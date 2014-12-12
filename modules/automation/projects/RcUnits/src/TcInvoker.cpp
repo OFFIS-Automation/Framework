@@ -25,7 +25,7 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepad
     : mDevice(device)
 {
     // Install key event handler
-    qApp->installEventFilter(this);
+    // TODO: think of something qApp->installEventFilter(this);
 
     // Init joystick method and buttons
     foreach(const RcUnit::TcMoveMethod& gamepadMethod, gamepadMethods){
@@ -55,20 +55,19 @@ bool TcInvoker::eventFilter(QObject *watched, QEvent *event)
         switch (keyEvent->key()) {
         case Qt::Key_F2:
             handleGamepadButtonToggled(Tc::FootboardWestButton, event->type() == QEvent::KeyPress);
-            break;
+            return true;
         case Qt::Key_F3:
             handleGamepadButtonToggled(Tc::FootboardNorthButton, event->type() == QEvent::KeyPress);
-            break;
+            return true;
         case Qt::Key_F4:
             handleGamepadButtonToggled(Tc::FootboardEastButton, event->type() == QEvent::KeyPress);
-            break;
+            return true;
         case Qt::Key_F5:
             handleGamepadButtonToggled(Tc::FootboardSouthButton, event->type() == QEvent::KeyPress);
-            break;
+            return true;
         default:
-            break;
+            return false;
         }
-        return true;
     }
     return false;
 }

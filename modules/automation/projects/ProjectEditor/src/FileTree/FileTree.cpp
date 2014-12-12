@@ -76,9 +76,9 @@ void FileTree::on_treeView_doubleClicked(const QModelIndex &index)
     emit openFileRequested(mModel.fileInfo(realIndex).absoluteFilePath());
 }
 
-void FileTree::keyPressEvent(QKeyEvent *)
+void FileTree::keyPressEvent(QKeyEvent *e)
 {
-
+    QDockWidget::keyPressEvent(e);
 }
 
 void FileTree::on_treeView_customContextMenuRequested(const QPoint &pos)

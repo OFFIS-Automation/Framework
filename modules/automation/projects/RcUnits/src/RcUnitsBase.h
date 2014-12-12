@@ -63,7 +63,7 @@ public:
 
     void acquire(const QString& unitName);
     void release(const QString& unitName);
-
+    void stop(const QString& unitName);
 signals:
     void unitsUpdated();
     void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);

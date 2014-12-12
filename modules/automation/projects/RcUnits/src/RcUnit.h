@@ -91,6 +91,7 @@ public:
     QVariantMap getConstants() const { return mConstantDefs; }
     void acquire();// { emit callAcquire(); }
     void release();// { emit callRelease(); }
+    void stop();
     void setObserver(RcUnitBaseObserver* observer) { mObserver = observer; }
 
     QVariantList getFlags();
@@ -122,6 +123,7 @@ public:
 signals:
     void callAcquire();
     void callRelease();
+    void callStop();
 
 private slots:
     void hwStatusChanged(bool status);

@@ -83,6 +83,7 @@ public slots:
 
     virtual void callRcUnitAcquire(const QString& unitName) = 0;
     virtual void callRcUnitRelease(const QString& unitName) = 0;
+    virtual void callRcUnitStop(const QString& unitName) = 0;
 signals:
     void newErrorStr(const QString& text);
     void newTextStr(const QString& text);

@@ -239,6 +239,11 @@ void HilecCore::callRcUnitRelease(const QString &unitName)
     RcUnits::instance()->release(unitName);
 }
 
+void HilecCore::callRcUnitStop(const QString &unitName)
+{
+    RcUnits::instance()->stop(unitName);
+}
+
 QWidget *HilecCore::createHapticWidget(const QString &unitName)
 {
     return RcUnits::instance()->createHapticWidget(unitName);

@@ -69,6 +69,11 @@ void RemoteRcUnit::release()
     //@TODO
 }
 
+void RemoteRcUnit::stop()
+{
+    //@TODO
+}
+
 bool RemoteRcUnit::acquired()
 {
     //@TODO

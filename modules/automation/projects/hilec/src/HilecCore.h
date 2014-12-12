@@ -99,6 +99,7 @@ public slots:
 
     virtual void callRcUnitAcquire(const QString& unitName);
     virtual void callRcUnitRelease(const QString& unitName);
+    virtual void callRcUnitStop(const QString& unitName);
 protected:
     PythonInterpreter mPython;
     PythonLinter mLint;

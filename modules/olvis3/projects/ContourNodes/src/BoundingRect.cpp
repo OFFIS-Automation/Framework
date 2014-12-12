@@ -21,7 +21,7 @@ REGISTER_FILTER(BoundingRect);
 BoundingRect::BoundingRect()
 {
     setName("BoundingRect");
-    setDesc("calculates the boudning rectangle contour");
+    setDesc("Calculates the boudning rectangle contour.");
     setGroup("image/contour");
     mIn.setName("input");
     mOut.setName("boundingRect");

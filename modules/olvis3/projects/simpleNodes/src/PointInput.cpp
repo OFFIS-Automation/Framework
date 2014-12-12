@@ -23,11 +23,11 @@ PointInput::PointInput(bool list)
 {
     mAsList = list;
     if(list)
-        setName("PointListInput");
+        setName("PointList");
     else
-        setName("PointInput");
+        setName("Point");
     setDesc("Input filter for the automation.");
-    setGroup("hilec/input");
+    setGroup("automation/input");
     mIn.setName("input point");
     mIn.setMode(SingleShotPortMode);
     mOut.setName("output");

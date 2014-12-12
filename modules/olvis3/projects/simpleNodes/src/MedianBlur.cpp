@@ -22,6 +22,7 @@ MedianBlur::MedianBlur()
 {
     setName("Median");
     setDesc("Smoothes an image using median filter.");
+    setGroup("image/smoothing");
 }
 
 void MedianBlur::execute()

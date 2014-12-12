@@ -20,7 +20,7 @@
 REGISTER_FILTER(ScaleImage);
 ScaleImage::ScaleImage()
 {
-    setName("ScaleImage");
+    setName("Scale");
     setDesc("Scales an image by a factor.");
     setGroup("image/reshape");
     mScale.setName("scale");

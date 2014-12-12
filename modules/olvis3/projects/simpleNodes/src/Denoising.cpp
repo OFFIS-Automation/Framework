@@ -22,15 +22,15 @@ REGISTER_FILTER(Denoising);
 
 Denoising::Denoising()
 {
-    setName("Denoising (very slow)");
+    setName("Non-local Means Denoising");
     setDesc("Removes noise from a given image. (Noise is expected to be gaussian).");
-    setGroup("image/convert");
+    setGroup("image/smoothing");
 
-    mOut.setName("outImage");
+    mOut.setName("imageout");
     mOut.setDesc("Image output port");
     addOutputPort(mOut);
 
-    mIn.setName("inImage");
+    mIn.setName("imageIn");
     mIn.setDesc("Image input port");
     addInputPort(mIn);
 

@@ -39,7 +39,7 @@ signals:
     void activateGamepad(const QString& unitName);
     void deactivateGamepad();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
-    void updateGamepadAssignment(const QString& unitName, const QString& hapticInterfaceName);
+    void updateGamepadAssignment(const QString& unitName, const QString& gamepadInterfaceName);
 
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();

@@ -20,7 +20,7 @@ REGISTER_FILTER(FlipImage);
 
 FlipImage::FlipImage()
 {
-    setName("FlipImage");
+    setName("Flip");
     setDesc("Flips an image horizontal, vertical or both.");
     setGroup("image/reshape");
     addInputPort(mImageIn);

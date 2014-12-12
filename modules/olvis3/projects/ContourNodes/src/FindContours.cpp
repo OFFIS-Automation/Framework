@@ -23,7 +23,7 @@ FindContours::FindContours()
     setName("FindContours");
     setDesc("Extracts contours from an image");
     setGroup("image/contour");
-    mIn.setName("input");
+    mIn.setName("imageIn");
     mOffsetIn.setName("offset");
     mOffsetIn.setDesc("Offset that will be added to all calculated positions");
     mOffsetIn.setDefault(QPointF(0.0, 0.0));

@@ -21,10 +21,10 @@ REGISTER_FILTER(VideoWriter);
 
 VideoWriter::VideoWriter()
 {
-    setName("VideoWriter");
+    setName("VideoOutput");
     setDesc("Writes imcoming data to an *.avi video file.");
     setGroup("output");
-    mIn.setName("input");
+    mIn.setName("imageIn");
     addInputPort(mIn);
     mFileName.setName("file");
     mFpsIn.setName("fps");

@@ -22,7 +22,8 @@ BackgroundSubstraction::BackgroundSubstraction()
 {
     setName("BackgroundSubstraction");
     setDesc("Automatic background substraction.");
-    setGroup("image/convert");
+    setGroup("image/math");
+
     mMode.setName("mode");
     mMode.setDesc("Select the operation mode.");
     mMode.addChoice(MOG, "Default MOG");

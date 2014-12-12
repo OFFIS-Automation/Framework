@@ -20,9 +20,10 @@ REGISTER_FILTER(Invert);
 
 Invert::Invert()
 {
-    setName("InvertImage");
+    setName("Invert");
     setDesc("Inverts each channel of the image");
     setGroup("image/color");
+
     addInputPort(mIn);
     addOutputPort(mOut);
 }

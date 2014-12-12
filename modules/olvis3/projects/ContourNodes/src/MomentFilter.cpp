@@ -23,7 +23,7 @@ REGISTER_FILTER(MomentFilter);
 MomentFilter::MomentFilter()
 {
     setName("Moments");
-    setDesc("Caclulates the moments of a contour");
+    setDesc("Calculates the moments of a contour.");
     setGroup("image/contour");
     mIn.setName("input");
     mNumPixelsOut.setName("numPixels");

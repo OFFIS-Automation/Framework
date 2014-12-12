@@ -21,9 +21,9 @@ REGISTER_FILTER(Bilateral);
 
 Bilateral::Bilateral()
 {
-    setName("Bilateral filter");
+    setName("Bilateral");
     setDesc("Removes noise from a given image by applying the bilateral filter to an image.");
-    setGroup("image/convert");
+    setGroup("image/smoothing");
 
     mIn.setName("inImage");
     mIn.setDesc("Image input port");

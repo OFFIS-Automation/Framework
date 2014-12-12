@@ -50,7 +50,7 @@ public:
      * with an assigned name. Later, the robot should be able to return to this position.
      * @param pos The position as QVariant, as returned by rcGetPosition
      */
-    virtual void rcSetPosition(const QVariant& pos) {}
+    virtual void rcSetPosition(const QVariant& pos) { Q_UNUSED(pos)}
 
 protected:
     RobotRcUnit() {}

@@ -21,7 +21,7 @@ REGISTER_FILTER(RotateImage);
 
 RotateImage::RotateImage()
 {
-    setName("RotateImage");
+    setName("Rotate");
     setGroup("image/reshape");
     setDesc("Rotates an image.");
     mAngle.setName("angle");

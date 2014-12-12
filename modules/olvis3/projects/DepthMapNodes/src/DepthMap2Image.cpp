@@ -24,7 +24,7 @@ DepthMap2Image::DepthMap2Image()
     setDesc("Creates a grayscale image from the DepthMap");
     setGroup("depth map");
     mIn.setName("input");
-    mOut.setName("output");
+    mOut.setName("imageOut");
     addInputPort(mIn);
     addOutputPort(mOut);
 }

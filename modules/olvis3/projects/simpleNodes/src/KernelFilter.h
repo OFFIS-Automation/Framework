@@ -27,15 +27,15 @@ public:
     {
         setGroup("image/convert");
 
-        mOut.setName("outImage");
+        mOut.setName("imageOut");
         mOut.setDesc("Image output port");
         addOutputPort(mOut);
 
-        mIn.setName("inImage");
-        mIn.setDesc("Image input");
+        mIn.setName("imageIn");
+        mIn.setDesc("Image input port");
         addInputPort(mIn);
 
-        mKSize.setName("kSize");
+        mKSize.setName("kernelSize");
         mKSize.setDesc("Size of the used kernel for operation");
         mKSize.setDefault(3);
         mKSize.setRange(1,255);

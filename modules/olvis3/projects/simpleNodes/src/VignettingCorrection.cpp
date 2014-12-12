@@ -22,7 +22,7 @@ VignettingCorrection::VignettingCorrection()
 {
     setName("VignettingCorrection");
     setDesc("Corrects vignetting, a common lens effect, uisng a given vignette-mask.");
-    setGroup("image/convert");
+    setGroup("image/math");
     mIn.setName("imageIn");
     addInputPort(mIn);
 

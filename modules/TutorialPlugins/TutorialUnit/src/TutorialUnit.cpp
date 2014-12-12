@@ -215,7 +215,6 @@ void TutorialUnit::resetSetupRandom()
 
 void TutorialUnit::randomizeCoordinateSystem()
 {
-
     mOffset.setX(qrand() % 100);
     mOffset.setY(qrand() % 100);
     mOffset -= QPointF(50, 50);

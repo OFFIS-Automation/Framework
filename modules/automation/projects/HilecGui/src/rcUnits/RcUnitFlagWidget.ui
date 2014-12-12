@@ -119,6 +119,12 @@
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="popupMode">
+              <enum>QToolButton::InstantPopup</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
             </widget>
            </item>
            <item>
@@ -137,7 +143,7 @@
            <item>
             <widget class="QToolButton" name="stopButton">
              <property name="toolTip">
-              <string>Stop movement</string>
+              <string>Stop movement of RC-Unit</string>
              </property>
              <property name="text">
               <string>...</string>

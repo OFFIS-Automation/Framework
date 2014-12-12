@@ -22,6 +22,7 @@ GaussianBlur::GaussianBlur()
 {
     setName("Gaussian");
     setDesc("Smoothes an image using a gaussian filter.");
+    setGroup("image/smoothing");
 }
 
 void GaussianBlur::execute()

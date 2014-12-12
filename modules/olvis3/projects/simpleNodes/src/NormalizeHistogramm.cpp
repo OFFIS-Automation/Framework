@@ -21,7 +21,7 @@ REGISTER_FILTER(NormalizeHistogramm);
 
 NormalizeHistogramm::NormalizeHistogramm()
 {
-    setGroup("image/convert");
+    setGroup("image/analysis");
     setName("EqualizeHistogram");
     setDesc("Improves the contrast of an image by equalizing the histogram.");
     addInputPort(mIn);

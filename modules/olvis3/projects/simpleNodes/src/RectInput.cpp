@@ -20,9 +20,9 @@ REGISTER_FILTER(RectInput);
 
 RectInput::RectInput()
 {
-    setName("RectInput");
+    setName("Rect");
     setDesc("Input filter for the automation.");
-    setGroup("hilec/input");
+    setGroup("automation/input");
     mIn.setName("input rect");
     mIn.setMode(SingleShotPortMode);
     mOut.setName("output");

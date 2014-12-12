@@ -21,7 +21,7 @@
 REGISTER_FILTER(ResizeImage);
 ResizeImage::ResizeImage()
 {
-    setName("ResizeImage");
+    setName("Resize");
     setDesc("Resizes an image to the given size. If the filter should constrain to with and height both, the width is in favor.");
     setGroup("image/reshape");
 

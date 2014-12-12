@@ -118,13 +118,14 @@ void RcUnitFlagWidget::on_stopButton_clicked()
 
 void RcUnitFlagWidget::on_groupBox_clicked(bool checked)
 {
-    ui->contentWidget->setVisible(checked);
+    ui->flagData->setVisible(checked);
     if(!checked){
         mGeometry = saveGeometry();
         QFontMetrics fontMetrics(ui->groupBox->font());
         float titleWidth = fontMetrics.width(ui->groupBox->title());
         float checkboxWidth = 20.0;
         setMaximumWidth(titleWidth + checkboxWidth);
+        ui->contentWidget->setEnabled(true);
     } else {
         setMaximumWidth(INT_MAX);
         restoreGeometry(mGeometry);

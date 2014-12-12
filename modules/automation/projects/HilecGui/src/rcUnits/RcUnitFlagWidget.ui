@@ -127,6 +127,9 @@
              <property name="autoRaise">
               <bool>false</bool>
              </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
             </widget>
            </item>
            <item>

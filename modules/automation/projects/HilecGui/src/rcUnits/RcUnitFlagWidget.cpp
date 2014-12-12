@@ -18,6 +18,7 @@
 #include <QCheckBox>
 #include <QDialog>
 #include <QDebug>
+#include "RcFlagWidgetSettingsDialog.h"
 
 #include "RcUnitFlagWidget.h"
 #include "ui_RcUnitFlagWidget.h"
@@ -55,9 +56,8 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
 
     QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitWidget(help.unitName);
     if(settingsWidget){
-        mDialog = new QDialog(this, Qt::Popup);
-        connect(mDialog, SIGNAL(finished(int)), this, SLOT(on_hideSettingsWidget()));
-        mDialog->setLayout(new QHBoxLayout());
+        mDialog = new RcFlagWidgetSettingsDialog(this);
+        connect(mDialog, SIGNAL(hidden()), this, SLOT(on_hideSettingsWidget()), Qt::QueuedConnection);
         mDialog->layout()->addWidget(settingsWidget);
         mDialog->hide();
     } else {
@@ -147,7 +147,7 @@ void RcUnitFlagWidget::on_settingsButton_clicked(bool checked)
 
 void RcUnitFlagWidget::on_hideSettingsWidget()
 {
-    QMutexLocker waitLock(&mWaitMutex);
-    mWait.wait(&mWaitMutex, 100);
+    //QMutexLocker waitLock(&mWaitMutex);
+    //mWait.wait(&mWaitMutex, 100);
     ui->settingsButton->setChecked(false);
 }

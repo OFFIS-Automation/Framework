@@ -25,6 +25,8 @@
 
 #include <core/RcUnitHelp.h>
 
+class RcFlagWidgetSettingsDialog;
+
 namespace Ui {
 class RcUnitFlagWidget;
 }
@@ -55,7 +57,7 @@ protected:
     RcUnitHelp mHelp;
     QList<QLineEdit*> mLineEdits;
     QByteArray mGeometry;
-    QDialog* mDialog;
+    RcFlagWidgetSettingsDialog* mDialog;
 private:
     Ui::RcUnitFlagWidget *ui;
     QMutex mWaitMutex;

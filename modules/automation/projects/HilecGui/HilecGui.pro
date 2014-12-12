@@ -73,7 +73,8 @@ HEADERS += \
     src/rcUnits/AddRemoteRcServerDialog.h \
     src/rcUnits/RcUnitFlagWidget.h \
     src/telecontrol/TelecontrolSelectionComboBox.h \
-    src/telecontrol/ConnexionAssignmentWidget.h
+    src/telecontrol/ConnexionAssignmentWidget.h \
+    src/rcUnits/RcFlagWidgetSettingsDialog.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -110,7 +111,8 @@ SOURCES += \
     src/rcUnits/AddRemoteRcServerDialog.cpp \
     src/rcUnits/RcUnitFlagWidget.cpp \
     src/telecontrol/TelecontrolSelectionComboBox.cpp \
-    src/telecontrol/ConnexionAssignmentWidget.cpp
+    src/telecontrol/ConnexionAssignmentWidget.cpp \
+    src/rcUnits/RcFlagWidgetSettingsDialog.cpp
 
 
 FORMS += \

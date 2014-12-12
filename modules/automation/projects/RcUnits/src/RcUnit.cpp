@@ -78,17 +78,11 @@ void RcUnit::run()
         setDesc(mRcUnitInterface->description());
         if(mRcUnit->rcType() >= HwRcUnitType)
         {
-            HwRcUnit* hwRcUnit = static_cast<HwRcUnit*>(mRcUnit);
-            if(hwRcUnit)
-            {
-                connect(mRcUnit, SIGNAL(hwConnectionStatusChanged(bool)), this, SLOT(hwStatusChanged(bool)), Qt::QueuedConnection);
-                connect(this, SIGNAL(callAcquire()), mRcUnit, SLOT(acquire()), Qt::QueuedConnection);
-                connect(this, SIGNAL(callRelease()), mRcUnit, SLOT(release()), Qt::QueuedConnection);
-                RobotRcUnit* robotRcUnit = static_cast<RobotRcUnit*>(hwRcUnit);
-                if(robotRcUnit)
-                    connect(this, SIGNAL(callStop()), mRcUnit, SLOT(stop()), Qt::QueuedConnection);
-            }
-
+            connect(mRcUnit, SIGNAL(hwConnectionStatusChanged(bool)), this, SLOT(hwStatusChanged(bool)), Qt::QueuedConnection);
+            connect(this, SIGNAL(callAcquire()), mRcUnit, SLOT(acquire()), Qt::QueuedConnection);
+            connect(this, SIGNAL(callRelease()), mRcUnit, SLOT(release()), Qt::QueuedConnection);
+            if(mRcUnit->rcType() == RobotRcUnitType)
+                connect(this, SIGNAL(callStop()), mRcUnit, SLOT(stop()), Qt::QueuedConnection);
         }
         exec();
         if(mRcUnit)

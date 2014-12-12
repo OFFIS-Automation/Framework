@@ -37,9 +37,11 @@ TutorialGui::~TutorialGui()
 void TutorialGui::on_resetButton_clicked()
 {
     emit resetSystem();
+    parentWidget()->hide();
 }
 
 void TutorialGui::on_randomizeButton_clicked()
 {
     emit resetSystemRandom();
+    parentWidget()->hide();
 }

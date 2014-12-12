@@ -29,6 +29,7 @@ class TutorialUnit : public RobotRcUnit
     Q_OBJECT
 public:
     TutorialUnit();
+    virtual ~TutorialUnit();
     void setScene(GraphicsView* scene);
     QVariant rcGetPosition();
     void rcSetPosition(const QVariant& var);

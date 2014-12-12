@@ -32,6 +32,11 @@ TutorialUnit::TutorialUnit()
     setScene(GraphicsView::instance());
 }
 
+TutorialUnit::~TutorialUnit()
+{
+    release();
+}
+
 void TutorialUnit::setScene(GraphicsView *scene)
 {
     mScene = scene;

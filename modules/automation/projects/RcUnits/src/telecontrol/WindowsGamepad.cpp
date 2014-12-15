@@ -111,6 +111,7 @@ void WindowsGamepad::assingButton(QMap<int, bool>& buttons, BYTE* data, int butt
 void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &buttons)
 {
     DIJOYSTATE2& status = mState;
+
     if(mGamepadType == ConnexionJoystick){
         // Axes
         joysticks[Tc::JoystickX] = correctedValue(float(status.lX));
@@ -149,6 +150,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
             buttons[Tc::TriggerButton] = buttons[Tc::LeftShoulderLowerButton] || buttons[Tc::RightShoulderLowerButton];
         }
 
+
         bool up = false, down = false, left = false, right = false;
         switch(status.rgdwPOV[0]) {
             // contour-clockwise from left direction
@@ -165,6 +167,24 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         buttons[Tc::ButtonDown] = down;
         buttons[Tc::ButtonLeft] = left;
         buttons[Tc::ButtonRight] = right;
+    }
+    buttons[Tc::VirtualAnyJoystickButton] = false;
+    foreach(double value, joysticks.values())
+    {
+        if(value != 0.0)
+        {
+            buttons[Tc::VirtualAnyJoystickButton] = true;
+            break;
+        }
+    }
+    buttons[Tc::VirtualAny6DOFButton] = false;
+    for(int i=Tc::JoystickX; i<=Tc::JoystickRoll; i++)
+    {
+        if(joysticks.value(i, 0.0) != 0.0)
+        {
+            buttons[Tc::VirtualAny6DOFButton] = true;
+            break;
+        }
     }
 }
 

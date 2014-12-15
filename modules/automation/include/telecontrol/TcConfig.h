@@ -38,6 +38,10 @@ namespace Tc
         FootboardEastButton,
         FootboardWestButton,
         TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
+        VirtualAnyJoystickButton, // toggles when any joystick is above zero
+        ImplicitActivationButton = VirtualAnyJoystickButton, // Use this if you don't want a dead mans control
+        VirtualAny6DOFButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero
+        Impliciz6DOFButton = VirtualAny6DOFButton, // Use this for 6DOF joysticks if you don't wand a dead mans control
         ButtonEnumEnd,
         ButtonEnumFirst = NorthButton
     };
@@ -98,6 +102,16 @@ namespace Tc
     inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4)
     {
         return joysticks() << j1 << j2 << j3 << j4;
+    }
+
+    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4, Joystick j5)
+    {
+        return joysticks() << j1 << j2 << j3 << j4 << j5;
+    }
+
+    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4, Joystick j5, Joystick j6)
+    {
+        return joysticks() << j1 << j2 << j3 << j4 << j5 << j6;
     }
 
     inline QList<Joystick> allJoysticks() {

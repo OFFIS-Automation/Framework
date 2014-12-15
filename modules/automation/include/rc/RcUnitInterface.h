@@ -202,8 +202,4 @@ public:
 #define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.1"
 Q_DECLARE_INTERFACE(RcUnitInterface, RcUnitInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
 #endif // RCUNITINTERFACE_H

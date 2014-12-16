@@ -75,22 +75,31 @@ void RcUnitFlagWidget::updateFlags(const QVariantList &flags)
     for(int i=0;i<mLineEdits.size(); i++)
     {
         QVariant data = flags.value(i);
-        RcFlagDefinition def = mHelp.flags.value(i);
         QLineEdit* line = mLineEdits[i];
-        QString content;
-        if(data.type() == QVariant::Bool || data.type() == QVariant::String)
-            content = data.toString();
-        else if(data.canConvert(QVariant::Double)){
-            content = QString::number(data.toDouble(), 'f', def.decimalPlaces);
-        }else {
-            content = data.toString();
-        }
+        if(data.isValid())
+        {
+            RcFlagDefinition def = mHelp.flags.value(i);
+            QString content;
+            if(data.type() == QVariant::Bool || data.type() == QVariant::String)
+                content = data.toString();
+            else if(data.canConvert(QVariant::Double)){
+                content = QString::number(data.toDouble(), 'f', def.decimalPlaces);
+            }else {
+                content = data.toString();
+            }
 
 
-        if(!def.unit.isEmpty()){
-            content += " " + def.unit;
+            if(!def.unit.isEmpty()){
+                content += " " + def.unit;
+            }
+            line->setText(content);
+            line->setStyleSheet("QLineEdit{background: white;}");
+            line->setToolTip("");
         }
-        line->setText(content);
+        else {
+            line->setStyleSheet("QLineEdit{background: yellow;}");
+            line->setToolTip("Value may be outdated; The last update poll did not give an valid result.");
+        }
     }
 }
 

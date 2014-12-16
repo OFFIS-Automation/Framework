@@ -92,7 +92,10 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
 
-    rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::FootboardNorthButton);
+    rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::Impliciz6DOFButton);
+
+    rc.registerGamepadButtonMethod("openGripper", Tc::WestButton);
+    rc.registerGamepadButtonMethod("closeGripper", Tc::EastButton);
 
     rc.registerGamepadButtonMethod("openGripper", Tc::LeftShoulderLowerButton);
     rc.registerGamepadButtonMethod("closeGripper", Tc::RightShoulderLowerButton);

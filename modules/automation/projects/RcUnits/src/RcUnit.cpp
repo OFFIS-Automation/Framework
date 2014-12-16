@@ -106,9 +106,7 @@ void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
         QList<Method>& methods = mMethods[methodName];
         for(int i=0;i<methods.size();i++){
             Method& method = methods[i];
-            if(method.paramNames.size() == names.size()){
-                method.paramNames = names;
-            }
+            method.paramNames = names;
         }
     }
     if(mTcGamepadMoveMethods.contains(methodName)){
@@ -249,7 +247,9 @@ void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
     {
         if(methods.last().arguments.size() == method.parameterTypes().size())
             return; // overloading not possible with the same number of arguments
+        QStringList paramNames = methods.last().paramNames; // copy param names if set by user
         addMethod(methods.last().name, methods.last().shortDesc, methods.last().longDesc);
+        methods.last().paramNames = paramNames;  // copy param names if set by user
     }
     Method& m = methods.last();
     QByteArray retType = method.typeName();

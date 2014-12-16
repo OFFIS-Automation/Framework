@@ -46,8 +46,8 @@ public:
 	
 	/**
 	* function is called when the plugin is added to a project and a config file is needed
-	* should return true on success. If a gui dialog or wizard can be used with the given parent
-	* if sometinh failes, the method should print an error and return false
+    * should return true on success. If a GUI dialog or wizard can be used with the given parent
+    * if something failes, the method should print an error and return false
 	*/
 	virtual bool createConfig(const QString& configFile, QWidget* parentForGuis);
 	

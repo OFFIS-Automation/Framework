@@ -75,13 +75,13 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     // rc.addMethod(methodName, shortDesc, longDesc);
     // method name must match the real method name exactly
 
-    rc.addMethod("acquire", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands");
-    rc.addMethod("release", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called");
+    rc.addMethod("acquire", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands.");
+    rc.addMethod("release", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called.");
 
-    rc.addMethod("getPosition", "Returns the current position", "Returns he current robot position and rotation");
-    rc.addMethod("setPosition", "Move robot to fixed position", "Move the robot to a absolute x/y coordinate");
-    rc.addMethod("setRotation", "Rotate robot to fixed angle", "Move the robot to an absolute rotational angle (in degrees)");
-    rc.addMethod("closeGripper", "Closes the gripper", "Closes the robot's gripper and grasps one object that is between the jaws.");
+    rc.addMethod("getPosition", "Returns the current position", "Returns he current robot position and rotation.");
+    rc.addMethod("setPosition", "Move robot to fixed position", "Moves the robot to a absolute x/y coordinate.");
+    rc.addMethod("setRotation", "Rotate robot to fixed angle", "Moves the robot to an absolute rotational angle (in degrees).");
+    rc.addMethod("closeGripper", "Closes the gripper", "Closes the robot's gripper and grasps one object that is between / next to the jaws.");
     rc.addMethod("openGripper", "Opens the gripper", "Opens the robot's gripper and releases any objects.");
 
     rc.addMethod("resetSetup", "Resets the setup", "Places the robot and the spheres to the start positions.");
@@ -91,7 +91,6 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
-
     rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::Impliciz6DOFButton);
 
     rc.registerGamepadButtonMethod("openGripper", Tc::WestButton);
@@ -117,8 +116,3 @@ void TutorialUnitInterface::deleteInstance(QObject *instance)
     delete instance;
     hasInstance = false;
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(TutorialUnitInterface,
-TutorialUnitInterface)
-#endif

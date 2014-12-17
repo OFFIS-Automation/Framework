@@ -12,14 +12,10 @@ DESTDIR = $${targetDir}/rcUnits
 INCLUDEPATH += $${targetDir}/hilec/include
 
 HEADERS += \
+    $${targetDir}/hilec/include/types/HwRcUnit.h \
     src/CustomRcUnitInterface.h \
-    src/CustomRcUnit.h \
-    src/CustomRcUnitGui.h
+    src/CustomRcUnit.h
 
 SOURCES += \
     src/CustomRcUnitInterface.cpp \
-    src/CustomRcUnit.cpp \
-    src/CustomRcUnitGui.cpp
-
-FORMS += \
-    src/CustomRcUnitGui.ui
+    src/CustomRcUnit.cpp

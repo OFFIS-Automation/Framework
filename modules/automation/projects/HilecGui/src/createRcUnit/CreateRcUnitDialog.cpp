@@ -74,7 +74,6 @@ void CreateRcUnitDialog::createPlugin()
     QString source = "CustomRcUnit";
     files << "src/CustomRcUnit.h" << "src/CustomRcUnit.cpp";
     files << "src/CustomRcUnitInterface.h" << "src/CustomRcUnitInterface.cpp";
-    files << "src/CustomRcUnitGui.h" << "src/CustomRcUnitGui.cpp" << "src/CustomRcUnitGui.ui";
     files << "CustomRcUnit.pro";
     foreach(QString file, files)
     {

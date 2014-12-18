@@ -17,10 +17,6 @@
 #include <ports/FilePort.h>
 #include <QStringList>
 
-#if QT_VERSION < 0x050000
-Q_DECLARE_METATYPE (QFileInfo)
-#endif
-
 QVariant port::File::variant(const QFileInfo &val)
 {
     return QVariant::fromValue<QFileInfo>(val);
@@ -31,8 +27,6 @@ QFileInfo port::File::fromVariant(const QVariant &val)
     return val.value<QFileInfo>();
 }
 
-
-
 port::File::File() : Port(qMetaTypeId<QFileInfo>(), "File")
 {
     setIcon(QImage(":/defaultPorts/images/file.png"));
@@ -42,6 +36,7 @@ void port::File::setDefault(const QFileInfo& dir)
 {
     setDefaultValueRaw(variant(dir));
 }
+
 QString port::File::toString(const QVariant& var) const
 {
     return fromVariant(var).absoluteFilePath();

@@ -185,11 +185,7 @@ bool RcUnit::initialize(RcUnitInterface *plugin)
     {
         QMetaMethod method = meta->method(i);
         // Get method signature
-#if QT_VERSION < 0x050000
-        QString sig = method.signature();
-#else
         QString sig = method.methodSignature();
-#endif
         int end = sig.indexOf('(');
         sig = sig.mid(0,end);
 

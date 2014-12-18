@@ -171,8 +171,3 @@ void ProjectEditor::closeProject()
     mFileTree->setEnabled(false);
     mToolbar->setBaseDir(QString());
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(ProjectEditor, ProjectEditor);
-#endif
-

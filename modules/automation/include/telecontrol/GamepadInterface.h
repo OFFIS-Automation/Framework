@@ -65,9 +65,4 @@ public:
 #define GamepadInterface_iid "com.amir.hilec.GamepadInterface/1.0"
 Q_DECLARE_INTERFACE(GamepadInterface, GamepadInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
-
 #endif // GAMEPADINTERFACE_H

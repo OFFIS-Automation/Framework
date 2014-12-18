@@ -40,7 +40,3 @@ QObject* OlvisModelPlugin::getInterfaceObject()
 {
     return mInterface;
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(OlvisInterface, OlvisModelPlugin);
-#endif

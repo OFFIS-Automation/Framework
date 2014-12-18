@@ -35,8 +35,4 @@ public:
 
 Q_DECLARE_INTERFACE(FilterPluginInterface, FilterPluginInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
 #endif // FILTERPLUGIN_H

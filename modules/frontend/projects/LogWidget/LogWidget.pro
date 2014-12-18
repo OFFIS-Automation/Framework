@@ -23,8 +23,7 @@
 TARGET = LogWidget
 TEMPLATE = lib
 CONFIG += staticlib
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets
 
 INCLUDEPATH += $$quote(../../include)
 

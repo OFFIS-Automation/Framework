@@ -33,12 +33,6 @@ namespace Ui {
 
 class QPlainTextEdit;
 
-#if QT_VERSION < 0x050000
-#define QMessageLogContext int
-#define QtMessageHandler QtMsgHandler
-#define qInstallMessageHandler qInstallMsgHandler
-#endif
-
 class LogWindow : public QDockWidget
 {
     Q_OBJECT
@@ -48,9 +42,6 @@ public:
     ~LogWindow();
 
     static void logMessage(QtMsgType type,const QMessageLogContext& context,const QString& msg);
-#if QT_VERSION < 0x050000
-    static void logMessage(QtMsgType type, const char* msg) { logMessage(type, 0, QString(msg)); }
-#endif
 
 private slots:
     void onTimeout();

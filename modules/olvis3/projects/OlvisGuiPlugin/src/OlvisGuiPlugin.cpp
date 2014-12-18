@@ -187,8 +187,3 @@ void OlvisGuiPlugin::writeXmlConfig(QXmlStreamWriter &writer)
     writer.writeEndElement();
     writer.writeEndElement();
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(OlvisGuiPlugin, OlvisGuiPlugin);
-#endif
-

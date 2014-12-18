@@ -18,10 +18,11 @@
 #include <QDebug>
 #include <QFile>
 #include <QCoreApplication>
+#include <stdio.h>
 
+#ifndef NO_TIME_TRACER
 #include <Timer.h>
 
-#include <stdio.h>
 
 Tracer::Tracer() : mTimer(new Timer())
 {
@@ -121,6 +122,43 @@ void Tracer::run()
         trace->reserve(size);
     }
 }
+#else
+Tracer::Tracer()
+{
+}
+
+Tracer::~Tracer()
+{
+}
+
+void Tracer::setEnabled(bool)
+{
+}
+
+int Tracer::labelId(const QString &)
+{
+    return 0;
+}
+
+Tracer& Tracer::instance()
+{
+    static Tracer tracer;
+    return tracer;
+}
+
+double Tracer::timestamp()
+{
+    return 0.0;
+}
+
+void Tracer::trace(int event, int name, int value, int id)
+{
+}
+
+void Tracer::run()
+{
+}
+#endif
 
 
 SubTracer::SubTracer(int filterId, int id) : mTracer(Tracer::instance())

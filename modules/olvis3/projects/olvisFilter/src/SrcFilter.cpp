@@ -41,7 +41,9 @@ SrcFilter::~SrcFilter()
     if(mInitialized)
         mUserFilter->deinitialize();
     delete mUserFilter;
+#ifndef NO_SENSOR_SYSTEM
     qDeleteAll(mDataProvider);
+#endif
 }
 
 void SrcFilter::initialize(int id, const QString &name, int processorId)
@@ -69,6 +71,7 @@ Port *SrcFilter::getPort(const QString &name) const
 void SrcFilter::setName(const QString &name)
 {
     mName = name;
+#ifndef NO_SENSOR_SYSTEM
     foreach(OutputPort* port, mUserFilter->d->outputs)
     {
         OlvisSensorProvider* oldProvider = mDataProvider.value(port, 0);
@@ -81,6 +84,7 @@ void SrcFilter::setName(const QString &name)
         port->addTarget(newProvider);
         mDataProvider[port] = newProvider;
     }
+#endif
 }
 
 FilterInfo SrcFilter::info() const

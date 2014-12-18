@@ -19,6 +19,8 @@
 
 #include "Filter.h"
 
+class SubTracer;
+
 class FILTERBASESHARED_EXPORT SrcFilter : public Filter
 {
     Q_OBJECT
@@ -49,7 +51,9 @@ private:
     QString mPluginName;
     QMutex mExecMutex, mUpdateMutex;
     QMap<InputPort*, QVariant> mBufferedPortUpdates;
+#ifndef NO_SENSOR_SYSTEM
     QMap<OutputPort*, OlvisSensorProvider*> mDataProvider;
+#endif
     SubTracer* mTracer;
 };
 

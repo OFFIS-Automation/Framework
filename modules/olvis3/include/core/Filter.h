@@ -31,7 +31,6 @@ struct FilterInfo;
 class PortListener;
 class PortValueConverter;
 class Processor;
-class SubTracer;
 class OlvisSensorProvider;
 
 class FILTERBASESHARED_EXPORT Filter : public QObject

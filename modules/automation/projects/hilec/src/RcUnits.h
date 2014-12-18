@@ -49,13 +49,17 @@ signals:
     void flagsUpdated(const QString& name, const QVariantList& values);
 private slots:
     void collectFlags();
+#ifndef NO_REMOTE_CLIENT
     void onRemoteRcUnitsListed(const QString& remoteServerName, const QStringList& oldRcUnits);
+#endif
 private:
     QTimer mFlagTimer;
     static RcUnits* mInstance;
-    QMap<QString, RemoteRcUnits*> mRemoteRcUnits;
     QList<FlagCollectorRunnable*> mFlagCollectors;
     QThreadPool mThreadPool;
+#ifndef NO_REMOTE_CLIENT
+    QMap<QString, RemoteRcUnits*> mRemoteRcUnits;
+#endif
 };
 
 #endif // RCUNITS_H

@@ -62,7 +62,3 @@ PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
     else
         return 0;
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(DefaultPorts, DefaultPorts);
-#endif

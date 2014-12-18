@@ -45,7 +45,3 @@ UserRcUnit *SensorSystemRcUnitInterface::instance(RcBase &rc, const QString &, c
     rc.addMethod("exportTrace", "Exports a trace to a file", "Exports a trace to the given file. Use setSeperator, setStartAtZero, setExportRange and setExportSensors to define the trace.");
     return new SensorSystemRcUnit();
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(SensorSystemRcUnitInterface, SensorSystemRcUnitInterface)
-#endif

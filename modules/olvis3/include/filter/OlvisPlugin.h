@@ -26,12 +26,6 @@ public:
     explicit OlvisPlugin();
     virtual int numFilters();
     virtual SrcFilter* createFilter(int num);
-private:
-
-#if QT_VERSION < 0x050000
-    Q_OBJECT
-    Q_INTERFACES(FilterPluginInterface)
-#endif
 };
 
 

@@ -60,8 +60,4 @@ public:
 #define GuiPluginInterface_iid "com.amir.toolkit.GuiInterface/1.1"
 Q_DECLARE_INTERFACE(GuiPluginInterface, GuiPluginInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
 #endif // GUIPLUGININTERFACE_H

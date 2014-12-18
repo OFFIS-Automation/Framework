@@ -32,8 +32,4 @@ public:
 #define ModelPluginInterface_iid "com.amir.toolkit.ModelInterface/1.0"
 Q_DECLARE_INTERFACE(ModelPluginInterface, ModelPluginInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
 #endif // MODELPLUGININTERFACE_H

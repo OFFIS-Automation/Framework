@@ -134,7 +134,6 @@ void TcInvoker::handleGamepadData(const QMap<int, double> &data)
 
 void TcInvoker::handleGamepadButtonToggled(int buttonId, bool pressed)
 {
-    qDebug() << buttonId << "," << pressed;
     if(pressed){
         bool cleared = false;
         for(int i=0; i<mGamepadMethods.size(); i++){

@@ -20,8 +20,7 @@ include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 TARGET = SensorSystemGui
 
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets
 
 INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../include

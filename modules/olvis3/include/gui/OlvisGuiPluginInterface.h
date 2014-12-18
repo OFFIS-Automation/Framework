@@ -31,8 +31,4 @@ public:
 #define OlvisGuiPluginInterface_iid "com.offis.vision.GuiPluginInterface/1.0"
 Q_DECLARE_INTERFACE(OlvisGuiPluginInterface, OlvisGuiPluginInterface_iid)
 
-#if QT_VERSION < 0x050000
-#define Q_PLUGIN_METADATA(x)
-#endif
-
 #endif // OLVISGUIPLUGININTERFACE_H

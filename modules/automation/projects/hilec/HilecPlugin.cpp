@@ -33,7 +33,3 @@ void HilecPlugin::deinitialize()
     delete hilecCore;
     delete rcControl;
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(HilecPlugin, HilecPlugin)
-#endif

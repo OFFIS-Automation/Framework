@@ -18,11 +18,3 @@
 //#include <QtPlugin>
 #include "Project.h"
 //#include <filter/PluginInterface.h>
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(TutorialCamera, OlvisPlugin)
-#else
-
-
-#endif
-

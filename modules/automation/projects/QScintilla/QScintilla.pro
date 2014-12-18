@@ -37,10 +37,7 @@ CONFIG += qt warn_off dll thread
 INCLUDEPATH = . include lexlib src
 DEFINES = QSCINTILLA_MAKE_DLL QT SCI_LEXER
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-	QT += widgets
-	QT += printsupport
-}
+QT += widgets printsupport
 
 # Comment this in if you want the internal Scintilla classes to be placed in a
 # Scintilla namespace rather than pollute the global namespace.

@@ -34,8 +34,10 @@ QString OlvisRcUnitInterface::description() const
 UserRcUnit *OlvisRcUnitInterface::instance(RcBase &rc, const QString &configFile, const QString& /* name */)
 {
     Q_UNUSED(configFile);
-    if(!OlvisCoreInterface::hasInstance())
+    if(!OlvisCoreInterface::hasInstance()){
         return 0;
+    }
+
     rc.addMethod("getPortValue", tr("Returns a port value"), tr("Returns the last value of the specified port."));
     rc.addMethod("getNextPortValue", tr("Returns the next fresh port value"), tr("Waits until the port fires and returns the fired port value."));
     rc.addMethod("getFuturePortValue", tr("Skips several values before returning one"), tr("Waits until the port has fired <em>skipValues</em> time and returns the next fresh port value.<br /> skipValues = 0 is identical to getNextPortValue."));
@@ -52,8 +54,3 @@ UserRcUnit *OlvisRcUnitInterface::instance(RcBase &rc, const QString &configFile
     rc.addMethod("getFutureProcessorOutput", tr("Waits several processor iterations and returns a map of all processor outputs"), tr("See getProcessorOutput for more details."));
     return new OlvisRcUnit();
 }
-
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(OlvisRcUnitInterface, OlvisRcUnitInterface)
-#endif
-

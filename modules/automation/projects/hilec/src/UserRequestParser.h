@@ -20,11 +20,8 @@
 #include <core/UserRequest.h>
 #include <QMutex>
 #include <QWaitCondition>
-#if QT_VERSION < 0x050000
-#include <QtGui/QFileDialog>
-#else
 #include <QtWidgets/QFileDialog>
-#endif
+
 struct _object;
 
 class UserRequestParser

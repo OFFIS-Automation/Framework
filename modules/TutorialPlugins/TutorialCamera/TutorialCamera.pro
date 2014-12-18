@@ -25,8 +25,7 @@ INCLUDEPATH += ../../automation/include
 LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts -lolvisPlugin
 LIBS += -L$${targetDir}/plugins/ -lTutorialUnitCore
 
-QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets
 
 TEMPLATE = lib
 CONFIG += dll

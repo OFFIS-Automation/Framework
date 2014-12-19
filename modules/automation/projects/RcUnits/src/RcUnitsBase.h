@@ -62,7 +62,9 @@ public:
     QWidget* createHapticWidget(const QString &unitName);
 
     void acquire(const QString& unitName);
+    void acquireAll();
     void release(const QString& unitName);
+    void releaseAll();
     void stop(const QString& unitName);
 signals:
     void unitsUpdated();

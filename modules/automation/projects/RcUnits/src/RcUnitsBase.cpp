@@ -365,12 +365,26 @@ void RcUnitsBase::acquire(const QString &unitName)
     unit->acquire();
 }
 
+
+
 void RcUnitsBase::release(const QString &unitName)
 {
     RcUnitBase* unit = mUnits.value(unitName, 0);
     if(!unit)
         return;
     unit->release();
+}
+
+void RcUnitsBase::acquireAll()
+{
+    foreach(RcUnitBase* unit, mUnits)
+        unit->acquire();
+}
+
+void RcUnitsBase::releaseAll()
+{
+    foreach(RcUnitBase* unit, mUnits)
+        unit->release();
 }
 
 void RcUnitsBase::stop(const QString &unitName)

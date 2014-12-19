@@ -234,9 +234,19 @@ void HilecCore::callRcUnitAcquire(const QString &unitName)
     RcUnits::instance()->acquire(unitName);
 }
 
+void HilecCore::callRcUnitAcquireAll()
+{
+    RcUnits::instance()->acquireAll();
+}
+
 void HilecCore::callRcUnitRelease(const QString &unitName)
 {
     RcUnits::instance()->release(unitName);
+}
+
+void HilecCore::callRcUnitReleaseAll()
+{
+    RcUnits::instance()->releaseAll();
 }
 
 void HilecCore::callRcUnitStop(const QString &unitName)

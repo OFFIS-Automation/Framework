@@ -98,7 +98,9 @@ public slots:
     virtual QWidget* createHapticWidget(const QString &unitName);
 
     virtual void callRcUnitAcquire(const QString& unitName);
+    virtual void callRcUnitAcquireAll();
     virtual void callRcUnitRelease(const QString& unitName);
+    virtual void callRcUnitReleaseAll();
     virtual void callRcUnitStop(const QString& unitName);
 protected:
     PythonInterpreter mPython;

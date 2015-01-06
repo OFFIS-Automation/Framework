@@ -18,10 +18,23 @@
 
 TEMPLATE = lib
 
-include(../../../properties/pathes.pro)
-include(../../../properties/opencv.pro)
-DESTDIR = $${targetDir}/plugins
-TARGET = olvisInterface
-LIBS += -L$${targetDir}/plugins -lolvisFilter -lolvisPorts -lolvisCore
+INCLUDEPATH += $$PWD/../../include
+INCLUDEPATH += $$PWD/../olvisCore/src
+INCLUDEPATH += $$PWD/../../../frontend/include
 
-include(OlvisCorePluginFiles.pri)
+
+opencvdll.path    = $${DESTDIR}
+opencvdll.files  += $${CVBINDIR}/*.dll
+INSTALLS       += opencvdll
+
+opencv_video.path    = $${DESTDIR}/../
+opencv_video.files  += $${CVBINDIR}/opencv_ffmpeg*.dll
+INSTALLS       += opencv_video
+
+
+HEADERS += \
+    $$PWD/src/OlvisModelPlugin.h \
+    $$PWD/../../../frontend/include/interfaces/ModelPluginInterface.h
+
+SOURCES += \
+    $$PWD/src/OlvisModelPlugin.cpp

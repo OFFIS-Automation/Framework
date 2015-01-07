@@ -41,6 +41,12 @@ SensorSystemOverlay::~SensorSystemOverlay()
     }
 }
 
+void SensorSystemOverlay::setPortId(const PortId &id, bool output)
+{
+    mIsOutput = true;
+    setSensorId(id.port);
+}
+
 void SensorSystemOverlay::setSensorId(const QString &sensorId)
 {
     mSensorId = sensorId;

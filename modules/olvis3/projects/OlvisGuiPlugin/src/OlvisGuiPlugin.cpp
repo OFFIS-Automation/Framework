@@ -57,6 +57,7 @@ bool OlvisGuiPlugin::requirementsMet()
 
 void OlvisGuiPlugin::initialize(const QString& pluginDir)
 {
+    OlvisSingleton::setInstance(*mInterface);
     PluginContainer& plugins = PluginContainer::getInstance();
     plugins.loadPlugins(pluginDir + "/olvisGuiPlugins");
 

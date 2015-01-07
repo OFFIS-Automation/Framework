@@ -34,8 +34,13 @@ LIBS += -L$${targetDir}/plugins -lolvisFilter  -lolvisPorts
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../../olvis3/include
 
-DEFINES += NO_SENSOR_SYSTEM
+#DEFINES += NO_SENSOR_SYSTEM
 
+!contains(DEFINES, NO_SENSOR_SYSTEM){
+    INCLUDEPATH += ../../../sensorSystem/include
+    INCLUDEPATH += ../../../sensorSystem/projects/SensorTracer/src
+    LIBS += -L$${targetDir}/plugins/ -lSensorSystem -lSensorTracer
+}
 
 CONFIG+=dll
 

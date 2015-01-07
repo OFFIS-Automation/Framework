@@ -38,6 +38,7 @@
 #include "overlays/HistogramOverlay.h"
 #include "overlays/GraphOverlay.h"
 #include "overlays/ScaleBarOverlay.h"
+#include "overlays/SensorSystemOverlay.h"
 
 DefaultPorts::DefaultPorts()
 {
@@ -97,8 +98,10 @@ OverlayInterface *DefaultPorts::overlayFor(const QString &name, bool output, boo
         overlay = new GraphOverlay(name);
     else if (name == "PointPortOverlay" && !isMasterOverlay)
         overlay = new PointPortOverlay(name);
-//    else if (name == "SensorSystemOverlay" && !isMasterOverlay)
-//        overlay =SensorSystemOverlay(name);
+#ifndef NO_SENSOR_SYSTEM
+    else if (name == "SensorSystemOverlay" && !isMasterOverlay)
+        overlay = new SensorSystemOverlay(name);
+#endif
     else if(name == "ScaleBarOverlay" && !isMasterOverlay)
         overlay = new ScaleBarOverlay(name);
     if(overlay)

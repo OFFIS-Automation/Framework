@@ -20,6 +20,7 @@
 
 #include "GraphOverlay.h"
 #ifndef NO_SENSOR_SYSTEM
+
 #include <SensorDataSystem.h>
 
 class SensorSystemOverlay : public GraphOverlay
@@ -28,6 +29,7 @@ class SensorSystemOverlay : public GraphOverlay
 public:
     explicit SensorSystemOverlay(const QString& name);
     virtual ~SensorSystemOverlay();
+    void setPortId(const PortId& id, bool output);
     void setSensorId(const QString& sensorId);
     void writeCurrentConfig(QXmlStreamWriter &writer);
     void readElement(QXmlStreamReader &reader);

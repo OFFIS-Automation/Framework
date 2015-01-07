@@ -450,23 +450,15 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
     {
         if(!mMainOverlay)
             return;
-// TODO
-#if 0
-        OverlayInterface* overlay = OverlayFactory::instance().createOverlay("SensorSystemOverlay");
+        OverlayInterface* overlay = PluginContainer::getInstance().overlayFor("SensorSystemOverlay", true, false, &OlvisSingleton::instance());
         if(overlay)
         {
-            SensorSystemOverlay* sensorOverlay = qobject_cast<SensorSystemOverlay*>(overlay);
-            if(!sensorOverlay)
-            {
-                delete overlay;
-                return;
-            }
-            addOverlay(sensorOverlay);
             QString sensorId = event->mimeData()->data("application/x-sensorSystem-value");
-            sensorOverlay->setSensorId(sensorId);
-            sensorOverlay->setInitialPos(mTransform.inverted().map(event->pos()));
+            overlay->setPortId(PortId(0, sensorId), true);
+            overlay->setWidget(this);
+            addOverlay(overlay);
+            overlay->setInitialPos(mTransform.inverted().map(event->pos()));
         }
-#endif
     }
     update();
 }

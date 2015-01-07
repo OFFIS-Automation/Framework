@@ -56,7 +56,6 @@ HEADERS += \
     src/PointEdit.h \
     src/DateTimeEdit.h \
     ../../include/gui/OverlayInterface.h \
-    src/overlays/FilePortOverlay.h \
     src/overlays/RectOverlay.h \
     src/overlays/StringOverlay.h \
     src/overlays/ImagePortOverlay.h \
@@ -70,6 +69,7 @@ HEADERS += \
     src/overlays/SensorSystemOverlay.h \
     src/overlays/ScaleBarOverlay.h \
     src/overlays/GraphOverlayOptions.h \
+    src/overlays/PointPortOverlay.h
 
 
 SOURCES += \
@@ -92,7 +92,6 @@ SOURCES += \
     src/overlays/RectPortOverlay.cpp \
     src/overlays/DataOverlay.cpp \
     src/overlays/RectOverlay.cpp \
-    src/overlays/FilePortOverlay.cpp \
     src/overlays/SimpleShapeOverlay.cpp \
     src/overlays/MainOverlay.cpp \
     src/overlays/HistogramOverlay.cpp \
@@ -100,6 +99,7 @@ SOURCES += \
     src/overlays/SensorSystemOverlay.cpp \
     src/overlays/ScaleBarOverlay.cpp \
     src/overlays/GraphOverlayOptions.cpp \
+    src/overlays/PointPortOverlay.cpp
 
 
 FORMS += \

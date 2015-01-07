@@ -18,7 +18,7 @@
 
 #include <QMouseEvent>
 #include <QDebug>
-#include "VideoDisplayWidget.h"
+
 
 PointPortOverlay::PointPortOverlay(QString name)
     : Overlay(name), mButtonDown(false)
@@ -69,11 +69,11 @@ QPointF PointPortOverlay::closestValidPoint(QPoint p)
     QPointF result = mTransform.inverted().map(p);
     if (result.x() < 0)
         result.setX(0.0);
-    else if (result.x() >= mWidget->imageSize().width())
-        result.setX(mWidget->imageSize().width() - 1);
+    else if (result.x() >= mWidget->size().width())
+        result.setX(mWidget->size().width() - 1);
     if (result.y() < 0)
         result.setY(0.0);
-    else if (result.y() >= mWidget->imageSize().height())
-        result.setY(mWidget->imageSize().height() - 1);
+    else if (result.y() >= mWidget->size().height())
+        result.setY(mWidget->size().height() - 1);
     return result;
 }

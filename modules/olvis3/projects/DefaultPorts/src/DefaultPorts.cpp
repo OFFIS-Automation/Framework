@@ -19,6 +19,7 @@
 #include <QMetaType>
 #include <QtPlugin>
 #include <core/PortInfo.h>
+#include "overlays/PointPortOverlay.h"
 
 #include "BoolEdit.h"
 #include "FileEdit.h"
@@ -32,7 +33,6 @@
 #include "DateTimeEdit.h"
 
 #include "overlays/ImagePortOverlay.h"
-#include "overlays/FilePortOverlay.h"
 #include "overlays/RectPortOverlay.h"
 #include "overlays/SimpleShapeOverlay.h"
 #include "overlays/HistogramOverlay.h"
@@ -95,6 +95,8 @@ OverlayInterface *DefaultPorts::overlayFor(const QString &name, bool output, boo
         overlay = new HistogramOverlay(name);
     else if (name == "GraphOverlay" && !isMasterOverlay)
         overlay = new GraphOverlay(name);
+    else if (name == "PointPortOverlay" && !isMasterOverlay)
+        overlay = new PointPortOverlay(name);
 //    else if (name == "SensorSystemOverlay" && !isMasterOverlay)
 //        overlay =SensorSystemOverlay(name);
     else if(name == "ScaleBarOverlay" && !isMasterOverlay)
@@ -125,8 +127,8 @@ OverlayInterface *DefaultPorts::overlayFor(const PortInfo &info, bool isOutput, 
     } else if(!info.isArray && !isMasterOverlay){
         if (portTypeName == "Rect")
             overlay = new RectPortOverlay("RectPortOverlay");
-//TODO        else if (portTypeName == "Point")
-//            overlay = new PointPortOverlay("PointPortOverlay");
+        else if (portTypeName == "Point")
+            overlay = new PointPortOverlay("PointPortOverlay");
     }
     if (overlay)
         overlay->setOlvisInterface(visionInterface);

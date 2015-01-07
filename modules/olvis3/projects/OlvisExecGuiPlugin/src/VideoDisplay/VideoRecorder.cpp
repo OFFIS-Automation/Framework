@@ -69,6 +69,7 @@ void VideoRecorder::saveScreenshot(QRect rect, QString &fileName)
         if(!fileName.endsWith(".png") && !fileName.endsWith(".bmp") && !fileName.endsWith(".jpg")){
             // Append extension
             //@TODO find better way to check this, what about other extensins (TIF, TIFF, .jpeg)
+            // comment: openvc does not neccessary support all file extensions. The export type is found by analyzing the ending
             fileName.append(".png");
         }
         // Save image

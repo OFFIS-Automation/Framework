@@ -29,9 +29,10 @@ public:
     explicit DefaultPorts();
     virtual QString getName() const { return "DefaultPorts"; }
     virtual PortEditInterface* portEditFor(const PortInfo& info);
-signals:
-
-public slots:
+    virtual OverlayInterface* overlayFor(const QString& overlayName, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface);
+    virtual OverlayInterface* overlayFor(const PortInfo& info, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface);
+protected:
+    QSet<QString> mStringOverlays, mGraphOverlays;
 
 };
 

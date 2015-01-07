@@ -22,21 +22,25 @@
 #include <QPainter>
 #include <QMutex>
 #include <QList>
-#include <Timer.h>
+#include <QWidget>
+//#include <Timer.h>
+
+#include <gui/OverlayInterface.h>
+#include <core/OlvisInterface.h>
 
 class QMouseEvent;
 class QXmlStreamWriter;
 class QXmlStreamReader;
 class VideoDisplayWidget;
 
-class Overlay : public QObject, public PortListener
+class Overlay : public OverlayInterface, public PortListener
 {
     Q_OBJECT
 public:
     Overlay(QString name);
     virtual ~Overlay();
-
-    virtual void setWidget(VideoDisplayWidget* widget);
+    void setWidget(QWidget *widget) { mWidget = widget; }
+    void setOlvisInterface(OlvisInterface* itf);
 
     virtual void writeCurrentConfig(QXmlStreamWriter& writer);
     virtual void readConfig(QXmlStreamReader& reader);
@@ -66,21 +70,18 @@ public:
 signals:
     void listeningStarted(const PortId& portId, PortListener* listener);
     void listeningStopped(const PortId& portId, PortListener* listener);
-    void removeClicked(Overlay* overlay);
     void valueChanged(const PortId& portId, const QVariant& value);
 
 protected:
-    VideoDisplayWidget* mWidget;
+    QString mName;
+    QWidget* mWidget;
     QMutex mMutex;
     PortId mPortId;
     QVariant mLastValue;
     double mRate;
 
     bool mActive, mIsOutput;
-
-private:
-    QString mName;
-    Timer mTimer;
+    OlvisInterface* mVisionInterface;
 };
 
 #endif // OVERLAY_H

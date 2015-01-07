@@ -15,6 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+#ifndef NO_SENSOR_SYSTEM
+
 #include "SensorSystemOverlay.h"
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
@@ -67,3 +69,5 @@ void SensorSystemOverlay::onNewValue(QVariant value)
     setValue(SensorTraceExport::convertToDouble(value));
 
 }
+
+#endif

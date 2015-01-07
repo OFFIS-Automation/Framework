@@ -20,7 +20,7 @@
 #include <QPen>
 #include <QRect>
 #include <QTransform>
-#include "OverlayFactory.h"
+//#include "OverlayFactory.h"
 #include "Overlay.h"
 
 class QPainter;

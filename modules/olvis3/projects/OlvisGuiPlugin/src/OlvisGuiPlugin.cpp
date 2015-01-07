@@ -57,27 +57,9 @@ bool OlvisGuiPlugin::requirementsMet()
 
 void OlvisGuiPlugin::initialize(const QString& pluginDir)
 {
-    OlvisSingleton::setInstance(*mInterface);
     PluginContainer& plugins = PluginContainer::getInstance();
-    QDir searchDir(pluginDir + "/olvisGuiPlugins");
-#ifdef Q_OS_LINUX
-    QStringList files = searchDir.entryList(QStringList("*.dll") << "*.so" << "*.dylib", QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
-#else
-    QStringList files = searchDir.entryList(QStringList("*.dll") << "*.so" << "*.dylib", QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::Name | QDir::IgnoreCase);
-#endif
+    plugins.loadPlugins(pluginDir + "/olvisGuiPlugins");
 
-    foreach(QString file, files)
-    {
-        QString fullPath = searchDir.absoluteFilePath(file);
-        QPluginLoader loader(fullPath);
-        QObject* obj = loader.instance();
-        if(obj)
-        {
-            OlvisGuiPluginInterface* plugin = qobject_cast<OlvisGuiPluginInterface*>(obj);
-            if(plugin)
-               plugins.addPlugin(plugin);
-        }
-    }
     // only const references for models
     const OlvisInterface& model = *mInterface;
     connections = new FilterConnectWidget(model);

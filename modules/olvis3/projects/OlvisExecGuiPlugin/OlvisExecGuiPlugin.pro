@@ -55,28 +55,13 @@ SOURCES += \
     src/MainToolBar.cpp \
     src/VideoDisplay/VideoWidget.cpp \
     src/VideoDisplay/VideoDisplayWidget.cpp \
-    src/VideoDisplay/FilePortOverlay.cpp \
-    src/VideoDisplay/RectOverlay.cpp \
     src/OlvisSingleton.cpp \
-    src/VideoDisplay/StringOverlay.cpp \
-    src/VideoDisplay/ImagePortOverlay.cpp \
-    src/VideoDisplay/OverlayFactory.cpp \
     src/VideoDisplay/VideoDisplayScrollArea.cpp \
-    src/VideoDisplay/Overlay.cpp \
-    src/VideoDisplay/RectPortOverlay.cpp \
     src/VideoDisplay/VideoControlToolbar.cpp \
     src/VideoDisplay/VideoRecorder.cpp \
-    src/VideoDisplay/DataOverlay.cpp \
-    src/VideoDisplay/SimpleShapeOverlay.cpp \
     src/dialogs/ExportTraceDialog.cpp \
-    src/VideoDisplay/PointPortOverlay.cpp \
-    src/VideoDisplay/MainOverlay.cpp \
-    src/VideoDisplay/HistogramOverlay.cpp \
-    src/VideoDisplay/GraphOverlay.cpp \
-    src/dialogs/GraphOverlayOptions.cpp \
-    src/VideoDisplay/SensorSystemOverlay.cpp \
-    src/VideoDisplay/ScaleBarOverlay.cpp \
-    src/dialogs/OlvisOptionsGui.cpp
+    src/dialogs/OlvisOptionsGui.cpp \
+    ../OlvisGuiPlugin/src/PluginContainer.cpp
 
 
 HEADERS +=  \
@@ -84,28 +69,14 @@ HEADERS +=  \
     src/MainToolBar.h \
     src/VideoDisplay/VideoWidget.h \
     src/VideoDisplay/VideoDisplayWidget.h \
-    src/VideoDisplay/FilePortOverlay.h \
-    src/VideoDisplay/RectOverlay.h \
     src/OlvisSingleton.h \
-    src/VideoDisplay/StringOverlay.h \
-    src/VideoDisplay/ImagePortOverlay.h \
-    src/VideoDisplay/OverlayFactory.h \
     src/VideoDisplay/VideoDisplayScrollArea.h \
-    src/VideoDisplay/Overlay.h \
-    src/VideoDisplay/RectPortOverlay.h \
     src/VideoDisplay/VideoControlToolbar.h \
     src/VideoDisplay/VideoRecorder.h \
-    src/VideoDisplay/DataOverlay.h \
-    src/VideoDisplay/SimpleShapeOverlay.h \
     src/dialogs/ExportTraceDialog.h \
-    src/VideoDisplay/PointPortOverlay.h \
-    src/VideoDisplay/MainOverlay.h \
-    src/VideoDisplay/HistogramOverlay.h \
-    src/VideoDisplay/GraphOverlay.h \
-    src/dialogs/GraphOverlayOptions.h \
-    src/VideoDisplay/SensorSystemOverlay.h \
-    src/VideoDisplay/ScaleBarOverlay.h \
-    src/dialogs/OlvisOptionsGui.h
+    src/dialogs/OlvisOptionsGui.h \
+    ../../include/gui/OverlayInterface.h \
+    ../OlvisGuiPlugin/src/PluginContainer.h
        
 
 FORMS += \
@@ -113,7 +84,6 @@ FORMS += \
     src/VideoDisplay/VideoWidget.ui \
     src/VideoDisplay/VideoControlToolbar.ui \
     src/dialogs/ExportTraceDialog.ui \
-    src/dialogs/GraphOverlayOptions.ui \
     src/dialogs/OlvisOptionsGui.ui
 
 RESOURCES += \

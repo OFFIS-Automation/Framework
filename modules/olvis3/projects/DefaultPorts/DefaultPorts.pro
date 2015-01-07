@@ -26,6 +26,7 @@ TEMPLATE = lib
 QT += core gui widgets
 
 include(../../../properties/pathes.pro)
+include(../../../properties/opencv.pro)
 DESTDIR = $${targetDir}/plugins/olvisGuiPlugins
 TARGET = defaultPorts
 LIBS += -L$${targetDir}/plugins -lolvisFilter  -lolvisPorts
@@ -33,6 +34,7 @@ LIBS += -L$${targetDir}/plugins -lolvisFilter  -lolvisPorts
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../../olvis3/include
 
+DEFINES += NO_SENSOR_SYSTEM
 
 
 CONFIG+=dll
@@ -52,7 +54,23 @@ HEADERS += \
     src/ChoiceEdit.h \
     src/RectEdit.h \
     src/PointEdit.h \
-    src/DateTimeEdit.h
+    src/DateTimeEdit.h \
+    ../../include/gui/OverlayInterface.h \
+    src/overlays/FilePortOverlay.h \
+    src/overlays/RectOverlay.h \
+    src/overlays/StringOverlay.h \
+    src/overlays/ImagePortOverlay.h \
+    src/overlays/Overlay.h \
+    src/overlays/RectPortOverlay.h \
+    src/overlays/DataOverlay.h \
+    src/overlays/SimpleShapeOverlay.h \
+    src/overlays/MainOverlay.h \
+    src/overlays/HistogramOverlay.h \
+    src/overlays/GraphOverlay.h \
+    src/overlays/SensorSystemOverlay.h \
+    src/overlays/ScaleBarOverlay.h \
+    src/overlays/GraphOverlayOptions.h \
+
 
 SOURCES += \
     src/DefaultPorts.cpp \
@@ -67,10 +85,26 @@ SOURCES += \
     src/ChoiceEdit.cpp \
     src/RectEdit.cpp \
     src/PointEdit.cpp \
-    src/DateTimeEdit.cpp
+    src/DateTimeEdit.cpp \
+    src/overlays/StringOverlay.cpp \
+    src/overlays/ImagePortOverlay.cpp \
+    src/overlays/Overlay.cpp \
+    src/overlays/RectPortOverlay.cpp \
+    src/overlays/DataOverlay.cpp \
+    src/overlays/RectOverlay.cpp \
+    src/overlays/FilePortOverlay.cpp \
+    src/overlays/SimpleShapeOverlay.cpp \
+    src/overlays/MainOverlay.cpp \
+    src/overlays/HistogramOverlay.cpp \
+    src/overlays/GraphOverlay.cpp \
+    src/overlays/SensorSystemOverlay.cpp \
+    src/overlays/ScaleBarOverlay.cpp \
+    src/overlays/GraphOverlayOptions.cpp \
+
 
 FORMS += \
-    src/AbstractPortEditWidget.ui
+    src/AbstractPortEditWidget.ui \
+    src/overlays/GraphOverlayOptions.ui \
 
 RESOURCES += \
     images/images.qrc

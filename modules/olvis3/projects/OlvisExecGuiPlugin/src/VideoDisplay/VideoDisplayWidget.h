@@ -35,14 +35,12 @@
 
 #include "VideoControlToolbar.h"
 
-class MainOverlay;
-class Overlay;
+#include <gui/OverlayInterface.h>
+
 class QAbstractScrollArea;
 class QXmlStreamWriter;
 class QXmlStreamReader;
 class OlvisInterface;
-
-class ImagePortOverlay;
 
 struct FilterInfo;
 struct PortId;
@@ -70,8 +68,6 @@ public:
     virtual double imageRate();
     virtual void paintContent(QPainter& painter, bool showControls);
 
-    virtual void dataChanged(Overlay* source);
-
     static QPoint closestPoint(const QRect& bounds, QPoint point);
 
 signals:
@@ -82,7 +78,7 @@ signals:
 
 public slots:
     virtual void deleteListeners(const FilterInfo &info);
-    virtual void removeOverlay(Overlay* overlay);
+    virtual void removeOverlay(OverlayInterface *overlay);
 
     virtual void clear();
     virtual void setZoomToFit(bool value);
@@ -117,17 +113,18 @@ protected:
     virtual void leaveEvent(QEvent* event);
 
     // Set the widget's main overlay
-    virtual void setMainOverlay(MainOverlay *overlay);
+    virtual void setMainOverlay(OverlayInterface *overlay);
     // Add overlay to this widget
-    virtual void addOverlay(Overlay* overlay);
+    virtual void addOverlay(OverlayInterface* overlay);
     // Get overlay corresponding to the given port
-    virtual Overlay* getOverlay(PortId portId);
+    virtual OverlayInterface* getOverlay(PortId portId);
 
 
 protected slots:
     virtual void portValueChanged(int filterId, const QString& portId, QVariant value);
     virtual void showInfo(const QString& info);
     virtual void removeInfo();
+    virtual void dataChanged(OverlayInterface* source);
 
 private:
     const OlvisInterface& mModel;
@@ -147,10 +144,10 @@ private:
 
     VideoRecorder mRecorder;
 
-    MainOverlay* mMainOverlay;
+    OverlayInterface* mMainOverlay;
 
-    Overlay* mActiveOverlay;
-    QList<Overlay *> mOverlays;
+    OverlayInterface* mActiveOverlay;
+    QList<OverlayInterface *> mOverlays;
     QAbstractScrollArea* mScrollArea;
     QFont mFont;
 

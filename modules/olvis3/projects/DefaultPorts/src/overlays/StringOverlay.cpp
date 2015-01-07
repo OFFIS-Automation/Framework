@@ -15,8 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "StringOverlay.h"
-#include "src/OlvisSingleton.h"
-#include "VideoDisplayWidget.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -62,7 +60,7 @@ void StringOverlay::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton) {
         event->accept();
         mFormatString = QInputDialog::getText(mWidget, tr("Enter overlay text"), tr("overlay text"), QLineEdit::Normal, mFormatString);
-        mString = format(OlvisSingleton::instance().getPortValue(mPortId));
+        mString = format(mVisionInterface->getPortValue(mPortId));
     } else {
         RectOverlay::mousePressEvent(event);
     }
@@ -71,13 +69,13 @@ void StringOverlay::mousePressEvent(QMouseEvent *event)
 void StringOverlay::setPortId(const PortId &portId, bool output)
 {
     RectOverlay::setPortId(portId, output);
-    PortInfo info = OlvisSingleton::instance().getPortInfo(portId);
+    PortInfo info = mVisionInterface->getPortInfo(portId);
     QVariantList values = info.constraints.value("choices").toList();
     QStringList names = info.constraints.value("choiceNames").toStringList();
     for(int i=0;i<values.size(); i++)
     {
         QVariant value = values[i];
-        QString valAsString = OlvisSingleton::instance().portValueString(portId, value);
+        QString valAsString = mVisionInterface->portValueString(portId, value);
         QString name = names.value(i, valAsString);
         mPreDefinedStrings.insert(valAsString, name);
     }
@@ -86,7 +84,7 @@ void StringOverlay::setPortId(const PortId &portId, bool output)
 QString StringOverlay::format(QVariant value)
 {
     QString str = mFormatString;
-    QString val = OlvisSingleton::instance().portValueString(mPortId, value);
+    QString val = mVisionInterface->portValueString(mPortId, value);
     val = mPreDefinedStrings.value(val, val);
     if (str.contains("%1"))
         str = str.arg(mPortId.port);

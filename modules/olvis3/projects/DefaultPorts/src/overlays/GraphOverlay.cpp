@@ -17,9 +17,7 @@
 
 #include "GraphOverlay.h"
 
-#include "../dialogs/GraphOverlayOptions.h"
-
-#include "VideoDisplayWidget.h"
+#include "GraphOverlayOptions.h"
 
 #include <QMouseEvent>
 #include <QXmlStreamReader>

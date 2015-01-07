@@ -33,6 +33,7 @@
 #include "MainToolBar.h"
 #include "VideoDisplay/VideoWidget.h"
 
+#include "../../OlvisGuiPlugin/src/PluginContainer.h"
 
 OlvisExecGuiPlugin::OlvisExecGuiPlugin()
 {
@@ -60,7 +61,10 @@ bool OlvisExecGuiPlugin::requirementsMet()
 void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
 {
     OlvisSingleton::setInstance(*mInterface);
-    Q_UNUSED(pluginDir);
+
+    PluginContainer& plugins = PluginContainer::getInstance();
+    plugins.loadPlugins(pluginDir + "/olvisGuiPlugins");
+
     // give only const& to gui elements
     const OlvisInterface& model = *mInterface;
     toolbar = new MainToolBar(model);

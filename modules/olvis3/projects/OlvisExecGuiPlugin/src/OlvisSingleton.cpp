@@ -21,7 +21,7 @@ OlvisSingleton::OlvisSingleton()
 {
 }
 
-const OlvisInterface& OlvisSingleton::instance()
+OlvisInterface& OlvisSingleton::instance()
 {
     return *model;
 }

@@ -16,19 +16,14 @@
 
 #include "Overlay.h"
 
-#include "src/OlvisSingleton.h"
 #include <core/FilterInfo.h>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QDebug>
-#include "VideoDisplayWidget.h"
+
 
 Overlay::Overlay(QString name) : mWidget(0), mRate(-1.0), mActive(false), mIsOutput(true), mName(name)
 {
-    const OlvisInterface& model = OlvisSingleton::instance();
-    connect(this, SIGNAL(listeningStarted(PortId,PortListener*)), &model, SLOT(addPortListener(PortId,PortListener*)));
-    connect(this, SIGNAL(listeningStopped(PortId,PortListener*)), &model, SLOT(removePortListener(PortId,PortListener*)));
-    connect(this, SIGNAL(valueChanged(PortId,QVariant)), &model, SLOT(setPortValue(PortId,QVariant)));
 }
 
 Overlay::~Overlay()
@@ -37,10 +32,12 @@ Overlay::~Overlay()
         emit listeningStopped(mPortId, this);
 }
 
-void Overlay::setWidget(VideoDisplayWidget *widget)
+void Overlay::setOlvisInterface(OlvisInterface *itf)
 {
-    mWidget = widget;
-    connect(this, SIGNAL(removeClicked(Overlay*)), widget, SLOT(removeOverlay(Overlay*)));
+    mVisionInterface = itf;
+    connect(this, SIGNAL(listeningStarted(PortId,PortListener*)), mVisionInterface, SLOT(addPortListener(PortId,PortListener*)));
+    connect(this, SIGNAL(listeningStopped(PortId,PortListener*)), mVisionInterface, SLOT(removePortListener(PortId,PortListener*)));
+    connect(this, SIGNAL(valueChanged(PortId,QVariant)), mVisionInterface, SLOT(setPortValue(PortId,QVariant)));
 }
 
 QString Overlay::name()
@@ -52,7 +49,7 @@ void Overlay::writeCurrentConfig(QXmlStreamWriter &writer)
 {
     writer.writeAttribute("output", QString::number(mIsOutput));
     writer.writeEmptyElement("port");
-    writer.writeAttribute("filter", OlvisSingleton::instance().getFilter(mPortId.filter).name);
+    writer.writeAttribute("filter", mVisionInterface->getFilter(mPortId.filter).name);
     writer.writeAttribute("port", mPortId.port);
 }
 
@@ -69,7 +66,7 @@ void Overlay::readElement(QXmlStreamReader &reader)
 {
     if (reader.name() == "port") {
         PortId portId;
-        portId.filter = OlvisSingleton::instance().getFilter(reader.attributes().value("filter").toString()).id;
+        portId.filter = mVisionInterface->getFilter(reader.attributes().value("filter").toString()).id;
         portId.port = reader.attributes().value("port").toString();
         setPortId(portId, mIsOutput);
     }
@@ -98,11 +95,11 @@ void Overlay::setPortId(const PortId &portId, bool output)
             emit listeningStopped(mPortId, this);
         if (portId.isValid()) {
             emit listeningStarted(portId, this);
-            mLastValue = OlvisSingleton::instance().getPortValue(portId);
+            mLastValue = mVisionInterface->getPortValue(portId);
         }
     } else {
         if (portId.isValid())
-            setValue(OlvisSingleton::instance().getPortValue(portId));
+            setValue(mVisionInterface->getPortValue(portId));
     }
     mPortId = portId;
 }
@@ -118,19 +115,12 @@ PortId Overlay::portId()
 
 void Overlay::setValue(const QVariant &value)
 {
-    if(!mMutex.tryLock(5))
+    if(!mMutex.tryLock(50))
         return;
     //QMutexLocker lock(&mMutex);
     mLastValue = value;
     mMutex.unlock();
-    double val = mTimer.restart();
-    if (mRate == -1.0)
-        mRate = val;
-    else
-        mRate = mRate * 0.8 + val * 0.2;
-    //qDebug() << val << mRate;
-    if (mWidget)
-        mWidget->dataChanged(this);
+    emit updated();
 }
 
 QRect Overlay::boundingRect() {

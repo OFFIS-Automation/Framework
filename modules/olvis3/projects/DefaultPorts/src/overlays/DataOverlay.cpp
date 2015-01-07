@@ -15,9 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DataOverlay.h"
-#include "src/OlvisSingleton.h"
-
-#include "VideoDisplayWidget.h"
 
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -107,5 +104,5 @@ void DataOverlay::paintLegendSymbol(QPainter &painter, const QRect &rect)
 
 QString DataOverlay::legendString()
 {
-    return OlvisSingleton::instance().getFilter(mPortId.filter).name + "." + OlvisSingleton::instance().getPortInfo(mPortId).name;
+    return mVisionInterface->getFilter(mPortId.filter).name + "." + mVisionInterface->getPortInfo(mPortId).name;
 }

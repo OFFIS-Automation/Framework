@@ -15,8 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RectPortOverlay.h"
-#include "src/OlvisSingleton.h"
-#include "VideoDisplayWidget.h"
 
 #include <QMouseEvent>
 #include <QDebug>
@@ -30,7 +28,7 @@ RectPortOverlay::RectPortOverlay(QString name)
 
 void RectPortOverlay::setInitialPos(const QPoint &pos)
 {
-    mRect = OlvisSingleton::instance().getPortValue(mPortId).toRect();
+    mRect = mVisionInterface->getPortValue(mPortId).toRect();
     if (mRect.isEmpty()) {
         RectOverlay::setInitialPos(pos);
         emit valueChanged(mPortId, QRectF(mRect));
@@ -52,15 +50,14 @@ void RectPortOverlay::mouseReleaseEvent(QMouseEvent *event)
 void RectPortOverlay::setValue(const QVariant &value)
 {
     mRect = value.toRectF().toRect();
-    if(mWidget)
-        mWidget->dataChanged(this);
+    emit updated();
 }
 
 void RectPortOverlay::ensureBounds()
 {
     QRect startRect = mRect;
     RectOverlay::ensureBounds();
-    mRect = OlvisSingleton::instance().constrainedValue(mPortId, mRect.normalized()).toRect();
+    mRect = mVisionInterface->constrainedValue(mPortId, mRect.normalized()).toRect();
     if(startRect.width() < 0) // orog rect was negative
         mRect.moveRight(startRect.topLeft().x()); // mRect is normalized, startRect is not!
     if(startRect.height() < 0)

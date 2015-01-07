@@ -22,7 +22,7 @@
 #include <QMouseEvent>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
-#include "VideoDisplayWidget.h"
+
 #include <QByteArray>
 #include "qglobal.h"
 
@@ -145,16 +145,16 @@ void RectOverlay::ensureAspectRatio()
 void RectOverlay::ensureBounds()
 {
     if (mState == Scaling) {
-        mRect = mRect.intersected(QRect(QPoint(0,0), mWidget->imageSize()));
+        mRect = mRect.intersected(QRect(QPoint(0,0), mWidget->size()));
     } else if (mState == Dragging) {
         if (mRect.left() < 0)
             mRect.moveLeft(0);
         if (mRect.top() < 0)
             mRect.moveTop(0);
-        if (mRect.right() > mWidget->imageSize().width() - 1)
-            mRect.moveRight(mWidget->imageSize().width() - 1);
-        if (mRect.bottom() > mWidget->imageSize().height() - 1)
-            mRect.moveBottom(mWidget->imageSize().height() - 1);
+        if (mRect.right() > mWidget->size().width() - 1)
+            mRect.moveRight(mWidget->size().width() - 1);
+        if (mRect.bottom() > mWidget->size().height() - 1)
+            mRect.moveBottom(mWidget->size().height() - 1);
     }
 }
 
@@ -188,7 +188,7 @@ void RectOverlay::mousePressEvent(QMouseEvent *event)
     QPoint pos = mTransform.inverted().map(event->pos());
     if (mActive) {
         if (equals(event->pos(), visibleRect.topLeft(), 8)) {
-            emit removeClicked(this);
+            removeMe();
         } else if (showClear() && equals(event->pos(), visibleRect.topLeft() + QPoint(16, 0), 8)) {
             emit clearClicked();
         } else if (equals(event->pos(), visibleRect.bottomRight(), 3)) {
@@ -202,7 +202,7 @@ void RectOverlay::mousePressEvent(QMouseEvent *event)
         } else {
             event->ignore();
         }
-    } else if (QRect(QPoint(0, 0), mWidget->imageSize()).contains(pos)) {
+    } else if (QRect(QPoint(0, 0), mWidget->size()).contains(pos)) {
         mOrgRect = QRect(pos, QSize(0, 0));
         mState = Scaling;
     }

@@ -16,7 +16,6 @@
 
 #include "SimpleShapeOverlay.h"
 
-#include "src/OlvisSingleton.h"
 #include <QList>
 
 #include <ports/PolygonPort.h>
@@ -84,7 +83,6 @@ void SimpleShapeOverlay::paintElement(QPainter &painter, const QVariant &element
 void SimpleShapeOverlay::setPortId(const PortId &portId, bool output)
 {
     DataOverlay::setPortId(portId, output);
-    const OlvisInterface& model = OlvisSingleton::instance();
-    mPortTypeName = model.getPortInfo(portId).typeName;
+    mPortTypeName = mVisionInterface->getPortInfo(portId).typeName;
 }
 

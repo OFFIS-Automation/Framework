@@ -31,8 +31,23 @@
 #include "PointEdit.h"
 #include "DateTimeEdit.h"
 
+#include "overlays/ImagePortOverlay.h"
+#include "overlays/FilePortOverlay.h"
+#include "overlays/RectPortOverlay.h"
+#include "overlays/SimpleShapeOverlay.h"
+#include "overlays/HistogramOverlay.h"
+#include "overlays/GraphOverlay.h"
+#include "overlays/ScaleBarOverlay.h"
+
 DefaultPorts::DefaultPorts()
 {
+    mStringOverlays.insert("String");
+    mStringOverlays.insert("File");
+    mStringOverlays.insert("Directory");
+    mStringOverlays.insert("DateTime");
+    mGraphOverlays.insert("Integer");
+    mGraphOverlays.insert("Real");
+    mGraphOverlays.insert("Boolean");
 }
 
 PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
@@ -61,4 +76,59 @@ PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
         return new DateTimeEdit();
     else
         return 0;
+}
+
+OverlayInterface *DefaultPorts::overlayFor(const QString &name, bool output, bool isMasterOverlay, OlvisInterface *visionInterface)
+{
+    Overlay* overlay = 0;
+    if (name == "ImagePortOverlay")
+        overlay = new ImagePortOverlay(name);
+    else if (name == "StringOverlay" && !isMasterOverlay)
+        overlay = new StringOverlay(name);
+    else if (name == "RectPortOverlay" && !isMasterOverlay)
+        overlay = new RectPortOverlay(name);
+    else if (name == "FilePortOverlay" && !isMasterOverlay)
+        overlay = new StringOverlay(name);
+    else if (name == "SimpleShapeOverlay" && !isMasterOverlay)
+        overlay = new SimpleShapeOverlay(name);
+    else if (name == "HistogramOverlay")
+        overlay = new HistogramOverlay(name);
+    else if (name == "GraphOverlay" && !isMasterOverlay)
+        overlay = new GraphOverlay(name);
+//    else if (name == "SensorSystemOverlay" && !isMasterOverlay)
+//        overlay =SensorSystemOverlay(name);
+    else if(name == "ScaleBarOverlay" && !isMasterOverlay)
+        overlay = new ScaleBarOverlay(name);
+    if(overlay)
+        overlay->setOlvisInterface(visionInterface);
+    return overlay;
+}
+
+OverlayInterface *DefaultPorts::overlayFor(const PortInfo &info, bool isOutput, bool isMasterOverlay, OlvisInterface *visionInterface)
+{
+    Overlay* overlay = 0;
+    QString portTypeName = info.typeName;
+
+    if(!info.isArray && info.constraints.value("isPhysicalPixelSize", false).toBool() && !isMasterOverlay)
+        overlay = new ScaleBarOverlay("ScaleBarOverlay");
+    else if(!info.isArray && mStringOverlays.contains(portTypeName) && !isMasterOverlay)
+        overlay = new StringOverlay("StringOverlay");
+    else if(!info.isArray && mGraphOverlays.contains(portTypeName) && !isMasterOverlay)
+        overlay = new GraphOverlay("GraphOverlay");
+    else if (isOutput) {
+        if (portTypeName == "Image" || portTypeName == "GrayImage" || portTypeName == "RGBImage" || portTypeName == "RGBAImage" || portTypeName == "DepthMap")
+            overlay = new ImagePortOverlay("ImagePortOverlay");
+        else if(portTypeName == "Histogram")
+            overlay = new HistogramOverlay("HistogramOverlay");
+        else if (!isMasterOverlay && (portTypeName == "Polygon" || portTypeName == "Rect" || portTypeName == "Point" || portTypeName == "Pose2d" || portTypeName == "Line"))
+            overlay = new SimpleShapeOverlay("SimpleShapeOverlay");
+    } else if(!info.isArray && !isMasterOverlay){
+        if (portTypeName == "Rect")
+            overlay = new RectPortOverlay("RectPortOverlay");
+//TODO        else if (portTypeName == "Point")
+//            overlay = new PointPortOverlay("PointPortOverlay");
+    }
+    if (overlay)
+        overlay->setOlvisInterface(visionInterface);
+    return overlay;
 }

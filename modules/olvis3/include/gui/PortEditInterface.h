@@ -18,7 +18,8 @@
 #define PORTEDITINTERFACE_H
 
 
-struct PortInfo;
+#include <core/PortInfo.h>
+
 class QString;
 class QWidget;
 class QVariant;

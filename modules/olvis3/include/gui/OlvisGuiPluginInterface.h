@@ -19,16 +19,21 @@
 
 #include <QString>
 #include "PortEditInterface.h"
+#include "OverlayInterface.h"
+#include <core/OlvisInterface.h>
 
 class OlvisGuiPluginInterface
 {
 public:
 
     virtual QString getName() const = 0;
-    virtual PortEditInterface* portEditFor(const PortInfo& /* info */) { return 0; }
+    virtual PortEditInterface* portEditFor(const PortInfo& info) { Q_UNUSED(info); return 0; }
+    virtual OverlayInterface* overlayFor(const QString& overlayName, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface) { return 0; }
+    virtual OverlayInterface* overlayFor(const PortInfo& info, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface) { return 0; }
+
 };
 
-#define OlvisGuiPluginInterface_iid "com.offis.vision.GuiPluginInterface/1.0"
+#define OlvisGuiPluginInterface_iid "com.offis.vision.GuiPluginInterface/1.1"
 Q_DECLARE_INTERFACE(OlvisGuiPluginInterface, OlvisGuiPluginInterface_iid)
 
 #endif // OLVISGUIPLUGININTERFACE_H

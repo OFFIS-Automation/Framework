@@ -16,7 +16,6 @@
 
 
 #include "ScaleBarOverlay.h"
-#include "VideoDisplayWidget.h"
 
 #include <QPainter>
 #include <QMouseEvent>

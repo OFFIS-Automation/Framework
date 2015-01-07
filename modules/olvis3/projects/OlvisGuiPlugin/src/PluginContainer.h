@@ -19,14 +19,18 @@
 
 #include <gui/OlvisGuiPluginInterface.h>
 #include <gui/PortEditInterface.h>
+#include <gui/OverlayInterface.h>
 
 class PluginContainer
 {
 public:
     static PluginContainer& getInstance();
+    void loadPlugins(QString folder);
     PortEditInterface* portEditFor(const PortInfo& info);
-    void addPlugin(OlvisGuiPluginInterface* plugin);
+    OverlayInterface* overlayFor(const QString &name, bool output, bool isMasterOverlay, OlvisInterface *visionInterface);
+    OverlayInterface* overlayFor(const PortInfo &info, bool isOutput, bool isMasterOverlay, OlvisInterface *visionInterface);
 private:
+    void addPlugin(OlvisGuiPluginInterface* plugin);
     PluginContainer();
     Q_DISABLE_COPY(PluginContainer)
     QList<OlvisGuiPluginInterface*> mPlugins;

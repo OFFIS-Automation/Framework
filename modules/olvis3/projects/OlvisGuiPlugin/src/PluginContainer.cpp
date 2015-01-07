@@ -16,6 +16,9 @@
 
 #include "PluginContainer.h"
 
+#include <QDir>
+#include <QPluginLoader>
+
 PluginContainer::PluginContainer()
 {
 
@@ -24,6 +27,29 @@ PluginContainer& PluginContainer::getInstance()
 {
     static PluginContainer inst;
     return inst;
+}
+
+void PluginContainer::loadPlugins(QString folder)
+{
+    QDir searchDir(folder);
+#ifdef Q_OS_LINUX
+    QStringList files = searchDir.entryList(QStringList("*.dll") << "*.so" << "*.dylib", QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+#else
+    QStringList files = searchDir.entryList(QStringList("*.dll") << "*.so" << "*.dylib", QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::Name | QDir::IgnoreCase);
+#endif
+
+    foreach(QString file, files)
+    {
+        QString fullPath = searchDir.absoluteFilePath(file);
+        QPluginLoader loader(fullPath);
+        QObject* obj = loader.instance();
+        if(obj)
+        {
+            OlvisGuiPluginInterface* plugin = qobject_cast<OlvisGuiPluginInterface*>(obj);
+            if(plugin)
+               addPlugin(plugin);
+        }
+    }
 }
 
 void PluginContainer::addPlugin(OlvisGuiPluginInterface *plugin)
@@ -40,6 +66,28 @@ PortEditInterface* PluginContainer::portEditFor(const PortInfo& info)
         PortEditInterface* edit = plugin->portEditFor(info);
         if(edit)
             return edit;
+    }
+    return 0;
+}
+
+OverlayInterface *PluginContainer::overlayFor(const QString &name, bool output, bool isMasterOverlay, OlvisInterface *visionInterface)
+{
+    foreach(OlvisGuiPluginInterface* plugin, mPlugins)
+    {
+        OverlayInterface* overlay = plugin->overlayFor(name, output, isMasterOverlay, visionInterface);
+        if(overlay)
+            return overlay;
+    }
+    return 0;
+}
+
+OverlayInterface *PluginContainer::overlayFor(const PortInfo &info, bool isOutput, bool isMasterOverlay, OlvisInterface *visionInterface)
+{
+    foreach(OlvisGuiPluginInterface* plugin, mPlugins)
+    {
+        OverlayInterface* overlay = plugin->overlayFor(info, isOutput, isMasterOverlay, visionInterface);
+        if(overlay)
+            return overlay;
     }
     return 0;
 }

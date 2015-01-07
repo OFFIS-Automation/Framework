@@ -60,6 +60,6 @@ void Denoising::execute()
 
     const GrayImage src = mIn;
     GrayImage dest;
-    cv::fastNlMeansDenoising(src, dest, kH, kTemplateWindowSize, kSearchWindowSize);
+    //cv::fastNlMeansDenoising(src, dest, kH, kTemplateWindowSize, kSearchWindowSize);
     mOut.send(dest);
 }

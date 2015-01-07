@@ -30,7 +30,7 @@ class TutorialCore : public QObject, public GuiPluginInterface
 public:
     TutorialCore();
     virtual ~TutorialCore();
-    virtual QString getName() const { return "SensorSystemGui"; }
+    virtual QString getName() const { return "TutorialSystem"; }
     virtual void setModelInterface(const QString& /*name */, QObject* /* modelInterface */) {}
     virtual bool requirementsMet() { return true; }
     virtual void initialize(const QString& );

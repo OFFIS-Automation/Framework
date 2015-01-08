@@ -21,7 +21,7 @@
 class OlvisSingleton
 {
 public:
-    static const OlvisInterface& instance();
+    static OlvisInterface &instance();
     static void setInstance(OlvisInterface& olvisInterface);
 private:
     OlvisSingleton();

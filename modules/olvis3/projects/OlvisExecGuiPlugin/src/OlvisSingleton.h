@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef OLVISSINGLETON_H
-#define OLVISSINGLETON_H
+#ifndef OLVISSINGLETONB_H
+#define OLVISSINGLETONB_H
 
 #include <core/OlvisInterface.h>
 class OlvisSingleton
@@ -28,4 +28,4 @@ private:
     static OlvisInterface* model;
 };
 
-#endif // OLVISSINGLETON_H
+#endif // OLVISSINGLETONB_H

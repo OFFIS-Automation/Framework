@@ -18,6 +18,8 @@
 
 TEMPLATE = lib
 
+VPATH += $$PWD
+
 INCLUDEPATH += $$PWD/../../include
 INCLUDEPATH += $$PWD/../olvisCore/src
 INCLUDEPATH += $$PWD/../../../frontend/include
@@ -33,8 +35,8 @@ INSTALLS       += opencv_video
 
 
 HEADERS += \
-    $$PWD/src/OlvisModelPlugin.h \
-    $$PWD/../../../frontend/include/interfaces/ModelPluginInterface.h
+    src/OlvisModelPlugin.h \
+    ../../../frontend/include/interfaces/ModelPluginInterface.h
 
 SOURCES += \
-    $$PWD/src/OlvisModelPlugin.cpp
+    src/OlvisModelPlugin.cpp

@@ -1,13 +1,14 @@
+VPATH += $$PWD
 
-SOURCES += $$PWD/src/OlvisPlugin.cpp \
-    $$PWD/src/PluginInterface.cpp
+SOURCES += src/OlvisPlugin.cpp \
+    src/PluginInterface.cpp
 HEADERS += \
-    $$PWD/../../include/core/ProcessorInfo.h \
-    $$PWD/../../include/core/PortInfo.h \
-    $$PWD/../../include/core/FilterTypeInfo.h \
-    $$PWD/../../include/core/FilterInfo.h \
-    $$PWD/../../include/filter/UserFilter.h \
-    $$PWD/../../include/filter/PluginInterface.h \
-    $$PWD/../../include/filter/FilterPluginInterface.h \
-    $$PWD/../../include/filter/OlvisPlugin.h
+    ../../include/core/ProcessorInfo.h \
+    ../../include/core/PortInfo.h \
+    ../../include/core/FilterTypeInfo.h \
+    ../../include/core/FilterInfo.h \
+    ../../include/filter/UserFilter.h \
+    ../../include/filter/PluginInterface.h \
+    ../../include/filter/FilterPluginInterface.h \
+    ../../include/filter/OlvisPlugin.h
 

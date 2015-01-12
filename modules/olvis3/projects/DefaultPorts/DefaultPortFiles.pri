@@ -1,5 +1,7 @@
 QT += core gui widgets
 
+TEMPLATE = lib
+
 VPATH += $$PWD
 
 INCLUDEPATH += $$PWD/../../include

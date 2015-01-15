@@ -68,7 +68,6 @@ TelecontrolHapticWidget::~TelecontrolHapticWidget()
     delete ui;
 }
 
-
 void TelecontrolHapticWidget::sendHapticParamatersUpdate()
 {
     double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, ui->gainSlider->maximum()+1);

@@ -156,10 +156,15 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
 
 void TelecontrolWidget::on_gamepadTabWidget_currentChanged(int index)
 {
-    if(mInUpdate)
+    if(mInUpdate){
         return;
+    }
     QString unit = mUnitIndexes.value(index);
-    emit activateGamepad(unit);
+    if(unit.length() > 0){
+        emit activateGamepad(unit);
+    } else {
+        emit deactivateGamepad();
+    }
 }
 
 void TelecontrolWidget::onGamepadUpdated(bool active, const QString &activeUnit)
@@ -235,7 +240,11 @@ void TelecontrolWidget::on_hapticTabWidget_currentChanged(int index)
         return;
     }
     QString unit = mUnitIndexes.value(sHapticIndexOffset + index);
-    emit activateHaptic(unit);
+    if(unit.length() > 0){
+        emit activateHaptic(unit);
+    } else {
+        emit deactivateHaptic();
+    }
 }
 
 void TelecontrolWidget::editButtonAssignment(const QString &unit)

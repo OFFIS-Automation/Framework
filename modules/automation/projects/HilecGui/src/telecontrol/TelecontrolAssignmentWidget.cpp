@@ -35,7 +35,8 @@ TelecontrolAssignmentWidget::TelecontrolAssignmentWidget(QWidget *parent) :
 
     // Signal / Slot stuff
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateUnits(bool)));
-    connect(HilecSingleton::hilec(), SIGNAL(telecontrolUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
+    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
+    connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(bool,QString)), SLOT(onTelecontrolUpdated(bool, QString)));
 
     // Init view
     updateUnits(true);

@@ -218,12 +218,14 @@ void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
         // Map data to the axes of the active method
         // Required because method may not interested in all axes
         QMap<int,double> argMap;
-        QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
-        for(int i=0; i<axesIDs.size(); i++){
-            int axesId = axesIDs[i];
-            argMap[axesId] = data.value(axesId, 0.0) * activeMethod.sensitivity;
-            if(activeMethod.inverts.value(i, false)){
-                argMap[axesId] = -argMap[axesId];
+        if(!data.empty()){
+            QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
+            for(int i=0; i<axesIDs.size(); i++){
+                int axesId = axesIDs[i];
+                argMap[axesId] = data.value(axesId, 0.0) * activeMethod.sensitivity;
+                if(activeMethod.inverts.value(i, false)){
+                    argMap[axesId] = -argMap[axesId];
+                }
             }
         }
 

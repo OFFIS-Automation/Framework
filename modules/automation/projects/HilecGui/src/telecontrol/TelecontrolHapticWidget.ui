@@ -67,6 +67,18 @@
         </item>
         <item row="0" column="1">
          <widget class="QSlider" name="gainSlider">
+          <property name="maximum">
+           <number>10</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="sliderPosition">
+           <number>5</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -74,7 +86,7 @@
            <enum>QSlider::TicksBelow</enum>
           </property>
           <property name="tickInterval">
-           <number>10</number>
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -96,6 +108,12 @@
         </item>
         <item row="1" column="1">
          <widget class="QSlider" name="forceSlider">
+          <property name="maximum">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -103,7 +121,7 @@
            <enum>QSlider::TicksBelow</enum>
           </property>
           <property name="tickInterval">
-           <number>10</number>
+           <number>1</number>
           </property>
          </widget>
         </item>

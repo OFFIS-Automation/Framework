@@ -304,6 +304,7 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
             unitToActivate->connectGamepad(gamepad);
         }
     }
+
     mCurrentTelecontrolledUnit = unitName;
     emit gamepadUpdated(true, unitName);
 

@@ -22,7 +22,7 @@ RgbaImage::RgbaImage() : Mat()
 {
 }
 
-RgbaImage::RgbaImage(int rows, int cols) : Mat(rows, cols, CV_8UC3)
+RgbaImage::RgbaImage(int rows, int cols) : Mat(rows, cols, CV_8UC4)
 {
 }
 
@@ -55,15 +55,15 @@ RgbaImage::RgbaImage(const IplImage *img, bool copyData) : Mat(img, copyData)
 }
 
 
-RgbaImage::RgbaImage(cv::Size size) : Mat(size, CV_8UC3)
+RgbaImage::RgbaImage(cv::Size size) : Mat(size, CV_8UC4)
 {
 }
 
-RgbaImage::RgbaImage(cv::Size size, unsigned char *data, size_t step) : Mat(size, CV_8UC3, data, step)
+RgbaImage::RgbaImage(cv::Size size, unsigned char *data, size_t step) : Mat(size, CV_8UC4, data, step)
 {
 }
 
-RgbaImage::RgbaImage(int rows, int cols, unsigned char *data, size_t step) : Mat(rows, cols, CV_8UC3, data, step)
+RgbaImage::RgbaImage(int rows, int cols, unsigned char *data, size_t step) : Mat(rows, cols, CV_8UC4, data, step)
 {
 }
 

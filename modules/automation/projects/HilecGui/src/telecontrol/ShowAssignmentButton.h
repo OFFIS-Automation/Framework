@@ -28,8 +28,11 @@ class ShowAssignmentButton : public QWidget
     Q_OBJECT
     
 public:
-    explicit ShowAssignmentButton(QString unit, bool hideEdit = true);
+    explicit ShowAssignmentButton(QString unitName);
     ~ShowAssignmentButton();
+
+public slots:
+    void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName);
 
 private slots:
     void on_show_clicked();
@@ -40,8 +43,9 @@ signals:
     void editButtonAssignment(QString unit);
 
 private:
-    QString mUnit;
+    QString mUnitName;
     Ui::ShowAssignmentButton *ui;
+    void changeButtons();
 };
 
 #endif // SHOWASSIGNMENTBUTTON_H

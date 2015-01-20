@@ -16,16 +16,16 @@
 
 #include "ShowAssignmentButton.h"
 #include "ui_ShowAssignmentButton.h"
+#include "../HilecSingleton.h"
+#include <core/RcUnitHelp.h>
 
-ShowAssignmentButton::ShowAssignmentButton(QString unit, bool hideEdit) :
+ShowAssignmentButton::ShowAssignmentButton(QString unitName) :
     QWidget(),
-    mUnit(unit),
+    mUnitName(unitName),
     ui(new Ui::ShowAssignmentButton)
 {
     ui->setupUi(this);
-    if(hideEdit){
-        ui->edit->setEnabled(false);
-    }
+    changeButtons();
 }
 
 ShowAssignmentButton::~ShowAssignmentButton()
@@ -33,12 +33,27 @@ ShowAssignmentButton::~ShowAssignmentButton()
     delete ui;
 }
 
+void ShowAssignmentButton::updateGamepadAssignment(const QString &unitName, const QString &gamepadDeviceName)
+{
+    Q_UNUSED(gamepadDeviceName)
+    if(unitName == mUnitName){
+        changeButtons();
+    }
+}
+
 void ShowAssignmentButton::on_show_clicked()
 {
-    emit openButtonAssignment(mUnit);
+    emit openButtonAssignment(mUnitName);
 }
 
 void ShowAssignmentButton::on_edit_clicked()
 {
-    emit editButtonAssignment(mUnit);
+    emit editButtonAssignment(mUnitName);
+}
+
+void ShowAssignmentButton::changeButtons()
+{
+    TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(mUnitName);
+    ui->show->setEnabled(help.tcGamepadDeviceName.length() > 0);
+    ui->edit->setEnabled(help.tcGamepadDeviceName.length() > 0);
 }

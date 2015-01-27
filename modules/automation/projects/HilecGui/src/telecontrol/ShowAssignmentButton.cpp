@@ -56,6 +56,7 @@ void ShowAssignmentButton::changeButtons(const QString &telecontrolDeviceName)
 {
     QStringList gamepadDevices = HilecSingleton::hilec()->getGamepadDevices().keys();
     bool isGamepad = gamepadDevices.contains(telecontrolDeviceName);
+    bool isFakeUnit = HilecSingleton::hilec()->getUnitHelp(mUnitName).unitName.isEmpty();
     ui->show->setEnabled(isGamepad);
-    ui->edit->setEnabled(isGamepad);
+    ui->edit->setEnabled(isGamepad && isFakeUnit);
 }

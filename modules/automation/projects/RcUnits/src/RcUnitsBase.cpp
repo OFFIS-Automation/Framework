@@ -291,11 +291,12 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
         }
     }
 
-    QString currentTelecontrolDeviceName = getHelp(unitName).tcDeviceName;
+    QString currentTelecontrolDeviceName = getTelecontrolConfig(unitName).tcDeviceName;
     if(mGamepadDevices.keys().contains(currentTelecontrolDeviceName)){
         Gamepad *gamepad = mGamepadDevices[currentTelecontrolDeviceName];
 
-        // Connect buttons to allow for sensitivity update and unit switch
+        // Connect bufttons to allow for sensitivity update and unit switch
+        gamepad->disconnect(this);
         connect(gamepad, SIGNAL(buttonToggled(int,bool, QString)), SLOT(onGamepadButtonPressed(int,bool, QString)), Qt::DirectConnection);
         gamepad->start();
 

@@ -52,10 +52,11 @@ public slots:
     void editButtonAssignment(const QString& unit = QString());
     void openButtonAssignment(const QString& unit);
 
-    void onTelecontrolAssignmentUpdate(const QString& unitName, const QString& telecontrolDeviceName);
-    void onTelecontrolUpdated(bool active, const QString& unitName);
 
 private slots:
+    void onTelecontrolAssignmentUpdate(const QString& unitName, const QString& telecontrolDeviceName);
+    void onTelecontrolUpdated(bool active, const QString& unitName);
+    void onGamepadSwitchRequested(const QString& unitName, bool down);
     void on_tabWidget_currentChanged(int index);
 
 private:

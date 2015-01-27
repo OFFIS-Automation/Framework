@@ -39,6 +39,7 @@ HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
     connect(RcUnits::instance(), SIGNAL(unitListUpdated(bool)), SIGNAL(rcUnitsChanged(bool)));
     connect(RcUnits::instance(), SIGNAL(gamepadUpdated(bool, QString)), SIGNAL(gamepadUpdated(bool, QString)));
     connect(RcUnits::instance(), SIGNAL(gamepadSensitivityChangeRequested(QString,bool)), SIGNAL(gamepadChangeSensitivityRequested(QString,bool)));
+    connect(RcUnits::instance(), SIGNAL(gamepadSwitchRequested(QString,bool)), SIGNAL(gamepadSwitchRequested(QString,bool)));
     connect(RcUnits::instance(), SIGNAL(hapticUpdated(bool, QString)), SIGNAL(hapticUpdated(bool, QString)));
     connect(RcUnits::instance(), SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(rcUnitFlagsUpdated(QString,QVariantList)));
 }

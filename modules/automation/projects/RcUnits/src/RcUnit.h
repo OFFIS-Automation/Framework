@@ -99,10 +99,11 @@ public:
     QList<TcMoveMethod> tcGamepadMethods() { return mTcGamepadMoveMethods.values(); }
     QList<TcButtonMethod> tcGamepadButtonMethods() { return mTcGamepadButtonMethods; }
 
+    void updateTelecontrolAssignment(const QString& telecontrolDeviceName);
+
     void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10);
     void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hideFromUser = false);
     void updateGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);
-    void updateGamepadAssignment(const QString& gamepadDeviceName);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
     bool hasGamepadControl()const;
@@ -113,12 +114,9 @@ public:
     void registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0);
     void registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser = false);
     void updateHapticParameters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
-    void updateHapticAssignment(const QString& hapticDeviceName);
     void connectHapticDevice(QObject* hapticDevice);
     void disconnectHapticDevice(QObject* hapticDevice);
     bool hasHapticControl() const;
-
-
 
 signals:
     void callAcquire();
@@ -148,8 +146,7 @@ protected:
     QString mDesc;
     UserRcUnit* mRcUnit;
     RcUnitInterface* mRcUnitInterface;
-    QString mGamepadDeviceName;
-    QString mHapticDeviceName;
+    QString mTelecontrolDeviceName;
     QMap<QString, QList<Method>> mMethods;
     QMap<int, RcWrapperFactoryItf*> mWrapperFactories;
     QMap<QString, RcUnitHelp::Struct> mStructDefs;

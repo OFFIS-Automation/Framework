@@ -83,7 +83,7 @@ void TelecontrolAssignmentWidget::updateUnits(bool /*partialReload*/)
         QWidget* page = new QWidget;
         QVBoxLayout* layout = new QVBoxLayout();
         page->setLayout(layout);
-        if(connexionControllerNames.contains(help.tcGamepadDeviceName)){
+        if(connexionControllerNames.contains(help.tcDeviceName)){
             layout->addWidget(new ConnexionAssignmentWidget(unit, this));
         } else {
             layout->addWidget(new GamepadAssignmentWidget(unit, this));

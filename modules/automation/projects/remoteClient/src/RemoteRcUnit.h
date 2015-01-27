@@ -40,11 +40,12 @@ public:
     void setObserver(RcUnitBaseObserver *observer);
     QVariantList getFlags();
 
+    virtual void updateTelecontrolAssignment(const QString& telecontrolDeviceName);
 
     virtual void connectGamepad(QObject* gamepad );
     virtual void disconnectGamepad(QObject* );
     virtual void updateGamepadParameters(const QString& unitName, double sensitivity, const QList<bool>& inverts);
-    virtual void updateGamepadAssignment(const QString& gamepadDeviceName);
+
     QMap<QString, QVariant> getConstants() const { return mHelp.constants; }
 
     bool hasGamepadControl() const { return !mHelp.tcGamepadMoves.empty(); }
@@ -52,7 +53,6 @@ public:
     void connectHapticDevice(QObject*) {}
     void disconnectHapticDevice(QObject*) {}
     void updateHapticParameters(const QString&, double, double, const QList<bool>&) {}
-    void updateHapticAssignment(const QString&) {}
     bool hasHapticControl() const { return false; }
 
 public slots:

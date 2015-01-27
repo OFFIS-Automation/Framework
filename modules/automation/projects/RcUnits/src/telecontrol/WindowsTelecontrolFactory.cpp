@@ -80,13 +80,21 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
             sDirectInput->Release();
             throw std::runtime_error(qPrintable(tr("Error initializing gamepad: %1").arg(name)));
         } else {
-            sGamepadDevices[name] = gamepad;
+            for(int i=1; i<=99; i++){
+                if(i >= 2){
+                    name = name + " " + QString::number(i);
+                }
+                if(sGamepadDevices.contains(name)){
+                    continue;
+                }
+                sGamepadDevices[name] = gamepad;
+                break;
+            }
         }
     }
     catch(const std::exception& e)
     {
         qWarning() << tr("Could not create device:") << " " << e.what();
-        return DIENUM_CONTINUE;
     }
-    return DIENUM_STOP;
+    return DIENUM_CONTINUE;
 }

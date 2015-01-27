@@ -26,7 +26,6 @@ public:
     virtual void connectGamepad(QObject* gamepad) = 0;
     virtual void disconnectGamepad(QObject* gamepad) = 0;
     virtual void updateGamepadParameters(const QString& unitName, double sensitivity, const QList<bool>& inverts) = 0;
-    virtual void updateGamepadAssignment(const QString& gamepadDeviceName) = 0;
     virtual bool hasGamepadControl() const = 0;
     virtual TelecontrolConfig telecontrolConfig() const = 0;
 };

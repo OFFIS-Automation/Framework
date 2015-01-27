@@ -69,15 +69,15 @@ public slots:
     virtual void stepInto() = 0;
     virtual void stepReturn() = 0;
 
+    virtual void updateTelecontrolAssignment(const QString &unitName, const QString& telecontrolDeviceName) = 0;
+
     virtual void activateGamepad(const QString& unitName) = 0;
     virtual void deactivateGamepad() = 0;
     virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
-    virtual void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName) = 0;
 
     virtual void activateHaptic(const QString& unitName) = 0;
     virtual void deactivateHaptic() = 0;
     virtual void updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
-    virtual void updateHapticAssignment(const QString &unitName, const QString& hapticInterfaceName) = 0;
 
     virtual QWidget* createHapticWidget(const QString &unitName) = 0;
 

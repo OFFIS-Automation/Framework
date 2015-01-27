@@ -52,10 +52,10 @@ public slots:
     void editButtonAssignment(const QString& unit = QString());
     void openButtonAssignment(const QString& unit);
 
-    void onGamepadUpdated(bool active, const QString& activeUnit);
-    void onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
+    void onGamepadUpdated(bool active, const QString& unitName);
+    void onGamepadAssignmentUpdate(const QString& unitName, const QString& gamepadDeviceName);
 
-    void onHapticUpdated(bool active, const QString& activeUnit);
+    void onHapticUpdated(bool active, const QString& unitName);
     void onHapticAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
 
 private slots:

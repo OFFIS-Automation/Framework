@@ -107,9 +107,10 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
             layout->addWidget(comboBox);
 
             // Add assignment button
-            ShowAssignmentButton *button = new ShowAssignmentButton(unit, rcUnits.contains(unit));
+            ShowAssignmentButton *button = new ShowAssignmentButton(unit);
             connect(button, SIGNAL(openButtonAssignment(QString)), this, SLOT(openButtonAssignment(QString)));
             connect(button, SIGNAL(editButtonAssignment(QString)), this, SLOT(editButtonAssignment(QString)));
+            connect(this, SIGNAL(updateGamepadAssignment(QString,QString)), button, SLOT(updateGamepadAssignment(QString,QString)));
             layout->addWidget(button);
 
             // Add slider, gain, .. for each method
@@ -167,40 +168,37 @@ void TelecontrolWidget::on_gamepadTabWidget_currentChanged(int index)
     }
 }
 
-void TelecontrolWidget::onGamepadUpdated(bool active, const QString &activeUnit)
+void TelecontrolWidget::onGamepadUpdated(bool active, const QString &unitName)
 {
     mInUpdate = true;
 
     if(active){
-        int id = mUnitIndexes.key(activeUnit,0);
+        int id = mUnitIndexes.key(unitName,0);
         ui->gamepadTabWidget->setCurrentIndex(id);
     }
 
     mInUpdate = false;
 }
 
-void TelecontrolWidget::onGamepadAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName)
+void TelecontrolWidget::onGamepadAssignmentUpdate(const QString& unitName, const QString& gamepadDeviceName)
 {
     // Emit to inform core system, then update GUI
-    emit updateGamepadAssignment(unitName, hapticInterfaceName);
+    emit updateGamepadAssignment(unitName, gamepadDeviceName);
     onGamepadUpdated(true, unitName);
 }
 
-void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
+void TelecontrolWidget::onHapticUpdated(bool active, const QString& unitName)
 {
     mInUpdate = true;
 
     if(active){
-        int id = mUnitIndexes.key(activeUnit,0);
+        int id = mUnitIndexes.key(unitName,0);
         if (id > sHapticIndexOffset){
             id -= sHapticIndexOffset;
         }
         ui->hapticTabWidget->setCurrentIndex(id);
-    }
-    mInUpdate = false;
 
-    if(active){
-        QWidget *hapticWidget = HilecSingleton::hilec()->createHapticWidget(activeUnit);
+        QWidget *hapticWidget = HilecSingleton::hilec()->createHapticWidget(unitName);
         QWidget *tabWidget = ui->hapticTabWidget->currentWidget();
 
         // Remove mHapticWidget
@@ -225,6 +223,8 @@ void TelecontrolWidget::onHapticUpdated(bool active, const QString &activeUnit)
             layout->insertWidget(1, mHapticWidget);
         }
     }
+
+    mInUpdate = false;
 }
 
 void TelecontrolWidget::onHapticAssignmentUpdate(const QString &unitName, const QString &hapticDeviceName)

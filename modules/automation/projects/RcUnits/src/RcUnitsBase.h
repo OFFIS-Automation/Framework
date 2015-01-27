@@ -70,10 +70,11 @@ signals:
     void unitsUpdated();
     void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
     void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
+    void gamepadSwitchRequested(const QString& unitName, bool down);
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
 private slots:
-    void onGamepadButtonPressed(int buttonId, bool pressed);
+    void onGamepadButtonPressed(int buttonId, bool pressed, const QString& gamepadName);
 
 protected:
     void loadTcMasters(const QString& configFile);
@@ -85,7 +86,7 @@ protected:
     QString mRcUnitDir;
     QMap<QString, Gamepad *> mGamepadDevices;
     QStringList mTelecontrolRcUnits;
-    QString mCurrentTelecontrolledUnit, mConfigFile;
+    QString mConfigFile;
 
     QMap<QString, HapticDevice *> mHapticDevices;
     QMap<QString, MasterTcInvoker*> mMasterTcInvokers;

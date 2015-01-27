@@ -253,11 +253,11 @@ void WindowsGamepad::run()
             if(lastButtons.contains(buttonId)){
                 if(lastButtons[buttonId] != value){
                     // Value has changed
-                    emit buttonToggled(buttonId, value);
+                    emit buttonToggled(buttonId, value, getName());
                 }
             } else if(value) {
                 // First run, emit if pressed
-                emit buttonToggled(buttonId, value);
+                emit buttonToggled(buttonId, value, getName());
             }
         }
         lastButtons = buttons;

@@ -25,8 +25,8 @@ public slots:
 	void disableTelecontrol(uint id, const QString& unitName);
 	void handleTcData(uint id, const QMap<int, double>& data);
 	void setTcButton(uint id, int buttonId, const bool& pressed);
+    void updateTelecontrolAssignment(uint id, const QString &telecontrolDeviceName);
     void updateGamepadParameters(uint id, const QString &methodName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts);
-    void updateGamepadAssignment(uint id, const QString &gamepadDeviceName);
 
 private:
 	void processRemoteInputs(const QByteArray& data);

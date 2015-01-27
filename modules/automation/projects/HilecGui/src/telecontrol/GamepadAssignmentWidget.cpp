@@ -51,13 +51,12 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
             for(int i=0;i < joystickMethod.joysticks.size(); i++){
                 Tc::Joystick joystick = joystickMethod.joysticks[i];
                 QString name = joystickMethod.axeNames.value(i);
-                if(joystick == Tc::TriggerJoystick)
-                {
+                if(joystick == Tc::TriggerJoystick){
                     setButtonLabel(Tc::LeftShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
                     setButtonLabel(Tc::RightShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
-                }
-                else
+                } else {
                     setJoystickLabel(joystick, joystickMethod.name, name, color);
+                }
             }
         }
     }

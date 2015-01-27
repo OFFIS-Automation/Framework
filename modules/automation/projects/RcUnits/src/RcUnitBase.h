@@ -49,6 +49,7 @@ public:
     virtual void setObserver(RcUnitBaseObserver* observer) = 0;
     virtual QVariantList getFlags() = 0;
     virtual TelecontrolConfig telecontrolConfig() const { return getHelp(); }
+    virtual void updateTelecontrolAssignment(const QString &telecontrolDeviceName) = 0;
 };
 
 #endif // RCUNITBASE_H

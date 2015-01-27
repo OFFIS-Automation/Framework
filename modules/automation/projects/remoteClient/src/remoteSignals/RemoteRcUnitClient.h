@@ -22,8 +22,8 @@ public slots:
     void disableTelecontrol(const QString& unitName, uint timeout = DefaultTimeout);
     void handleTcData(const QMap<int, double>& data, uint timeout = DefaultTimeout);
     void setTcButton(int buttonId, const bool& pressed, uint timeout = DefaultTimeout);
+    void updateTelecontrolAssignment(const QString &telecontrolDeviceName, uint timeout = DefaultTimeout);
     void updateGamepadParameters(const QString& unitName, const QString& tcName, double sensitivity, const QList<bool>& inverts, uint timeout = DefaultTimeout);
-    void updateGamepadAssignment(const QString &gamepadDeviceName, uint timeout = DefaultTimeout);
 
 protected slots:
     void onMethodError(uint id, const QString& error) { insertCallResponse(id, error, true); }

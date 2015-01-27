@@ -36,15 +36,15 @@ public:
     ~TelecontrolWidget();
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
 signals:
+     void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
+
     void activateGamepad(const QString& unitName);
     void deactivateGamepad();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
-    void updateGamepadAssignment(const QString& unitName, const QString& gamepadInterfaceName);
 
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
     void updateHapticParameters(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
-    void updateHapticAssignment(const QString& unitName, const QString& hapticInterfaceName);
 
 public slots:
     void clear();
@@ -52,18 +52,13 @@ public slots:
     void editButtonAssignment(const QString& unit = QString());
     void openButtonAssignment(const QString& unit);
 
-    void onGamepadUpdated(bool active, const QString& unitName);
-    void onGamepadAssignmentUpdate(const QString& unitName, const QString& gamepadDeviceName);
-
-    void onHapticUpdated(bool active, const QString& unitName);
-    void onHapticAssignmentUpdate(const QString& unitName, const QString& hapticInterfaceName);
+    void onTelecontrolAssignmentUpdate(const QString& unitName, const QString& telecontrolDeviceName);
+    void onTelecontrolUpdated(bool active, const QString& unitName);
 
 private slots:
-    void on_gamepadTabWidget_currentChanged(int index);
-    void on_hapticTabWidget_currentChanged(int index);
+    void on_tabWidget_currentChanged(int index);
 
 private:
-    static const int sHapticIndexOffset = 1024;
     Ui::TelecontrolWidget *ui;
     QMap<int, QString> mUnitIndexes;
     bool mInUpdate;

@@ -54,11 +54,6 @@ void RemoteRcUnit::updateGamepadParameters(const QString &unitName, double sensi
     mRemote.updateGamepadParameters(name(), unitName, sensitivity, inverts);
 }
 
-void RemoteRcUnit::updateGamepadAssignment(const QString &gamepadDeviceName)
-{
-    mRemote.updateGamepadAssignment(gamepadDeviceName);
-}
-
 void RemoteRcUnit::acquire()
 {
  //@TODO
@@ -90,6 +85,11 @@ QVariantList RemoteRcUnit::getFlags()
 {
     //TODO
     return QVariantList();
+}
+
+void RemoteRcUnit::updateTelecontrolAssignment(const QString &telecontrolDeviceName)
+{
+    mRemote.updateTelecontrolAssignment(telecontrolDeviceName);
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)

@@ -32,7 +32,7 @@ public:
     ~ShowAssignmentButton();
 
 public slots:
-    void updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName);
+    void updateTelecontrolAssignment(const QString &unitName, const QString& telecontrolDeviceName);
 
 private slots:
     void on_show_clicked();
@@ -45,7 +45,7 @@ signals:
 private:
     QString mUnitName;
     Ui::ShowAssignmentButton *ui;
-    void changeButtons();
+    void changeButtons(const QString &telecontrolDeviceName);
 };
 
 #endif // SHOWASSIGNMENTBUTTON_H

@@ -64,7 +64,17 @@ void RemoteRcUnitClientBase::setTcButton(uint id, int buttonId, const bool& pres
 	stream << id;
 	stream << buttonId;
 	stream << pressed;
-	transmitSignal(msgData);
+    transmitSignal(msgData);
+}
+
+void RemoteRcUnitClientBase::updateTelecontrolAssignment(uint id, const QString &telecontrolDeviceName)
+{
+    QByteArray msgData;
+    QDataStream stream(&msgData, QIODevice::WriteOnly);
+    stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
+    stream << id;
+    stream << telecontrolDeviceName;
+    transmitSignal(msgData);
 }
 
 void RemoteRcUnitClientBase::updateGamepadParameters(uint id, const QString& methodName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
@@ -77,16 +87,6 @@ void RemoteRcUnitClientBase::updateGamepadParameters(uint id, const QString& met
 	stream << sensName;
 	stream << sensitivity;
 	stream << inverts;
-    transmitSignal(msgData);
-}
-
-void RemoteRcUnitClientBase::updateGamepadAssignment(uint id, const QString &gamepadDeviceName)
-{
-    QByteArray msgData;
-    QDataStream stream(&msgData, QIODevice::WriteOnly);
-    stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
-    stream << id;
-    stream << gamepadDeviceName;
     transmitSignal(msgData);
 }
 

@@ -49,15 +49,15 @@ public:
     QVariant call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& rcUnit);
 
+    void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
+
     void activateGamepad(const QString& unitName);
     void deactivateGamepad();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
-    void updateGamepadAssignment(const QString& unitName, const QString& gamepadDeviceName);
 
     void activateHaptic(const QString& unitName);
     void deactivateHaptic();
     void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
-    void updateHapticAssignment(const QString& unitName, const QString& hapticDeviceName);
 
     QWidget* createHapticWidget(const QString &unitName);
 

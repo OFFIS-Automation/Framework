@@ -135,6 +135,7 @@ RcUnitHelp RcUnit::getHelp() const
         help.structs << mStructDefs[name];
     }
     help.constants = mConstantDefs;
+    help.tcDeviceName = mTelecontrolDeviceName;
 
     // Joystick / gamepad
     names = mTcGamepadMoveMethods.keys();
@@ -147,7 +148,6 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcGamepadButtons << button;
         }
     }
-    help.tcGamepadDeviceName = mGamepadDeviceName;
 
     // Haptic
     names = mTcHapticMoveMethods.keys();
@@ -164,8 +164,6 @@ RcUnitHelp RcUnit::getHelp() const
             help.tcHapticButtons << button;
         }
     }
-    help.tcHapticDeviceName = mHapticDeviceName;
-
 
     return help;
 }
@@ -481,13 +479,17 @@ QVariantList RcUnit::getFlags()
     return mRcUnit->rcFlags();
 }
 
+void RcUnit::updateTelecontrolAssignment(const QString &telecontrolDeviceName)
+{
+    mTelecontrolDeviceName = telecontrolDeviceName;
+}
+
 void RcUnit::hwStatusChanged(bool status)
 {
     mHwConnected = status;
     if(mObserver)
         mObserver->rcUnitStatusChanged(status);
 }
-
 
 void RcUnit::addConstant(const QString name, const QVariant &constant)
 {
@@ -546,11 +548,6 @@ void RcUnit::updateGamepadParameters(const QString &unitName, double sensitivity
         method.sensitivity = sensitivity;
         method.inverts = inverts;
     }
-}
-
-void RcUnit::updateGamepadAssignment(const QString &gamepadDeviceName)
-{
-    mGamepadDeviceName = gamepadDeviceName;
 }
 
 void RcUnit::connectGamepad(QObject *gamepad)
@@ -631,11 +628,6 @@ void RcUnit::updateHapticParameters(const QString& methodName, double sensitivit
         method.forceScaling = forceScaling;
         method.inverts = inverts;
     }
-}
-
-void RcUnit::updateHapticAssignment(const QString &hapticDeviceName)
-{
-    mHapticDeviceName = hapticDeviceName;
 }
 
 void RcUnit::connectHapticDevice(QObject* hapticDevice)

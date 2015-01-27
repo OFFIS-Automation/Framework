@@ -15,7 +15,7 @@ public:
     ~TelecontrolSelectionComboBox();
 
 signals:
-    void telecontrolSelected(const QString& unitName, const QString& hapticInterfaceName);
+    void telecontrolSelected(const QString& unitName, const QString& telecontrolDeviceName);
 
 private slots:
     void on_availableDevices_currentIndexChanged(int index);

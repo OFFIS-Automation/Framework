@@ -188,6 +188,11 @@ QList<TraceLine> HilecCore::getStackTrace()
     return mPython.getStackTrace();
 }
 
+void HilecCore::updateTelecontrolAssignment(const QString &unitName, const QString &telecontrolDeviceName)
+{
+    RcUnits::instance()->updateTelecontrolAssignment(unitName, telecontrolDeviceName);
+}
+
 void HilecCore::activateGamepad(const QString &unitName)
 {
     RcUnits::instance()->activateGamepad(unitName);
@@ -201,11 +206,6 @@ void HilecCore::deactivateGamepad()
 void HilecCore::updateGamepadParameters(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
     RcUnits::instance()->updateGamepadParameters(unitName, methodName, sensitivity, inverts);
-}
-
-void HilecCore::updateGamepadAssignment(const QString &unitName, const QString& gamepadDeviceName)
-{
-    RcUnits::instance()->updateGamepadAssignment(unitName, gamepadDeviceName);
 }
 
 void HilecCore::activateHaptic(const QString &unitName)
@@ -222,12 +222,6 @@ void HilecCore::updateHapticParameters(const QString &unitName, const QString &m
 {
     RcUnits::instance()->updateHapticParameters(unitName, methodName, sensitivity, forceScaling, inverts);
 }
-
-void HilecCore::updateHapticAssignment(const QString &unitName, const QString &hapticDeviceName)
-{
-    RcUnits::instance()->updateHapticAssignment(unitName, hapticDeviceName);
-}
-
 
 void HilecCore::callRcUnitAcquire(const QString &unitName)
 {

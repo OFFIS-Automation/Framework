@@ -113,7 +113,6 @@ signals:
     void gamepadChangeSensitivityRequested(const QString& unit, bool increase);
     void gamepadSwitchRequested(const QString& unitName, bool down);
 
-
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 
     void breakpointHit(QString file, int line);

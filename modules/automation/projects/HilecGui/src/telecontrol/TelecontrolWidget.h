@@ -39,11 +39,11 @@ signals:
      void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
 
     void activateGamepad(const QString& unitName);
-    void deactivateGamepad();
+    void deactivateGamepadAll();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
 
     void activateHaptic(const QString& unitName);
-    void deactivateHaptic();
+    void deactivateHapticAll();
     void updateHapticParameters(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
 
 public slots:

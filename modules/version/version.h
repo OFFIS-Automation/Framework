@@ -5,8 +5,8 @@ namespace Version
 {
 	static const int MAJOR = 1;
 	static const int MINOR = 0;
-	static const int BUILD = 15028;
-	static const QString DATE = "01/28/15";
+	static const int BUILD = 15030;
+	static const QString DATE = "01/30/15";
 }
 
 #endif // VERSION_H

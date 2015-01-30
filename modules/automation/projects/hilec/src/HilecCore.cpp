@@ -199,9 +199,14 @@ void HilecCore::activateGamepad(const QString &unitName)
     RcUnits::instance()->activateGamepad(unitName);
 }
 
-void HilecCore::deactivateGamepad()
+void HilecCore::deactivateGamepad(const QString &unitName)
 {
-    RcUnits::instance()->deactivateGamepad();
+    RcUnits::instance()->deactivateGamepad(unitName);
+}
+
+void HilecCore::deactivateGamepadAll()
+{
+    RcUnits::instance()->deactivateGamepadAll();
 }
 
 void HilecCore::updateGamepadParameters(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
@@ -214,9 +219,14 @@ void HilecCore::activateHaptic(const QString &unitName)
     RcUnits::instance()->activateHaptic(unitName);
 }
 
-void HilecCore::deactivateHaptic()
+void HilecCore::deactivateHaptic(const QString &unitName)
 {
-    RcUnits::instance()->deactivateHaptic();
+    RcUnits::instance()->deactivateHaptic(unitName);
+}
+
+void HilecCore::deactivateHapticAll()
+{
+    RcUnits::instance()->deactivateHapticAll();
 }
 
 void HilecCore::updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts)

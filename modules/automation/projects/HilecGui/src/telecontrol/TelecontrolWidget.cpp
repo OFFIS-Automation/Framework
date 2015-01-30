@@ -45,10 +45,10 @@ TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
     connect(HilecSingleton::hilec(), SIGNAL(gamepadSwitchRequested(QString,bool)), SLOT(onGamepadSwitchRequested(QString, bool)));
     connect(this, SIGNAL(updateTelecontrolAssignment(QString,QString)), HilecSingleton::hilec(), SLOT(updateTelecontrolAssignment(QString,QString)), Qt::DirectConnection);
     connect(this, SIGNAL(activateGamepad(QString)), HilecSingleton::hilec(), SLOT(activateGamepad(QString)), Qt::QueuedConnection);
-    connect(this, SIGNAL(deactivateGamepad()), HilecSingleton::hilec(), SLOT(deactivateGamepad()), Qt::QueuedConnection);
+    connect(this, SIGNAL(deactivateGamepadAll()), HilecSingleton::hilec(), SLOT(deactivateGamepadAll()), Qt::QueuedConnection);
     connect(this, SIGNAL(updateGamepadParameters(QString,QString,double, QList<bool>)), HilecSingleton::hilec(), SLOT(updateGamepadParameters(QString,QString,double, QList<bool>)),Qt::QueuedConnection);
     connect(this, SIGNAL(activateHaptic(QString)), HilecSingleton::hilec(), SLOT(activateHaptic(QString)), Qt::QueuedConnection);
-    connect(this, SIGNAL(deactivateHaptic()), HilecSingleton::hilec(), SLOT(deactivateHaptic()), Qt::QueuedConnection);
+    connect(this, SIGNAL(deactivateHapticAll()), HilecSingleton::hilec(), SLOT(deactivateHapticAll()), Qt::QueuedConnection);
     connect(this, SIGNAL(updateHapticParameters(QString,QString,double,double,QList<bool>)), HilecSingleton::hilec(), SLOT(updateHapticParameters(QString,QString,double,double,QList<bool>)),Qt::QueuedConnection);
 
 
@@ -135,8 +135,8 @@ void TelecontrolWidget::on_tabWidget_currentChanged(int index)
     if(mInUpdate){
         return;
     }
-    emit deactivateGamepad();
-    emit deactivateHaptic();
+    emit deactivateGamepadAll();
+    emit deactivateHapticAll();
     QString unit = mUnitIndexes.value(index);
     if(unit.length() > 0){
         emit activateGamepad(unit);

@@ -322,7 +322,20 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
     emit gamepadUpdated(true, unitName);
 }
 
-void RcUnitsBase::deactivateGamepad()
+void RcUnitsBase::deactivateGamepad(const QString &unitName)
+{
+    QString currentTelecontrolDeviceName = getHelp(unitName).tcDeviceName;
+    if(mGamepadDevices.keys().contains(currentTelecontrolDeviceName)){
+         Gamepad *gamepad = mGamepadDevices[currentTelecontrolDeviceName];
+         gamepad->disconnect(this);
+
+         RcUnitBase* unitToDeactivate = mUnits.value(unitName, 0);
+         unitToDeactivate->disconnectGamepad(gamepad);
+    }
+    emit gamepadUpdated(false, unitName);
+}
+
+void RcUnitsBase::deactivateGamepadAll()
 {
     foreach(RcUnitBase* unit, mUnits.values()){
        QString currentTelecontrolDeviceName = unit->getHelp().tcDeviceName;
@@ -457,7 +470,20 @@ void RcUnitsBase::activateHaptic(const QString &unitName)
     emit hapticUpdated(true, unitName);
 }
 
-void RcUnitsBase::deactivateHaptic()
+void RcUnitsBase::deactivateHaptic(const QString &unitName)
+{
+    QString currentTelecontrolDeviceName = getHelp(unitName).tcDeviceName;
+    if(mHapticDevices.keys().contains(currentTelecontrolDeviceName)){
+         HapticDevice *hapticDevice = mHapticDevices[currentTelecontrolDeviceName];
+         hapticDevice->disable();
+
+         RcUnitBase* unitToDeactivate = mUnits.value(unitName, 0);
+         unitToDeactivate->disconnectHapticDevice(hapticDevice);
+    }
+    emit hapticUpdated(false, unitName);
+}
+
+void RcUnitsBase::deactivateHapticAll()
 {
     foreach(RcUnitBase* unit, mUnits.values()){
         QString currentTelecontrolDeviceName = getHelp(unit->name()).tcDeviceName;

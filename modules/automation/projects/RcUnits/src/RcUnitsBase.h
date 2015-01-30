@@ -52,11 +52,13 @@ public:
     void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
 
     void activateGamepad(const QString& unitName);
-    void deactivateGamepad();
+    void deactivateGamepad(const QString& unitName);
+    void deactivateGamepadAll();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
     void activateHaptic(const QString& unitName);
-    void deactivateHaptic();
+    void deactivateHaptic(const QString& unitName);
+    void deactivateHapticAll();
     void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
 
     QWidget* createHapticWidget(const QString &unitName);

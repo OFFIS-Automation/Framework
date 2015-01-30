@@ -30,10 +30,6 @@
 SrcFilter::SrcFilter(UserFilter *userFilter)
 {
     mUserFilter = userFilter;
-    foreach(InputPort* port, mUserFilter->d->inputs.values())
-    {
-        QObject::connect(port, SIGNAL(portValueChanged(QString,QVariant)), this, SLOT(onUserPortValueChanged(QString,QVariant)), Qt::DirectConnection);
-    }
 }
 
 SrcFilter::~SrcFilter()
@@ -50,6 +46,10 @@ void SrcFilter::initialize(int id, const QString &name, int processorId)
 {
     Filter::initialize(id, name, processorId);
     mUserFilter->initialize();
+    foreach(InputPort* port, mUserFilter->d->inputs.values())
+    {
+        QObject::connect(port, SIGNAL(portValueChanged(QString,QVariant)), this, SLOT(onUserPortValueChanged(QString,QVariant)), Qt::DirectConnection);
+    }
     setName(name);
 }
 

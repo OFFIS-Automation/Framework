@@ -34,6 +34,7 @@ RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
     mRcUnitDir = rcUnitPluginDir;
     mHapticDevices = QMap<QString, HapticDevice *>();
     mGamepadDevices = QMap<QString, Gamepad *>();
+    mGamepadMapping = QMap<QString, QString>();
 }
 
 RcUnitsBase::~RcUnitsBase()
@@ -140,7 +141,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     // Connect buttons to allow for sensitivity update and unit switch
     mGamepadDevices = TelecontrolFactory::getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
-        connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(onGamepadButtonPressed(int,bool)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
     emit unitsUpdated();
@@ -271,13 +272,22 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString &unitName, const QSt
     if(!unitToUpdate){
         return;
     }
-    unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
-    activateGamepad(unitName);
-    activateHaptic(unitName);
 
     QSettings settings(mConfigFile, QSettings::IniFormat);
     settings.beginGroup(QString("telecontrol/%1").arg(unitName));
     settings.setValue("telecontrolDeviceName", telecontrolDeviceName);
+
+    // Connet this unit
+    unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
+    if(telecontrolDeviceName.length() > 0){
+        if(!mGamepadMapping.contains(telecontrolDeviceName)){
+            activateGamepad(unitName);
+            activateHaptic(unitName);
+        }
+    } else {
+        deactivateGamepad(unitName);
+        deactivateHaptic(unitName);
+    }
 }
 
 void RcUnitsBase::activateGamepad(const QString &unitName)
@@ -318,19 +328,23 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
         if(unitToActivate && unitToActivate->hasGamepadControl()){
             unitToActivate->connectGamepad(gamepad);
         }
+
+        mGamepadMapping[currentTelecontrolDeviceName] = unitName;
     }
     emit gamepadUpdated(true, unitName);
 }
 
 void RcUnitsBase::deactivateGamepad(const QString &unitName)
 {
-    QString currentTelecontrolDeviceName = getHelp(unitName).tcDeviceName;
+    QString currentTelecontrolDeviceName = getTelecontrolConfig(unitName).tcDeviceName;
     if(mGamepadDevices.keys().contains(currentTelecontrolDeviceName)){
          Gamepad *gamepad = mGamepadDevices[currentTelecontrolDeviceName];
          gamepad->disconnect(this);
 
          RcUnitBase* unitToDeactivate = mUnits.value(unitName, 0);
          unitToDeactivate->disconnectGamepad(gamepad);
+
+         mGamepadMapping.remove(currentTelecontrolDeviceName);
     }
     emit gamepadUpdated(false, unitName);
 }
@@ -338,11 +352,14 @@ void RcUnitsBase::deactivateGamepad(const QString &unitName)
 void RcUnitsBase::deactivateGamepadAll()
 {
     foreach(RcUnitBase* unit, mUnits.values()){
-       QString currentTelecontrolDeviceName = unit->getHelp().tcDeviceName;
+       QString currentTelecontrolDeviceName = getTelecontrolConfig(unit->name()).tcDeviceName;
        if(mGamepadDevices.keys().contains(currentTelecontrolDeviceName)){
             Gamepad *gamepad = mGamepadDevices[currentTelecontrolDeviceName];
             gamepad->disconnect(this);
+
             unit->disconnectGamepad(gamepad);
+
+            mGamepadMapping.remove(currentTelecontrolDeviceName);
        }
    }
     emit gamepadUpdated(false, QString());
@@ -377,8 +394,6 @@ void RcUnitsBase::acquire(const QString &unitName)
     unit->acquire();
 }
 
-
-
 void RcUnitsBase::release(const QString &unitName)
 {
     RcUnitBase* unit = mUnits.value(unitName, 0);
@@ -390,7 +405,9 @@ void RcUnitsBase::release(const QString &unitName)
 void RcUnitsBase::acquireAll()
 {
     foreach(RcUnitBase* unit, mUnits)
+    {
         unit->acquire();
+    }
 }
 
 void RcUnitsBase::releaseAll()
@@ -410,29 +427,27 @@ void RcUnitsBase::stop(const QString &unitName)
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &gamepadName)
 {
-    if(!pressed || buttonId < Tc::ButtonUp)
+    if(!pressed || buttonId < Tc::ButtonUp){
         return;
-
-    if(buttonId != Tc::ButtonLeft && buttonId != Tc::ButtonRight
-            && buttonId != Tc::ButtonUp && buttonId != Tc::ButtonDown)
-        return; // only these buttons are interesting
-
-    // get the connected unit
-    QString unitName;
-    foreach(RcUnitBase* unit, mUnits.values()){
-       QString unitTcName = unit->getHelp().tcDeviceName;
-       if(gamepadName == unitTcName)
-       {
-           unitName = unit->name();
-           break;
-       }
     }
-    if(unitName.isEmpty())
+    if(buttonId != Tc::ButtonLeft && buttonId != Tc::ButtonRight && buttonId != Tc::ButtonUp && buttonId != Tc::ButtonDown){
+        return; // only these buttons are interesting
+    }
+
+    // Get the connected unit
+    QString unitName;
+    if(mGamepadMapping.contains(gamepadName)){
+        unitName = mGamepadMapping[gamepadName];
+    }
+
+    if(unitName.isEmpty()){
         return; // there is no unit attached to this gamepad
-    if(buttonId == Tc::ButtonLeft || buttonId == Tc::ButtonRight)
+    }
+    if(buttonId == Tc::ButtonLeft || buttonId == Tc::ButtonRight){
         emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::ButtonRight);
-    else
+    } else {
         emit gamepadSwitchRequested(unitName, buttonId == Tc::ButtonDown);
+    }
 }
 
 

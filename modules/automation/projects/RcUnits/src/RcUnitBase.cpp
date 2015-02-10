@@ -16,6 +16,8 @@
 
 #include "RcUnitBase.h"
 
+#include <QWaitCondition>
+
 RcUnitBase::RcUnitBase()
 {
 }

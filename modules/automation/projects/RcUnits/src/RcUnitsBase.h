@@ -87,6 +87,7 @@ protected:
     QMap<QString, QString> mTypes;
     QString mRcUnitDir;
     QMap<QString, Gamepad *> mGamepadDevices;
+    QMap<QString, QString> mGamepadMapping;
     QStringList mTelecontrolRcUnits;
     QString mConfigFile;
 

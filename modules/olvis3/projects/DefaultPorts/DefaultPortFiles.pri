@@ -47,7 +47,8 @@ HEADERS += \
     src/overlays/SensorSystemOverlay.h \
     src/overlays/ScaleBarOverlay.h \
     src/overlays/GraphOverlayOptions.h \
-    src/overlays/PointPortOverlay.h
+    src/overlays/PointPortOverlay.h \
+    $$PWD/src/overlays/MeasureOverlay.h
 
 
 SOURCES += \
@@ -77,7 +78,8 @@ SOURCES += \
     src/overlays/SensorSystemOverlay.cpp \
     src/overlays/ScaleBarOverlay.cpp \
     src/overlays/GraphOverlayOptions.cpp \
-    src/overlays/PointPortOverlay.cpp
+    src/overlays/PointPortOverlay.cpp \
+    $$PWD/src/overlays/MeasureOverlay.cpp
 
 
 FORMS += \

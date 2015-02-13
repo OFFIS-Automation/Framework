@@ -30,6 +30,7 @@ SUBDIRS += projects/DefaultPorts
 SUBDIRS += projects/simpleNodes
 SUBDIRS += projects/ContourNodes
 SUBDIRS += projects/DepthMapNodes
+SUBDIRS += projects/measureNodes
 #SUBDIRS += projects/sandboxedTest
 
 include(../properties/pathes.pro)

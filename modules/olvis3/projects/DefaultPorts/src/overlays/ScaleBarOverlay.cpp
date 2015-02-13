@@ -75,7 +75,7 @@ void ScaleBarOverlay::paintContent(QPainter &painter)
 
 double ScaleBarOverlay::visibleScale(double maxLen)
 {
-    int factor = 1;
+    double factor = 1;
     while(maxLen*factor > 10)
         factor /= 10;
     while(maxLen*factor<1)

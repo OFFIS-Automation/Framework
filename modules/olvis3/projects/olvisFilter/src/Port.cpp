@@ -142,3 +142,13 @@ void Port::sendRaw(const QVariant &value)
     d->out->send(value);
 }
 
+void Port::setTypeName(const QString &typeName)
+{
+    d->info.typeName = typeName;
+}
+
+void Port::setType(int type)
+{
+    d->info.type = type;
+}
+

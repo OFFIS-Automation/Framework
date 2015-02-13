@@ -27,9 +27,8 @@ PhysicalImageSize::PhysicalImageSize()
     mOut.setName("output");
     addInputPort(mIn);
     addOutputPort(mOut);
-    mMmPerPixel.setName("mm/pixel");
-    mMmPerPixel.setIsPysicalPixelSize(true);
-    addOutputPort(mMmPerPixel);
+    mMPerPixel.setName("m/pixel");
+    addOutputPort(mMPerPixel);
     mTotalWidth.setName("width");
     mTotalWidth.setDesc("The total image width im mm");
     addInputPort(mTotalWidth);
@@ -41,5 +40,5 @@ void PhysicalImageSize::execute()
     const cv::Mat input = mIn;
     mOut.send(input);
     double value = mTotalWidth.getValue() / 1000.0 / (double)input.cols;
-    mMmPerPixel.send(value);
+    mMPerPixel.send(value);
 }

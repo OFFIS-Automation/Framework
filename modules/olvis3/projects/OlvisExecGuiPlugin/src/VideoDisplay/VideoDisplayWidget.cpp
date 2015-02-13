@@ -411,7 +411,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
 {
     if (event->mimeData()->hasFormat("application/x-olvis-port"))
     {
-        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('#');
         PortId portId(parts[1].toInt(), parts[2]);
         //const OlvisInterface& model = OlvisSingleton::instance();
         //int type = parts[3].toInt();
@@ -426,7 +426,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
             setMainOverlay(overlay);
             QList<PortInfo> ports = OlvisSingleton::instance().getFilter(overlay->portId().filter).typeInfo.outputs;
             foreach (PortInfo p, ports) {
-                if(p.constraints.value("isPhysicalPixelSize", false).toBool())
+                if(p.typeName == "PhysicalSize")
                 {
                     PortInfo info = OlvisSingleton::instance().getPortInfo(PortId(overlay->portId().filter, p.name));
                     OverlayInterface* scaleOverlay = PluginContainer::getInstance().overlayFor(info,true, false, &OlvisSingleton::instance());
@@ -446,6 +446,8 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
             }
             addOverlay(overlay);
             overlay->setInitialPos(mTransform.inverted().map(event->pos()));
+            if(overlay->name() == "ScaleBarOverlay")
+                mToolbar->addPortAction(PortId(portId.filter, info.name));
         }
     }
     else if (event->mimeData()->hasFormat("application/x-sensorSystem-value"))
@@ -469,7 +471,7 @@ void VideoDisplayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("application/x-olvis-port"))
     {
-        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('#');
         if (parts.size() != 4) {
             qCritical() << "mimetype application/x-olvis-port not used according to specification";
             return;
@@ -598,7 +600,7 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
     } else if (mToolbar->currentAction()) {
         // first, check if there is an overlay attached
 
-        if (mToolbar->currentPortInfo().constraints.value("isPhysicalPixelSize", false).toBool())
+        if (mToolbar->currentPortInfo().typeName == "PhysicalSize")
         {
             OverlayInterface* overlay = getOverlay(mToolbar->currentPortId(), false);
             if(!overlay)
@@ -663,7 +665,7 @@ void VideoDisplayWidget::mouseReleaseEvent(QMouseEvent *event)
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
         OverlayInterface* overlay = getOverlay(mToolbar->currentPortId(), false);
-        if (overlay && p.constraints.value("isPhysicalPixelSize", false).toBool())
+        if (overlay && p.typeName == "PhysicalSize")
         {
             overlay->mouseReleaseEvent(event);
         }
@@ -679,7 +681,7 @@ void VideoDisplayWidget::mouseMoveEvent(QMouseEvent *event)
     OverlayInterface* overlay = mActiveOverlay;
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
-        if(p.constraints.value("isPhysicalPixelSize", false).toBool())
+        if(p.typeName == "PhysicalSize")
         {
             overlay = getOverlay(mToolbar->currentPortId(), false);
         }
@@ -778,8 +780,7 @@ void VideoDisplayWidget::setVerticalFlip(bool flip)
 
 void VideoDisplayWidget::wheelEvent(QWheelEvent *event)
 {
-    if ((mToolbar->currentPortInfo().typeName == "Real" || mToolbar->currentPortInfo().typeName == "Integer")
-    && !mToolbar->currentPortInfo().constraints.value("isPhysicalPixelSize", false).toBool())  {
+    if (mToolbar->currentPortInfo().typeName == "Real" || mToolbar->currentPortInfo().typeName == "Integer"){
         if (event->delta() > 0)
             mIncrementScaler *= 1.148698354997035;
         else

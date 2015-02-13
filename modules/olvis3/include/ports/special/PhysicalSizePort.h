@@ -14,28 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef PHYSICALSIZEPORT_H
+#define PHYSICALSIZEPORT_H
 
-#ifndef OVERLAYPORT_H
-#define OVERLAYPORT_H
+#include "../RealPort.h"
 
-#include "../filter/Port.h"
 
-/**
- * a specialization of Port with advanced UI control
- **/
-class OverlayPort : public Port
+namespace out
 {
-public:
-    /**
-     * forces the port to be invisible in the image view as input
-     * this is usefull if a port does not directly correspond to
-     * the image output of the filter, e.g. if a roi changes the image output,
-     * it should not be directly drawn on the output and therefore not visible
-    **/
-    void setDisplayVisibility(bool visible){ setConstraint("displayVisibility", visible); }
-protected:
-    OverlayPort(int id, const QString& name, bool isMain = false) : Port(id, name, isMain) {}
+    class DEFAULTPORTSSHARED_EXPORT PhysicalSize : public out::Real
+    {
+    public:
+        PhysicalSize();
+    };
+}
 
-};
 
-#endif // OVERLAYPORT_H
+
+#endif // PHYSICALSIZEPORT_H
+

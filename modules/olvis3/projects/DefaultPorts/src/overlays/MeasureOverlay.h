@@ -17,9 +17,11 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*  event, QList<QPoint> snapPoints);
     void setPortId(const PortId &portId, bool output);
 protected:
-    bool mValid, mPainting;
-    QPoint mStart, mEnd;
+    bool mValid, mPainting, mTransformValid;
+    QList<QLineF> mLines;
+    QPointF mStart, mEnd;
     QTransform mTransform;
+    void paintLine(QPainter &p, QLineF line);
 };
 
 #endif // MEASUREOVERLAY_H

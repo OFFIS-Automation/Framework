@@ -19,7 +19,7 @@
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/RealPort.h>
+#include <ports/special/PhysicalSizePort.h>
 
 
 class PhysicalImageSize : public UserFilter
@@ -28,8 +28,8 @@ public:
     PhysicalImageSize();
     virtual void execute();
 protected:
-    in::Real mTotalWidth, mTotalHeight;
-    out::Real mMmPerPixel;
+    in::Real mTotalWidth;
+    out::PhysicalSize mMPerPixel;
     in::Image mIn;
     out::Image mOut;
 };

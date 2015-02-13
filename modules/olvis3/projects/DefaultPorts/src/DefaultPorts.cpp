@@ -117,7 +117,7 @@ OverlayInterface *DefaultPorts::overlayFor(const PortInfo &info, bool isOutput, 
     Overlay* overlay = 0;
     QString portTypeName = info.typeName;
 
-    if(!info.isArray && info.constraints.value("isPhysicalPixelSize", false).toBool() && !isMasterOverlay)
+    if(!info.isArray && portTypeName == "PhysicalSize" && !isMasterOverlay)
         overlay = new ScaleBarOverlay("ScaleBarOverlay");
     else if(!info.isArray && mStringOverlays.contains(portTypeName) && !isMasterOverlay)
         overlay = new StringOverlay("StringOverlay");

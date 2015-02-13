@@ -26,7 +26,8 @@ SOURCES += \
     src/HistogramPort.cpp \
     src/RgbImage.cpp \
     src/RgbaImage.cpp \
-    src/DateTimePort.cpp
+    src/DateTimePort.cpp \
+    $$PWD/src/special/PhysicalSizePort.cpp
 
 HEADERS += \
     ../../include/ports/IntegerPort.h \
@@ -64,7 +65,8 @@ HEADERS += \
     ../../include/ports/BooleanPort.h \
     ../../include/ports/HistogramPort.h \
     ../../include/ports/Histogram.h \
-    ../../include/ports/DateTimePort.h
+    ../../include/ports/DateTimePort.h \
+    $$PWD/../../include/ports/special/PhysicalSizePort.h
 
 CONFIG+=dll
 

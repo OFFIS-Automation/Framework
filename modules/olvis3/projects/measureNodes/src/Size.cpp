@@ -16,7 +16,7 @@
 
 #include "Size.h"
 #include <opencv2/imgproc/imgproc.hpp>
-REGISTER_FILTER(Size);
+//REGISTER_FILTER(Size);
 
 Size::Size()
 {

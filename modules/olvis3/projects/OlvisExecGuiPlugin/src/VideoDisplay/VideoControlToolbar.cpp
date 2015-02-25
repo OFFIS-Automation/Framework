@@ -118,7 +118,7 @@ void VideoControlToolbar::addPortAction(const PortId &portId)
         connect(group, SIGNAL(triggered(QAction*)), SIGNAL(choiceChangeRequested(QAction*)));
         mPortIds[action] = portId;
     }
-    else if (p.typeName == "Rect" || p.typeName == "Integer" || p.typeName == "Real" || p.typeName == "Point") {
+    else if (p.typeName == "PhysicalSize" || p.typeName == "Rect" || p.typeName == "Integer" || p.typeName == "Real" || p.typeName == "Point") {
         QAction* action = new QAction(QPixmap::fromImage(p.icon), p.desc, this);
         action->setCheckable(true);
         mEditActions.addAction(action);

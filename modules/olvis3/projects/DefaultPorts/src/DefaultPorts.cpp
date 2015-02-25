@@ -39,6 +39,7 @@
 #include "overlays/GraphOverlay.h"
 #include "overlays/ScaleBarOverlay.h"
 #include "overlays/SensorSystemOverlay.h"
+#include "overlays/MeasureOverlay.h"
 
 DefaultPorts::DefaultPorts()
 {
@@ -104,6 +105,8 @@ OverlayInterface *DefaultPorts::overlayFor(const QString &name, bool output, boo
 #endif
     else if(name == "ScaleBarOverlay" && !isMasterOverlay)
         overlay = new ScaleBarOverlay(name);
+    else if(name == "MeasureOverlay")
+        overlay = new MeasureOverlay(name);
     if(overlay)
         overlay->setOlvisInterface(visionInterface);
     return overlay;
@@ -114,7 +117,7 @@ OverlayInterface *DefaultPorts::overlayFor(const PortInfo &info, bool isOutput, 
     Overlay* overlay = 0;
     QString portTypeName = info.typeName;
 
-    if(!info.isArray && info.constraints.value("isPhysicalPixelSize", false).toBool() && !isMasterOverlay)
+    if(!info.isArray && portTypeName == "PhysicalSize" && !isMasterOverlay)
         overlay = new ScaleBarOverlay("ScaleBarOverlay");
     else if(!info.isArray && mStringOverlays.contains(portTypeName) && !isMasterOverlay)
         overlay = new StringOverlay("StringOverlay");

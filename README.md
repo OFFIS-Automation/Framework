@@ -26,6 +26,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 * [A Rapid Automation Framework for Applications on the Micro- and Nanoscale](http://www.araa.asn.au/acra/acra2013/papers/pap110s1-file1.pdf)
 * [A Flexible and Compact High Precision Micro-Factory for Low Volume Production and Lab-Automation](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6840168)
+* [Integrating robotic software frameworks for convenient software component exchange in micro- and nanoscale applications](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6878207)
 
 ## Authors
 ### Current Authors

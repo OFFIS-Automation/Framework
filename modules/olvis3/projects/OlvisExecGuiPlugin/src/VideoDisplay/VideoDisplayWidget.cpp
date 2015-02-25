@@ -411,7 +411,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
 {
     if (event->mimeData()->hasFormat("application/x-olvis-port"))
     {
-        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('#');
         PortId portId(parts[1].toInt(), parts[2]);
         //const OlvisInterface& model = OlvisSingleton::instance();
         //int type = parts[3].toInt();
@@ -426,13 +426,15 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
             setMainOverlay(overlay);
             QList<PortInfo> ports = OlvisSingleton::instance().getFilter(overlay->portId().filter).typeInfo.outputs;
             foreach (PortInfo p, ports) {
-                if(p.constraints.value("isPhysicalPixelSize", false).toBool())
+                if(p.typeName == "PhysicalSize")
                 {
                     PortInfo info = OlvisSingleton::instance().getPortInfo(PortId(overlay->portId().filter, p.name));
-                    OverlayInterface* overlay = PluginContainer::getInstance().overlayFor(info,true, false, &OlvisSingleton::instance());
-                    overlay->setWidget(this);
-                    addOverlay(overlay);
-                    overlay->setInitialPos(QPoint(15,15));
+                    OverlayInterface* scaleOverlay = PluginContainer::getInstance().overlayFor(info,true, false, &OlvisSingleton::instance());
+                    scaleOverlay->setWidget(this);
+                    scaleOverlay->setPortId(PortId(portId.filter, info.name), true);
+                    addOverlay(scaleOverlay);
+                    scaleOverlay->setInitialPos(QPoint(15,15));
+                    mToolbar->addPortAction(PortId(portId.filter, info.name));
                 }
             }
         }
@@ -444,6 +446,8 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
             }
             addOverlay(overlay);
             overlay->setInitialPos(mTransform.inverted().map(event->pos()));
+            if(overlay->name() == "ScaleBarOverlay")
+                mToolbar->addPortAction(PortId(portId.filter, info.name));
         }
     }
     else if (event->mimeData()->hasFormat("application/x-sensorSystem-value"))
@@ -467,7 +471,7 @@ void VideoDisplayWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("application/x-olvis-port"))
     {
-        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('/');
+        QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('#');
         if (parts.size() != 4) {
             qCritical() << "mimetype application/x-olvis-port not used according to specification";
             return;
@@ -551,6 +555,15 @@ OverlayInterface *VideoDisplayWidget::getOverlay(PortId portId)
     return 0;
 }
 
+OverlayInterface *VideoDisplayWidget::getOverlay(PortId portId, bool isOutput)
+{
+    foreach (OverlayInterface* overlay, mOverlays) {
+        if (overlay->portId() == portId && overlay->isOutput() == isOutput)
+            return overlay;
+    }
+    return 0;
+}
+
 void VideoDisplayWidget::editChanged(QAction*)
 {
     if (mActiveOverlay) {
@@ -578,7 +591,6 @@ void VideoDisplayWidget::choiceChanged(QAction *action)
     showInfo(QString("%1: %2").arg(mToolbar->portId(action).port).arg(action->text()));
     emit valueChanged(mToolbar->portId(action), action->data());
 }
-
 void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
 {
     event->accept();
@@ -586,7 +598,22 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
         mToolbar->setVisible(true);
         mRecorder.finishVideo();
     } else if (mToolbar->currentAction()) {
-        if (mToolbar->currentPortInfo().typeName == "Integer" || mToolbar->currentPortInfo().typeName == "Real") {
+        // first, check if there is an overlay attached
+
+        if (mToolbar->currentPortInfo().typeName == "PhysicalSize")
+        {
+            OverlayInterface* overlay = getOverlay(mToolbar->currentPortId(), false);
+            if(!overlay)
+            {
+                overlay = PluginContainer::getInstance().overlayFor("MeasureOverlay", false, false, &OlvisSingleton::instance());
+                overlay->setWidget(this);
+                addOverlay(overlay);
+                overlay->setPortId(mToolbar->currentPortId(), false);
+            }
+            if(overlay)
+                overlay->mousePressEvent(event);
+        }
+        else if (mToolbar->currentPortInfo().typeName == "Integer" || mToolbar->currentPortInfo().typeName == "Real") {
             mStartValue = OlvisSingleton::instance().getPortValue(mToolbar->currentPortId());
             mMouseDownAt = event->pos();
             if(event->button() == Qt::LeftButton)
@@ -607,6 +634,7 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
             }
             overlay->mousePressEvent(event);
         }
+
     } else {
 
         if (mActiveOverlay) {
@@ -636,8 +664,12 @@ void VideoDisplayWidget::mouseReleaseEvent(QMouseEvent *event)
     mNumberDragInput = NoNumberDrag;
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
-        OverlayInterface* overlay = getOverlay(mToolbar->currentPortId());
-        if ((p.typeName == "Rect" || p.typeName == "Point") && overlay)
+        OverlayInterface* overlay = getOverlay(mToolbar->currentPortId(), false);
+        if (overlay && p.typeName == "PhysicalSize")
+        {
+            overlay->mouseReleaseEvent(event);
+        }
+        else if ((p.typeName == "Rect" || p.typeName == "Point") && overlay)
             overlay->mouseReleaseEvent(event);
     } else if (mActiveOverlay != 0)
         mActiveOverlay->mouseReleaseEvent(event);
@@ -649,7 +681,11 @@ void VideoDisplayWidget::mouseMoveEvent(QMouseEvent *event)
     OverlayInterface* overlay = mActiveOverlay;
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
-        if (p.typeName == "Rect" || p.typeName == "Point") {
+        if(p.typeName == "PhysicalSize")
+        {
+            overlay = getOverlay(mToolbar->currentPortId(), false);
+        }
+        else if (p.typeName == "Rect" || p.typeName == "Point") {
             overlay = getOverlay(mToolbar->currentPortId());
         } else if (mNumberDragInput != NoNumberDrag) {
             PortId portId = mToolbar->currentPortId();
@@ -744,7 +780,7 @@ void VideoDisplayWidget::setVerticalFlip(bool flip)
 
 void VideoDisplayWidget::wheelEvent(QWheelEvent *event)
 {
-    if (mToolbar->currentPortInfo().typeName == "Real" || mToolbar->currentPortInfo().typeName == "Integer") {
+    if (mToolbar->currentPortInfo().typeName == "Real" || mToolbar->currentPortInfo().typeName == "Integer"){
         if (event->delta() > 0)
             mIncrementScaler *= 1.148698354997035;
         else

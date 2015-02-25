@@ -17,5 +17,6 @@
         <file>depthMap.png</file>
         <file>histogram.png</file>
         <file>time.png</file>
+        <file>scale.png</file>
     </qresource>
 </RCC>

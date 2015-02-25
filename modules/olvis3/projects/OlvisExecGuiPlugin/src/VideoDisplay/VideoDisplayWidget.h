@@ -118,6 +118,7 @@ protected:
     virtual void addOverlay(OverlayInterface* overlay);
     // Get overlay corresponding to the given port
     virtual OverlayInterface* getOverlay(PortId portId);
+    virtual OverlayInterface* getOverlay(PortId portId, bool isOutput);
 
 
 protected slots:

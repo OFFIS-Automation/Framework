@@ -86,7 +86,8 @@ protected:
     void recheck();
     // output methods for ports
     void sendRaw(const QVariant& value);
-
+    void setTypeName(const QString& typeName);
+    void setType(int type);
 protected:
     PortData* d;
     friend class Filter;

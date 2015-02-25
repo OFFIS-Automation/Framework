@@ -36,16 +36,6 @@ VideoWidget::VideoWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-/*
-    mWidgets.append(ui->topLeft);
-    mWidgets.append(ui->topRight);
-    mWidgets.append(ui->bottomLeft);
-    mWidgets.append(ui->bottomRight);
-    ui->topLeft->setScrollArea(ui->scrollAreaTL);
-    ui->topRight->setScrollArea(ui->scrollAreaTR);
-    ui->bottomLeft->setScrollArea(ui->scrollAreaBL);
-    ui->bottomRight->setScrollArea(ui->scrollAreaBR);
-*/
     foreach (VideoDisplayWidget* widget, mWidgets) {
         connect(widget, SIGNAL(doubleClick(VideoDisplayWidget*)), SLOT(changeView(VideoDisplayWidget*)));
     }

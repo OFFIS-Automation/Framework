@@ -108,8 +108,9 @@ signals:
     void compileError(const ScriptCompileInfo& err);
 
     void rcUnitsChanged(bool partialReload);
-
     void rcUnitFlagsUpdated(const QString& rcUnitName, QVariantList data);
+
+    void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);
 
     void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
     void gamepadChangeSensitivityRequested(const QString& unit, bool increase);

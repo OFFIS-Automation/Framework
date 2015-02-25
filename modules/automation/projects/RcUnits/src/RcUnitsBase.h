@@ -68,8 +68,10 @@ public:
     void release(const QString& unitName);
     void releaseAll();
     void stop(const QString& unitName);
+
 signals:
     void unitsUpdated();
+    void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);
     void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
     void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
     void gamepadSwitchRequested(const QString& unitName, bool down);

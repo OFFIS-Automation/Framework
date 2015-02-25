@@ -55,8 +55,6 @@ HEADERS += \
     ../../include/core/SrcFilter.h \
     ../../include/core/OutputPort.h
 
-
-
 CONFIG+=dll
 
 RESOURCES += \

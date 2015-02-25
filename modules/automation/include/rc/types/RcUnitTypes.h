@@ -33,12 +33,13 @@ struct RcFlagDefinition {
     QString name;
     QString unit;
     int decimalPlaces;
-    RcFlagDefinition() : decimalPlaces(2) {}
-    RcFlagDefinition(QString name) : name(name), decimalPlaces(2) {}
-    RcFlagDefinition(QString name, QString unit)  : name(name), unit(unit), decimalPlaces(2) {}
-    RcFlagDefinition(QString name, int decimalPlaces) : name(name), decimalPlaces(decimalPlaces) {}
-    RcFlagDefinition(QString name, QString unit, int decimalPlaces)
-        : name(name), unit(unit), decimalPlaces(decimalPlaces) {}
+    int group;
+    RcFlagDefinition() : decimalPlaces(2), group(-1) {}
+    RcFlagDefinition(QString name) : name(name), decimalPlaces(2), group(-1) {}
+    RcFlagDefinition(QString name, QString unit)  : name(name), unit(unit), decimalPlaces(2), group(-1) {}
+    RcFlagDefinition(QString name, int decimalPlaces) : name(name), decimalPlaces(decimalPlaces), group(-1) {}
+    RcFlagDefinition(QString name, QString unit, int decimalPlaces) : name(name), unit(unit), decimalPlaces(decimalPlaces), group(-1) {}
+    RcFlagDefinition(QString name, QString unit, int decimalPlaces, int group) : name(name), unit(unit), decimalPlaces(decimalPlaces), group(group) {}
 };
 
 typedef QList<RcFlagDefinition> RcFlagDefinitions;

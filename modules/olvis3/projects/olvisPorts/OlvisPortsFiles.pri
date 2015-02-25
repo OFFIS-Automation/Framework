@@ -1,7 +1,9 @@
 VPATH += $$PWD
+
 INCLUDEPATH += $$PWD/../../include
 LIBS += -L$${targetDir}/plugins -lolvisFilter
 TEMPLATE = lib
+
 DEFINES += DEFAULTPORTS_LIBRARY
 
 

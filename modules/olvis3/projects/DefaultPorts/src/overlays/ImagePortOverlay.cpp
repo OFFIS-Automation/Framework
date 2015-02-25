@@ -62,7 +62,6 @@ void ImagePortOverlay::paintContent(QPainter& p)
                 mat = dm.toImage();
         }
         if (mat.size().width != 0 && mat.size().height != 0) {
-
             QImage::Format format = QImage::Format_RGB32;
             //QImage::Format format = QImage::Format_RGB16;
             if (mat.type() == CV_8UC1) {
@@ -78,19 +77,14 @@ void ImagePortOverlay::paintContent(QPainter& p)
                 qCritical() << "VideoDisplayWidget: unknown image format received" << mat.type();
             }
             mLastValue = QVariant();
-            mImage = QImage(converted.data,
-                            converted.size().width,
-                            converted.size().height,
-                            converted.step,
-                            //QImage::Format_RGB888
-                            format
-                            );
+            mImage = QImage(converted.data, converted.size().width, converted.size().height, converted.step, format);
 
             QSize imageSize = mImage.size();
-            if (mState == Scaling)
+            if (mState == Scaling){
                 mScale = mRect.width() / (double) imageSize.width();
-            else
+            } else {
                 mRect.setSize(imageSize * mScale);
+            }
             //setAspectRatio(mImage.width() / (double) mImage.height());
         } else {
             qWarning() << tr("VideoDisplay: image without dimensions received");

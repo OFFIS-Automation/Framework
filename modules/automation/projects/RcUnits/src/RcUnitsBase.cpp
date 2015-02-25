@@ -279,6 +279,8 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString &unitName, const QSt
 
     // Connet this unit
     unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
+    emit telecontrolAssignmentUpdated(unitName, telecontrolDeviceName);
+
     if(telecontrolDeviceName.length() > 0){
         if(!mGamepadMapping.contains(telecontrolDeviceName)){
             activateGamepad(unitName);

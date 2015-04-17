@@ -16,7 +16,7 @@
 
 #include "OlvisSingleton.h"
 
-//OlvisInterface* OlvisSingleton::model = 0;
+OlvisInterface* OlvisSingleton::model = 0;
 
 OlvisSingleton::OlvisSingleton()
 {

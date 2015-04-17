@@ -21,7 +21,7 @@
 #include <QElapsedTimer>
 
 #include <filter/PluginInterface.h>
-#include <Timer.h>
+#include "Timer.h"
 #include <ports/RealPort.h>
 #include <ports/IntegerPort.h>
 

@@ -25,7 +25,7 @@
 
 #include <QThread>
 #include <QElapsedTimer>
-#include <Timer.h>
+#include "Timer.h"
 
 #include <opencv2/highgui/highgui.hpp>
 

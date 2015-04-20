@@ -21,6 +21,7 @@ CONFIG += ordered
 SUBDIRS +=  subtree/qt-remote-signals/qtRemoteSignals \
             modules/version \
             modules/frontend/projects/LogWidget \
+            modules/frontend/projects/Notifications \
             modules/sensorSystem \
             modules/frontend/projects/AmirFrontend \
             modules/automation \

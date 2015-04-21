@@ -17,18 +17,18 @@ class NotificationMainWidget : public QWidget
 public:
     explicit NotificationMainWidget(QWidget *parent = 0);
     ~NotificationMainWidget();
-    void info(const QString &text, uint duration= 3000)
-    { emit newMessage(text, duration, NotificationWidget::InfoType); }
+    void info(const QString &text, uint duration, const QPixmap& pixmap)
+    { emit newMessage(text, duration, pixmap, NotificationWidget::InfoType); }
 
-    void warning(const QString &text, uint duration= 3000)
-    { emit newMessage(text, duration, NotificationWidget::WarningType); }
-    void error(const QString &text, uint duration = 3000)
-    { emit newMessage(text, duration, NotificationWidget::ErrorType); }
+    void warning(const QString &text, uint duration, const QPixmap& pixmap)
+    { emit newMessage(text, duration, pixmap, NotificationWidget::WarningType); }
+    void error(const QString &text, uint duration, const QPixmap& pixmap)
+    { emit newMessage(text, duration, pixmap, NotificationWidget::ErrorType); }
 
 signals:
-    void newMessage(const QString &text, uint duration, int type);
+    void newMessage(const QString &text, uint duration, const QPixmap& pixmap, int type);
 protected slots:
-    void onNewMessage(const QString &text, uint duration, int type);
+    void onNewMessage(const QString &text, uint duration, const QPixmap& pixmap, int type);
     void onChildFinished(NotificationWidget* widget);
 protected:
     NotificationWidget *createSubWidget();

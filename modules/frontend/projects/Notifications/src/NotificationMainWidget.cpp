@@ -6,9 +6,9 @@ NotificationMainWidget::NotificationMainWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::NotificationMainWidget)
 {
-    connect(this, SIGNAL(newMessage(QString,uint,int)), SLOT(onNewMessage(QString,uint,int)));
+    connect(this, SIGNAL(newMessage(QString,uint,QPixmap,int)), SLOT(onNewMessage(QString,uint,QPixmap,int)));
     ui->setupUi(this);
-    resize(5000, 0);
+    resize(parentWidget()->width(), 0);
     show();
 }
 
@@ -19,14 +19,14 @@ NotificationMainWidget::~NotificationMainWidget()
 }
 
 
-void NotificationMainWidget::onNewMessage(const QString &text, uint duration, int type)
+void NotificationMainWidget::onNewMessage(const QString &text, uint duration, const QPixmap &pixmap, int type)
 {
     show();
     NotificationWidget* subWidget = new NotificationWidget(this);
     ui->notificationLayout->insertWidget(0, subWidget);
     connect(subWidget, SIGNAL(finished(NotificationWidget*)), SLOT(onChildFinished(NotificationWidget*)));
-    subWidget->newMessage(text, duration, type);
-    resize(5000, height() + 42);
+    subWidget->newMessage(text, duration, pixmap, type);
+    resize(parentWidget()->width(), height() + 42);
     update();
 }
 
@@ -35,7 +35,7 @@ void NotificationMainWidget::onChildFinished(NotificationWidget *widget)
     widget->hide();
     ui->notificationLayout->removeWidget(widget);
     widget->deleteLater();
-    resize(5000, height() - 42);
+    resize(parentWidget()->width(), height() - 42);
     parentWidget()->update();
 }
 

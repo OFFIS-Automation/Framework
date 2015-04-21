@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>184</width>
+    <width>430</width>
     <height>126</height>
    </rect>
   </property>
@@ -61,6 +61,24 @@
       </property>
       <item>
        <widget class="QLabel" name="infoIcon">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -82,6 +100,26 @@
         </property>
         <property name="text">
          <string>Info</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="stop1">
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../images/images.qrc">
+          <normaloff>:/images/close.png</normaloff>:/images/close.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -111,6 +149,12 @@
       </property>
       <item>
        <widget class="QLabel" name="warningIcon">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -132,6 +176,26 @@
         </property>
         <property name="text">
          <string>Warning</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="stop2">
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../images/images.qrc">
+          <normaloff>:/images/close.png</normaloff>:/images/close.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -161,6 +225,12 @@
       </property>
       <item>
        <widget class="QLabel" name="errorIcon">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -185,6 +255,26 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QToolButton" name="stop3">
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../images/images.qrc">
+          <normaloff>:/images/close.png</normaloff>:/images/close.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -193,5 +283,57 @@
  <resources>
   <include location="../images/images.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>stop1</sender>
+   <signal>clicked()</signal>
+   <receiver>NotificationWidget</receiver>
+   <slot>onAnimationFinished()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stop2</sender>
+   <signal>clicked()</signal>
+   <receiver>NotificationWidget</receiver>
+   <slot>onAnimationFinished()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>410</x>
+     <y>66</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stop3</sender>
+   <signal>clicked()</signal>
+   <receiver>NotificationWidget</receiver>
+   <slot>onAnimationFinished()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>394</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>412</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onAnimationFinished()</slot>
+ </slots>
 </ui>

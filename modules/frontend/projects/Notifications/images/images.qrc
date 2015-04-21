@@ -3,5 +3,6 @@
         <file>information.png</file>
         <file>warning.png</file>
         <file>error.png</file>
+        <file>close.png</file>
     </qresource>
 </RCC>

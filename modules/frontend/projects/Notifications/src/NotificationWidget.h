@@ -22,7 +22,7 @@ public:
     explicit NotificationWidget(QWidget *parent = 0);
     ~NotificationWidget();
 
-    void newMessage(const QString text, uint durationMSec, int type);
+    void newMessage(const QString text, uint durationMSec, const QPixmap &pixmap, int type);
 signals:
     void finished(NotificationWidget*);
 protected slots:

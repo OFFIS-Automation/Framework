@@ -20,25 +20,25 @@ void Notifications::setMainWindow(QWidget *mainWindow)
     instance().mWidget = new NotificationMainWidget(mainWindow);
 }
 
-void Notifications::newInfo(const QString &text, uint durationMs)
+void Notifications::newInfo(const QString &text, uint durationMs, const QPixmap& pixmap)
 {
     QMutexLocker locke(&instance().mMutex);
     if(instance().mWidget)
-        instance().mWidget->info(text, durationMs);
+        instance().mWidget->info(text, durationMs, pixmap);
 }
 
-void Notifications::newWarning(const QString &text, uint durationMs)
+void Notifications::newWarning(const QString &text, uint durationMs, const QPixmap &pixmap)
 {
     QMutexLocker locke(&instance().mMutex);
     if(instance().mWidget)
-        instance().mWidget->warning(text, durationMs);
+        instance().mWidget->warning(text, durationMs, pixmap);
 }
 
-void Notifications::newError(const QString &text, uint durationMs)
+void Notifications::newError(const QString &text, uint durationMs, const QPixmap &pixmap)
 {
     QMutexLocker locke(&instance().mMutex);
     if(instance().mWidget)
-        instance().mWidget->error(text, durationMs);
+        instance().mWidget->error(text, durationMs, pixmap);
 }
 
 Notifications &Notifications::instance()

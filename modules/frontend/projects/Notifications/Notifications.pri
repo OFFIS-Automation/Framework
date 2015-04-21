@@ -3,6 +3,7 @@
 # Project created by QtCreator 2015-04-20T14:19:33
 #
 #-------------------------------------------------
+VPATH += $$PWD
 
 QT       += gui widgets
 
@@ -28,4 +29,5 @@ FORMS += \
 RESOURCES += \
     $$PWD/images/images.qrc
 
-DISTFILES +=
+DISTFILES += \
+    $$PWD/images/close.png

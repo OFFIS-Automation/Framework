@@ -23,21 +23,29 @@ NotificationWidget::~NotificationWidget()
     delete ui;
 }
 
-void NotificationWidget::newMessage(const QString text, uint durationMs, int type)
+void NotificationWidget::newMessage(const QString text, uint durationMs, const QPixmap& pixmap, int type)
 {
     switch(type)
     {
     case ErrorType:
         ui->errorWidget->show();
         ui->errorText->setText(text);
+        if(!pixmap.isNull())
+            ui->errorIcon->setPixmap(pixmap);
+
         break;
     case WarningType:
         ui->warningWidget->show();
         ui->warningText->setText(text);
+        if(!pixmap.isNull())
+            ui->warningIcon->setPixmap(pixmap);
+
         break;
     default:
         ui->infoWidget->show();
         ui->infoText->setText(text);
+        if(!pixmap.isNull())
+            ui->infoIcon->setPixmap(pixmap);
         break;
     }
     show();

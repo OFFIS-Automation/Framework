@@ -9,7 +9,7 @@ Notifications::Notifications()
     mWidget = 0;
 }
 
-void Notifications::setMainWindow(QWidget *mainWindow)
+void Notifications::setMainWindow(QWidget *mainWindow, bool useAnimations)
 {
     QMutexLocker locke(&instance().mMutex);
     if(instance().mWidget != 0)
@@ -17,7 +17,14 @@ void Notifications::setMainWindow(QWidget *mainWindow)
         instance().mWidget->setParent(0);
         delete instance().mWidget;
     }
-    instance().mWidget = new NotificationMainWidget(mainWindow);
+    instance().mWidget = new NotificationMainWidget(mainWindow, useAnimations);
+}
+
+void Notifications::setUseAnimations(bool enabled)
+{
+    QMutexLocker locke(&instance().mMutex);
+    if(instance().mWidget != 0)
+       instance().mWidget->setAnimationsEnabled(enabled);
 }
 
 void Notifications::newInfo(const QString &text, uint durationMs, const QPixmap& pixmap)

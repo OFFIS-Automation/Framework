@@ -23,7 +23,7 @@ NotificationWidget::~NotificationWidget()
     delete ui;
 }
 
-void NotificationWidget::newMessage(const QString text, uint durationMs, const QPixmap& pixmap, int type)
+void NotificationWidget::newMessage(const QString text, uint durationMs, const QPixmap& pixmap, int type, bool animate)
 {
     switch(type)
     {
@@ -49,7 +49,7 @@ void NotificationWidget::newMessage(const QString text, uint durationMs, const Q
         break;
     }
     show();
-    startAnimation(durationMs);
+    startAnimation(durationMs, animate);
 }
 
 void NotificationWidget::onAnimationFinished()
@@ -59,20 +59,26 @@ void NotificationWidget::onAnimationFinished()
 
 
 
-void NotificationWidget::startAnimation(uint pauseMsec)
+void NotificationWidget::startAnimation(uint pauseMsec, bool useAnimation)
 {
-    QPropertyAnimation* anim = new QPropertyAnimation(this, "maximumHeight");
-    anim->setStartValue(0);
-    anim->setEndValue(42);
-    anim->setDuration(500);
-    QPropertyAnimation* anim2 = new QPropertyAnimation(this, "maximumHeight");
-    anim2->setStartValue(42);
-    anim2->setEndValue(0);
-    anim2->setDuration(500);
     QSequentialAnimationGroup* group = new QSequentialAnimationGroup();
-    group->addAnimation(anim);
+    if(useAnimation)
+    {
+        QPropertyAnimation* anim = new QPropertyAnimation(this, "maximumHeight");
+        anim->setStartValue(0);
+        anim->setEndValue(42);
+        anim->setDuration(500);
+        group->addAnimation(anim);
+    }
     group->addPause(pauseMsec);
-    group->addAnimation(anim2);
+    if(useAnimation)
+    {
+        QPropertyAnimation* anim2 = new QPropertyAnimation(this, "maximumHeight");
+        anim2->setStartValue(42);
+        anim2->setEndValue(0);
+        anim2->setDuration(500);
+        group->addAnimation(anim2);
+    }
     connect(group, SIGNAL(finished()), SLOT(onAnimationFinished()));
     group->start(QAbstractAnimation::DeleteWhenStopped);
 }

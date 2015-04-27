@@ -20,7 +20,8 @@ class NOTIFICATIONSSHARED_EXPORT Notifications
 {
 
 public:
-    static void setMainWindow(QWidget* mainWindow);
+    static void setMainWindow(QWidget* mainWindow, bool useAnimations = true);
+    static void setUseAnimations(bool enabled);
     static void newInfo(const QString& text, uint durationMs = 3000, const QPixmap &pixmap = QPixmap());
     static void newWarning(const QString& text, uint durationMs = 3000, const QPixmap &pixmap = QPixmap());
     static void newError(const QString& text, uint durationMs = 3000, const QPixmap &pixmap = QPixmap());

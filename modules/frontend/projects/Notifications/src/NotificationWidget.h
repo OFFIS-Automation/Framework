@@ -22,13 +22,13 @@ public:
     explicit NotificationWidget(QWidget *parent = 0);
     ~NotificationWidget();
 
-    void newMessage(const QString text, uint durationMSec, const QPixmap &pixmap, int type);
+    void newMessage(const QString text, uint durationMSec, const QPixmap &pixmap, int type, bool animate);
 signals:
     void finished(NotificationWidget*);
 protected slots:
     void onAnimationFinished();
 protected:
-    void startAnimation(uint pauseMsec = 5000);
+    void startAnimation(uint pauseMsec = 5000, bool useAnimation = true);
     void setVisible(bool visible);
 private:
     Ui::NotificationWidget *ui;

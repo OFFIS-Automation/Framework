@@ -83,7 +83,7 @@ signals:
     void positionUpdated(const QMap<int,double>& data);
 
     /**
-     * @brief Send update about a toogled button
+     * @brief Send update about a toggled button
      * @param buttonId
      * @param pressed
      */

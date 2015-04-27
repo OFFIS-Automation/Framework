@@ -53,7 +53,7 @@ protected:
         DefaultGamepad
     } mGamepadType;
 
-    void assingButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
+    void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
 #endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT

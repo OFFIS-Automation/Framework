@@ -57,7 +57,7 @@ inline void notifyError(const QString& text, uint durationMs = 3000, const QPixm
     Notifications::newError(text, durationMs, pixmap);
 }
 
-inline void notifyError(const QString& text, const QPixmap& pixmap = QPixmap())
+inline void notifyError(const QString& text, const QPixmap& pixmap)
 {
     Notifications::newError(text, 3000, pixmap);
 }

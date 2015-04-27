@@ -99,7 +99,7 @@ void WindowsGamepad::createMapping()
     throw std::runtime_error("Gamepad mapping not found!");
 }
 
-void WindowsGamepad::assingButton(QMap<int, bool>& buttons, BYTE* data, int buttonId)
+void WindowsGamepad::assignButton(QMap<int, bool>& buttons, BYTE* data, int buttonId)
 {
     int readId = mButtonMapping.value(buttonId, 0) -1;
     if(readId < 0){
@@ -122,7 +122,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         joysticks[Tc::JoystickRoll] = correctedValue(-float(status.lRx)); // Roll = Rotation around x axes
         // Buttons
         for(int i=Tc::WestButton; i<= Tc::EastButton; i++){
-            assingButton(buttons, status.rgbButtons, i);
+            assignButton(buttons, status.rgbButtons, i);
         }
     } else {
         // Axes
@@ -142,7 +142,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 
         // Buttons
         for(int i=Tc::NorthButton; i<= Tc::RightShoulderLowerButton; i++){
-            assingButton(buttons, status.rgbButtons, i);
+            assignButton(buttons, status.rgbButtons, i);
         }
         if(mGamepadType == XBoxGamepad){
             buttons[Tc::LeftShoulderLowerButton] = float(status.lZ) > 0.2;

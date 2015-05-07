@@ -74,8 +74,8 @@ void WindowsGamepad::createMapping()
                 // Type
                 mGamepadType = ConnexionJoystick;
                 // Mapping
-                mButtonMapping[Tc::WestButton]  = settings.value("WestButton").toInt();
-                mButtonMapping[Tc::EastButton]  = settings.value("EastButton").toInt();
+                mButtonMapping[Tc::MenuButton]  = settings.value("MenuButton").toInt();
+                mButtonMapping[Tc::FitButton]  = settings.value("FitButton").toInt();
             } else {
                 // Type
                 mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
@@ -120,8 +120,25 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         joysticks[Tc::JoystickYaw] = correctedValue(float(status.lRz)); // Yaw = Rotation around z axes
         joysticks[Tc::JoystickPitch] = correctedValue(-float(status.lRy)); // Pitch = Rotation around y axes
         joysticks[Tc::JoystickRoll] = correctedValue(-float(status.lRx)); // Roll = Rotation around x axes
+
+        // Median filtering (quick and dirty fix for outliers)
+        foreach(int key, joysticks.keys()){
+            if(mLastConnexionValues[key].count() >= 10){
+                 mLastConnexionValues[key].removeFirst();
+            }
+            mLastConnexionValues[key].append(joysticks[key]);
+
+            // Sort, then extract median
+            QList<double> valuesSorted = mLastConnexionValues[key];
+            qSort(valuesSorted);
+
+            int count = valuesSorted.count();
+            double median = (count % 2 == 0) ? (valuesSorted[count/2 - 1] + valuesSorted[count/2]) / 2 : valuesSorted[count/2];
+            joysticks[key] = median;
+        }
+
         // Buttons
-        for(int i=Tc::WestButton; i<= Tc::EastButton; i++){
+        for(int i=Tc::MenuButton; i<= Tc::FitButton; i++){
             assignButton(buttons, status.rgbButtons, i);
         }
     } else {
@@ -191,6 +208,12 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 float WindowsGamepad::correctedValue(float v)
 {
     v /= (float)getResolution();
+    if(mGamepadType == ConnexionJoystick)
+    {
+        v = qBound(-1.0f, v, 1.0f);
+        v = qRound(v * 64);
+        v /= 64.0;
+    }
     if(v >-0.1 && v < 0.1)
         return 0.0;
     else
@@ -209,7 +232,7 @@ int WindowsGamepad::getResolution() const
     /* +/- 1400 matches the hardware 1:1 for 3DConnexion.
      * +/- 64 is suitable for all common gamepads.
      */
-    return mGamepadType == ConnexionJoystick ? 1400 : 64;
+    return mGamepadType == ConnexionJoystick ? 1050 : 64;
 }
 
 WindowsGamepad::~WindowsGamepad()

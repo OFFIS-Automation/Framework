@@ -334,7 +334,7 @@ bool EditArea::search(bool forwardSearch)
         return false;
 
     if(forwardSearch != mForwardSearch){
-        // Search direction has changed, find first wirh new direction
+        // Search direction has changed, find first with new direction
         mForwardSearch = forwardSearch;
         mFoundFirst = false;
     }

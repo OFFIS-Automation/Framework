@@ -1743,6 +1743,7 @@ bool QsciScintilla::findNext()
 {
     if (findState.status == FindState::Idle)
         return false;
+    findState.wrap = false;
 
     return doFind();
 }

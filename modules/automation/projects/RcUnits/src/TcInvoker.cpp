@@ -24,9 +24,6 @@
 TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods)
     : mDevice(device)
 {
-    // Install key event handler
-    // TODO: think of something qApp->installEventFilter(this);
-
     // Init joystick method and buttons
     foreach(const RcUnit::TcMoveMethod& gamepadMethod, gamepadMethods){
         mGamepadMethods.append(gamepadMethod);
@@ -42,34 +39,6 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepad
     foreach(const RcUnit::TcButtonMethod& hapticButtonMethod, hapticButtonMethods){
         mHapticButtonMethods[hapticButtonMethod.buttonId] = hapticButtonMethod;
     }
-}
-
-bool TcInvoker::eventFilter(QObject *watched, QEvent *event)
-{
-    Q_UNUSED(watched);
-    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease){
-        QKeyEvent *keyEvent = (QKeyEvent *)event;
-        if(keyEvent->isAutoRepeat())
-            return false;
-
-        switch (keyEvent->key()) {
-        case Qt::Key_F2:
-            handleGamepadButtonToggled(Tc::FootboardWestButton, event->type() == QEvent::KeyPress);
-            return true;
-        case Qt::Key_F3:
-            handleGamepadButtonToggled(Tc::FootboardNorthButton, event->type() == QEvent::KeyPress);
-            return true;
-        case Qt::Key_F4:
-            handleGamepadButtonToggled(Tc::FootboardEastButton, event->type() == QEvent::KeyPress);
-            return true;
-        case Qt::Key_F5:
-            handleGamepadButtonToggled(Tc::FootboardSouthButton, event->type() == QEvent::KeyPress);
-            return true;
-        default:
-            return false;
-        }
-    }
-    return false;
 }
 
 // Gamepad stuff

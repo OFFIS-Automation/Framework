@@ -46,6 +46,7 @@ protected:
     friend class WindowsTelecontrolFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
+    QMap<int, QList<double> > mLastConnexionValues;
     bool mSwitchZJoysticks;
     enum Type {
         ConnexionJoystick,

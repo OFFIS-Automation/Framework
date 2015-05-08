@@ -28,6 +28,14 @@ namespace Tc
         ButtonLeft,
         ButtonRight
     };
+    enum ConnexionControlButtons
+    {
+        TSqareButton = 2048,
+        RSquareButton,
+        FSquareButton,
+        RotateSqareButton,
+        ModeButton
+    };
 }
 
 class Gamepad : public QThread

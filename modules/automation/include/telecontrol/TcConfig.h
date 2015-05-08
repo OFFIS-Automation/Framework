@@ -36,10 +36,6 @@ namespace Tc
         // Connexion buttons start here
         MenuButton,
         FitButton,
-        TSqareButton,
-        RSquareButton,
-        FSquareButton,
-        RotateSqareButton,
         OneButton,
         TwoButton,
         ThreeButton,
@@ -48,7 +44,6 @@ namespace Tc
         AltButton,
         ShiftButton,
         CtrlButton,
-        ModeButton,
         // Footboard buttons
         FootboardButton1,
         FootboardButton2,

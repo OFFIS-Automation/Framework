@@ -277,10 +277,6 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString &unitName, const QSt
     settings.beginGroup(QString("telecontrol/%1").arg(unitName));
     settings.setValue("telecontrolDeviceName", telecontrolDeviceName);
 
-    // Connet this unit
-    unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
-    emit telecontrolAssignmentUpdated(unitName, telecontrolDeviceName);
-
     if(telecontrolDeviceName.length() > 0){
         if(!mGamepadMapping.contains(telecontrolDeviceName)){
             activateGamepad(unitName);
@@ -290,6 +286,11 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString &unitName, const QSt
         deactivateGamepad(unitName);
         deactivateHaptic(unitName);
     }
+
+    // Connet this unit
+    unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
+    emit telecontrolAssignmentUpdated(unitName, telecontrolDeviceName);
+
 }
 
 void RcUnitsBase::activateGamepad(const QString &unitName)
@@ -450,7 +451,7 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
         } else if(buttonId == Tc::RotateSqareButton || buttonId == Tc::TSqareButton){
             emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::TSqareButton);
         } else if(buttonId == Tc::FSquareButton || buttonId == Tc::RSquareButton){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::FSquareButton);
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::RSquareButton);
         }
     }
 }

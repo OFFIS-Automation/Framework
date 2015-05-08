@@ -179,6 +179,8 @@ void TcInvoker::setHapticParamaters(const QString& methodName, double sensitivit
     }
 }
 
+
+
 typedef QMap<int, double> QIntDoubleMap;
 void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
 {

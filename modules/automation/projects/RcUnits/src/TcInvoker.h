@@ -32,7 +32,6 @@ public:
     void connectHapticDevice(QObject* hapticDevice);
     void disconnectHapticDevice(QObject* hapticDevice);
     void setHapticParamaters(const QString& methodName, double sensitivity, double forceScaling, const QList<bool>& inverts);
-
 public slots:
     void handleGamepadData(const QMap<int,double>& data);
     void handleGamepadButtonToggled(int buttonId, bool pressed);

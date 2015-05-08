@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <rc/RcUnitInterface.h>
+#include <QKeyEvent>
 #include <QList>
 #include "telecontrol/TelecontrolFactory.h"
 #include "MasterTcInvoker.h"
@@ -32,9 +33,7 @@ RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
     QObject()
 {
     mRcUnitDir = rcUnitPluginDir;
-    mHapticDevices = QMap<QString, HapticDevice *>();
-    mGamepadDevices = QMap<QString, Gamepad *>();
-    mGamepadMapping = QMap<QString, QString>();
+    qApp->installEventFilter(this);
 }
 
 RcUnitsBase::~RcUnitsBase()
@@ -209,6 +208,50 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepa
     QString telecontrolDeviceName = settings.value("telecontrolDeviceName").toString();
     dynamic_cast<RcUnit *>(gamepadEndpoint)->updateTelecontrolAssignment(telecontrolDeviceName);
     settings.endGroup();
+}
+
+bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
+{
+    if(event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent* keyEvent = reinterpret_cast<QKeyEvent*>(event);
+        if(keyEvent->isAutoRepeat())
+            return false;
+        {
+            bool pressed = event->type() == QEvent::KeyPress;
+            Qt::Key key = (Qt::Key)keyEvent->key();
+            int button = -1;
+            switch(keyEvent->key())
+            {
+            case Qt::Key_F10:
+                button = Tc::FootboardButton1;
+                qDebug() << "Footboard 1" << pressed;
+                break;
+            case Qt::Key_F11:
+                button = Tc::FootboardButton2;
+                qDebug() << "Footboard 2" << pressed;
+                break;
+            case Qt::Key_F12:
+                button = Tc::FootboardButton3;
+                qDebug() << "Footboard 3" << pressed;
+                break;
+            default:
+                return false;
+            }
+            if(button < 0)
+                return false;
+            foreach(Gamepad* gamepad, mGamepadDevices.values())
+            {
+                gamepad->buttonToggled(button, pressed, gamepad->getName());
+            }
+            foreach(HapticDevice* hapticDevice, mHapticDevices.values())
+            {
+                hapticDevice->buttonToggled(button, pressed);
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 RcUnitInterface* RcUnitsBase::loadPlugin(const QString &type, QString* errMsg)

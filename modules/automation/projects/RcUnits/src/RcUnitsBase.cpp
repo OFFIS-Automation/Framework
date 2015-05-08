@@ -432,23 +432,26 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
     if(!pressed || buttonId < Tc::ButtonUp){
         return;
     }
-    if(buttonId != Tc::ButtonLeft && buttonId != Tc::ButtonRight && buttonId != Tc::ButtonUp && buttonId != Tc::ButtonDown){
-        return; // only these buttons are interesting
-    }
+    // Check for interesting button
+    if((buttonId >= Tc::ButtonUp && buttonId <= Tc::ButtonRight) || (buttonId >= Tc::TSqareButton && buttonId <= Tc::RotateSqareButton)){
+        // Get the connected unit
+        QString unitName;
+        if(mGamepadMapping.contains(gamepadName)){
+            unitName = mGamepadMapping[gamepadName];
+        }
 
-    // Get the connected unit
-    QString unitName;
-    if(mGamepadMapping.contains(gamepadName)){
-        unitName = mGamepadMapping[gamepadName];
-    }
-
-    if(unitName.isEmpty()){
-        return; // there is no unit attached to this gamepad
-    }
-    if(buttonId == Tc::ButtonLeft || buttonId == Tc::ButtonRight){
-        emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::ButtonRight);
-    } else {
-        emit gamepadSwitchRequested(unitName, buttonId == Tc::ButtonDown);
+        if(unitName.isEmpty()){
+            return; // there is no unit attached to this gamepad
+        }
+        if(buttonId == Tc::ButtonLeft || buttonId == Tc::ButtonRight){
+            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::ButtonRight);
+        } else if(buttonId == Tc::ButtonDown || buttonId == Tc::ButtonUp){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::ButtonDown);
+        } else if(buttonId == Tc::RotateSqareButton || buttonId == Tc::TSqareButton){
+            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::TSqareButton);
+        } else if(buttonId == Tc::FSquareButton || buttonId == Tc::RSquareButton){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::FSquareButton);
+        }
     }
 }
 

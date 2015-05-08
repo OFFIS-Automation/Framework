@@ -36,10 +36,6 @@ namespace Tc
         // Connexion buttons start here
         MenuButton,
         FitButton,
-        TSqareButton,
-        RSquareButton,
-        FSquareButton,
-        RotateSqareButton,
         OneButton,
         TwoButton,
         ThreeButton,
@@ -48,7 +44,6 @@ namespace Tc
         AltButton,
         ShiftButton,
         CtrlButton,
-        ModeButton,
         // Implicit buttons
         TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
         VirtualAnyJoystickButton,  // toggles when any joystick is above zero

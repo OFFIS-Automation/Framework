@@ -10,6 +10,9 @@ TARGET = RcUnits
 TEMPLATE = lib
 CONFIG += lib
 
+INCLUDEPATH += $${PWD}/../../../frontend/projects/Notifications/include
+LIBS += -L$${targetDir}/plugins/ -lNotifications
+
 SOURCES += src/RcUnit.cpp \
     src/TcInvoker.cpp \
     src/telecontrol/TelecontrolFactory.cpp\

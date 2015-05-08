@@ -33,8 +33,23 @@ namespace Tc
         LeftShoulderLowerButton,
         RightShoulderUpperButton,
         RightShoulderLowerButton,
-        MenuButton, // toggles when left button on the 3DConnexion SpaceNavigator is pressed
-        FitButton, // toggles when right button on the 3DConnexion SpaceNavigator is pressed
+        // Connexion buttons start here
+        MenuButton,
+        FitButton,
+        TSqareButton,
+        RSquareButton,
+        FSquareButton,
+        RotateSqareButton,
+        OneButton,
+        TwoButton,
+        ThreeButton,
+        FourButton,
+        EscButton,
+        AltButton,
+        ShiftButton,
+        CtrlButton,
+        ModeButton,
+        // Implicit buttons
         TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
         VirtualAnyJoystickButton,  // toggles when any joystick is above zero
         ImplicitActivationButton = VirtualAnyJoystickButton, // Use this if you don't want a dead mans control

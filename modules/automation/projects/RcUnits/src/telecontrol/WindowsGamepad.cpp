@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2014 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -22,6 +22,7 @@
 #include <QElapsedTimer>
 #include <telecontrol/TcConfig.h>
 #include <QStringList>
+#include <Notifications.h>
 
 bool WindowsGamepad::initialize()
 {
@@ -73,9 +74,25 @@ void WindowsGamepad::createMapping()
             if(settings.value("type").toString().toLower() == "connexion"){
                 // Type
                 mGamepadType = ConnexionJoystick;
+                mConnexionMode = DefaultMode;
                 // Mapping
                 mButtonMapping[Tc::MenuButton]  = settings.value("MenuButton").toInt();
                 mButtonMapping[Tc::FitButton]  = settings.value("FitButton").toInt();
+                // The following mappings are optional
+                // The corresponding buttons are only on the pro series of connexion
+                mButtonMapping[Tc::TSqareButton]  = settings.value("TSqareButton", 0).toInt();
+                mButtonMapping[Tc::RSquareButton]  = settings.value("RSquareButton", 0).toInt();
+                mButtonMapping[Tc::FSquareButton]  = settings.value("FSquareButton", 0).toInt();
+                mButtonMapping[Tc::RotateSqareButton]  = settings.value("RotateSqareButton", 0).toInt();
+                mButtonMapping[Tc::OneButton]  = settings.value("OneButton", 0).toInt();
+                mButtonMapping[Tc::TwoButton]  = settings.value("TwoButton", 0).toInt();
+                mButtonMapping[Tc::ThreeButton]  = settings.value("ThreeButton", 0).toInt();
+                mButtonMapping[Tc::FourButton]  = settings.value("FourButton", 0).toInt();
+                mButtonMapping[Tc::EscButton]  = settings.value("EscButton", 0).toInt();
+                mButtonMapping[Tc::AltButton]  = settings.value("AltButton", 0).toInt();
+                mButtonMapping[Tc::ShiftButton]  = settings.value("ShiftButton", 0).toInt();
+                mButtonMapping[Tc::CtrlButton]  = settings.value("CtrlButton", 0).toInt();
+                mButtonMapping[Tc::ModeButton]  = settings.value("ModeButton", 0).toInt();
             } else {
                 // Type
                 mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
@@ -138,7 +155,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         }
 
         // Buttons
-        for(int i=Tc::MenuButton; i<= Tc::FitButton; i++){
+        for(int i=Tc::MenuButton; i<= Tc::ModeButton; i++){
             assignButton(buttons, status.rgbButtons, i);
         }
     } else {
@@ -220,6 +237,25 @@ float WindowsGamepad::correctedValue(float v)
         return v;
 }
 
+void WindowsGamepad::changeConnexionMode()
+{
+    QString modeString;
+    if(mConnexionMode == DefaultMode){
+        mConnexionMode = TranslationMode;
+        modeString = "translation only";
+    } else if(mConnexionMode == TranslationMode){
+        mConnexionMode = RotationMode;
+        modeString = "rotation only";
+    } else {
+        mConnexionMode = DefaultMode;
+        modeString = "default";
+    }
+
+    // Notify user
+    QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
+    notifyInfo(info);
+}
+
 WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
     mName(name),
     mGuid(guid)
@@ -265,7 +301,6 @@ void WindowsGamepad::run()
         }
         // Assign to internal data structures
         update(joysticks, buttons);
-        emit dataUpdate(joysticks);
 
         // Check for button toggle
         QMapIterator<int,bool> iter(buttons);
@@ -276,38 +311,61 @@ void WindowsGamepad::run()
             if(lastButtons.contains(buttonId)){
                 if(lastButtons[buttonId] != value){
                     // Value has changed
-                    emit buttonToggled(buttonId, value, getName());
+                    if(buttonId == Tc::ModeButton){
+                        if(value){
+                            changeConnexionMode();
+                        }
+                    } else {
+                        emit buttonToggled(buttonId, value, getName());
+                    }
                 }
             } else if(value) {
                 // First run, emit if pressed
-                emit buttonToggled(buttonId, value, getName());
+                if(buttonId == Tc::ModeButton){
+                    if(value){
+                        changeConnexionMode();
+                    }
+                } else {
+                    emit buttonToggled(buttonId, value, getName());
+                }
             }
         }
         lastButtons = buttons;
 
+        // Handle joysticks date
+        if(mGamepadType == ConnexionJoystick && mConnexionMode != DefaultMode){
+            int from = mConnexionMode == TranslationMode ? Tc::JoystickYaw : Tc::JoystickX;
+            int to = mConnexionMode == TranslationMode ? Tc::JoystickPitch : Tc::JoystickZ;
+            for(int i = from; i <= to; i++){
+                joysticks[i] = 0;
+            }
+        }
+        emit dataUpdate(joysticks);
+
         // Eventually sleep thread, limit update rate to 20Hz
         int remaining = 50 - timer.elapsed();
-        if(remaining > 0)
+        if(remaining > 0){
             msleep(remaining);
+        }
     }
 }
 
 BOOL CALLBACK WindowsGamepad::enumObject(const DIDEVICEOBJECTINSTANCE* inst, VOID* pContext)
 {
-	WindowsGamepad* gamepad = (WindowsGamepad*) pContext;
+    WindowsGamepad* gamepad = (WindowsGamepad*) pContext;
 
     // For axes that are returned, set the DIPROP_RANGE property for the
     // enumerated axis in order to scale min/max values.
     if(inst->dwType & DIDFT_AXIS){
         // Set the range for the axis
         DIPROPRANGE diprg;
-        diprg.diph.dwSize       = sizeof(DIPROPRANGE); 
-        diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER); 
-        diprg.diph.dwHow        = DIPH_BYID; 
+        diprg.diph.dwSize       = sizeof(DIPROPRANGE);
+        diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+        diprg.diph.dwHow        = DIPH_BYID;
         diprg.diph.dwObj        = inst->dwType; // Specify the enumerated axis
         diprg.lMin              = -gamepad->getResolution();
         diprg.lMax              = +(gamepad->getResolution()-1);
-    
+
         if(FAILED(gamepad->mDevice->SetProperty(DIPROP_RANGE, &diprg.diph))){
             return DIENUM_STOP;
         }

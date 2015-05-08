@@ -58,8 +58,13 @@ FileEditor::FileEditor(const QString &filename, QMdiSubWindow *parent, const QSt
     setupEditor();
     updateLexer();
     updateWindowTitle();
-    foreach(int line, HilecSingleton::hilec()->breakpoints(mFilename)){
-        toggleBreakpoint(line-1);
+    HilecInterface* hilec = HilecSingleton::hilec();
+    if(hilec)
+    {
+        QList<int> breakpoints = hilec->breakpoints(mFilename);
+        foreach(int line, breakpoints){
+            toggleBreakpoint(line-1);
+        }
     }
 
     // Connections

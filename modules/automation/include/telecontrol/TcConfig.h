@@ -49,6 +49,10 @@ namespace Tc
         ShiftButton,
         CtrlButton,
         ModeButton,
+        // Footboard buttons
+        FootboardButton1,
+        FootboardButton2,
+        FootboardButton3,
         // Implicit buttons
         TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
         VirtualAnyJoystickButton,  // toggles when any joystick is above zero

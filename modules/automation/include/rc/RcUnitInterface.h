@@ -61,7 +61,7 @@ public:
      * With the sensitivity, the gamepad value is scaled down. This can later be adjusted by the user.
      * Example:
      * void moveByGamepad(double x, double y); // values for x and y: [-1:1]
-     * registerGamepadMethod("moveByGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY), Tc::Button5, 0.0125);
+     * registerGamepadMethod("moveByGamepad", Tc::joysticks(Tc::Gamepad::LeftJoystickX, Tc::Gamepad::LeftJoystickY), Tc::Button5, 0.0125);
      */
     virtual void registerGamepadMethod(QString methodName, const QList<Tc::Gamepad::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
     /**
@@ -93,7 +93,7 @@ public:
      * The @ defaultForceScaling is a factor that is multiplied with the forces before they are applied as haptic feedback. Range (0:1].
      * Example:
      * QMap<int, double> moveHaptic(QMap<int, double> axes);; // values for x and y: [-1:1]
-     * registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ), Tc::PrimaryButton);
+     * registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::Haptic::AxisX, Tc::Haptic::AxisY, Tc::Haptic::AxisZ), Tc::PrimaryButton);
      */
     virtual void registerHapticMethod(QString methodName, const QList<Tc::Haptic::Axis> &defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
 

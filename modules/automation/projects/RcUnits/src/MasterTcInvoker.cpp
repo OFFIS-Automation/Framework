@@ -47,7 +47,7 @@ void MasterTcInvoker::readConfig(const QString &configFile)
         wrap.sensitivity = 1/64.0;
         wrap.name = settings.value("name").toString();
         wrap.deadMansButton = settings.value("activationButton").toInt();
-        foreach(Tc::Joystick joystick, Tc::allJoysticks())
+        foreach(Tc::Connexion::Joystick joystick, Tc::allJoysticks())
         {
             QString groupName = Tc::stringForJoystick(joystick);
             if(settings.childGroups().contains(groupName))
@@ -178,7 +178,7 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
                     QString paramName = method.axeNames[paramId];
                     if(paramName == target.paramName)
                     {
-                        Tc::Joystick joyId = wrap.joysticks.value(targetId, Tc::NoJoystick);
+                        Tc::Connexion::Joystick joyId = wrap.joysticks.value(targetId, Tc::NoJoystick);
                         newMethod.joysticks[paramId] = joyId;
                         newMethod.invertPos[paramId] = targetId;
                         newMethod.sensitivity = wrap.sensitivity;

@@ -54,23 +54,23 @@ struct TelecontrolConfig
     QList<TcButton> tcButtonMethods;
 };
 /*
-inline QDataStream& operator>>(QDataStream& stream, Tc::Joystick& joystick)
+inline QDataStream& operator>>(QDataStream& stream, Tc::Connexion::Joystick& joystick)
 {
 
     int id;
     stream >> id;
-    joystick = (Tc::Joystick)id;
+    joystick = (Tc::Connexion::Joystick)id;
     if(!Tc::joysticks().contains(joystick))
         joystick = Tc::NoJoystick;
     return stream;
 }
 
-inline QDataStream& operator>>(QDataStream& stream, Tc::HapticAxis& axis)
+inline QDataStream& operator>>(QDataStream& stream, Tc::Haptic::Axis& axis)
 {
 
     int id;
     stream >> id;
-    axis = (Tc::HapticAxis)id;
+    axis = (Tc::Haptic::Axis)id;
     if(!Tc::hapticAxis().contains(axis))
         axis = Tc::NoAxis;
     return stream;

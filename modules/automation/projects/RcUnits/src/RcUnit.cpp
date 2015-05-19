@@ -141,7 +141,11 @@ RcUnitHelp RcUnit::getHelp() const
     names = mTcGamepadMoveMethods.keys();
     names.sort();
     foreach(const QString& name, names){
-        help.tcGamepadMoves << mTcGamepadMoveMethods[name];
+        const TcMoveMethod& move = mTcGamepadMoveMethods[name];
+        if(move.isConnexion)
+            help.tcConnexionMoves << mTcGamepadMoveMethods[name];
+        else
+            help.tcGamepadMoves << mTcGamepadMoveMethods[name];
     }
     foreach(const TcButtonMethod& button, mTcGamepadButtonMethods){
         if(!button.hideFromUser){
@@ -492,7 +496,7 @@ void RcUnit::registerGamepadMethod(QString name, const QList<Tc::Gamepad::Joysti
     QList<int> mapping;
     foreach(int map, defaultMapping)
         mapping << map;
-    registerTelecontrolMethod(name, mapping, defaultActivateButton, defaultSensitivity, numSensTicks);
+    registerTelecontrolMethod(name, mapping, defaultActivateButton, defaultSensitivity, numSensTicks, false);
 }
 
 void RcUnit::registerConnexionMethod(QString name, const QList<Tc::Connexion::Joystick> &defaultMapping, int defaultActivateButton, double defaultSensitivity, int numSensTicks)
@@ -500,10 +504,10 @@ void RcUnit::registerConnexionMethod(QString name, const QList<Tc::Connexion::Jo
     QList<int> mapping;
     foreach(int map, defaultMapping)
         mapping << map;
-    registerTelecontrolMethod(name, mapping, defaultActivateButton, defaultSensitivity, numSensTicks);
+    registerTelecontrolMethod(name, mapping, defaultActivateButton, defaultSensitivity, numSensTicks, true);
 }
 
-void RcUnit::registerTelecontrolMethod(QString name, const QList<int> defaultMapping, int defaultActivateButton, double defaultSensitivity, int numSensTicks)
+void RcUnit::registerTelecontrolMethod(QString name, const QList<int> defaultMapping, int defaultActivateButton, double defaultSensitivity, int numSensTicks, bool connexion)
 {
     TcMoveMethod method;
     method.name = name;
@@ -514,6 +518,8 @@ void RcUnit::registerTelecontrolMethod(QString name, const QList<int> defaultMap
     }
     method.deadMansButton = defaultActivateButton;
     method.sensitivity = defaultSensitivity;
+    method.isConnexion = connexion;
+
     mTcGamepadMoveMethods[name] = method;
 }
 

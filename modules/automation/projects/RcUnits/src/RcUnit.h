@@ -72,6 +72,7 @@ public:
     {
         QMetaMethod method;
         QMap<int, int> invertPos;
+        bool isConnexion;
     };
 
     RcUnit(const QString& name, const QString &configFile);
@@ -103,7 +104,7 @@ public:
 
     void registerGamepadMethod(QString methodName, const QList<Tc::Gamepad::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10);
     void registerConnexionMethod(QString methodName, const QList<Tc::Connexion::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10);
-    void registerTelecontrolMethod(QString methodName, const QList<int> defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10);
+    void registerTelecontrolMethod(QString methodName, const QList<int> defaultMapping, int defaultActivateButton, double defaultSensitivity, int numSensTicks, bool connexion);
     void registerButtonMethod(QString methodName, int defaultMapping, bool hideFromUser = false);
     void updateGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);
     void connectGamepad(QObject* gamepad);

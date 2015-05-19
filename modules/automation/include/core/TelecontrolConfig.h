@@ -53,29 +53,27 @@ struct TelecontrolConfig
     QList<TcMove> tcHapticMoves;
     QList<TcButton> tcButtonMethods;
 };
-/*
-inline QDataStream& operator>>(QDataStream& stream, Tc::Connexion::Joystick& joystick)
-{
 
-    int id;
-    stream >> id;
-    joystick = (Tc::Connexion::Joystick)id;
-    if(!Tc::joysticks().contains(joystick))
-        joystick = Tc::NoJoystick;
-    return stream;
+inline bool isGamepadButton(int button)
+{
+    return button >= Tc::Gamepad::FirstButton && button <= Tc::Gamepad::LastButton;
 }
 
-inline QDataStream& operator>>(QDataStream& stream, Tc::Haptic::Axis& axis)
+inline bool isConnexionButton(int button)
 {
-
-    int id;
-    stream >> id;
-    axis = (Tc::Haptic::Axis)id;
-    if(!Tc::hapticAxis().contains(axis))
-        axis = Tc::NoAxis;
-    return stream;
+    return button >= Tc::Connexion::FirstButton && button <= Tc::Connexion::LastButton;
 }
-*/
+
+inline bool isVirtualButton(int button)
+{
+    return button >= Tc::Virtual::FirstButton && button <= Tc::Virtual::LastButton;
+}
+
+inline bool isHapticButton(int button)
+{
+    return button >= Tc::Haptic::FirstButton && button <= Tc::Haptic::LastButton;
+}
+
 
 inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcButton& button)
 {
@@ -98,10 +96,9 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcMove& m
     stream >> move.name;
     stream >> move.deadMansButton;
     stream >> move.sensitivity;
-//    stream >> move.forceScaling;
+    stream >> move.forceScaling;
     stream >> move.axeNames;
     stream >> move.analogDOFs;
-//    stream >> move.axes;
     stream >> move.inverts;
     return stream;
 }
@@ -111,10 +108,9 @@ inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig::TcM
     stream << move.name;
     stream << move.deadMansButton;
     stream << move.sensitivity;
-//    stream << move.forceScaling;
+    stream << move.forceScaling;
     stream << move.axeNames;
     stream << move.analogDOFs;
-//    stream << move.axes;
     stream << move.inverts;
     return stream;
 }
@@ -124,8 +120,9 @@ inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig& tc)
     stream >> tc.unitName;
     stream >> tc.tcDeviceName;
     stream >> tc.tcGamepadMoves;
-    stream >> tc.tcButtonMethods;
+    stream >> tc.tcConnexionMoves;
     stream >> tc.tcHapticMoves;
+    stream >> tc.tcButtonMethods;
     return stream;
 }
 
@@ -134,8 +131,9 @@ inline QDataStream& operator<<(QDataStream& stream, const TelecontrolConfig& tc)
     stream << tc.unitName;
     stream << tc.tcDeviceName;
     stream << tc.tcGamepadMoves;
-    stream << tc.tcButtonMethods;
+    stream << tc.tcConnexionMoves;
     stream << tc.tcHapticMoves;
+    stream << tc.tcButtonMethods;
     return stream;
 }
 

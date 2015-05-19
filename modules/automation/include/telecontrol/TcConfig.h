@@ -35,6 +35,8 @@ namespace Tc
             RightShoulderLowerButton,
             TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
             ImplicitActivationButton, // toggles when any joystick is above zero Use this if you don't want a dead mans control
+            FirstButton = NorthButton,
+            LastButton = ImplicitActivationButton
         };
         enum Joystick
         {
@@ -52,7 +54,9 @@ namespace Tc
         {
             // Connexion buttons start here
             MenuButton = 64,
+            WestButton = MenuButton, // small connexion buttons
             FitButton,
+            EastButton = FitButton, // small connexion buttons
             OneButton,
             TwoButton,
             ThreeButton,
@@ -62,8 +66,8 @@ namespace Tc
             ShiftButton,
             CtrlButton,
             ImplicitActivationButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero Use this for 6DOF joysticks if you don't wand a dead mans control
-            WestButton = MenuButton, // small connexion buttons
-            EastButton = FitButton // small connexion buttons
+            FirstButton = MenuButton,
+            LastButton = ImplicitActivationButton
         };
         enum Joystick
         {
@@ -79,7 +83,6 @@ namespace Tc
     {
         enum VirtualButtons
         {
-            UnknownButton = -1,
             CtrlF1Button = 128,
             CtrlF2Button,
             CtrlF3Button,
@@ -87,6 +90,8 @@ namespace Tc
             FootboardButton1 = CtrlF1Button,
             FootboardButton2 = CtrlF2Button,
             FootboardButton3 = CtrlF3Button,
+            FirstButton = CtrlF1Button,
+            LastButton = CtrlF3Button
         };
     }
 
@@ -107,7 +112,9 @@ namespace Tc
         {
             UnknownHapticButton = -1,
             PrimaryButton = 192,
-            SecondaryButton
+            SecondaryButton,
+            FirstButton = PrimaryButton,
+            LastButton = SecondaryButton
         };
     }
 

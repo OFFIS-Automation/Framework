@@ -63,17 +63,24 @@ public:
      * void moveByGamepad(double x, double y); // values for x and y: [-1:1]
      * registerGamepadMethod("moveByGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY), Tc::Button5, 0.0125);
      */
-    virtual void registerGamepadMethod(QString methodName, const QList<Tc::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
+    virtual void registerGamepadMethod(QString methodName, const QList<Tc::Gamepad::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
+    /**
+     * @brief registers a method to be called by a 6DOF Connexion device
+     * @see registerGamepadMethod for details
+     * use Tc::Connexion namespace instead of Tc::Gamepad namespace
+     */
+    virtual void registerConnexionMethod(QString methodName, const QList<Tc::Connexion::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
+
 
     /**
-     * @brief registers a method to be called if a gamepad button is pressed
+     * @brief registers a method to be called if a gamepad/haptic/virtual button is pressed
      * The method registered is called when a button is toggled or pressed.
      * The signature can be methodName() -- method is called when the button is "clicked" (pressed and released)
      * The signature can be methodName(bool toggled) -- method is called when the button is pressed or released
      * @param defaultMapping the sensitive button
      * @param hiddenToUser this button assingment is hidden from the user, it is not displayed in the GUI
      */
-    virtual void registerGamepadButtonMethod(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
+    virtual void registerButtonMethod(QString methodName, int defaultMapping, bool hiddenToUser = false) = 0;
 
     /**
      * @brief registers a method to be called by the haptic device
@@ -88,18 +95,11 @@ public:
      * QMap<int, double> moveHaptic(QMap<int, double> axes);; // values for x and y: [-1:1]
      * registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ), Tc::PrimaryButton);
      */
-    virtual void registerHapticMethod(QString methodName, const QList<Tc::HapticAxis> &defaultMapping, Tc::HapticButton defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
+    virtual void registerHapticMethod(QString methodName, const QList<Tc::Haptic::Axis> &defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
 
     /**
-     * @brief registers a method to be called if a haptic button is pressed
-     * The method registered is called when a button is toggled or pressed.
-     * The signature can be methodName() -- method is called when the button is "clicked" (pressed and released)
-     * The signature can be methodName(bool toggled) -- method is called when the button is pressed or released
-     * @param defaultMapping the sensitive button
-     * @param hiddenToUser this button assingment is hidden from the user, it is not displayed in the GUI
+     * overwrite the parameter names for a registered method
      */
-    virtual void registerHapticButtonMethod(QString methodName, Tc::HapticButton defaultMapping, bool hideFromUser = false) = 0;
-
     virtual void setParamNames(const QString& methodName, const QStringList& names) = 0;
     /**
      * This function should never be called directly. Instead, use the static method @a rcRegisterStruct in RcStruct.h
@@ -199,7 +199,7 @@ public:
         { Q_UNUSED(instance); Q_UNUSED(params); throw RcError(QObject::tr("No such method: %1").arg(QString(methodName))); }
 
 };
-#define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.1"
+#define RcUnitInterface_iid "offis.automation.RcUnitInterface/1.2"
 Q_DECLARE_INTERFACE(RcUnitInterface, RcUnitInterface_iid)
 
 #endif // RCUNITINTERFACE_H

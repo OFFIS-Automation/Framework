@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#if 0
 
 #include "EditGamepadArea.h"
 #include "EditGamepadAssignment.h"
@@ -34,7 +35,7 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     ui->setupUi(this);
     ui->remove->setEnabled(false);
     int rowCounter = 1;
-    for(int i=Tc::ButtonEnumFirst; i<Tc::ButtonEnumEnd; i++)
+    for(int i=Tc::Gamepad::NorthButton; i<Tc::Gamepad::RightShoulderLowerButton; i++)
     {
         QComboBox* box = new QComboBox();
         QLineEdit* edit = new QLineEdit();
@@ -57,7 +58,7 @@ EditGamepadAssignment::EditGamepadAssignment(QWidget *parent) :
     foreach(const QString& unit, HilecSingleton::hilec()->rcUnits())
     {
         TelecontrolConfig tcConfig = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcGamepadButtons)
+        foreach(const TelecontrolConfig::TcButton& button, tcConfig.tcButtonMethods)
         {
             QString label = unit + "." + button.name;
             foreach(QComboBox* cb, mButtonUis.values()){
@@ -218,3 +219,5 @@ void EditGamepadAssignment::on_current_index_changed(const QString &text)
         }
     }
 }
+
+#endif

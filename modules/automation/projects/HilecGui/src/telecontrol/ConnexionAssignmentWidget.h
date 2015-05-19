@@ -38,7 +38,7 @@ private:
     QString mUnit;
 
 protected:
-    QString labelNameForJoystick(Tc::Joystick joystick);
+    QString labelNameForJoystick(int joystick);
 
 };
 

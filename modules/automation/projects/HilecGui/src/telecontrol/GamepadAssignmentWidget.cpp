@@ -33,8 +33,8 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
     TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
 
     // Buttons
-    if(!help.tcGamepadButtons.empty()){
-        foreach(RcUnitHelp::TcButton buttonMethod, help.tcGamepadButtons){
+    if(!help.tcButtonMethods.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcButtonMethods){
             setButtonLabel(buttonMethod.buttonId, buttonMethod.name);
         }
     }
@@ -48,12 +48,12 @@ GamepadAssignmentWidget::GamepadAssignmentWidget(const QString &unit, QWidget *p
             // Deadmans button
             setButtonLabel(joystickMethod.deadMansButton, "Dead-man's control: " + joystickMethod.name, color);
 
-            for(int i=0;i < joystickMethod.joysticks.size(); i++){
-                Tc::Joystick joystick = joystickMethod.joysticks[i];
+            for(int i=0;i < joystickMethod.analogDOFs.size(); i++){
+                int joystick = joystickMethod.analogDOFs[i];
                 QString name = joystickMethod.axeNames.value(i);
-                if(joystick == Tc::TriggerJoystick){
-                    setButtonLabel(Tc::LeftShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
-                    setButtonLabel(Tc::RightShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
+                if(joystick == Tc::Gamepad::TriggerJoystick){
+                    setButtonLabel(Tc::Gamepad::LeftShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
+                    setButtonLabel(Tc::Gamepad::RightShoulderLowerButton, QString("%1.%2").arg(joystickMethod.name, name), color);
                 } else {
                     setJoystickLabel(joystick, joystickMethod.name, name, color);
                 }
@@ -70,13 +70,13 @@ GamepadAssignmentWidget::~GamepadAssignmentWidget()
 QString GamepadAssignmentWidget::labelNameForJoystick(int joystick)
 {
     switch (joystick) {
-    case Tc::LeftJoystickX:
+    case Tc::Gamepad::LeftJoystickX:
         return QString("leftStickXLabel");
-    case Tc::LeftJoystickY:
+    case Tc::Gamepad::LeftJoystickY:
         return QString("leftStickYLabel");
-    case Tc::RightJoystickX:
+    case Tc::Gamepad::RightJoystickX:
         return QString("rightStickXLabel");
-    case Tc::RightJoystickY:
+    case Tc::Gamepad::RightJoystickY:
         return QString("rightStickYLabel");
     default:
         return QString("Unknown");

@@ -90,18 +90,18 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
 
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed
-    rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX), Tc::LeftShoulderUpperButton);
-    rc.registerGamepadMethod("moveGamepad3d", Tc::joysticks(Tc::JoystickX, Tc::JoystickY, Tc::JoystickYaw), Tc::Impliciz6DOFButton);
+    rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::Gamepad::LeftJoystickX, Tc::Gamepad::LeftJoystickY, Tc::Gamepad::RightJoystickX), Tc::Gamepad::LeftShoulderUpperButton);
+    rc.registerConnexionMethod("moveGamepad3d", Tc::joysticks(Tc::Connexion::JoystickX, Tc::Connexion::JoystickY, Tc::Connexion::JoystickYaw), Tc::Connexion::ImplicitActivationButton);
 
-    rc.registerGamepadButtonMethod("openGripper", Tc::WestButton);
-    rc.registerGamepadButtonMethod("closeGripper", Tc::EastButton);
+    rc.registerButtonMethod("openGripper", Tc::Connexion::WestButton);
+    rc.registerButtonMethod("closeGripper", Tc::Connexion::EastButton);
 
-    rc.registerGamepadButtonMethod("openGripper", Tc::LeftShoulderLowerButton);
-    rc.registerGamepadButtonMethod("closeGripper", Tc::RightShoulderLowerButton);
+    rc.registerButtonMethod("openGripper", Tc::Gamepad::LeftShoulderLowerButton);
+    rc.registerButtonMethod("closeGripper", Tc::Gamepad::RightShoulderLowerButton);
 
     // if you support haptic, add your haptic method here
-    rc.registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ), Tc::PrimaryButton);
-    rc.registerHapticButtonMethod("alternateGripper", Tc::SecondaryButton);
+    rc.registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::Haptic::AxisX, Tc::Haptic::AxisY, Tc::Haptic::AxisZ), Tc::Haptic::PrimaryButton);
+    rc.registerButtonMethod("alternateGripper", Tc::Haptic::SecondaryButton);
 
     return unit;
 }

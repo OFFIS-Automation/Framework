@@ -24,7 +24,7 @@ class TcInvoker : public QObject
 {
     Q_OBJECT
 public:
-    TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods);
+    TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods);
     void connectGamepad(QObject* gamepad);
     void disconnectGamepad(QObject* gamepad);
     void setGamepadParameters(const QString& methodName, double sensitivity, const QList<bool>& inverts);

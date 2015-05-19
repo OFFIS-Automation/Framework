@@ -18,6 +18,8 @@
 #ifndef EDITGAMEPADASSIGNMENT_H
 #define EDITGAMEPADASSIGNMENT_H
 
+#if 0
+
 #include <QDialog>
 #include <QMap>
 
@@ -55,3 +57,4 @@ private:
 };
 
 #endif // EDITGAMEPADASSIGNMENT_H
+#endif

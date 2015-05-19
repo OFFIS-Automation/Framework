@@ -21,7 +21,7 @@
 #include <QKeyEvent>
 
 
-TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods, const QList<RcUnit::TcButtonMethod>& hapticButtonMethods)
+TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods)
     : mDevice(device)
 {
     // Init joystick method and buttons
@@ -35,9 +35,6 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepad
     // Init haptic methods and buttons
     foreach(const RcUnit::TcMoveMethod& hapticMethod, hapticMethods){
         mHapticMethods.append(hapticMethod);
-    }
-    foreach(const RcUnit::TcButtonMethod& hapticButtonMethod, hapticButtonMethods){
-        mHapticButtonMethods[hapticButtonMethod.buttonId] = hapticButtonMethod;
     }
 }
 
@@ -76,7 +73,7 @@ void TcInvoker::handleGamepadData(const QMap<int, double> &data)
         RcUnit::TcMoveMethod activeMethod = mGamepadMethods.value(activeMethodId);
         QVector<QGenericArgument> args(10);
         QVector<double> vals(10);
-        QList<Tc::Joystick>& elems = activeMethod.joysticks;
+        QList<int>& elems = activeMethod.analogDOFs;
         for(int i=0; i<elems.size(); i++){
             int id = elems[i];
             vals[i] = data.value(id, 0.0)*activeMethod.sensitivity;
@@ -190,7 +187,7 @@ void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
         // Required because method may not interested in all axes
         QMap<int,double> argMap;
         if(!data.empty()){
-            QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
+            QList<int>& axesIDs = activeMethod.analogDOFs;
             for(int i=0; i<axesIDs.size(); i++){
                 int axesId = axesIDs[i];
                 argMap[axesId] = data.value(axesId, 0.0) * activeMethod.sensitivity;
@@ -206,7 +203,7 @@ void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
             qRegisterMetaType<QIntDoubleMap>("QIntDoubleMap");
             activeMethod.method.invoke(mDevice, Qt::DirectConnection, Q_RETURN_ARG(QIntDoubleMap, returnValue), Q_ARG(QIntDoubleMap, argMap));
 
-            QList<Tc::HapticAxis>& axesIDs = activeMethod.axes;
+            QList<int>& axesIDs = activeMethod.analogDOFs;
             for(int i=0; i<axesIDs.size(); i++){
                 int axesId = axesIDs[i];
                 if(returnValue.contains(axesId)){

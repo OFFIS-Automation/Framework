@@ -22,20 +22,26 @@
 
 namespace Tc
 {
-    enum WheelButtons {
-        ButtonUp = 1024,
-        ButtonDown,
-        ButtonLeft,
-        ButtonRight
-    };
-    enum ConnexionControlButtons
+    namespace Gamepad
     {
-        TSqareButton = 2048,
-        RSquareButton,
-        FSquareButton,
-        RotateSqareButton,
-        ModeButton
-    };
+        enum WheelButtons {
+            ButtonUp = 1024,
+            ButtonDown,
+            ButtonLeft,
+            ButtonRight
+        };
+    }
+    namespace Connexion
+    {
+        enum ConnexionControlButtons
+        {
+            TSqareButton = 2048,
+            RSquareButton,
+            FSquareButton,
+            RotateSqareButton,
+            ModeButton
+        };
+    }
 }
 
 class Gamepad : public QThread

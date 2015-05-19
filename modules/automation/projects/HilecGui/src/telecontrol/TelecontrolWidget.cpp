@@ -83,7 +83,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
     foreach(QString unit, units)
     {
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
-        if(!help.tcGamepadMoves.empty() || !help.tcGamepadButtons.empty() || !help.tcHapticMoves.empty() || !help.tcHapticButtons.empty()){
+        if(!help.tcGamepadMoves.empty() || !help.tcButtonMethods.empty() || !help.tcHapticMoves.empty()){
             ui->tabWidget->setEnabled(true);
 
             // Setup a layout container
@@ -199,8 +199,10 @@ void TelecontrolWidget::onGamepadSwitchRequested(const QString &unitName, bool d
         ui->tabWidget->setCurrentIndex(index+1);
 }
 
+
 void TelecontrolWidget::editButtonAssignment(const QString &unit)
 {
+    /*
     EditGamepadAssignment edit(this);
     if(!unit.isEmpty())
         edit.load(unit, mConfigFile);
@@ -209,7 +211,9 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
         edit.saveConfig(mConfigFile);
         QMessageBox::information(this, tr("Relaod required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
     }
+    */
 }
+
 
 void TelecontrolWidget::openButtonAssignment(const QString &unit)
 {

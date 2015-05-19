@@ -21,324 +21,202 @@
 
 namespace Tc
 {
-
-    enum Button
+    namespace Gamepad
     {
-        UnknownButton = -1,
-        NorthButton = 0,
-        SouthButton,
-        WestButton,
-        EastButton,
-        LeftShoulderUpperButton,
-        LeftShoulderLowerButton,
-        RightShoulderUpperButton,
-        RightShoulderLowerButton,
-        // Connexion buttons start here
-        MenuButton,
-        FitButton,
-        OneButton,
-        TwoButton,
-        ThreeButton,
-        FourButton,
-        EscButton,
-        AltButton,
-        ShiftButton,
-        CtrlButton,
-        // Footboard buttons
-        FootboardButton1,
-        FootboardButton2,
-        FootboardButton3,
-        // Implicit buttons
-        TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
-        VirtualAnyJoystickButton,  // toggles when any joystick is above zero
-        ImplicitActivationButton = VirtualAnyJoystickButton, // Use this if you don't want a dead mans control
-        VirtualAny6DOFButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero
-        Impliciz6DOFButton = VirtualAny6DOFButton, // Use this for 6DOF joysticks if you don't wand a dead mans control
-        ButtonEnumEnd,
-        ButtonEnumFirst = NorthButton
-    };
+        enum Button
+        {
+            NorthButton = 0,
+            SouthButton,
+            WestButton,
+            EastButton,
+            LeftShoulderUpperButton,
+            LeftShoulderLowerButton,
+            RightShoulderUpperButton,
+            RightShoulderLowerButton,
+            TriggerButton, // toggles when one of the trigger buttons on the XBOX gamepad is pressed
+            ImplicitActivationButton, // toggles when any joystick is above zero Use this if you don't want a dead mans control
+        };
+        enum Joystick
+        {
+            LeftJoystickX = 0,
+            LeftJoystickY,
+            RightJoystickX,
+            RightJoystickY,
+            TriggerJoystick
+        };
 
-    enum Joystick
+    }
+    namespace Connexion
     {
-        NoJoystick = -1,
-        LeftJoystickX = 0,
-        LeftJoystickY,
-        RightJoystickX,
-        RightJoystickY,
-        JoystickX,
-        JoystickY,
-        JoystickZ,
-        JoystickYaw,
-        JoystickPitch,
-        JoystickRoll,
-        TriggerJoystick
-    };
-
-    enum HapticAxis
+        enum Buttons
+        {
+            // Connexion buttons start here
+            MenuButton = 64,
+            FitButton,
+            OneButton,
+            TwoButton,
+            ThreeButton,
+            FourButton,
+            EscButton,
+            AltButton,
+            ShiftButton,
+            CtrlButton,
+            ImplicitActivationButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero Use this for 6DOF joysticks if you don't wand a dead mans control
+            WestButton = MenuButton, // small connexion buttons
+            EastButton = FitButton // small connexion buttons
+        };
+        enum Joystick
+        {
+            JoystickX = 64,
+            JoystickY,
+            JoystickZ,
+            JoystickYaw,
+            JoystickPitch,
+            JoystickRoll,
+        };
+    }
+    namespace Virtual
     {
-        NoAxis = -1,
-        HapticAxisX = 0,
-        HapticAxisY,
-        HapticAxisZ,
-        HapticAxisYaw,
-        HapticAxisPitch,
-        HapticAxisRoll
-    };
-
-    enum HapticButton
-    {
-        UnknownHapticButton = -1,
-        PrimaryButton = 0,
-        SecondaryButton
-    };
-
-    inline QList<Joystick> joysticks()
-    {
-        return QList<Joystick>();
+        enum VirtualButtons
+        {
+            UnknownButton = -1,
+            CtrlF1Button = 128,
+            CtrlF2Button,
+            CtrlF3Button,
+            // Footboard buttons
+            FootboardButton1 = CtrlF1Button,
+            FootboardButton2 = CtrlF2Button,
+            FootboardButton3 = CtrlF3Button,
+        };
     }
 
-    inline QList<Joystick> joysticks(Joystick j1)
+    namespace Haptic
     {
-        return joysticks() << j1;
+        enum Axis
+        {
+            NoAxis = -1,
+            AxisX = 192,
+            AxisY,
+            AxisZ,
+            AxisYaw,
+            AxisPitch,
+            AxisRoll
+        };
+
+        enum Button
+        {
+            UnknownHapticButton = -1,
+            PrimaryButton = 192,
+            SecondaryButton
+        };
     }
 
-    inline QList<Joystick> joysticks(Joystick j1, Joystick j2)
+
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1)
     {
-        return joysticks() << j1 << j2;
+        QList<Gamepad::Joystick> l;
+        return l << j1;
     }
 
-    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3)
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1, Gamepad::Joystick j2)
     {
-        return joysticks() << j1 << j2 << j3;
-    }
-    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4)
-    {
-        return joysticks() << j1 << j2 << j3 << j4;
+        return joysticks(j1) << j2;
     }
 
-    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4, Joystick j5)
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1, Gamepad::Joystick j2, Gamepad::Joystick j3)
     {
-        return joysticks() << j1 << j2 << j3 << j4 << j5;
+        return joysticks(j1, j2) << j3;
+    }
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1, Gamepad::Joystick j2, Gamepad::Joystick j3, Gamepad::Joystick j4)
+    {
+        return joysticks(j1, j2, j3) << j4;
     }
 
-    inline QList<Joystick> joysticks(Joystick j1, Joystick j2, Joystick j3, Joystick j4, Joystick j5, Joystick j6)
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1, Gamepad::Joystick j2, Gamepad::Joystick j3, Gamepad::Joystick j4, Gamepad::Joystick j5)
     {
-        return joysticks() << j1 << j2 << j3 << j4 << j5 << j6;
+        return joysticks(j1, j2, j3, j4) << j5;
     }
 
-    inline QList<Joystick> allJoysticks() {
-        return joysticks(Tc::LeftJoystickX, Tc::LeftJoystickY, Tc::RightJoystickX, Tc::RightJoystickY);
+    inline QList<Gamepad::Joystick> joysticks(Gamepad::Joystick j1, Gamepad::Joystick j2, Gamepad::Joystick j3, Gamepad::Joystick j4, Gamepad::Joystick j5, Gamepad::Joystick j6)
+    {
+        return joysticks(j1, j2, j3, j4, j5) << j6;
     }
 
-    inline QString stringForButton(int button)
-    {
-        switch(button){
-            case NorthButton:
-                return "NorthButton";
-            case SouthButton:
-                return "SouthButton";
-            case WestButton:
-                return "WestButton";
-            case EastButton:
-                return "EastButton";
-            case LeftShoulderUpperButton:
-                return "LeftShoulderUpperButton";
-            case LeftShoulderLowerButton:
-                return "LeftShoulderLowerButton";
-            case RightShoulderUpperButton:
-                return "RightShoulderUpperButton";
-            case RightShoulderLowerButton:
-                return "RightShoulderLowerButton";
-            default:
-                return "UnknownButton";
-        }
+    inline QList<Gamepad::Joystick> allGamepadJoysticks() {
+        return joysticks(Tc::Gamepad::LeftJoystickX, Tc::Gamepad::LeftJoystickY, Tc::Gamepad::RightJoystickX, Tc::Gamepad::RightJoystickY);
     }
 
-    inline QString userFriendlyStringForButton(int button)
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1)
     {
-        switch(button){
-            case NorthButton:
-                return "North button";
-            case SouthButton:
-                return "South button";
-            case WestButton:
-                return "West button";
-            case EastButton:
-                return "East button";
-            case LeftShoulderUpperButton:
-                return "Left shoulder upper button";
-            case LeftShoulderLowerButton:
-                return "Left shoulder lower button";
-            case RightShoulderUpperButton:
-                return "Right shoulder upper button";
-            case RightShoulderLowerButton:
-                return "Right shoulder lower button";
-            default:
-                return "Unknown button";
-        }
+        QList<Connexion::Joystick> l;
+        return l << j1;
     }
 
-    inline Button buttonFromString(QString buttonName)
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1, Connexion::Joystick j2)
     {
-        if(buttonName == "NorthButton")
-            return NorthButton;
-        else if(buttonName == "SouthButton")
-            return SouthButton;
-        else if(buttonName == "WestButton")
-            return WestButton;
-        else if(buttonName == "EastButton")
-            return EastButton;
-        else if(buttonName == "LeftShoulderUpperButton")
-            return LeftShoulderUpperButton;
-        else if(buttonName == "LeftShoulderLowerButton")
-            return LeftShoulderLowerButton;
-        else if(buttonName == "RightShoulderUpperButton")
-            return RightShoulderUpperButton;
-        else if(buttonName == "RightShoulderLowerButton")
-            return RightShoulderLowerButton;
-        else
-            return UnknownButton;
+        return joysticks(j1) << j2;
     }
 
-    inline QString stringForJoystick(int joystick)
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1, Connexion::Joystick j2, Connexion::Joystick j3)
     {
-        switch(joystick){
-            case LeftJoystickX:
-                return "LeftJoystickX";
-            case LeftJoystickY:
-                return "LeftJoystickY";
-            case RightJoystickX:
-                return "RightJoystickX";
-            case RightJoystickY:
-                return "RightJoystickY";
-            default:
-                return "UnknownJoystick";
-        }
+        return joysticks(j1, j2) << j3;
     }
-    inline Joystick joystickFromString(const QString& name)
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1, Connexion::Joystick j2, Connexion::Joystick j3, Connexion::Joystick j4)
     {
-        if(name == "LeftJoystickX")
-            return LeftJoystickX;
-        else if(name == "LeftJoystickY")
-            return LeftJoystickY;
-        else if(name == "RightJoystickX")
-            return RightJoystickX;
-        else if(name == "RightJoystickY")
-            return RightJoystickY;
-        else
-            return NoJoystick;
+        return joysticks(j1, j2, j3) << j4;
     }
 
-    inline QList<HapticAxis> hapticAxis()
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1, Connexion::Joystick j2, Connexion::Joystick j3, Connexion::Joystick j4, Connexion::Joystick j5)
     {
-        return QList<HapticAxis>();
+        return joysticks(j1, j2, j3, j4) << j5;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1)
+    inline QList<Connexion::Joystick> joysticks(Connexion::Joystick j1, Connexion::Joystick j2, Connexion::Joystick j3, Connexion::Joystick j4, Connexion::Joystick j5, Connexion::Joystick j6)
+    {
+        return joysticks(j1, j2, j3, j4, j5) << j6;
+    }
+
+    inline QList<Connexion::Joystick> allConnexionJoysticks() {
+        return joysticks(Tc::Connexion::JoystickX, Tc::Connexion::JoystickY, Tc::Connexion::JoystickZ, Tc::Connexion::JoystickYaw, Tc::Connexion::JoystickPitch, Tc::Connexion::JoystickRoll);
+    }
+
+    inline QList<Haptic::Axis> hapticAxis()
+    {
+        return QList<Haptic::Axis>();
+    }
+
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1)
     {
         return hapticAxis() << a1;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2)
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1, Haptic::Axis a2)
     {
         return hapticAxis() << a1 << a2;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3)
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1, Haptic::Axis a2, Haptic::Axis a3)
     {
         return hapticAxis() << a1 << a2 << a3;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4)
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1, Haptic::Axis a2, Haptic::Axis a3, Haptic::Axis a4)
     {
         return hapticAxis() << a1 << a2 << a3 << a4;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4, HapticAxis a5)
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1, Haptic::Axis a2, Haptic::Axis a3, Haptic::Axis a4, Haptic::Axis a5)
     {
         return hapticAxis() << a1 << a2 << a3 << a4 << a5;
     }
 
-    inline QList<HapticAxis> hapticAxis(HapticAxis a1, HapticAxis a2, HapticAxis a3, HapticAxis a4, HapticAxis a5, HapticAxis a6)
+    inline QList<Haptic::Axis> hapticAxis(Haptic::Axis a1, Haptic::Axis a2, Haptic::Axis a3, Haptic::Axis a4, Haptic::Axis a5, Haptic::Axis a6)
     {
         return hapticAxis() << a1 << a2 << a3 << a4 << a5 << a6;
     }
 
-    inline QList<HapticAxis> allHapticAxis() {
-        return hapticAxis(Tc::HapticAxisX, Tc::HapticAxisY, Tc::HapticAxisZ, Tc::HapticAxisYaw, Tc::HapticAxisPitch, Tc::HapticAxisRoll);
+    inline QList<Haptic::Axis> allHapticAxis() {
+        return hapticAxis(Haptic::AxisX, Tc::Haptic::AxisY, Tc::Haptic::AxisZ, Tc::Haptic::AxisYaw, Tc::Haptic::AxisPitch, Tc::Haptic::AxisRoll);
     }
-
-    inline QString stringForHapticButton(int button)
-    {
-        switch(button){
-            case PrimaryButton:
-                return "PrimaryButton";
-            case SecondaryButton:
-                return "SecondaryButton";
-            default:
-                return "UnknownButton";
-        }
-    }
-
-    inline QString userFriendlyStringForHapticButton(int button)
-    {
-        switch(button){
-            case PrimaryButton:
-                return "Primary button";
-            case SecondaryButton:
-                return "Secondary button";
-            default:
-                return "Unknown haptic button";
-        }
-    }
-
-    inline HapticButton hapticButtonFromString(QString buttonName)
-    {
-        if(buttonName == "PrimaryButton")
-            return PrimaryButton;
-        else if(buttonName == "SecondaryButton")
-            return SecondaryButton;
-        else
-            return UnknownHapticButton;
-    }
-
-    inline QString stringForHapticAxis(int axis)
-    {
-        switch(axis){
-            case HapticAxisX:
-                return "HapticAxisX";
-            case HapticAxisY:
-                return "HapticAxisY";
-            case HapticAxisZ:
-                return "HapticAxisZ";
-            case HapticAxisYaw:
-                return "HapticAxisYaw";
-            case HapticAxisPitch:
-                return "HapticAxisPitch";
-            case HapticAxisRoll:
-                return "HapticAxisRoll";
-            default:
-                return "UnknownAxis";
-        }
-    }
-
-    inline HapticAxis hapticAxisFromString(const QString& name)
-    {
-        if(name == "HapticAxisX")
-            return HapticAxisX;
-        else if(name == "HapticAxisY")
-            return HapticAxisY;
-        else if(name == "HapticAxisZ")
-            return HapticAxisZ;
-        else if(name == "HapticAxisYaw")
-            return HapticAxisYaw;
-        else if(name == "HapticAxisPitch")
-            return HapticAxisPitch;
-        else if(name == "HapticAxisRoll")
-            return HapticAxisRoll;
-        else
-            return NoAxis;
-    }
-
 }
 #endif //RCUNITTOOLS_TCCONFIG_H

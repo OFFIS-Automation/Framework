@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#if 0
 
 #include "EditGamepadArea.h"
 #include "ui_EditGamepadArea.h"
@@ -32,7 +33,7 @@ EditGamepadArea::EditGamepadArea(const QString &name, QWidget *parent) :
 
     QString label = tr("Not assigned");
 
-    mJoystickUis[Tc::LeftJoystickX] = ui->leftJoystickX;
+    mJoystickUis[Tc::Gamepad::LeftJoystickX] = ui->leftJoystickX;
     mJoystickUis[Tc::LeftJoystickY] = ui->leftJoystickY;
     mJoystickUis[Tc::RightJoystickX] = ui->rightJoystickX;
     mJoystickUis[Tc::RightJoystickY] = ui->rightJoystickY;
@@ -135,3 +136,5 @@ void EditGamepadArea::saveConfig(QSettings &settings)
         settings.endGroup();
     }
 }
+
+#endif

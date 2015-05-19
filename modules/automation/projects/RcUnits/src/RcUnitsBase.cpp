@@ -57,8 +57,10 @@ TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
 {
     if(mUnits.contains(name))
         return mUnits[name]->telecontrolConfig();
+    /*
     if(mMasterTcInvokers.contains(name))
         return mMasterTcInvokers[name]->telecontrolConfig();
+    */
     return TelecontrolConfig();
 }
 
@@ -73,8 +75,8 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
 
         TelecontrolConfig config = getTelecontrolConfig(name);
 
-        bool hasGamepadControl = !(config.tcGamepadButtons.empty() && config.tcGamepadMoves.empty());
-        bool hasHapticControl = !(config.tcHapticButtons.empty() && config.tcHapticMoves.empty());
+        bool hasGamepadControl = !(config.tcButtonMethods.empty() && config.tcGamepadMoves.empty());
+        bool hasHapticControl = config.tcHapticMoves.empty();
         if(hasGamepadControl || hasHapticControl){
             returnList << name;
         }
@@ -158,6 +160,8 @@ void RcUnitsBase::releaseConfig()
 
 void RcUnitsBase::loadTcMasters(const QString &configFile)
 {
+    /*
+     * // TODO?
     QSettings settings(configFile, QSettings::IniFormat);
     settings.beginGroup("telecontrol-combinations");
     mUnitsHiddenforTc = settings.value("hiddenUnits").toStringList();
@@ -169,6 +173,7 @@ void RcUnitsBase::loadTcMasters(const QString &configFile)
         mMasterTcInvokers[configName] = master;
         loadTcSensitivity(configName, master, 0, configFile);
     }
+    */
 }
 
 void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepadEndpoint, HapticBaseEndpoint *hapticEndpoint, const QString& configFile)
@@ -217,39 +222,44 @@ bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
         QKeyEvent* keyEvent = reinterpret_cast<QKeyEvent*>(event);
         if(keyEvent->isAutoRepeat())
             return false;
+        bool pressed = event->type() == QEvent::KeyPress;
+        Qt::Key key = (Qt::Key)keyEvent->key();
+        int button = -1;
+        // handle enables ONLY if the ctrl modifier is there
+        // and handle release ALWAYS (otherwise, is shift is released first
+        //, we won't capture the event)
+        if((keyEvent->modifiers() | Qt::ControlModifier) != 0 || pressed)
         {
-            bool pressed = event->type() == QEvent::KeyPress;
-            Qt::Key key = (Qt::Key)keyEvent->key();
-            int button = -1;
             switch(keyEvent->key())
             {
-            case Qt::Key_F10:
-                button = Tc::FootboardButton1;
+            case Qt::Key_F1:
+                button = Tc::Virtual::CtrlF1Button;
                 qDebug() << "Footboard 1" << pressed;
                 break;
-            case Qt::Key_F11:
-                button = Tc::FootboardButton2;
+            case Qt::Key_F2:
+                button = Tc::Virtual::CtrlF1Button;
                 qDebug() << "Footboard 2" << pressed;
                 break;
-            case Qt::Key_F12:
-                button = Tc::FootboardButton3;
+            case Qt::Key_F3:
+                button = Tc::Virtual::CtrlF1Button;
                 qDebug() << "Footboard 3" << pressed;
                 break;
             default:
                 return false;
             }
-            if(button < 0)
-                return false;
-            foreach(Gamepad* gamepad, mGamepadDevices.values())
-            {
-                gamepad->buttonToggled(button, pressed, gamepad->getName());
-            }
-            foreach(HapticDevice* hapticDevice, mHapticDevices.values())
-            {
-                hapticDevice->buttonToggled(button, pressed);
-            }
-            return true;
         }
+        if(key)
+        if(button < 0)
+            return false;
+        foreach(Gamepad* gamepad, mGamepadDevices.values())
+        {
+            gamepad->buttonToggled(button, pressed, gamepad->getName());
+        }
+        foreach(HapticDevice* hapticDevice, mHapticDevices.values())
+        {
+            hapticDevice->buttonToggled(button, pressed);
+        }
+        return true;
     }
     return false;
 }
@@ -357,15 +367,19 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
         gamepad->start();
 
         // Disconnect old gamepad instances
+        /*
+        //removed master TC invokers
         foreach(GamepadEndpoint* gamepadEndpoint, mMasterTcInvokers.values()){
             gamepadEndpoint->disconnectGamepad(gamepad);
         }
+        */
         foreach(GamepadEndpoint* gamepadEndpoint, mUnits.values()){
             gamepadEndpoint->disconnectGamepad(gamepad);
         }
 
         // Get the linked RC-Unit
-        GamepadEndpoint* unitToActivate = mMasterTcInvokers.value(unitName, 0);
+        // removed master tc invokers
+        GamepadEndpoint* unitToActivate = 0 ;// = mMasterTcInvokers.value(unitName, 0);
         if(!unitToActivate){
             unitToActivate = mUnits.value(unitName, 0);
         }
@@ -413,7 +427,8 @@ void RcUnitsBase::deactivateGamepadAll()
 
 void RcUnitsBase::updateGamepadParameters(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
-    GamepadEndpoint* unitToUpdate = mMasterTcInvokers.value(unitName, 0);
+    // removed master tc invokers
+    GamepadEndpoint* unitToUpdate = 0;//mMasterTcInvokers.value(unitName, 0);
     if(!unitToUpdate){
         unitToUpdate = mUnits.value(unitName, 0);
     }
@@ -473,11 +488,12 @@ void RcUnitsBase::stop(const QString &unitName)
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &gamepadName)
 {
-    if(!pressed || buttonId < Tc::ButtonUp){
+    // ignore all user available buttons
+    if(!pressed || buttonId < Tc::Gamepad::ButtonUp){
         return;
     }
     // Check for interesting button
-    if((buttonId >= Tc::ButtonUp && buttonId <= Tc::ButtonRight) || (buttonId >= Tc::TSqareButton && buttonId <= Tc::RotateSqareButton)){
+    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || (buttonId >= Tc::Connexion::TSqareButton && buttonId <= Tc::Connexion::RotateSqareButton)){
         // Get the connected unit
         QString unitName;
         if(mGamepadMapping.contains(gamepadName)){
@@ -487,14 +503,14 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
         if(unitName.isEmpty()){
             return; // there is no unit attached to this gamepad
         }
-        if(buttonId == Tc::ButtonLeft || buttonId == Tc::ButtonRight){
-            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::ButtonRight);
-        } else if(buttonId == Tc::ButtonDown || buttonId == Tc::ButtonUp){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::ButtonDown);
-        } else if(buttonId == Tc::RotateSqareButton || buttonId == Tc::TSqareButton){
-            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::TSqareButton);
-        } else if(buttonId == Tc::FSquareButton || buttonId == Tc::RSquareButton){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::RSquareButton);
+        if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){
+            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
+        } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
+        } else if(buttonId == Tc::Connexion::RotateSqareButton || buttonId == Tc::Connexion::TSqareButton){
+            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Connexion::TSqareButton);
+        } else if(buttonId == Tc::Connexion::FSquareButton || buttonId == Tc::Connexion::RSquareButton){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::Connexion::RSquareButton);
         }
     }
 }

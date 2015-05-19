@@ -43,8 +43,8 @@ signals:
     void removeCurrentConfig();
 private:
     Ui::EditGamepadArea *ui;
-    QMap<Tc::Joystick, QComboBox*> mJoystickUis;
-    QMap<Tc::Joystick, QLineEdit*> mJoystickNameUis;
+    QMap<int, QComboBox*> mJoystickUis;
+    QMap<int, QLineEdit*> mJoystickNameUis;
 };
 
 #endif // EDITGAMEPADAREA_H

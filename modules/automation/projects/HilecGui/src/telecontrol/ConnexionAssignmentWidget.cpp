@@ -30,8 +30,8 @@ ConnexionAssignmentWidget::ConnexionAssignmentWidget(const QString &unit, QWidge
     TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
 
     // Buttons
-    if(!help.tcGamepadButtons.empty()){
-        foreach(RcUnitHelp::TcButton buttonMethod, help.tcGamepadButtons){
+    if(!help.tcButtonMethods.empty()){
+        foreach(RcUnitHelp::TcButton buttonMethod, help.tcButtonMethods){
             QString labelName = QString("button%1Label").arg(buttonMethod.buttonId);
             QLabel *label = this->findChild<QLabel *>(labelName);
             if(label){
@@ -77,8 +77,8 @@ ConnexionAssignmentWidget::ConnexionAssignmentWidget(const QString &unit, QWidge
             }
 
             // Assign labels
-            for(int i=0;i < joystickMethod.joysticks.size(); i++){
-                Tc::Joystick joystick = joystickMethod.joysticks[i];
+            for(int i=0;i < joystickMethod.analogDOFs.size(); i++){
+                int joystick = joystickMethod.analogDOFs[i];
                 QString name = joystickMethod.axeNames.value(i);
 
                 // Append method to joystick
@@ -112,20 +112,20 @@ ConnexionAssignmentWidget::~ConnexionAssignmentWidget()
     delete ui;
 }
 
-QString ConnexionAssignmentWidget::labelNameForJoystick(Tc::Joystick joystick)
+QString ConnexionAssignmentWidget::labelNameForJoystick(int joystick)
 {
     switch (joystick) {
-    case Tc::JoystickX:
+    case Tc::Connexion::JoystickX:
         return QString("xLabel");
-    case Tc::JoystickY:
+    case Tc::Connexion::JoystickY:
         return QString("yLabel");
-    case Tc::JoystickZ:
+    case Tc::Connexion::JoystickZ:
         return QString("zLabel");
-    case Tc::JoystickYaw:
+    case Tc::Connexion::JoystickYaw:
         return QString("yawLabel");
-    case Tc::JoystickPitch:
+    case Tc::Connexion::JoystickPitch:
         return QString("pitchLabel");
-    case Tc::JoystickRoll:
+    case Tc::Connexion::JoystickRoll:
         return QString("rollLabel");
     default:
         return QString();

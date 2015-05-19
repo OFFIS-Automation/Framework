@@ -84,6 +84,7 @@ protected:
     void loadTcMasters(const QString& configFile);
     void loadTcSensitivity(const QString &name, GamepadEndpoint *gamepadEndpoint, HapticBaseEndpoint *hapticEndpoint, const QString& configFile);
     bool eventFilter(QObject* watched, QEvent* event);
+
     RcUnitInterface *loadPlugin(const QString& name, QString *errMsg = 0);
     QMap<QString, RcUnitBase*> mUnits;
     QMap<QString, QString> mTypes;

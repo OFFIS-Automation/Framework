@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#if 0
 
 #include "MasterTcInvoker.h"
 #include "RcUnit.h"
@@ -35,6 +36,7 @@ void MasterTcInvoker::readConfig(const QString &configFile)
 {
     mConfigFile = configFile;
     QSettings settings(configFile, QSettings::IniFormat);
+
     settings.beginGroup("telecontrol-combinations");
     settings.beginGroup(mName);
     int size = settings.beginReadArray("joysticks");
@@ -44,7 +46,7 @@ void MasterTcInvoker::readConfig(const QString &configFile)
         JoystickWrap wrap;
         wrap.sensitivity = 1/64.0;
         wrap.name = settings.value("name").toString();
-        wrap.deadMansButton = Tc::buttonFromString(settings.value("activationButton").toString());
+        wrap.deadMansButton = settings.value("activationButton").toInt();
         foreach(Tc::Joystick joystick, Tc::allJoysticks())
         {
             QString groupName = Tc::stringForJoystick(joystick);
@@ -207,3 +209,4 @@ void MasterTcInvoker::setupWrapper(RcUnit* unit, JoystickWrap &wrap)
     }
 
 }
+#endif

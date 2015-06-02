@@ -25,7 +25,6 @@
 class OlvisGuiPluginInterface
 {
 public:
-
     virtual QString getName() const = 0;
     virtual PortEditInterface* portEditFor(const PortInfo& info) { Q_UNUSED(info); return 0; }
     virtual OverlayInterface* overlayFor(const QString& overlayName, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface) { return 0; }

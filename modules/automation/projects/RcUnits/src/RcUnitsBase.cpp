@@ -237,11 +237,11 @@ bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
                 qDebug() << "Footboard 1" << pressed;
                 break;
             case Qt::Key_F2:
-                button = Tc::Virtual::CtrlF1Button;
+                button = Tc::Virtual::CtrlF2Button;
                 qDebug() << "Footboard 2" << pressed;
                 break;
             case Qt::Key_F3:
-                button = Tc::Virtual::CtrlF1Button;
+                button = Tc::Virtual::CtrlF3Button;
                 qDebug() << "Footboard 3" << pressed;
                 break;
             default:

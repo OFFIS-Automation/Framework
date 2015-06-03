@@ -64,6 +64,7 @@ public:
      * registerGamepadMethod("moveByGamepad", Tc::joysticks(Tc::Gamepad::LeftJoystickX, Tc::Gamepad::LeftJoystickY), Tc::Button5, 0.0125);
      */
     virtual void registerGamepadMethod(QString methodName, const QList<Tc::Gamepad::Joystick>& defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, int numSensTicks = 10) = 0;
+
     /**
      * @brief registers a method to be called by a 6DOF Connexion device
      * @see registerGamepadMethod for details

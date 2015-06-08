@@ -74,7 +74,6 @@ inline bool isHapticButton(int button)
     return button >= Tc::Haptic::FirstButton && button <= Tc::Haptic::LastButton;
 }
 
-
 inline QDataStream& operator>>(QDataStream& stream, TelecontrolConfig::TcButton& button)
 {
     stream >> button.name;

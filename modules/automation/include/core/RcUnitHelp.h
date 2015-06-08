@@ -47,6 +47,7 @@ struct RcUnitHelp : TelecontrolConfig
     UserRcUnitType type;
     RcFlagDefinitions flags;
     bool hwConnected;
+    QVariantMap userInfo;
 };
 
 inline QDataStream& operator>>(QDataStream& stream, RcUnitHelp::Method& helpMethod)

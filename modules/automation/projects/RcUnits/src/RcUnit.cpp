@@ -114,6 +114,11 @@ void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
     }
 }
 
+void RcUnit::setUserInfo(const QString &key, const QVariant &value)
+{
+    mUserInfo[key] = value;
+}
+
 RcUnitHelp RcUnit::getHelp() const
 {
     RcUnitHelp help;
@@ -162,7 +167,7 @@ RcUnitHelp RcUnit::getHelp() const
     help.type = mRcUnit->rcType();
     help.hwConnected = mHwConnected;
     help.flags = mRcUnit->rcFlagDefinitions();
-
+    help.userInfo = mUserInfo;
     return help;
 }
 

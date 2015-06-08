@@ -22,6 +22,8 @@
 #include <QMetaMethod>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QVariantList>
+#include <QVariantMap>
 
 #include <rc/RcStruct.h>
 #include <core/RcUnitHelp.h>
@@ -84,6 +86,7 @@ public:
     virtual void addConstant(const QString name, const QVariant& constant);
     bool acquired() { return mHwConnected; }
     void setParamNames(const QString &methodName, const QStringList &names);
+    void setUserInfo(const QString& key, const QVariant& value);
     bool initialize(RcUnitInterface* plugin);
     UserRcUnit* rcUnit() { return mRcUnit; }
     QVariant call(const QByteArray& method, QList<QVariant> params);
@@ -159,6 +162,7 @@ protected:
     QMutex mCallMutex;
     bool mHwConnected;
     RcUnitBaseObserver* mObserver;
+    QVariantMap mUserInfo;
 };
 
 #endif // RCUNIT_H

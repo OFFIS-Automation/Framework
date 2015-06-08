@@ -98,6 +98,9 @@ public:
      */
     virtual void registerHapticMethod(QString methodName, const QList<Tc::Haptic::Axis> &defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
 
+    /** register a user defined info about the RC-Unit
+     */
+    virtual void setUserInfo(const QString& key, const QVariant& value) = 0;
     /**
      * overwrite the parameter names for a registered method
      */

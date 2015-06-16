@@ -220,44 +220,41 @@ bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
     if(event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
     {
         QKeyEvent* keyEvent = reinterpret_cast<QKeyEvent*>(event);
-        if(keyEvent->isAutoRepeat())
+        if(keyEvent->isAutoRepeat()){
             return false;
+        }
         bool pressed = event->type() == QEvent::KeyPress;
         Qt::Key key = (Qt::Key)keyEvent->key();
         int button = -1;
         // handle enables ONLY if the ctrl modifier is there
-        // and handle release ALWAYS (otherwise, is shift is released first
-        //, we won't capture the event)
-        if((keyEvent->modifiers() | Qt::ControlModifier) != 0 || pressed)
-        {
+        // and handle release ALWAYS (otherwise, is shift is released first,
+        // we won't capture the event)
+        if((keyEvent->modifiers() | Qt::ControlModifier) != 0 || pressed){
             switch(keyEvent->key())
             {
             case Qt::Key_F1:
                 button = Tc::Virtual::CtrlF1Button;
-                qDebug() << "Footboard 1" << pressed;
                 break;
             case Qt::Key_F2:
                 button = Tc::Virtual::CtrlF2Button;
-                qDebug() << "Footboard 2" << pressed;
                 break;
             case Qt::Key_F3:
                 button = Tc::Virtual::CtrlF3Button;
-                qDebug() << "Footboard 3" << pressed;
                 break;
             default:
                 return false;
             }
         }
-        if(key)
-        if(button < 0)
-            return false;
-        foreach(Gamepad* gamepad, mGamepadDevices.values())
-        {
-            gamepad->buttonToggled(button, pressed, gamepad->getName());
-        }
-        foreach(HapticDevice* hapticDevice, mHapticDevices.values())
-        {
-            hapticDevice->buttonToggled(button, pressed);
+        if(key){
+            if(button < 0){
+                return false;
+            }
+            foreach(Gamepad* gamepad, mGamepadDevices.values()){
+                gamepad->buttonToggled(button, pressed, gamepad->getName());
+            }
+            foreach(HapticDevice* hapticDevice, mHapticDevices.values()){
+                hapticDevice->buttonToggled(button, pressed);
+            }
         }
         return true;
     }

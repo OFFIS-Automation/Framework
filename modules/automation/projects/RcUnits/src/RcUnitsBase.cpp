@@ -482,6 +482,12 @@ void RcUnitsBase::stop(const QString &unitName)
     unit->stop();
 }
 
+void RcUnitsBase::stopAll()
+{
+    foreach(RcUnitBase* unit, mUnits)
+        unit->stop();
+}
+
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &gamepadName)
 {

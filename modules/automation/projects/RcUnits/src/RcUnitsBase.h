@@ -68,7 +68,7 @@ public:
     void release(const QString& unitName);
     void releaseAll();
     void stop(const QString& unitName);
-
+    void stopAll();
 signals:
     void unitsUpdated();
     void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);

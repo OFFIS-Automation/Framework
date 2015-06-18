@@ -102,8 +102,7 @@ QStringList HilecCore::rcUnits()
 
 void HilecCore::loadConfig(const QString &filename)
 {
-    mBaseDir = QFileInfo(filename).absolutePath();
-    mLint.setBasePath(mBaseDir);
+    setBaseDir(QFileInfo(filename).absolutePath());
     RcUnits::instance()->loadConfig(filename);
 }
 
@@ -163,6 +162,7 @@ void HilecCore::pause()
 
 void HilecCore::quit()
 {
+    RcUnits::instance()->stopAll();
     mPython.quit();
 }
 
@@ -189,6 +189,12 @@ QAbstractItemModel* HilecCore::getDebugVars(int frameDepth)
 QList<TraceLine> HilecCore::getStackTrace()
 {
     return mPython.getStackTrace();
+}
+
+void HilecCore::setBaseDir(const QString &baseDir)
+{
+    mBaseDir = baseDir;
+    mLint.setBasePath(mBaseDir);
 }
 
 void HilecCore::updateTelecontrolAssignment(const QString &unitName, const QString &telecontrolDeviceName)

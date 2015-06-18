@@ -70,6 +70,7 @@ public:
     QString baseDir() const { return mBaseDir; }
 
 public slots:
+    void setBaseDir(const QString& baseDir);
     void runFile(const QString &filename);
     void compileFile(const QString& filename);
     void userInput(int uid, int buttonId, const QList<QVariant>& data);

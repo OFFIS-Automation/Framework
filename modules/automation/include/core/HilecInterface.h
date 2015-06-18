@@ -54,7 +54,12 @@ public:
     virtual QList<int> breakpoints(const QString& fileName) const = 0;
     virtual bool waitForStop(uint timeout = ULONG_MAX) = 0;
 public slots:
-
+    /**
+     * @brief setBaseDir sets the base dir for automation files.
+     * loadConfig resets the basedir to the path of the config file.
+     * @param baseDir absolute path to the base dir of automation files
+     */
+    virtual void setBaseDir(const QString& baseDir) = 0;
     virtual void runFile(const QString& filename) = 0;
     virtual void compileFile(const QString& filename) = 0;
     virtual void userInput(int uid, int buttonId, const QList<QVariant>& data) = 0;

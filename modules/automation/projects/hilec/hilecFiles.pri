@@ -42,19 +42,19 @@ unix:!macx :pyDlls.files += `which python3.2-dbg`  #/usr/bin/python3.2-dbg
 INSTALLS       += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python
-amirlibs.files  += python/*
+amirlibs.files  += $${PWD}/python/*
 INSTALLS       += amirlibs
 
 rcUnitfiles.path    = $${DESTDIR}/hilec/include
-rcUnitfiles.files  += ../../include/rc/*
+rcUnitfiles.files  += $${PWD}/../../include/rc/*
 INSTALLS       += rcUnitfiles
 
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
-tcfiles.files  += ../../include/telecontrol/*
+tcfiles.files  += $${PWD}/../../include/telecontrol/*
 INSTALLS       += tcfiles
 
 tcConfig.path    = $${targetDir}
-tcConfig.files  += ../../data/gamepads.ini
+tcConfig.files  += $${PWD}/../../data/gamepads.ini
 INSTALLS       += tcConfig
 
 

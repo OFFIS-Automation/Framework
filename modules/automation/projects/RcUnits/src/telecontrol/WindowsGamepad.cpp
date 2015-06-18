@@ -81,19 +81,19 @@ void WindowsGamepad::createMapping()
                 mButtonMapping[Tc::Connexion::FitButton]  = settings.value("FitButton").toInt();
                 // The following mappings are optional
                 // The corresponding buttons are only on the pro series of connexion
-                mButtonMapping[Tc::Connexion::TSqareButton] = settings.value("TSqareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::RSquareButton] = settings.value("RSquareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::FSquareButton] = settings.value("FSquareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::RotateSqareButton] = settings.value("RotateSqareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::OneButton] = settings.value("OneButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::TwoButton] = settings.value("TwoButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ThreeButton] = settings.value("ThreeButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::FourButton] = settings.value("FourButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::EscButton] = settings.value("EscButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::AltButton] = settings.value("AltButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ShiftButton] = settings.value("ShiftButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::CtrlButton] = settings.value("CtrlButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ModeButton] = settings.value("ModeButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::TSqareButton]     = settings.value("TSqareButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::RSquareButton]    = settings.value("RSquareButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::FSquareButton]    = settings.value("FSquareButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::RotateSqareButton]= settings.value("RotateSqareButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::FourButton]       = settings.value("FourButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::EscButton]        = settings.value("EscButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::AltButton]        = settings.value("AltButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::ShiftButton]      = settings.value("ShiftButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::CtrlButton]       = settings.value("CtrlButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::ModeButton]       = settings.value("ModeButton", 0).toInt();
             } else {
                 // Type
                 mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
@@ -215,10 +215,8 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         buttons[Tc::Gamepad::ButtonLeft] = left;
         buttons[Tc::Gamepad::ButtonRight] = right;
         buttons[Tc::Gamepad::ImplicitActivationButton] = false;
-        foreach(double value, joysticks.values())
-        {
-            if(value != 0.0)
-            {
+        foreach(double value, joysticks.values()){
+            if(value != 0.0){
                 buttons[Tc::Gamepad::ImplicitActivationButton] = true;
                 break;
             }
@@ -229,16 +227,14 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 float WindowsGamepad::correctedValue(float v)
 {
     v /= (float)getResolution();
-    if(mGamepadType == ConnexionJoystick)
-    {
+    if(mGamepadType == ConnexionJoystick){
         v = qBound(-1.0f, v, 1.0f);
-        v = qRound(v * 64);
-        v /= 64.0;
     }
-    if(v >-0.1 && v < 0.1)
+    if(v >-0.1 && v < 0.1){
         return 0.0;
-    else
+    } else {
         return v;
+    }
 }
 
 void WindowsGamepad::changeConnexionMode()

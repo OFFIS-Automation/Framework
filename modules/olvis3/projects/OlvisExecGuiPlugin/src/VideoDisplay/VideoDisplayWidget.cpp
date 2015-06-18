@@ -19,6 +19,8 @@
 #include "../../../OlvisGuiPlugin/src/PluginContainer.h"
 #include "src/OlvisSingleton.h"
 
+#include "VideoControlToolbar.h"
+
 #include <core/FilterInfo.h>
 #include <QScrollArea>
 

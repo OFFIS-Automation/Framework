@@ -27,16 +27,14 @@
 #include <QSize>
 
 #include <core/PortListener.h>
+//#include "VideoControlToolbar.h"
 #include "VideoRecorder.h"
 
 #include <opencv2/core/core.hpp>
-
 #include <Timer.h>
-
-#include "VideoControlToolbar.h"
-
 #include <gui/OverlayInterface.h>
 
+class VideoControlToolbar;
 class QAbstractScrollArea;
 class QXmlStreamWriter;
 class QXmlStreamReader;

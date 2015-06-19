@@ -142,6 +142,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     // Connect buttons to allow for sensitivity update and unit switch
     mGamepadDevices = TelecontrolFactory::getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
+        gamepad->disconnect(this);
         connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
@@ -503,7 +504,8 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             unitName = mGamepadMapping[gamepadName];
         }
 
-        if(unitName.isEmpty()){
+        // allow gamepad button down, this is allowed if the gamepad chooser is on "None"
+        if(unitName.isEmpty() && buttonId != Tc::Gamepad::ButtonDown){
             return; // there is no unit attached to this gamepad
         }
         if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){

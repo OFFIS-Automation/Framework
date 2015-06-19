@@ -27,7 +27,7 @@ SetRoiFilter::SetRoiFilter()
     mImageIn.setDesc("image input");
     addInputPort(mImageIn);
     mRoiIn.setName("roi");
-    mRoiIn.setDesc("The selected region of interest");
+    mRoiIn.setDesc("The selected region of interest x");
     mRoiIn.setMode(OptionalPortMode);
     mRoiIn.setDisplayVisibility(false);
     addInputPort(mRoiIn);
@@ -47,7 +47,7 @@ void SetRoiFilter::execute()
     if(mRoiIn.hasValue())
     {
         cv::Rect rect = mRoiIn;
-        img = cv::Mat(img, rect);
+        img = cv::Mat(input, rect).clone();
         offset = rect.tl();
     }
     mImageOut.send(img);

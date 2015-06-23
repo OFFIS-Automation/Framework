@@ -62,6 +62,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
 	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
 	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5PrintSupport.dll"
+	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5SerialPort.dll"
 	
 	SetOutPath "$INSTDIR\platforms"
 	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\plugins\platforms\*"

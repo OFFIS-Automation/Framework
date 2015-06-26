@@ -99,9 +99,10 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\plugins\python32.dll"
 	File "..\..\bin\debug\plugins\python32_d.dll"
 	File "..\..\bin\debug\plugins\python.exe"
+	File "..\..\bin\debug\plugins\TutorialUnitCore.dll"
 	File "..\..\bin\debug\plugins\SensorSystem.dll"
-	File "..\..\bin\debug\plugins\SensorTracer.dll"
 	File "..\..\bin\debug\plugins\SensorSystemGui.dll"
+	File "..\..\bin\debug\plugins\SensorTracer.dll"
 	File /r "..\..\bin\debug\plugins\sensorSystem"
 	
 	SetOutPath "$INSTDIR\debug\plugins\hilec"
@@ -120,7 +121,7 @@ SectionEnd
 
 ;Language strings
 LangString DESC_SecToolbox ${LANG_ENGLISH} "Files for the OFFIS Automation Framework"
-LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the OFFIS Automation Framework. Needed to develop own vision or automation plugins."
+LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the OFFIS Automation Framework. This is required to develop own vision or automation plugins."
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -170,7 +171,7 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall ${Name}.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
 
-	; Remove registry keys  
+  ; Remove registry keys  
   DeleteRegKey HKLM "SOFTWARE\${REGKEY}"
   DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "${REGKEY}"
   

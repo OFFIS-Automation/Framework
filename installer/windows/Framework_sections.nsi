@@ -39,7 +39,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "..\..\bin\plugins\python32.dll"
 	File "..\..\bin\plugins\python.exe"
 	File "..\..\bin\plugins\TutorialUnitCore.dll"
-	File "..\..\bin\plugins\SensorTracer.dll"
+	File "..\..\bin\plugins\SensorSystem.dll"
 	File "..\..\bin\plugins\SensorSystemGui.dll"
 	File "..\..\bin\plugins\SensorTracer.dll"
 	File /r "..\..\bin\plugins\sensorSystem"

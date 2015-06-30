@@ -26,9 +26,13 @@ RectInput::RectInput()
     mIn.setName("input rect");
     mIn.setMode(SingleShotPortMode);
     mOut.setName("output");
+    mSingleOut.setName("singleShot");
+    mSingleOut.setVisibility(ExpertPortVisibility);
     mUpdated.setName("updated");
+    mUpdated.setDisplayVisibility(ExpertPortVisibility);
     addInputPort(mIn);
     addOutputPort(mOut);
+    addOutputPort(mSingleOut);
     addOutputPort(mUpdated);
 }
 
@@ -36,6 +40,7 @@ void RectInput::execute()
 {
     bool updated = mIn.hasValue();
     if(updated)
-        mOut.send(mIn.getValue());
+        mSingleOut.send(mIn.getValue());
+    mOut.send(mIn.getValue());
     mUpdated.send(updated);
 }

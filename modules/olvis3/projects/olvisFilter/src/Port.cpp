@@ -26,6 +26,7 @@ Port::Port(int id, const QString &name, bool isMainType) : d(new PortData())
     d->info.typeName = name;
     d->info.isMainType = isMainType;
     d->info.mode = RegularPortMode;
+    d->info.visibility = UserPortVisiblility;
     d->info.name = name;
 }
 
@@ -49,6 +50,11 @@ void Port::setIcon(const QImage &icon)
 void Port::setMode(InputPortMode mode)
 {
     d->info.mode = mode;
+}
+
+void Port::setVisibility(PortVisibility visibility)
+{
+    d->info.visibility = visibility;
 }
 
 PortInfo Port::getInfo() const

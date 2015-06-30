@@ -21,7 +21,7 @@ REGISTER_FILTER(Invert);
 Invert::Invert()
 {
     setName("Invert");
-    setDesc("Inverts each channel of the image");
+    setDesc("Inverts the pixel values of each channel of the image");
     setGroup("image/color");
 
     addInputPort(mIn);

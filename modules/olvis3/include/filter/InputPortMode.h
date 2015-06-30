@@ -27,4 +27,11 @@ enum InputPortMode
     PartialPortMode = 100
 };
 
+enum PortVisibility
+{
+    UserPortVisiblility,
+    AdvancedPortVisibility,
+    ExpertPortVisibility
+};
+
 #endif // INPUTPORTMODE_H

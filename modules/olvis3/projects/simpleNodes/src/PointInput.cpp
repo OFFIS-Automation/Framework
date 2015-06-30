@@ -32,11 +32,14 @@ PointInput::PointInput(bool list)
     mIn.setMode(SingleShotPortMode);
     mOut.setName("output");
     mSingleOut.setName("singleShot");
+    mSingleOut.setVisibility(ExpertPortVisibility);
     mUpdated.setName("updated");
+    mUpdated.setVisibility(ExpertPortVisibility);
     if(list)
     {
         mPoly.setName("shape");
         mPoly.setDesc("the points connected to a shape");
+        mPoly.setVisibility(AdvancedPortVisibility);
         addInputListPort(mIn);
         addOutputListPort(mOut);
         addOutputListPort(mSingleOut);

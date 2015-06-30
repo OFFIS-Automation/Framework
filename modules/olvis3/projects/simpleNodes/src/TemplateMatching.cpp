@@ -34,6 +34,7 @@ TemplateMatching::TemplateMatching()
     mMethodIn.addChoice(CV_TM_CCOEFF_NORMED,"fast normalized cross correlation");
     mMethodIn.addChoice(CV_TM_SQDIFF_NORMED,"normalized squared differences");
     mMethodIn.setDefault(CV_TM_CCOEFF_NORMED);
+    mMethodIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mMethodIn);
 
     mMinScoreIn.setName("min score");
@@ -45,16 +46,19 @@ TemplateMatching::TemplateMatching()
     mFastSearchRange.setDesc("set the fast search pixels. The search area is the template rectange at the last found position plus this value on each border. A value of zero means no fast search.");
     mFastSearchRange.setDefault(0);
     mFastSearchRange.setRange(0,9999);
+    mFastSearchRange.setVisibility(AdvancedPortVisibility);
     addInputPort(mFastSearchRange);
 
     mSendInvalidPos.setName("send invalid pos");
     mSendInvalidPos.setDesc("If set to false, no position will be send if the score is to low. If true, an invalid position (-1, -1) will be send");
     mSendInvalidPos.setDefault(false);
+    mSendInvalidPos.setVisibility(AdvancedPortVisibility);
     addInputPort(mSendInvalidPos);
 
     mSendResultImage.setName("send result image");
     mSendResultImage.setDesc("Set this to true if the result image of the template matching should be send on the port <result>");
     mSendResultImage.setDefault(false);
+    mSendResultImage.setVisibility(ExpertPortVisibility);
     addInputPort(mSendResultImage);
 
     mOffsetIn.setName("offset");
@@ -64,6 +68,7 @@ TemplateMatching::TemplateMatching()
 
     mResultOut.setName("result");
     mResultOut.setDesc("The result image from the template matching operation. Only sent if the port <send result image> is set to true");
+    mResultOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOut);
 
 
@@ -75,15 +80,18 @@ TemplateMatching::TemplateMatching()
 
     mFastSearchOut.setName("search area");
     mFastSearchOut.setDesc("The area in the input image where the template was searched");
+    mFastSearchOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mFastSearchOut);
 
     mResultOffset.setName("result offset");
     mResultOffset.setDesc("The offset of the result image from the original image. Only sent if the port <send result image> is set to true");
+    mResultOffset.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOffset);
 
     mNeedNewImage.setName("fresh image only");
     mNeedNewImage.setDesc("Only execute if the main input has a new image");
     mNeedNewImage.setDefault(true);
+    mResultOffset.setVisibility(AdvancedPortVisibility);
     addInputPort(mNeedNewImage);
 
 }

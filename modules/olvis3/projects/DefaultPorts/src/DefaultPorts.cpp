@@ -31,6 +31,7 @@
 #include "RectEdit.h"
 #include "PointEdit.h"
 #include "DateTimeEdit.h"
+#include "ColorEdit.h"
 
 #include "overlays/ImagePortOverlay.h"
 #include "overlays/RectPortOverlay.h"
@@ -47,6 +48,7 @@ DefaultPorts::DefaultPorts()
     mStringOverlays.insert("File");
     mStringOverlays.insert("Directory");
     mStringOverlays.insert("DateTime");
+    mStringOverlays.insert("Color");
     mGraphOverlays.insert("Integer");
     mGraphOverlays.insert("Real");
     mGraphOverlays.insert("Boolean");
@@ -76,6 +78,8 @@ PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
         return new PointEdit();
     else if(info.typeName == "DateTime")
         return new DateTimeEdit();
+    else if(info.typeName == "Color")
+        return new ColorEdit();
     else
         return 0;
 }

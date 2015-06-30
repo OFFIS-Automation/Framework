@@ -51,7 +51,8 @@ SOURCES += \
     src/BackgroundSubstraction.cpp \
     src/ColorExtraction.cpp \
     src/VignettingCorrection.cpp \
-    src/MultipleTemplateMatching.cpp
+    src/MultipleTemplateMatching.cpp \
+    src/ColorPicker.cpp
 
 HEADERS += \ 
     src/BilateralFilter.h \
@@ -99,7 +100,8 @@ HEADERS += \
     src/BackgroundSubstraction.h \
     src/ColorExtraction.h \
     src/VignettingCorrection.h \
-    src/MultipleTemplateMatching.h
+    src/MultipleTemplateMatching.h \
+    src/ColorPicker.h
 
 RESOURCES += \
     images/images.qrc

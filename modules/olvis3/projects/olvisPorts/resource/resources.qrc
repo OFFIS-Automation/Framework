@@ -18,5 +18,6 @@
         <file>histogram.png</file>
         <file>time.png</file>
         <file>scale.png</file>
+        <file>color.png</file>
     </qresource>
 </RCC>

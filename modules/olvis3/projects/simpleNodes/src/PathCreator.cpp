@@ -42,10 +42,12 @@ PathCreator::PathCreator()
 
     mFileName.setName("fileName");
     mFileName.setDesc("The file name as string without the directory");
+    mFileName.setVisibility(AdvancedPortVisibility);
     addOutputPort(mFileName);
 
     mFileId.setName("fileId");
     mFileId.setDesc("The assigned number");
+    mFileId.setVisibility(AdvancedPortVisibility);
     addOutputPort(mFileId);
 
     mOut.setName("outFile");

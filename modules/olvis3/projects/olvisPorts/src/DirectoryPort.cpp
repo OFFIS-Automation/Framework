@@ -17,7 +17,7 @@
 #include <ports/DirectoryPort.h>
 
 
-Q_DECLARE_METATYPE(QDir);
+Q_DECLARE_METATYPE(QDir)
 
 QVariant port::Directory::variant(const QDir &val)
 {

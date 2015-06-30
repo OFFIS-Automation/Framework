@@ -47,6 +47,7 @@ CannyFilter::CannyFilter()
     mUseL1Gradient.setName("fastNormalization");
     mUseL1Gradient.setDesc("Use the faster but less accurate L1 normalization instead of L2 normalization");
     mUseL1Gradient.setDefault(true);
+    mUseL1Gradient.setVisibility(AdvancedPortVisibility);
     addInputPort(mUseL1Gradient);
 }
 

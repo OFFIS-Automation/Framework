@@ -53,6 +53,7 @@ Morphology::Morphology()
     mUserElement.setName("specialElement");
     mUserElement.setDesc("Special structuring element, overrides element and size if connected.");
     mUserElement.setMode(OptionalPortMode);
+    mUserElement.setVisibility(AdvancedPortVisibility);
     addInputPort(mUserElement);
 }
 

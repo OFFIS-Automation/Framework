@@ -27,9 +27,9 @@ RotateImage::RotateImage()
     mAngle.setName("angle");
     mAngle.setDesc("Angle of the rotation");
     mAngle.addChoice(0, "None");
-    mAngle.addChoice(90, "90° clockwise");
-    mAngle.addChoice(180, "180°");
-    mAngle.addChoice(270, "90° counterclockwise");
+    mAngle.addChoice(90, "90 degree clockwise");
+    mAngle.addChoice(180, "180 degree");
+    mAngle.addChoice(270, "90 degree counterclockwise");
     mAngle.setDefault(0);
     addInputPort(mAngle);
     addInputPort(mIn);

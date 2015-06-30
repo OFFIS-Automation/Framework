@@ -29,12 +29,14 @@ SetRoiFilter::SetRoiFilter()
     mOffsetIn.setName("offsetIn");
     mOffsetIn.setDesc("adjust the position of the roi using this input port");
     mOffsetIn.setMode(OptionalPortMode);
+    mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);
 
     mOffsetModeIn.setName("offsetInMode");
     mOffsetModeIn.setDesc("Where to apply the input offset");
     mOffsetModeIn.addChoice(TopLeftOffset, "Top left");
     mOffsetModeIn.addChoice(CenterOffset, "center");
+    mOffsetModeIn.setVisibility(AdvancedPortVisibility);
     mOffsetModeIn.setDefault(TopLeftOffset);
 
     addInputPort(mOffsetModeIn);

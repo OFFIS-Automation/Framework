@@ -158,7 +158,7 @@ void TemplateMatching::execute()
     {
         mPositionOut.send(offset + imageOffset + pos);
         if(mFastSearchRange)
-            mLastPos = pos;
+            mLastPos = offset + pos;
     }
     else if((bool)mSendInvalidPos)
         mPositionOut.send(cv::Point2d(-1,-1));

@@ -32,6 +32,7 @@ FilterInfoWidget::FilterInfoWidget(const OlvisInterface& model, QWidget *parent)
     ui(new Ui::FilterInfoWidget)
 {
     ui->setupUi(this);
+    mPortVisibility = UserPortVisiblility;
     // some testing
     connect(&mInterface, SIGNAL(filterCreated(FilterInfo,int)), SLOT(showFilter(FilterInfo)));
     connect(&mInterface, SIGNAL(portValueChanged(int, QString,QVariant)), SLOT(updatePortValue(int, QString, QVariant)));
@@ -93,6 +94,8 @@ void FilterInfoWidget::updatePorts(const FilterInfo &filter)
     while(inputs.hasNext())
     {
         const PortInfo& input = inputs.next();
+        if(input.visibility > mPortVisibility)
+            continue;
         PortId portId(filter.id, input.name);
         QHBoxLayout* nameLayout = new QHBoxLayout();
         nameLayout->setContentsMargins(1,1,1,1);
@@ -148,4 +151,19 @@ void FilterInfoWidget::removePortConnection(const PortId &, const PortId &target
 void FilterInfoWidget::onNewValue(const QString &name, const QVariant& value)
 {
     emit newPortValue(mFilterId, name, value);
+}
+
+void FilterInfoWidget::updatePorts()
+{
+    mPortVisibility = UserPortVisiblility;
+    if(ui->advancedVisibility->isChecked())
+        mPortVisibility = AdvancedPortVisibility;
+    if(ui->expertVisibility->isChecked())
+        mPortVisibility = ExpertPortVisibility;
+    FilterInfo info = mInterface.getFilter(mFilterId);
+    if(info.isValid())
+    {
+        clearPorts();
+        updatePorts(info);
+    }
 }

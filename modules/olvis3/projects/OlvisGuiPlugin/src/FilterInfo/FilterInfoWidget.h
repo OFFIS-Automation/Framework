@@ -46,6 +46,7 @@ public slots:
     void removePortConnection(const PortId& src, const PortId& target);
 private slots:
     void onNewValue(const QString& name, const QVariant& value);
+    void updatePorts();
 signals:
     void newPortValue(int filterId, const QString& portId, const QVariant& value);
 private:
@@ -55,7 +56,7 @@ private:
     Ui::FilterInfoWidget *ui;
     int mFilterId;
     QMap<QString, FilterInfoPortEditWidget*> mPortEdits;
-
+    int mPortVisibility;
 };
 
 #endif // FILTERINFOWIDGET_H

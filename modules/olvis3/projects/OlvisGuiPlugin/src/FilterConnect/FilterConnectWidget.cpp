@@ -396,10 +396,14 @@ void FilterConnectWidget::changeVisibility()
         mPortVisibility = AdvancedPortVisibility;
     else if (ui->expertVisibility->isChecked())
         mPortVisibility = ExpertPortVisibility;
+    else if(ui->flat->isChecked())
+        mPortVisibility = -1;
     foreach (FilterWidget *widget, mFilterWidgets.values()) {
         widget->setPortVisibility(mPortVisibility);
     }
     FilterSortingArea *current = mWidgets.value(mCurrentProcessor, 0);
     if (current)
+    {
         current->delayedUpdateReq();
+    }
 }

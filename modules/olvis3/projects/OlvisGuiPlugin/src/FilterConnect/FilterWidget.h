@@ -45,7 +45,7 @@ public:
     void showError(const QString &msg);
     void clearError();
 
-    void setPortVisibility(PortVisibility visibility);
+    void setPortVisibility(int visibility);
 
 signals:
     void renameRequested(int id, const QString &newName);

@@ -54,6 +54,7 @@ FilterSortingArea::FilterSortingArea(int processorId,
     : QWidget(parent), mInterface(model), mProcessorId(processorId),
       ui(new Ui::FilterSortingArea)
 {
+    mRecursivePaint = false;
     ui->setupUi(this);
     mAllowInputCreate = allowInputCreation;
     ui->inputs->setAllowPortCreation(allowInputCreation);
@@ -74,7 +75,7 @@ FilterSortingArea::FilterSortingArea(int processorId,
     connect(ui->inputs, SIGNAL(startDisconnect(FilterPortWidget *)),
             SLOT(onStartDisconnect(FilterPortWidget *)));
 
-    connect(this, SIGNAL(delayedUpdateReq()), SLOT(update()),
+    connect(this, SIGNAL(delayedUpdateReq()), SLOT(delayedUpdate()),
             Qt::QueuedConnection);
 
     connect(this, SIGNAL(addFilterRequested(int, QString, int)), &mInterface,
@@ -425,6 +426,12 @@ void FilterSortingArea::onStartDisconnect(FilterPortWidget *input)
     }
 }
 
+void FilterSortingArea::delayedUpdate()
+{
+    QApplication::processEvents();
+    update();
+}
+
 void FilterSortingArea::mouseMoveEvent(QMouseEvent *event)
 {
     if (!mCurrent.start.isNull()) {
@@ -530,6 +537,7 @@ void FilterSortingArea::mouseReleaseEvent(QMouseEvent *event)
 
 void FilterSortingArea::paintEvent(QPaintEvent *)
 {
+    mRecursivePaint = true;
     QPainter p(this);
 
     // draw existing connections
@@ -555,10 +563,10 @@ void FilterSortingArea::paintEvent(QPaintEvent *)
                     src->mapTo(this, QPoint(src->width(), src->height() / 2));
         } else {
             if (src->isLeft())
-                startPoint = srcParent->mapTo(this, QPoint(0, 10));
+                startPoint = srcParent->mapTo(this, QPoint(0, 20));
             else
                 startPoint =
-                    srcParent->mapTo(this, QPoint(srcParent->width(), 10));
+                    srcParent->mapTo(this, QPoint(srcParent->width(), 20));
         }
         QListIterator<FilterPortWidget *> targets(connections.value());
         int maxY = -1;
@@ -659,4 +667,5 @@ void FilterSortingArea::paintEvent(QPaintEvent *)
         p.drawLine(mCurrent.end, edge + offset);
         p.drawLine(mCurrent.start + offset, edge + offset);
     }
+    mRecursivePaint = false;
 }

@@ -97,7 +97,7 @@ private slots:
     void on_openSettingsButton_clicked();
 
 private:
-    PortVisibility mPortVisibility;
+    int mPortVisibility;
     const OlvisInterface &mInterface;
     Ui::FilterConnectWidget *ui;
     int mCurrentProcessor;

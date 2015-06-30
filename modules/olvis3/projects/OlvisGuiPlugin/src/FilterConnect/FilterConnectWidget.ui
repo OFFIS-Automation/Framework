@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
+    <width>399</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>360</width>
+    <width>399</width>
     <height>600</height>
    </size>
   </property>
@@ -134,9 +134,29 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QLabel" name="label">
              <property name="text">
               <string>Visibility:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="flat">
+             <property name="text">
+              <string>Flat</string>
              </property>
             </widget>
            </item>
@@ -163,19 +183,6 @@
               <string>Expert</string>
              </property>
             </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>
@@ -207,7 +214,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>340</width>
+              <width>379</width>
               <height>455</height>
              </rect>
             </property>
@@ -257,8 +264,8 @@
    <slot>changeVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>94</x>
-     <y>119</y>
+     <x>231</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>128</x>
@@ -273,8 +280,8 @@
    <slot>changeVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>173</x>
-     <y>121</y>
+     <x>320</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
@@ -289,12 +296,28 @@
    <slot>changeVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>231</x>
-     <y>122</y>
+     <x>390</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>356</x>
      <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>flat</sender>
+   <signal>clicked()</signal>
+   <receiver>FilterConnectWidget</receiver>
+   <slot>changeVisibility()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>

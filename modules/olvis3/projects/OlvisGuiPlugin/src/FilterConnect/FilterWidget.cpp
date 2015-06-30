@@ -93,7 +93,7 @@ void FilterWidget::clearError()
     setToolTip(mName);
 }
 
-void FilterWidget::setPortVisibility(PortVisibility visibility)
+void FilterWidget::setPortVisibility(int visibility)
 {
     foreach(FilterPortWidget* widget, findChildren<FilterPortWidget*>())
     {

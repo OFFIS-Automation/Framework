@@ -21,6 +21,7 @@
 #include <ports/ImagePort.h>
 #include <ports/RectPort.h>
 #include <ports/PointPort.h>
+#include <ports/IntegerPort.h>
 
 class SetRoiFilter : public UserFilter
 {
@@ -30,8 +31,16 @@ public:
 protected:
     in::Image mImageIn;
     in::Rect mRoiIn;
+    in::Point mOffsetIn;
+    in::Integer mOffsetModeIn;
     out::Image mImageOut;
     out::Point mOffsetOut;
+
+    enum OffsetTypes
+    {
+        TopLeftOffset,
+        CenterOffset
+    };
 };
 
 #endif // SETROIFILTER_H

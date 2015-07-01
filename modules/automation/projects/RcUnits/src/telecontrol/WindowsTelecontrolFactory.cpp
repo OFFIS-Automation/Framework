@@ -69,7 +69,7 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
         QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
 
         if(disallowedControllerNames.contains(name)){
-            qWarning() << tr("Device not supported:") << " " << name;
+            qDebug() << tr("Device not supported:") << " " << name;
             return DIENUM_CONTINUE;
         }
 

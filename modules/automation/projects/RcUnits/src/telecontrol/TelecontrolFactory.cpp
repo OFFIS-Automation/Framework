@@ -67,6 +67,7 @@ QMap<QString, HapticDevice *> TelecontrolFactory::loadHapticDevices()
     QDir dir(QCoreApplication::applicationDirPath() + "/plugins/telecontrol");
     QStringList suffixFilter = QStringList("*.dll") << "*.so" << "*.dylib"; // Filter for DLLS (windows) and so/dylib (UNIX)
     QStringList files = dir.entryList(suffixFilter, QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    QString last = QDir::currentPath();
     QDir::setCurrent(QCoreApplication::applicationDirPath() + "/plugins");
 
     // Iterate all dlls lying around
@@ -86,6 +87,7 @@ QMap<QString, HapticDevice *> TelecontrolFactory::loadHapticDevices()
             }
         }
     }
+    QDir::setCurrent(last);
     return hapticDevices;
 }
 

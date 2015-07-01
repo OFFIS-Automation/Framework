@@ -37,8 +37,8 @@ private:
     Q_DISABLE_COPY(TelecontrolFactory)
     explicit TelecontrolFactory(QObject *parent = 0);
     static TelecontrolFactory& instance();
-    QMap<QString, HapticDevice *> loadHapticDevices();
-
+    void loadHapticDevices();
+    QMap<QString, HapticDevice *> mHapticDevices;
 };
 
 #endif // TELECONTROLFACTORY_H

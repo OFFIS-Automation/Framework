@@ -56,11 +56,11 @@ QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
 
 QMap<QString, HapticDevice *> TelecontrolFactory::getHapticDevices()
 {
-    return instance().loadHapticDevices();
+    return instance().mHapticDevices;
 }
 
 // Helper
-QMap<QString, HapticDevice *> TelecontrolFactory::loadHapticDevices()
+void TelecontrolFactory::loadHapticDevices()
 {
     QMap<QString, HapticDevice *> hapticDevices = QMap<QString, HapticDevice *>();
     // Check telecontrol folder for haptic plugins (haptic plugins are not proviced by default)
@@ -88,6 +88,6 @@ QMap<QString, HapticDevice *> TelecontrolFactory::loadHapticDevices()
         }
     }
     QDir::setCurrent(last);
-    return hapticDevices;
+    mHapticDevices = hapticDevices;
 }
 

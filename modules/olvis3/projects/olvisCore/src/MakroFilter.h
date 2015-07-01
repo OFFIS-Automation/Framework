@@ -42,7 +42,7 @@ public:
 
     MakroFilter(bool instance = false);
     virtual ~MakroFilter();
-    virtual void initialize(int id, const QString &name, int processorId);
+    virtual void initialize(int id, const QString &name, bool isLocal, int processorId);
     FilterGroupInfo groupInfo() const;
     virtual FilterInfo info() const;
     virtual bool hasOutputs() const;
@@ -76,6 +76,7 @@ private slots:
 
 protected:
     bool mIsInstance;
+    bool mIsLocal;
     QMap<QString, Input*> mInputs;
     QMap<QString, Output*> mOutputs;
     QMutex mPortMutex;

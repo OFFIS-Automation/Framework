@@ -405,7 +405,7 @@ public slots:
     virtual void loadFromData(const QString& str) = 0;
     virtual void loadFromFile(const QString& filename) = 0;
 
-    virtual int createMakroFilter(const QString& name) = 0;
+    virtual int createMakroFilter(const QString& name, bool definedInProject = true) = 0;
     virtual void deleteMakroFilter(int id) = 0;
 
 signals:

@@ -28,6 +28,7 @@
 #include <QLineF>
 #include <SensorDataSystem.h>
 #include <QDebug>
+#include <QDataStream>
 
 SensorTraceExport::SensorTraceExport() :
     mSeperator(","), mStartAtZero(false), mHeader(false), mOnlyValidLines(true)

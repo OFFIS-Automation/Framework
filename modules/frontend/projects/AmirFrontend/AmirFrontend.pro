@@ -27,6 +27,7 @@ TEMPLATE = app
 INCLUDEPATH += $${PWD}
 
 INCLUDEPATH += ../../include
+INCLUDEPATH += ../Notifications/include
 INCLUDEPATH += ../../projects/LogWidget
 INCLUDEPATH += ../../../version
 
@@ -57,7 +58,7 @@ include(../../../properties/pathes.pro)
 
 DESTDIR = $${targetDir}
 
-LIBS += -L$${targetDir} -lLogWidget
+LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
 
 SOURCES += src/main.cpp\
         src/MainWindow.cpp \

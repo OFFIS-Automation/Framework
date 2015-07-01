@@ -27,7 +27,7 @@ public:
     ConfigReader(OlvisInterface& control, QIODevice* device);
     void createConfig();
 protected:
-    void createMakroFilter();
+    void createMakroFilter(bool local = true);
     void createMakroInput();
     void createMakroOutput();
     void createProcessor();

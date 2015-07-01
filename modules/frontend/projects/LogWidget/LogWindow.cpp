@@ -73,6 +73,10 @@ void LogWindow::logMessage(QtMsgType type, const QMessageLogContext &context, co
 {
     QMutexLocker lock(&sMutex);
     if(!sInstance) return;
+    if(type == QtWarningMsg || type == QtCriticalMsg)
+    {
+        int breakPoint = 0;
+    }
     sInstance->addMessage(type, context, msg);
 }
 

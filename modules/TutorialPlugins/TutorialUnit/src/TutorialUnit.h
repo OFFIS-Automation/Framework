@@ -75,6 +75,9 @@ protected:
     GraphicsView* mScene;
     QMutex mMutex, mWaitMutex;
     QWaitCondition mWait;
+
+    QMap<int, double> oldAxes;
+    bool oldAxesValid;
 };
 
 #endif // TUTORIALUNIT_H

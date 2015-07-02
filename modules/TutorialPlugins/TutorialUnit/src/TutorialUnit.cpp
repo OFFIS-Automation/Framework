@@ -29,6 +29,7 @@ TutorialUnit::TutorialUnit()
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
+    oldAxesValid = false;
     setScene(GraphicsView::instance());
 }
 
@@ -156,7 +157,18 @@ void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
 
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    moveGamepad(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY], axes[Tc::Haptic::AxisZ]*0.5);
+    if(oldAxesValid){
+        // Calcuate movement vector
+        QVector3D movementVector(axes[Tc::Haptic::AxisX]-oldAxes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]-oldAxes[Tc::Haptic::AxisY], axes[Tc::Haptic::AxisZ]-oldAxes[Tc::Haptic::AxisZ]);
+        qDebug() << axes[Tc::Haptic::AxisYaw] << ";" << axes[Tc::Haptic::AxisPitch] << ";" <<axes[Tc::Haptic::AxisRoll];
+
+
+
+    }
+    oldAxes = axes;
+    oldAxesValid = true;
+
+    moveGamepad(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY], 0.0f);
 
     // Create return value
     QMap<int, double> force;
@@ -165,7 +177,7 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
     force[Tc::Haptic::AxisZ] = 0.0;
 
     // Check if robot is in "bounds"
-    QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
+    /*QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
     QRect workspace = QRect(50,50,500,300);
 
     if(currentPosition.x() < workspace.left()){
@@ -182,7 +194,7 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
     } else if(workspace.bottom() < currentPosition.y()){
         // Robot left workspace on the bottom
         force[Tc::Haptic::AxisY] = abs(currentPosition.y()-workspace.bottom())*10.0;
-    }
+    }*/
 
     return force;
 }

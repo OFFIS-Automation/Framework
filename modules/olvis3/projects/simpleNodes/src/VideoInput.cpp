@@ -38,6 +38,7 @@ VideoInput::VideoInput()
     mRepeat.setDefault(true);
     mRepeat.setDesc("Repeat from beginning if the video data stream has finished");
     mRepeat.setIcon(QImage(":/SimpleNodes/repeat.png"));
+    mRepeat.setVisibility(AdvancedPortVisibility);
     addInputPort(mRepeat);
 
     mSpeed.setName("speed");
@@ -66,11 +67,13 @@ VideoInput::VideoInput()
     mStart.setDesc("Start offset (range: 0.0 to 1.0)");
     mStart.setRange(0.0, 1.0);
     mStart.setDefault(0.0);
+    mStart.setVisibility(AdvancedPortVisibility);
     addInputPort(mStart);
     mEnd.setName("endPosition");
     mEnd.setDesc("End offset (range: 0.0 to 1.0)");
     mEnd.setRange(0.0, 1.0);
     mEnd.setDefault(1.0);
+    mEnd.setVisibility(AdvancedPortVisibility);
     addInputPort(mStart);
     addInputPort(mEnd);
 
@@ -82,10 +85,12 @@ VideoInput::VideoInput()
 
     mPositionOut.setName("outPosition");
     mPositionOut.setDesc("Position of the current video file (range: 0.0 to 1.0)");
+    mPositionOut.setVisibility(AdvancedPortVisibility);
     addOutputPort(mPositionOut);
 
     mElapsedOut.setName("outElapsed");
     mElapsedOut.setDesc("Elapsed time of the current video file in seconds");
+    mElapsedOut.setVisibility(AdvancedPortVisibility);
     addOutputPort(mElapsedOut);
 
     mOut.setName("outImage");

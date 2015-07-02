@@ -163,7 +163,7 @@ public slots:
     virtual void loadFromData(const QString& str);
     virtual void loadFromFile(const QString& filename);
 
-    virtual int createMakroFilter(const QString& name);
+    virtual int createMakroFilter(const QString& name, bool definedInProject = true);
     virtual void deleteMakroFilter(int id);
 
 protected slots:

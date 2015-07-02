@@ -35,6 +35,7 @@ ImageInput::ImageInput()
     mAlwaysRead.setName("alwaysReload");
     mAlwaysRead.setDefault(false);
     mAlwaysRead.setDesc("Read the file from disc every time");
+    mAlwaysRead.setVisibility(AdvancedPortVisibility);
     addInputPort(mIn);
     addInputPort(mAlwaysRead);
 }

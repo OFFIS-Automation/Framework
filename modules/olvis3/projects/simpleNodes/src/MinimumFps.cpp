@@ -34,6 +34,7 @@ MinimumFps::MinimumFps()
     mMode.addChoice(SleepMode, "Sleep wait");
     mMode.addChoice(ActiveWaitMode, "Active wait");
     mMode.setDefault(SleepMode);
+    mMode.setVisibility(AdvancedPortVisibility);
     addInputPort(mMode);
 }
 

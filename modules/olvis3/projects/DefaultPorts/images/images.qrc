@@ -2,5 +2,6 @@
     <qresource prefix="/DefaultPortsGui/images">
         <file>abort.png</file>
         <file>submit.png</file>
+        <file>color.png</file>
     </qresource>
 </RCC>

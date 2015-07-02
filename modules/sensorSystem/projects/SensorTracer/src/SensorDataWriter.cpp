@@ -19,6 +19,7 @@
 #include <QCoreApplication>
 #include <SensorDataSystem.h>
 #include <QDebug>
+#include <QDataStream>
 SensorDataWriter::SensorDataWriter(QObject *parent) :
     QThread(parent)
 {

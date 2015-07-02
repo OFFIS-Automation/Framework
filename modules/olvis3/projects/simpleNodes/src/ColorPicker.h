@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,28 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Invert.h"
+#ifndef USER_COLORPICKER_H
+#define USER_COLORPICKER_H
 
-REGISTER_FILTER(Invert);
+#include <filter/PluginInterface.h>
+#include <ports/ImagePort.h>
+#include <ports/ColorPort.h>
+#include <ports/PointPort.h>
 
-Invert::Invert()
+class ColorPicker : public UserFilter
 {
-    setName("Invert");
-    setDesc("Inverts the pixel values of each channel of the image");
-    setGroup("image/color");
+public:
+    ColorPicker();
+    virtual void execute();
 
-    addInputPort(mIn);
-    addOutputPort(mOut);
-}
+protected:
+    in::Image mIn;
+    in::Point mPointIn;
+    out::Color mColorOut;
+};
 
-void Invert::execute()
-{
-    cv::Mat mat = mIn.getValue().clone();
-    unsigned char* data = mat.datastart;
-    while(data < mat.dataend)
-    {
-        *data = 255-*data;
-        data++;
-    }
-    mOut.send(mat);
-}
+#endif // USER_COLORPICKER_H

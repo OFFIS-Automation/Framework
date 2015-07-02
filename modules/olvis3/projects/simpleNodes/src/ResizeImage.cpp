@@ -28,17 +28,14 @@ ResizeImage::ResizeImage()
     // Input
     addInputPort(mIn);
 
-    mConstrainToWidth.setName("constrainToWidth");
-    mConstrainToWidth.setDefault(false);
-    mConstrainToWidth.setDesc("Constrain the output height to width <=> Height is ignored.");
-    mConstrainToWidth.setIcon(QImage(":/SimpleNodes/constrain.png"));
-    addInputPort(mConstrainToWidth);
-
-    mConstrainToHeight.setName("constrainToHeight");
-    mConstrainToHeight.setDefault(false);
-    mConstrainToHeight.setDesc("Constrain the output width to height <=> Width is ignored.");
-    mConstrainToHeight.setIcon(QImage(":/SimpleNodes/constrain.png"));
-    addInputPort(mConstrainToHeight);
+    mAspectRatio.setName("aspectRatioMode");
+    mAspectRatio.setDesc("how to deal with aspect ratios");
+    mAspectRatio.addChoice(IgnoreAspectRatio, "Inore aspect ratio");
+    mAspectRatio.addChoice(KeepAspectRatioByWidth, "Keep aspect ratio, ignore height");
+    mAspectRatio.addChoice(KeepAspectRatioByHeight, "Keep aspect ratio, ignore width");
+    mAspectRatio.setDefault(IgnoreAspectRatio);
+    mAspectRatio.setIcon(QImage(":/SimpleNodes/constrain.png"));
+    addInputPort(mAspectRatio);
 
     mWidth.setName("width");
     mWidth.setDesc("Width of the ouput image");
@@ -60,11 +57,10 @@ void ResizeImage::execute()
     if(mWidth.hasValue() && mHeight.hasValue()){
         cv::Size size;
 
-        qDebug() << mWidth << " , " << mHeight << " , " << in.size().width << " , " << in.size().height;
 
-        if((bool)mConstrainToWidth){
+        if(mAspectRatio.getValue() == KeepAspectRatioByWidth){
             size = cv::Size(mWidth, ((float)mWidth / (float)in.size().width) * in.size().height);
-        } else if((bool)mConstrainToHeight) {
+        } else if(mAspectRatio.getValue() == KeepAspectRatioByHeight) {
             size = cv::Size(((float)mHeight / (float)in.size().height) * in.size().width , mHeight);
         } else {
             size = cv::Size(mWidth, mHeight);

@@ -44,6 +44,7 @@ protected:
     void hideEvent(QHideEvent *);
 private:
     Ui::ScriptExceptionDialog *ui;
+    QPoint mPos;
 };
 
 #endif // SCRIPTEXCEPTIONDIALOG_H

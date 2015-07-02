@@ -32,12 +32,15 @@ BlobDetection::BlobDetection()
     mMinPixels.setName("minPixels");
     mMinPixels.setRange(0, INT_MAX);
     mMinPixels.setDefault(0);
+    mMinPixels.setVisibility(AdvancedPortVisibility);
     mMaxPixels.setName("maxPixels");
     mMaxPixels.setRange(1, INT_MAX);
     mMaxPixels.setDefault(INT_MAX);
+    mMaxPixels.setVisibility(AdvancedPortVisibility);
     mUseAxis.setName("useMainAxis");
     mUseAxis.setDesc("Enables the calculation of the objecst main axis and PCe value.");
     mUseAxis.setDefault(true);
+    mUseAxis.setVisibility(AdvancedPortVisibility);
     mNumBlobs.setName("numBlobs");
     addOutputPort(mNumBlobs);
     addInputPort(mMinPixels);
@@ -49,15 +52,17 @@ BlobDetection::BlobDetection()
     mNumPixels.setName("numPixels");
     addOutputListPort(mNumPixels);
     mPCe.setName("PCe");
+    mPCe.setVisibility(AdvancedPortVisibility);
     addOutputListPort(mPCe);
     mOffsetIn.setName("offset");
     mOffsetIn.setDesc("Offset that will be added to all calculated positions");
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
+    mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);
     mLines.setName("lines");
     mLines.setDesc("Lines in main direction, to detect the length");
     addOutputListPort(mLines);
-
+    mPCe.setVisibility(ExpertPortVisibility);
 }
 
 void BlobDetection::execute()

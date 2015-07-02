@@ -24,9 +24,12 @@ enum ExtendedDebug
     InfoLogType = 100,
     TraceLogType = 101,
 };
-
+#if QT_VERSION < 0x050500
 inline QDebug qInfo() { return QDebug((QtMsgType)InfoLogType); }
 inline QDebug qError() { return qCritical(); }
 inline QDebug qTrace() { return QDebug((QtMsgType)TraceLogType); }
+#else
+
+#endif
 
 #endif // LOGGING_H

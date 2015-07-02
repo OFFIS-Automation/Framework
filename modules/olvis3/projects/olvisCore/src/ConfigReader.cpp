@@ -93,10 +93,10 @@ void ConfigReader::createConfig()
     }
 }
 
-void ConfigReader::createMakroFilter()
+void ConfigReader::createMakroFilter(bool local)
 {
     QString name = attributes().value("name").toString();
-    mCurrentProcessor = mInterface.createMakroFilter(name);
+    mCurrentProcessor = mInterface.createMakroFilter(name, local);
 }
 
 void ConfigReader::createProcessor()

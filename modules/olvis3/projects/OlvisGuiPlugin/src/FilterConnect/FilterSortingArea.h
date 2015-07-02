@@ -70,7 +70,7 @@ public slots:
 private slots:
     void onStartConnect(FilterPortWidget* source);
     void onStartDisconnect(FilterPortWidget* target);
-
+    void delayedUpdate();
 protected:
     int dragAnimation(QDropEvent* event);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -106,6 +106,7 @@ protected:
     typedef QList<LayerUsage> LayerUsageList;
     FilterWidget* mLastDragAnimationWidget;
     bool mAllowInputCreate;
+    bool mRecursivePaint;
 };
 
 #endif // FILTERSORTINGAREA_H

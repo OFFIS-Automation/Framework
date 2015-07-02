@@ -93,6 +93,15 @@ void FilterWidget::clearError()
     setToolTip(mName);
 }
 
+void FilterWidget::setPortVisibility(int visibility)
+{
+    foreach(FilterPortWidget* widget, findChildren<FilterPortWidget*>())
+    {
+        bool visible = widget->getInfo().visibility <= visibility;
+        widget->setVisible(visible);
+    }
+}
+
 void FilterWidget::mousePressEvent(QMouseEvent * event)
 {
     QObject* child = childAt(event->pos());

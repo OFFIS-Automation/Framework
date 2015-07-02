@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #ifndef OVERLAYPORT_H
 #define OVERLAYPORT_H
 
@@ -32,10 +31,16 @@ public:
      * the image output of the filter, e.g. if a roi changes the image output,
      * it should not be directly drawn on the output and therefore not visible
     **/
-    void setDisplayVisibility(bool visible){ setConstraint("displayVisibility", visible); }
-protected:
-    OverlayPort(int id, const QString& name, bool isMain = false) : Port(id, name, isMain) {}
+    void setDisplayVisibility(bool visible)
+    {
+        setConstraint("displayVisibility", visible);
+    }
 
+protected:
+    OverlayPort(int id, const QString &name, bool isMain = false)
+        : Port(id, name, isMain)
+    {
+    }
 };
 
 #endif // OVERLAYPORT_H

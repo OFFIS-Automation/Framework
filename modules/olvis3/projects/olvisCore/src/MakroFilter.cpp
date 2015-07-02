@@ -35,9 +35,10 @@ MakroFilter::~MakroFilter()
     qDeleteAll(mOutputs);
 }
 
-void MakroFilter::initialize(int id_, const QString &name, int processorId)
+void MakroFilter::initialize(int id_, const QString &name, bool isLocal, int processorId)
 {
     Filter::initialize(id_, name, processorId);
+    mIsLocal = isLocal;
     foreach(Filter* filter, mFilters)
         filter->initialize(0,QString(), id());
 }
@@ -80,9 +81,14 @@ FilterInfo MakroFilter::info() const
     info.id = mId;
     info.name = mName;
     info.processorId = mProcessorId;
-    info.typeInfo.plugin = tr("MakroFilter");
+    if(mIsLocal)
+        info.typeInfo.plugin = ("MakroFilter");
     info.typeInfo.desc = tr("User defined makro filter");
-    info.typeInfo.group = QStringList("user") << "makro";
+    info.typeInfo.group = QStringList("makro");
+    if(mIsLocal)
+        info.typeInfo.group << "project";
+    else
+        info.typeInfo.group << "global";
     info.typeInfo.name = mName;
     info.typeInfo.uid = ":Makro:" + mName;
     QMapIterator<QString, Input*> inputs(mInputs);

@@ -48,7 +48,8 @@ Processor::~Processor()
 
 void Processor::setProcessorPriority(QThread::Priority priority)
 {
-    setPriority(priority);
+    if(isRunning())
+        setPriority(priority);
     mInfo.priority = priority;
 }
 

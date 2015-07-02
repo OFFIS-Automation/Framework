@@ -31,4 +31,3 @@ TARGET = SimpleNodes
 LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts  -lolvisPlugin
 
 include(simpleNodesFiles.pri)
-

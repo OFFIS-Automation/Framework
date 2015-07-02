@@ -50,8 +50,6 @@
 
 #include <QGraphicsDropShadowEffect>
 
-
-
 VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
 #ifdef OPEN_GL
     QGLWidget(QGLFormat(QGL::SampleBuffers), parent),

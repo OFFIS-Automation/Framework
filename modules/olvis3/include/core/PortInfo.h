@@ -25,7 +25,7 @@
 struct PortInfo
 {
     InputPortMode mode;
-
+    PortVisibility visibility;
     QString name;
     QString desc;
     QString typeName;

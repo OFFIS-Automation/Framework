@@ -21,6 +21,8 @@
 
 #include <core/ScriptException.h>
 
+#include <QDebug>
+
 ScriptExceptionDialog::ScriptExceptionDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ScriptExceptionDialog)
@@ -32,6 +34,7 @@ ScriptExceptionDialog::ScriptExceptionDialog(QWidget *parent) :
 
     // Hide help button
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    qDebug() << pos();
 }
 
 ScriptExceptionDialog::~ScriptExceptionDialog()
@@ -41,7 +44,6 @@ ScriptExceptionDialog::~ScriptExceptionDialog()
 
 void ScriptExceptionDialog::showException(const ScriptException &e)
 {
-    hide();
     ui->msg->setPlainText(e.name);
     ui->trace->clear();
 
@@ -53,8 +55,12 @@ void ScriptExceptionDialog::showException(const ScriptException &e)
         item->setData(Qt::UserRole+1, trace.line);
         ui->trace->addItem(item);
     }
-    show();
-    focusWidget();
+    setVisible(true);
+    activateWindow();
+    if(mPos.isNull())
+        mPos = pos();
+    else
+        move(mPos);
 }
 
 

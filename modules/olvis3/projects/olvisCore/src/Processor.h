@@ -48,7 +48,7 @@ public:
 
     ProcessorInfo info() const { return mInfo; }
     virtual int id() const { return mInfo.id; }
-    virtual bool isRunning() const { return true; }
+
     QString name() const { return mInfo.name; }
     void setName(const QString& name);
 

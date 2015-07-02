@@ -48,7 +48,8 @@ HEADERS += \
     src/overlays/ScaleBarOverlay.h \
     src/overlays/GraphOverlayOptions.h \
     src/overlays/PointPortOverlay.h \
-    $$PWD/src/overlays/MeasureOverlay.h
+    $$PWD/src/overlays/MeasureOverlay.h \
+    $$PWD/src/ColorEdit.h
 
 
 SOURCES += \
@@ -79,7 +80,8 @@ SOURCES += \
     src/overlays/ScaleBarOverlay.cpp \
     src/overlays/GraphOverlayOptions.cpp \
     src/overlays/PointPortOverlay.cpp \
-    $$PWD/src/overlays/MeasureOverlay.cpp
+    $$PWD/src/overlays/MeasureOverlay.cpp \
+    $$PWD/src/ColorEdit.cpp
 
 
 FORMS += \

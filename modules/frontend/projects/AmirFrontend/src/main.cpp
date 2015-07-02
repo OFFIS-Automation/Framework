@@ -20,6 +20,7 @@
 #include <QDesktopWidget>
 #include <QSplashScreen>
 #include <QStyleFactory>
+#include <Notifications.h>
 
 #include "MasterWindow.h"
 #include "PluginLoader.h"
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
         master->move(desktop->availableGeometry(0).topLeft());
 #endif
         master->showMaximized();
+        Notifications::setMainWindow(master);
         if(multiScreen)
         {
             slave->setAlternative(master);

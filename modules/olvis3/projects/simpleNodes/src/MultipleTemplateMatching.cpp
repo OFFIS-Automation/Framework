@@ -34,6 +34,7 @@ MultipleTemplateMatching::MultipleTemplateMatching()
     mMethodIn.addChoice(CV_TM_CCOEFF_NORMED,"fast normalized cross correlation");
     mMethodIn.addChoice(CV_TM_SQDIFF_NORMED,"normalized squared differences");
     mMethodIn.setDefault(CV_TM_CCOEFF_NORMED);
+    mMethodIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mMethodIn);
 
     mMinScoreIn.setName("min score");
@@ -45,6 +46,7 @@ MultipleTemplateMatching::MultipleTemplateMatching()
     mOffsetIn.setDesc("Offset that will be added to all calculated positions");
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     addInputPort(mOffsetIn);
+    mOffsetIn.setVisibility(AdvancedPortVisibility);
 
     mScoreOuts.setName("scores");
     mScoreOuts.setDesc("The matching score of the found position");
@@ -56,15 +58,18 @@ MultipleTemplateMatching::MultipleTemplateMatching()
     mNeedNewImage.setName("fresh image only");
     mNeedNewImage.setDesc("Only execute if the main input has a new image");
     mNeedNewImage.setDefault(true);
+    mNeedNewImage.setVisibility(AdvancedPortVisibility);
     addInputPort(mNeedNewImage);
 
     mSendResultImage.setName("send result image");
     mSendResultImage.setDesc("Set this to true if the result image of the template matching should be send on the port <result>");
     mSendResultImage.setDefault(false);
+    mSendResultImage.setVisibility(ExpertPortVisibility);
     addInputPort(mSendResultImage);
 
     mResultOut.setName("result");
     mResultOut.setDesc("The result image from the template matching operation. Only sent if the port <send result image> is set to true");
+    mResultOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOut);
 }
 

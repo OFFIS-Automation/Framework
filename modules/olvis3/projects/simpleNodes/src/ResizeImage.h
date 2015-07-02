@@ -29,9 +29,15 @@ public:
     void execute();
 protected:
     in::Image mIn;
-    in::Boolean mConstrainToWidth;
-    in::Boolean mConstrainToHeight;
+    in::Integer mAspectRatio;
     in::Integer mWidth, mHeight;
+
+    enum SizeContraint
+    {
+        IgnoreAspectRatio,
+        KeepAspectRatioByWidth,
+        KeepAspectRatioByHeight
+    };
 
     out::Image mOut;
 };

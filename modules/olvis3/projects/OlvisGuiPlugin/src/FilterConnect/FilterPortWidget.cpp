@@ -32,7 +32,8 @@ FilterPortWidget::FilterPortWidget(int filterId, const PortInfo& info, QWidget *
     ui->setupUi(this);
     ui->text->setToolTip(info.desc);
     setNewName(info.name);
-    ui->icon->setPixmap(QPixmap::fromImage(info.icon).scaled(16,16, Qt::KeepAspectRatio));
+    if(!info.icon.isNull())
+        ui->icon->setPixmap(QPixmap::fromImage(info.icon).scaled(16,16, Qt::KeepAspectRatio));
     ui->icon->setToolTip(info.typeName);
     setFrameShadow(QFrame::Sunken);
     setFrameShape(QFrame::Box);

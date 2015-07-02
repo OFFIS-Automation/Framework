@@ -28,7 +28,7 @@ public:
     virtual void execute();
 protected:
     in::Rect mIn;
-    out::Rect mOut;
+    out::Rect mOut, mSingleOut;
     out::Boolean mUpdated;
 };
 

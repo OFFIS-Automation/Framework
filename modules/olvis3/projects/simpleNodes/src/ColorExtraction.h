@@ -19,9 +19,8 @@
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/PointPort.h>
+#include <ports/ColorPort.h>
 #include <ports/IntegerPort.h>
-#include <ports/RealPort.h>
 
 class ColorExtraction : public UserFilter
 {
@@ -31,12 +30,9 @@ public:
 protected:
     in::RgbImage mIn;
     out::RgbImage mOut;
-    out::RgbImage mColorOut;
-    in::Point mInPoint;
-    out::Point mOutPoint;
-    in::Real mTolerance;
-    in::Integer mRValue, mGValue, mBValue;
-    in::Integer mDefaultValue;
+    in::Integer mTolerance;
+    in::Color mColor;
+    in::Color mFillColor;
 private:
     int mValues[3];
 };

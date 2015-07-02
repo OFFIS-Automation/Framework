@@ -1613,10 +1613,11 @@ void OlvisCoreInterface::loadFromFile(const QString &filename)
     mChanged = true;
 }
 
-int OlvisCoreInterface::createMakroFilter(const QString &proposedName)
+int OlvisCoreInterface::createMakroFilter(const QString &proposedName, bool definedInProject)
 {
     if(isRunning()) return -1;
     MakroFilter* filter = new MakroFilter();
+
     QString startName = proposedName;
     if(startName.isEmpty())
         startName = "MakroFilter";
@@ -1637,7 +1638,7 @@ int OlvisCoreInterface::createMakroFilter(const QString &proposedName)
         name = startName + QString::number(nameSuffix);
     }
 
-    filter->initialize(mNextUid++, name, 0);
+    filter->initialize(mNextUid++, name, definedInProject, 0);
     mMakroFilters.insert(filter->id(), filter);
     emit makroFilterCreated(filter->info());
     emit filterTypesChanged();

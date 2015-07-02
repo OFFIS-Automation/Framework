@@ -18,6 +18,7 @@
 #ifndef TELECONTROLCONFIG_H
 #define TELECONTROLCONFIG_H
 
+#include <QDataStream>
 #include <QString>
 #include <QStringList>
 #include "../telecontrol/TcConfig.h"

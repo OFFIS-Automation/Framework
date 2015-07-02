@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2014 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -20,8 +20,9 @@
 #include <QFrame>
 #include <QMouseEvent>
 
-namespace Ui {
-    class FilterWidget;
+namespace Ui
+{
+class FilterWidget;
 }
 
 class OlvisInterface;
@@ -29,30 +30,34 @@ struct FilterInfo;
 
 class FilterPortWidget;
 
+#include <core/FilterTypeInfo.h>
+
 class FilterWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit FilterWidget(const FilterInfo& info, QWidget *parent = 0);
+    explicit FilterWidget(const FilterInfo &info, QWidget *parent = 0);
     ~FilterWidget();
-    int filterId() const {return mFilterId; }
-    const QString& filterType() { return mFilterType; }
+    int filterId() const { return mFilterId; }
+    const QString &filterType() { return mFilterType; }
 
-    void showError(const QString& msg);
+    void showError(const QString &msg);
     void clearError();
 
+    void setPortVisibility(int visibility);
 
 signals:
-    void renameRequested(int id, const QString& newName);
+    void renameRequested(int id, const QString &newName);
     void deleteRequest(int id);
     void selected(int id);
-    void newPortValue(int filterId, const QString& portId, const QVariant& value);
-    void startConnect(FilterPortWidget* start);
-    void startDisconnect(FilterPortWidget* target);
+    void newPortValue(int filterId, const QString &portId,
+                      const QVariant &value);
+    void startConnect(FilterPortWidget *start);
+    void startDisconnect(FilterPortWidget *target);
 
 private slots:
-    void onFilterRename(const FilterInfo& info);
+    void onFilterRename(const FilterInfo &info);
     void showMenu(const QPoint &pos);
 
     void on_actionDeleteFilter_triggered();
@@ -69,6 +74,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void startRename();
     void endRename();
+
 private:
     Ui::FilterWidget *ui;
     QPoint mDragStartPos;

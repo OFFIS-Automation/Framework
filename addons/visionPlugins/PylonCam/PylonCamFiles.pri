@@ -1,3 +1,4 @@
+VPATH += $$PWD
 
 PYLON_ROOT = $$(PYLON_ROOT)
 isEmpty(PYLON_ROOT) {
@@ -15,8 +16,7 @@ isEmpty(GENICAM_ROOT) {
 
 TEMPLATE = lib
 CONFIG += dll
-TARGET = PylonCam
-DESTDIR = $${targetDir}/olvisPlugins
+
 INCLUDEPATH += $$(PYLON_ROOT)/include
 LIBS += -L$$(PYLON_ROOT)/lib/Win32
 INCLUDEPATH += $$(PYLON_GENICAM_ROOT)/library/cpp/include

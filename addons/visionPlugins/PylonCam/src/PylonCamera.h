@@ -38,5 +38,6 @@ protected:
     QList<ParameterInterface*> mParams;
     Pylon::CInstantCamera* mCam;
     Pylon::CDeviceInfo mInfo;
+    bool mParamsMustIgnoreCache;
 };
 #endif // USER_PYLONCAMERA_H

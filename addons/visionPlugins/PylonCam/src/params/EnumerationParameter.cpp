@@ -8,8 +8,9 @@ EnumerationParameter::EnumerationParameter(const QString &name)
 }
 
 
-bool EnumerationParameter::initialize(GenApi::INodeMap &nodes)
+bool EnumerationParameter::initialize(GenApi::INodeMap &nodes, bool ignoreCache)
 {
+    mIgnoreCache = ignoreCache;
     mCamParam = nodes.GetNode(mName.toLocal8Bit().data());
     if (!GenApi::IsReadable(mCamParam))
         return false;
@@ -22,7 +23,7 @@ bool EnumerationParameter::initialize(GenApi::INodeMap &nodes)
             int value = mCamParam->GetEntryByName(entryName)->GetValue();
             mPort.addChoice(value, entryName.c_str());
         }
-        mPort.setDefault(mCamParam->GetIntValue());
+        mPort.setDefault(mCamParam->GetIntValue(false, mIgnoreCache));
         mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
         return true;
     }
@@ -48,7 +49,7 @@ bool EnumerationParameter::update()
         else
             success = false;
     }
-    if(mCamParam->GetIntValue(true, true) != mPort.getValue())
+    if(mCamParam->GetIntValue(false, mIgnoreCache) != mPort.getValue())
         mPort.setDefault(mCamParam->GetIntValue());
     return success;
 }

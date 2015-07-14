@@ -8,8 +8,9 @@ IntegerParameter::IntegerParameter(const QString &name)
 }
 
 
-bool IntegerParameter::initialize(GenApi::INodeMap &nodes)
+bool IntegerParameter::initialize(GenApi::INodeMap &nodes, bool ignoreCache)
 {
+    mIgnoreCache = ignoreCache;
     mCamParam = nodes.GetNode(mName.toLocal8Bit().data());
     if (!GenApi::IsReadable(mCamParam))
         return false;
@@ -39,7 +40,7 @@ bool IntegerParameter::update()
         else
             success = false;
     }
-    if(mCamParam->GetValue(true, true) != mPort.getValue())
+    if(mCamParam->GetValue(false, mIgnoreCache) != mPort.getValue())
         mPort.setDefault(mCamParam->GetValue());
     return success;
 }
@@ -48,6 +49,6 @@ void IntegerParameter::readUpdate()
 {
     mPort.setDivConstraint(mCamParam->GetInc());
     mPort.setRange(mCamParam->GetMin(), mCamParam->GetMax());
-    mPort.setDefault(mCamParam->GetValue());
+    mPort.setDefault(mCamParam->GetValue(false, mIgnoreCache));
     mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
 }

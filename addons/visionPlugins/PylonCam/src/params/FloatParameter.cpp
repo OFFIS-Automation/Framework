@@ -8,14 +8,15 @@ FloatParameter::FloatParameter(const QString &name)
 }
 
 
-bool FloatParameter::initialize(GenApi::INodeMap &nodes)
+bool FloatParameter::initialize(GenApi::INodeMap &nodes, bool ignoreCache)
 {
+    mIgnoreCache = ignoreCache;
     mCamParam = nodes.GetNode(mName.toLocal8Bit().data());
     if (!GenApi::IsReadable(mCamParam))
         return false;
     else {
         mPort.setRange(mCamParam->GetMin(), mCamParam->GetMax());
-        mPort.setDefault(mCamParam->GetValue());
+        mPort.setDefault(mCamParam->GetValue(false, mIgnoreCache));
         mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
         return true;
     }
@@ -41,7 +42,7 @@ bool FloatParameter::update()
         else
             success = false;
     }
-    if(mCamParam->GetValue(true, true) != mPort.getValue())
+    if(mCamParam->GetValue(false, mIgnoreCache) != mPort.getValue())
         mPort.setDefault(mCamParam->GetValue());
     return success;
 }

@@ -11,7 +11,7 @@ class BoolParameter : public ParameterInterface
 {
 public:
     BoolParameter(const QString& name);
-    bool initialize(GenApi::INodeMap& nodes);
+    bool initialize(GenApi::INodeMap& nodes, bool ignoreCache);
     bool readable();
     bool writable();
     Port& port() { return mPort; }
@@ -20,6 +20,7 @@ protected:
     QString mName;
     in::Boolean mPort;
     GenApi::CBooleanPtr mCamParam;
+    bool mIgnoreCache;
 };
 
 #endif // BOOLPARAMETER_H

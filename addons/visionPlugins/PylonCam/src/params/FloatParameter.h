@@ -11,7 +11,7 @@ class FloatParameter : public ParameterInterface
 {
 public:
     FloatParameter(const QString& name);
-    bool initialize(GenApi::INodeMap& nodes);
+    bool initialize(GenApi::INodeMap& nodes, bool ignoreCache);
     bool readable();
     bool writable();
     Port& port() { return mPort; }
@@ -20,6 +20,7 @@ protected:
     QString mName;
     in::Real mPort;
     GenApi::CFloatPtr mCamParam;
+    bool mIgnoreCache;
 };
 
 

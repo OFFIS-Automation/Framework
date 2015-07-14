@@ -10,7 +10,7 @@ class IntegerParameter : public ParameterInterface
 {
 public:
     IntegerParameter(const QString& name);
-    bool initialize(GenApi::INodeMap& nodes);
+    bool initialize(GenApi::INodeMap& nodes, bool ignoreCache);
     bool readable();
     bool writable();
     Port& port() { return mPort; }
@@ -20,6 +20,7 @@ protected:
     QString mName;
     in::Integer mPort;
     GenApi::CIntegerPtr mCamParam;
+    bool mIgnoreCache;
 };
 
 #endif // INTEGERPARAMETER_H

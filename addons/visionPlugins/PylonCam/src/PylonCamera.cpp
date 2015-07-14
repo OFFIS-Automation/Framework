@@ -56,6 +56,9 @@ PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
     setName(info.GetFriendlyName().c_str());
     setGroup(QString("input/pylon/") + info.GetDeviceClass().c_str());
     mOut.setName("output");
+    mParamsMustIgnoreCache = false;
+    if(QString(info.GetDeviceClass().c_str()).toLower().contains("baslerusb"))
+        mParamsMustIgnoreCache = true;
     addOutputPort(mOut);
 }
 
@@ -104,10 +107,6 @@ void PylonCamera::start()
 void PylonCamera::execute()
 {
     try {
-        foreach (ParameterInterface *param, mParams)
-            param->update();
-        foreach (ParameterInterface *param, mParams)
-            param->readUpdate();
         CGrabResultPtr ptrGrabResult;
         mCam->RetrieveResult(500, ptrGrabResult);
         if (ptrGrabResult->GrabSucceeded()) {
@@ -119,6 +118,10 @@ void PylonCamera::execute()
             RgbaImage image(target.GetHeight(), target.GetWidth(),
                             (uchar *)target.GetBuffer());
             mOut.send(image.clone());
+            foreach (ParameterInterface *param, mParams)
+                param->update();
+            foreach (ParameterInterface *param, mParams)
+                param->readUpdate();
         }
     } catch (GenICam::GenericException &e) {
         throw std::runtime_error(e.GetDescription());
@@ -141,7 +144,7 @@ void PylonCamera::deinitialize()
 template <class T> bool PylonCamera::createParam(const QString &paramName, PortVisibility vis)
 {
     T *param = new T(paramName);
-    if (param->initialize(mCam->GetNodeMap())) {
+    if (param->initialize(mCam->GetNodeMap(), mParamsMustIgnoreCache)) {
         mParams.append(param);
         param->port().setVisibility(vis);
         addInputPort(param->port());

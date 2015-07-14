@@ -16,8 +16,10 @@ void Notifications::setMainWindow(QWidget *mainWindow, bool useAnimations)
     {
         instance().mWidget->setParent(0);
         delete instance().mWidget;
+        instance().mWidget = 0;
     }
-    instance().mWidget = new NotificationMainWidget(mainWindow, useAnimations);
+    if(mainWindow)
+        instance().mWidget = new NotificationMainWidget(mainWindow, useAnimations);
 }
 
 void Notifications::setUseAnimations(bool enabled)

@@ -418,6 +418,21 @@ void OlvisCoreInterface::setProcessorTriggerBehavior(const QString &processorNam
     setProcessorTriggerBehavior(getProcessor(processorName).id, ignoreTrigger);
 }
 
+void OlvisCoreInterface::setProcessorStopBehavior(int id, bool stopOnNoOutputGenerated)
+{
+    Processor* processor = mProcessors.value(id);
+    if(!processor)
+        return;
+    processor->setStopMode(stopOnNoOutputGenerated);
+    mChanged = true;
+    emit processorUpdated(processor->info());
+}
+
+void OlvisCoreInterface::setProcessorStopBehavior(const QString &processorName, bool stopOnNoOutputGenerated)
+{
+    setProcessorStopBehavior(getProcessor(processorName).id, stopOnNoOutputGenerated);
+}
+
 int OlvisCoreInterface::createDataBuffer(int size, const QString &nameIn)
 {
     if(isRunning()) return 0;

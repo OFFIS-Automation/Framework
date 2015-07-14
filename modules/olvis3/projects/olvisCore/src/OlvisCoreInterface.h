@@ -121,6 +121,8 @@ public slots:
     virtual void setProcessorTriggerBehavior(int id, bool ignoreTrigger);
     virtual void setProcessorTriggerBehavior(const QString& processorName , bool ignoreTrigger);
 
+    virtual void setProcessorStopBehavior(int id, bool stopOnNoOutputGenerated);
+    virtual void setProcessorStopBehavior(const QString& processorName, bool stopOnNoOutputGenerated);
     virtual int createDataBuffer(int size = 10, const QString& name = QString());
     virtual void resizeDataBuffer(int id, int size);
     virtual void deleteDataBuffer(int id);

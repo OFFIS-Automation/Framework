@@ -42,6 +42,7 @@ public:
     void setProcessorPriority(Priority priority);
     void setStartupMode(bool pausedStartup);
     void setTriggerMode(bool ignoreTrigger);
+    void setStopMode(bool stopOnNoOutputGenerated);
 
     /* function to avoid race condition between finished() signal and isFinished() of qthread */
     bool isExecutionFinished() const { return !mRunning; }

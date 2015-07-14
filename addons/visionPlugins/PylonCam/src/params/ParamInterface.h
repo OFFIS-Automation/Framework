@@ -7,6 +7,7 @@ class ParameterInterface
 {
 public:
     virtual bool update() = 0;
+    virtual void readUpdate() {}
     virtual Port& port() = 0;
 };
 

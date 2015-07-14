@@ -63,6 +63,11 @@ void PylonCamera::initialize()
 {
     mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
     mCam->Open();
+//    NodeList_t nodes;
+//    mCam->GetNodeMap().GetNodes(nodes);
+//    qWarning() << "nodes" << nodes.size() << mCam->GetDeviceInfo().GetFriendlyName();
+//    for(uint i=0; i<nodes.size(); i++)
+//        qWarning() << nodes[i]->GetName(true).c_str() << nodes[i]->GetDisplayName();
     mCam->StopGrabbing();
     createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
     createParam<IntegerParameter>("OffsetX");
@@ -73,18 +78,26 @@ void PylonCamera::initialize()
     createParam<BoolParameter>("ReverseY", ExpertPortVisibility);
     createParam<EnumerationParameter>("AutoFunctionProfile", ExpertPortVisibility);
     createParam<EnumerationParameter>("GainAuto");
-    createParam<FloatParameter>("Gain");
+    if(!createParam<FloatParameter>("Gain")) {
+        createParam<IntegerParameter>("GainRaw");
+    }
     createParam<EnumerationParameter>("BalanceWhiteAuto");
     createParam<EnumerationParameter>("ShutterMode", ExpertPortVisibility);
     createParam<EnumerationParameter>("ExposureAuto");
     createParam<EnumerationParameter>("ExposureMode", ExpertPortVisibility);
-    createParam<FloatParameter>("ExposureTime");
+    if(!createParam<FloatParameter>("ExposureTime")) {
+        if(!createParam<FloatParameter>("ExposureTimeAbs")) {
+            createParam<IntegerParameter>("ExposureTimeRaw");
+        }
+    }
 }
 
 void PylonCamera::start()
 {
     foreach (ParameterInterface *param, mParams)
         param->update();
+    foreach (ParameterInterface *param, mParams)
+        param->readUpdate();
     mCam->StartGrabbing();
 }
 
@@ -93,6 +106,8 @@ void PylonCamera::execute()
     try {
         foreach (ParameterInterface *param, mParams)
             param->update();
+        foreach (ParameterInterface *param, mParams)
+            param->readUpdate();
         CGrabResultPtr ptrGrabResult;
         mCam->RetrieveResult(500, ptrGrabResult);
         if (ptrGrabResult->GrabSucceeded()) {
@@ -110,7 +125,9 @@ void PylonCamera::execute()
     }
 }
 
-void PylonCamera::stop() { mCam->StopGrabbing(); }
+void PylonCamera::stop() {
+    mCam->StopGrabbing();
+}
 
 void PylonCamera::deinitialize()
 {

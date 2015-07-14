@@ -15,6 +15,7 @@ public:
     bool writable();
     Port& port() { return mPort; }
     bool update();
+    void readUpdate();
 protected:
     QString mName;
     in::Integer mPort;

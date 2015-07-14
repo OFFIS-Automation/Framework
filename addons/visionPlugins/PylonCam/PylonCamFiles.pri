@@ -22,6 +22,8 @@ LIBS += -L$$(PYLON_ROOT)/lib/Win32
 INCLUDEPATH += $$(PYLON_GENICAM_ROOT)/library/cpp/include
 LIBS+= -L$$(PYLON_GENICAM_ROOT)/library/cpp/lib/win32_i86
 
+message($$LIBS)
+
 HEADERS += \
     src/PylonPlugin.h \
         src/PylonCamera.h \

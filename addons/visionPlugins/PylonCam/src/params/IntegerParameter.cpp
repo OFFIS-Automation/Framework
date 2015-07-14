@@ -14,10 +14,7 @@ bool IntegerParameter::initialize(GenApi::INodeMap &nodes)
     if (!GenApi::IsReadable(mCamParam))
         return false;
     else {
-        mPort.setDivConstraint(mCamParam->GetInc());
-        mPort.setRange(mCamParam->GetMin(), mCamParam->GetMax());
-        mPort.setDefault(mCamParam->GetValue());
-        mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
+        readUpdate();
         return true;
     }
 }
@@ -45,4 +42,12 @@ bool IntegerParameter::update()
     if(mCamParam->GetValue(true, true) != mPort.getValue())
         mPort.setDefault(mCamParam->GetValue());
     return success;
+}
+
+void IntegerParameter::readUpdate()
+{
+    mPort.setDivConstraint(mCamParam->GetInc());
+    mPort.setRange(mCamParam->GetMin(), mCamParam->GetMax());
+    mPort.setDefault(mCamParam->GetValue());
+    mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
 }

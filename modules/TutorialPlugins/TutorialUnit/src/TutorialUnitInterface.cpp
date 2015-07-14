@@ -101,6 +101,7 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
 
     // if you support haptic, add your haptic method here
     rc.registerHapticMethod("moveHaptic", Tc::hapticAxis(Tc::Haptic::AxisX, Tc::Haptic::AxisY, Tc::Haptic::AxisZ, Tc::Haptic::AxisYaw, Tc::Haptic::AxisPitch, Tc::Haptic::AxisRoll), Tc::Haptic::PrimaryButton);
+    rc.registerButtonMethod("startMoveHaptic", Tc::Haptic::PrimaryButton, true);
     rc.registerButtonMethod("alternateGripper", Tc::Haptic::SecondaryButton);
 
     return unit;

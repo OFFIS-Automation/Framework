@@ -21,6 +21,7 @@
 #include <QRect>
 #include <stdexcept>
 #include <QVector3D>
+#include <QtMath>
 
 #include <telecontrol/TcConfig.h>
 
@@ -29,7 +30,7 @@ TutorialUnit::TutorialUnit()
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
-    oldAxesValid = false;
+    mSetHapticStartAxes = false;
     setScene(GraphicsView::instance());
 }
 
@@ -155,20 +156,48 @@ void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
     moveGamepad(x, y, yaw);
 }
 
+void TutorialUnit::startMoveHaptic(bool toogled)
+{
+    if(toogled){
+        mSetHapticStartAxes = true;
+    }
+}
+
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    if(oldAxesValid){
-        // Calcuate movement vector
-        QVector3D movementVector(axes[Tc::Haptic::AxisX]-oldAxes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]-oldAxes[Tc::Haptic::AxisY], axes[Tc::Haptic::AxisZ]-oldAxes[Tc::Haptic::AxisZ]);
-        qDebug() << axes[Tc::Haptic::AxisYaw] << ";" << axes[Tc::Haptic::AxisPitch] << ";" <<axes[Tc::Haptic::AxisRoll];
-
-
-
+    if(axes.keys().count() == 0){
+        stop();
     }
-    oldAxes = axes;
-    oldAxesValid = true;
 
-    moveGamepad(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY], 0.0f);
+    if(mSetHapticStartAxes){
+        mHapticStartAxes = axes;
+        mHapticPreviousAxes = axes;
+        mSetHapticStartAxes = false;
+    }
+
+    QPointF p0(mHapticPreviousAxes[Tc::Haptic::AxisX], mHapticPreviousAxes[Tc::Haptic::AxisY]);
+    QPointF p1(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]);
+
+    if(p0 != p1){
+        double deltaXp = p1.x() - p0.x();
+        double deltaYp = p1.y() - p0.y();
+
+        double alpha1 = qAtan(deltaXp/deltaYp);
+        double alpha2 = mHapticStartAxes[Tc::Haptic::AxisYaw] - alpha1;
+
+        double d = qSqrt(qPow(deltaXp, 2) + qPow(deltaYp, 2));
+
+        double deltaXa = qSin(alpha2) * d;
+        double deltaYa = qCos(alpha2) * d;
+
+        qDebug() << "prev:" << deltaXp << ";" << deltaYp;
+        qDebug() << "corr:" << deltaXa << ";" << deltaYa;
+
+        moveGamepad(deltaXa, deltaYa, 0.0f);
+    }
+
+    // Store axes for next iteration
+    mHapticPreviousAxes = axes;
 
     // Create return value
     QMap<int, double> force;

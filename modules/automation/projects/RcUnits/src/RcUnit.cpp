@@ -30,6 +30,9 @@
 #include <QDebug>
 #include <rc/types/RobotRcUnit.h>
 
+QMutex RcUnit::sNameListMutex;
+QMap<QString, QMutex*> RcUnit::sNamedMutexes;
+
 RcUnit::RcUnit(const QString &name, const QString& configFile)
     : mName(name),
       mConfigFile(configFile),
@@ -439,6 +442,17 @@ void RcUnit::registerStruct(int id, const QByteArray& name, const QStringList& t
     mStructDefs[name] = s;
 }
 
+QMutex* RcUnit::getAcquireMutex(const QString& name)
+{
+    QMutexLocker lock(&sNameListMutex);
+    QMutex* m = sNamedMutexes.value(name, 0);
+    if(m == 0)
+    {
+        m = new QMutex();
+        sNamedMutexes[name] = m;
+    }
+    return m;
+}
 
 void RcUnit::acquire()
 {

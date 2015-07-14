@@ -109,6 +109,8 @@ public:
      * This function should never be called directly. Instead, use the static method @a rcRegisterStruct in RcStruct.h
      */
     virtual void registerStruct(int id, const QByteArray& name, const QStringList& typeNames, const QList<int>& types, RcWrapperFactoryItf* wrapper) = 0;
+
+    virtual QMutex* getAcquireMutex(const QString& name = "DefaultAcquireMutex") = 0;
 };
 
 class RcUnitInterface

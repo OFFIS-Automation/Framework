@@ -74,6 +74,7 @@ public:
 
 signals:
     void portValueChanged(int filterId, const QString& portId, const QVariant &value);
+    void constraintsUpdated(int filterId, const QString& portId);
 protected:
 
 

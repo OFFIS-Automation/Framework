@@ -11,7 +11,7 @@ TEMPLATE = lib
 CONFIG += lib
 
 INCLUDEPATH += $${PWD}/../../../frontend/projects/Notifications/include
-LIBS += -L$${targetDir}/plugins/ -lNotifications
+LIBS += -L$${targetDir}/plugins/ -L$${targetDir} -lNotifications
 
 SOURCES += src/RcUnit.cpp \
     src/TcInvoker.cpp \

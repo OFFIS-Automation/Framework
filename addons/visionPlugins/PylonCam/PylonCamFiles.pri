@@ -36,12 +36,7 @@ HEADERS += \
 
 SOURCES += \
     src/PylonPlugin.cpp \
-        src/PylonCamera.cpp \
-    src/params/IntegerParameter.cpp \
-    src/params/BoolParameter.cpp \
-    src/params/FloatParameter.cpp \
-    src/params/EnumerationParameter.cpp
-
+    src/PylonCamera.cpp
 
 DISTFILES += \
     README.txt

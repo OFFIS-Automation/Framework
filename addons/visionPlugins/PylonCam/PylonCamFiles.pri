@@ -31,7 +31,8 @@ HEADERS += \
     src/params/ParamInterface.h \
     src/params/BoolParameter.h \
     src/params/FloatParameter.h \
-    src/params/EnumerationParameter.h
+    src/params/EnumerationParameter.h \
+    $$PWD/src/params/ParameterTemplate.h
 
 SOURCES += \
     src/PylonPlugin.cpp \

@@ -5,6 +5,6 @@
 #-------------------------------------------------
 
 include(../../../properties/pathes.pro)
-DESTDIR = $${targetDir}/plugins
+DESTDIR = $${targetDir}
 
 include(Notifications.pri)

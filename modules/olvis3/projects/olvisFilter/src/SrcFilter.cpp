@@ -94,6 +94,13 @@ FilterInfo SrcFilter::info() const
     info.name = mName;
     info.processorId = mProcessorId;
     info.typeInfo = mUserFilter->d->info;
+    // update input constraints
+    for(int i = 0; i< info.typeInfo.inputs.size(); i++)
+    {
+        PortInfo& pInfo = info.typeInfo.inputs[i];
+        pInfo.constraints = getPort(pInfo.name)->getInfo().constraints;
+    }
+
     info.typeInfo.plugin = pluginName();
     info.typeInfo.uid = pluginName() + ":" + info.typeInfo.name;
     return info;
@@ -241,5 +248,10 @@ void SrcFilter::processBufferedUpdates()
 void SrcFilter::onUserPortValueChanged(const QString& portId, const QVariant& value)
 {
     emit portValueChanged(id(), portId, value);
+}
+
+void SrcFilter::onUserConstraintChanged(const QString &portId)
+{
+    emit constraintsUpdated(id(), portId);
 }
 

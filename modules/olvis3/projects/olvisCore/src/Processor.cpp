@@ -63,6 +63,11 @@ void Processor::setTriggerMode(bool ignoreTrigger)
     mInfo.ignoreTrigger = ignoreTrigger;
 }
 
+void Processor::setStopMode(bool stopOnNoOutputGenerated)
+{
+    mInfo.stopOnNoOutput = stopOnNoOutputGenerated;
+}
+
 void Processor::setName(const QString& name)
 {
     mInfo.name = name;
@@ -145,6 +150,7 @@ void Processor::execute()
     QMutableListIterator<Filter*> filters(mFilters);
     mStop = false;
     mTriggerFinished = false;
+    bool stopOnNoOutput = mInfo.stopOnNoOutput;
     try
     {
         while(filters.hasNext())
@@ -180,7 +186,7 @@ void Processor::execute()
     {
         int loopId = mLoopId;
         filters.toFront();
-        bool working = false;
+        bool working = !stopOnNoOutput; // if not stop, working is true by default
         mPauseMutex.lock();
         if(mPauseOnStart)
             mPauseWait.wait(&mPauseMutex);

@@ -248,6 +248,10 @@ public slots:
     virtual void setProcessorTriggerBehavior(const QString& processorName , bool ignoreTrigger) = 0;
 
 
+    virtual void setProcessorStopBehavior(int id, bool stopOnNoOutputGenerated) = 0;
+    virtual void setProcessorStopBehavior(const QString& processorName, bool stopOnNoOutputGenerated) = 0;
+
+
     /**
     * creates a data buffer to buffer data between processors
     * @emits @see dataBufferCreated

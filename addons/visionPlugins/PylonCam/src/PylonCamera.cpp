@@ -13,9 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#include <QDebug>
 
-#include <pylon/usb/BaslerUsbInstantCamera.h>
+#include <QDebug>
 
 #include "PylonCamera.h"
 
@@ -26,30 +25,6 @@
 
 using namespace Pylon;
 using namespace GenApi;
-
-/*
-bool IsColorCamera(CBaslerUsbInstantCamera &camera)
-{
-    GenApi::NodeList_t Entries;
-    camera.PixelFormat.GetEntries(Entries);
-    bool Result = false;
-
-    for (size_t i = 0; i < Entries.size(); i++) {
-        GenApi::INode *pNode = Entries[i];
-        if (IsAvailable(pNode->GetAccessMode())) {
-            GenApi::IEnumEntry *pEnum =
-                dynamic_cast<GenApi::IEnumEntry *>(pNode);
-            const GenICam::gcstring sym(pEnum->GetSymbolic());
-            if (sym.find(GenICam::gcstring("Bayer")) !=
-                GenICam::gcstring::_npos()) {
-                Result = true;
-                break;
-            }
-        }
-    }
-    return Result;
-}
-*/
 
 PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
 {
@@ -63,45 +38,55 @@ void PylonCamera::initialize()
 {
     mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
     mCam->Open();
+    // for safety
     mCam->StopGrabbing();
+
+    // create a subset of parameters. If a parameter is not found, it is simply not added and therefor not available
     createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
-    createParam<IntegerParameter>("OffsetX");
-    createParam<IntegerParameter>("OffsetY");
-    createParam<IntegerParameter>("Width");
-    createParam<IntegerParameter>("Height");
+    createParam<IntegerParameter>("Width", AdvancedPortVisibility);
+    createParam<IntegerParameter>("Height", AdvancedPortVisibility);
+    createParam<IntegerParameter>("OffsetX", AdvancedPortVisibility);
+    createParam<IntegerParameter>("OffsetY", AdvancedPortVisibility);
     createParam<BoolParameter>("ReverseX", ExpertPortVisibility);
     createParam<BoolParameter>("ReverseY", ExpertPortVisibility);
     createParam<EnumerationParameter>("AutoFunctionProfile", ExpertPortVisibility);
-    createParam<EnumerationParameter>("GainAuto");
-    createParam<FloatParameter>("Gain");
-    createParam<EnumerationParameter>("BalanceWhiteAuto");
+    createParam<EnumerationParameter>("GainAuto", AdvancedPortVisibility);
+    // if a camera has no Gain parameter, try the GainRaw parameter
+    if(!createParam<FloatParameter>("Gain", AdvancedPortVisibility)) {
+        createParam<IntegerParameter>("GainRaw", AdvancedPortVisibility);
+    }
+    createParam<EnumerationParameter>("BalanceWhiteAuto", AdvancedPortVisibility);
     createParam<EnumerationParameter>("ShutterMode", ExpertPortVisibility);
-    createParam<EnumerationParameter>("ExposureAuto");
+    createParam<EnumerationParameter>("ExposureAuto", AdvancedPortVisibility);
     createParam<EnumerationParameter>("ExposureMode", ExpertPortVisibility);
-    createParam<FloatParameter>("ExposureTime");
+    // if a camera has no ExposureTime parameter, try ExposureTimeAbs and ExposureTimeRaw
+    if(!createParam<FloatParameter>("ExposureTime", AdvancedPortVisibility)) {
+        if(!createParam<FloatParameter>("ExposureTimeAbs", AdvancedPortVisibility)) {
+            createParam<IntegerParameter>("ExposureTimeRaw", AdvancedPortVisibility);
+        }
+    }
 }
 
 void PylonCamera::start()
 {
-    foreach (ParameterInterface *param, mParams)
-        param->update();
+    updateParams();
     mCam->StartGrabbing();
 }
 
 void PylonCamera::execute()
 {
     try {
-        foreach (ParameterInterface *param, mParams)
-            param->update();
+        updateParams();
         CGrabResultPtr ptrGrabResult;
         mCam->RetrieveResult(500, ptrGrabResult);
         if (ptrGrabResult->GrabSucceeded()) {
             CPylonImage target;
+            // convert to correct format for vision system
             CImageFormatConverter converter;
-            converter.OutputPixelFormat = PixelType_BGRA8packed;
+            converter.OutputPixelFormat = PixelType_BGR8packed;
             converter.OutputBitAlignment = OutputBitAlignment_MsbAligned;
             converter.Convert(target, ptrGrabResult);
-            RgbaImage image(target.GetHeight(), target.GetWidth(),
+            RgbImage image(target.GetHeight(), target.GetWidth(),
                             (uchar *)target.GetBuffer());
             mOut.send(image.clone());
         }
@@ -110,7 +95,10 @@ void PylonCamera::execute()
     }
 }
 
-void PylonCamera::stop() { mCam->StopGrabbing(); }
+void PylonCamera::stop() {
+    mCam->StopGrabbing();
+    updateParams();
+}
 
 void PylonCamera::deinitialize()
 {
@@ -119,6 +107,26 @@ void PylonCamera::deinitialize()
         delete mCam;
     }
     mCam = 0;
+}
+
+void PylonCamera::updateParams()
+{
+    // first, write all updates. Then, read all updates. Writing one parameter might effect values of others
+    foreach (ParameterInterface *param, mParams)
+        param->update();
+    foreach (ParameterInterface *param, mParams)
+        param->readUpdate();
+
+}
+
+Port *PylonCamera::portByName(const QString &name)
+{
+    foreach (ParameterInterface *param, mParams)
+    {
+        if(name == param->name())
+            return &param->port();
+    }
+    return 0;
 }
 
 template <class T> bool PylonCamera::createParam(const QString &paramName, PortVisibility vis)

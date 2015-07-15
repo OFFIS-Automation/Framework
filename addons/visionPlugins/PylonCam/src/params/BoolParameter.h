@@ -6,20 +6,10 @@
 #include <ports/BooleanPort.h>
 #include <pylon/PylonIncludes.h>
 
+/**
+ * @brief BoolParameter encasulates Boolean Ports and boolean camera parameters
+ */
+typedef DefaultParameterTemplate<in::Boolean, GenApi::CBooleanPtr> BoolParameter;
 
-class BoolParameter : public ParameterInterface
-{
-public:
-    BoolParameter(const QString& name);
-    bool initialize(GenApi::INodeMap& nodes);
-    bool readable();
-    bool writable();
-    Port& port() { return mPort; }
-    bool update();
-protected:
-    QString mName;
-    in::Boolean mPort;
-    GenApi::CBooleanPtr mCamParam;
-};
 
 #endif // BOOLPARAMETER_H

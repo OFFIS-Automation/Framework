@@ -78,6 +78,11 @@ void InputPort::recheck()
     emit portValueChanged(name(), mValue);
 }
 
+void InputPort::newConstraint()
+{
+    emit portConstraintsUpdated(name());
+}
+
 QVariant InputPort::setDefaultValue(QVariant value)
 {
     if(value.isValid())

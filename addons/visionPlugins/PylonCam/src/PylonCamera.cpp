@@ -43,10 +43,10 @@ void PylonCamera::initialize()
 
     // create a subset of parameters. If a parameter is not found, it is simply not added and therefor not available
     createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
-    createParam<IntegerParameter>("OffsetX", AdvancedPortVisibility);
-    createParam<IntegerParameter>("OffsetY", AdvancedPortVisibility);
     createParam<IntegerParameter>("Width", AdvancedPortVisibility);
     createParam<IntegerParameter>("Height", AdvancedPortVisibility);
+    createParam<IntegerParameter>("OffsetX", AdvancedPortVisibility);
+    createParam<IntegerParameter>("OffsetY", AdvancedPortVisibility);
     createParam<BoolParameter>("ReverseX", ExpertPortVisibility);
     createParam<BoolParameter>("ReverseY", ExpertPortVisibility);
     createParam<EnumerationParameter>("AutoFunctionProfile", ExpertPortVisibility);
@@ -117,6 +117,16 @@ void PylonCamera::updateParams()
     foreach (ParameterInterface *param, mParams)
         param->readUpdate();
 
+}
+
+Port *PylonCamera::portByName(const QString &name)
+{
+    foreach (ParameterInterface *param, mParams)
+    {
+        if(name == param->name())
+            return &param->port();
+    }
+    return 0;
 }
 
 template <class T> bool PylonCamera::createParam(const QString &paramName, PortVisibility vis)

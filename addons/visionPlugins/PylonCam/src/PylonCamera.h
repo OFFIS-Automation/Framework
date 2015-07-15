@@ -75,6 +75,11 @@ protected:
     template <class T> bool createParam(const QString& name, PortVisibility vis = AdvancedPortVisibility);
 
     /**
+     * @brief portByName returns a port from the parameter list thet is identified by name
+     * @return the port pointer on success, NULL if there os no such port
+     */
+    Port* portByName(const QString& name);
+    /**
      * @brief mOut contains the main output port.
      */
     out::Image mOut;

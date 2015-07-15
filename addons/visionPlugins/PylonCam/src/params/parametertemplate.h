@@ -26,6 +26,7 @@ public:
     bool initialize(GenApi::INodeMap& nodes);
     bool readable() { return GenApi::IsReadable(mCamParam); }
     bool writable() { return GenApi::IsWritable(mCamParam); }
+    QString name() { return mName; }
     Port& port() { return mPort; }
     /**
      * @brief checks if the port has changed and calls @see writeNewValue if neccessary

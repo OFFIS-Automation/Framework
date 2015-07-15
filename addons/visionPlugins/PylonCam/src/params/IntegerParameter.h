@@ -19,8 +19,8 @@ public:
     /**
      * @see ParameterTemplate. Additionally, setup min/max and stepping
      */
-    void readUpdate() {
-        IntegerParameterInterface::readUpdate();
+    void readUpdate(bool forceUpdate = false) {
+        IntegerParameterInterface::readUpdate(forceUpdate);
         mPort.setDivConstraint(mCamParam->GetInc());
         mPort.setRange(mCamParam->GetMin(), mCamParam->GetMax());
     }

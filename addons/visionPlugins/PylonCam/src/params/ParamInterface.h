@@ -32,6 +32,11 @@ public:
      * @return a reference to the port specialization
      */
     virtual Port& port() = 0;
+
+    /**
+     * @brief name returns the initialization name of the parameter
+     */
+    virtual QString name() = 0;
 };
 
 #endif // PARAMINTERFACE_H

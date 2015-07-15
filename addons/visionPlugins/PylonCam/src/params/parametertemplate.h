@@ -34,9 +34,9 @@ public:
     bool update();
     /**
      * @brief checkes if the camera parameter cache is valid and calls @see readValue
-     * @return
+     * @param forceUpdate if true, the value is written to the port even if it is not different from the current port value (forces update)
      */
-    void readUpdate();
+    void readUpdate(bool forceUpdate = false);
 
     /**
      * @brief writeNewValue should write the value from the port into the camera parameter
@@ -45,8 +45,9 @@ public:
     /**
      * @brief readValue should check if the port value is different from the camera parameter value and update the ports default value if neccessary
      * @param ignoreCache if the cahce is not valid, calls to the camera parameter should ignore the cache
+     * @param forceUpdate if true, update even if the port value is not different
      */
-    virtual void readValue(bool ignoreCache)  = 0;
+    virtual void readValue(bool ignoreCache, bool forceUpdate)  = 0;
 protected:
     QString mName;
     PORT mPort;
@@ -62,7 +63,7 @@ template <class PORT, class PARAM> class DefaultParameterTemplate : public Param
 public:
     DefaultParameterTemplate(const QString& name) : ParameterTemplate(name) {}
     virtual void writeNewValue() { mCamParam->SetValue(mPort.getValue()); }
-    virtual void readValue(bool ignoreCache);
+    virtual void readValue(bool ignoreCache, bool forceUpdate);
 };
 
 
@@ -80,8 +81,9 @@ bool ParameterTemplate<PORT, PARAM>::initialize(GenApi::INodeMap &nodes)
     if (!GenApi::IsReadable(mCamParam))
         return false;
     else {
+        mPort.setName(mCamParam->GetNode()->GetDisplayName().c_str());
         mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
-        readUpdate();
+        readUpdate(true);
         return true;
     }
 }
@@ -101,16 +103,16 @@ bool ParameterTemplate<PORT, PARAM>::update()
 }
 
 template <class PORT, class PARAM>
-void ParameterTemplate<PORT, PARAM>::readUpdate()
+void ParameterTemplate<PORT, PARAM>::readUpdate(bool forceUpdate = false)
 {
-    readValue(mCamParam->IsValueCacheValid());
+    readValue(mCamParam->IsValueCacheValid(), forceUpdate);
 }
 
 
 template <class PORT, class PARAM>
-void DefaultParameterTemplate<PORT, PARAM>::readValue(bool ignoreCache)
+void DefaultParameterTemplate<PORT, PARAM>::readValue(bool ignoreCache, bool forceUpdate)
 {
-    if(mPort.getValue() != mCamParam->GetValue(false, ignoreCache))
+    if(forceUpdate || (mPort.getValue() != mCamParam->GetValue(false, ignoreCache)))
         mPort.setDefault(mCamParam->GetValue(false, ignoreCache));
 }
 

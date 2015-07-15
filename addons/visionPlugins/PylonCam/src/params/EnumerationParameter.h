@@ -46,8 +46,8 @@ public:
     /**
      * @see ParameterTemplate
      */
-    void readValue(bool ignoreCache) {
-        if(mCamParam->GetIntValue(false, ignoreCache) != mPort.getValue())
+    void readValue(bool ignoreCache, bool forceUpdate) {
+        if(forceUpdate || (mCamParam->GetIntValue(false, ignoreCache) != mPort.getValue()))
             mPort.setDefault(mCamParam->GetIntValue(false, ignoreCache));
     }
 };

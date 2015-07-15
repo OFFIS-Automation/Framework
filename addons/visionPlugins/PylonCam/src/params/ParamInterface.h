@@ -26,7 +26,7 @@ public:
     /**
      * @brief readUpdate is called periodically on start, stop and in every execute cycle. Update must update port default value if the camera parameter value has changed
      */
-    virtual void readUpdate() = 0;
+    virtual void readUpdate(bool forceUpdate = false) = 0;
 
     /**
      * @return a reference to the port specialization

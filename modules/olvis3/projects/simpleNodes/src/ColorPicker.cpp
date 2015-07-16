@@ -23,7 +23,7 @@ ColorPicker::ColorPicker()
 {
     setName("ColorPicker");
     setDesc("extracs the color of a given point of the input image");
-    setGroup("iamge/color");
+    setGroup("image/color");
     mIn.setName("input");
     mIn.setDesc("input image");
     addInputPort(mIn);

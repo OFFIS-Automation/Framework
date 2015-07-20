@@ -4,7 +4,7 @@ CONFIG(debug, debug|release) {
     targetDir = $$quote($$(OFFIS_Automation_Framework)/plugins)
 }
 
-TARGET = PylonCam
+TARGET = PylonPlugin
 DESTDIR = $${targetDir}/olvisPlugins
 
 include($${targetDir}/olvis/shared.pro)

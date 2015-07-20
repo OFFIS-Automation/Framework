@@ -70,7 +70,7 @@ void PylonCamera::initialize()
 void PylonCamera::start()
 {
     updateParams();
-    mCam->StartGrabbing();
+    mCam->StartGrabbing(GrabStrategy_LatestImageOnly);
 }
 
 void PylonCamera::execute()

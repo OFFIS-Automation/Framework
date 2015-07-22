@@ -29,7 +29,6 @@ INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../Notifications/include
 INCLUDEPATH += ../../projects/LogWidget
-INCLUDEPATH += ../../../version
 
 macx{
     ICON = images/icon.icns
@@ -39,20 +38,9 @@ win32-msvc*{
     RC_FILE = appIcon.rc
 }
 
-# Generate version number
-MAJOR = 1
-MINOR = 0
-VERSION_HEADER = $${PWD}/../../../version/version.h
-versiontarget.target = $$VERSION_HEADER
-
-win32-msvc*{
-    versiontarget.commands = $${PWD}/../../../version/version.exe $$MAJOR $$MINOR $$VERSION_HEADER
-} else {
-    versiontarget.commands = $${PWD}/../../../version/version $$MAJOR $$MINOR $$VERSION_HEADER
-}
-versiontarget.depends = FORCE
-QMAKE_EXTRA_TARGETS += versiontarget
-PRE_TARGETDEPS += $$VERSION_HEADER
+DEFINES += MAJOR_VERSION=0
+DEFINES += MINOR_VERSION=10
+DEFINES += PATCH_VERSION=0
 
 include(../../../properties/pathes.pro)
 
@@ -90,7 +78,8 @@ HEADERS  += src/MainWindow.h \
     src/newProjectWizard/CreateProjectDialog.h \
     src/newProjectWizard/CreateProjectPage1.h \
     src/newProjectWizard/CreateProjectPage2.h \
-    src/AboutScreen.h
+    src/AboutScreen.h \
+    src/version.h
 
 FORMS    += \
     src/DockWidgetTitle.ui \

@@ -110,6 +110,11 @@ void ConfigReader::createProcessor()
     mInterface.setProcessorPriority(mCurrentProcessor, prio);
     mInterface.setProcessorStartupBehavior(mCurrentProcessor, pausedStartup);
     mInterface.setProcessorTriggerBehavior(mCurrentProcessor, ignoreTrigger);
+    QString stopStr = attributes().value("stopOnNoOutput").toString();
+    if(!stopStr.isEmpty()) {
+        bool stopOnNoOutput = stopStr.toInt() != 0;
+        mInterface.setProcessorStopBehavior(mCurrentProcessor, stopOnNoOutput);
+    }
     mProcessingElementIds[name] =  mCurrentProcessor;
 }
 

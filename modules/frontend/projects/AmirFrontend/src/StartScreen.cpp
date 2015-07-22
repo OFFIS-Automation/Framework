@@ -44,8 +44,7 @@ StartScreen::StartScreen(QWidget *parent) :
     if(recent.empty())
         ui->recentBox->setEnabled(false);
 
-    QString versionString = tr("Version: %1.%2 (Build %3, %4)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD).arg(Version::DATE);
-    ui->versionLabel->setText(versionString);
+    ui->versionLabel->setText(Version::versionString());
 
     // Hide help button
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);

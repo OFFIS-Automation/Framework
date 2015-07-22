@@ -36,6 +36,7 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
     connect(this, SIGNAL(setPriority(int,int)), &olvis, SLOT(setProcessorPriority(int,int)), Qt::QueuedConnection);
     connect(this, SIGNAL(setStartupMode(int,bool)), &olvis, SLOT(setProcessorStartupBehavior(int,bool)), Qt::QueuedConnection);
     connect(this, SIGNAL(setTriggerMode(int,bool)), &olvis, SLOT(setProcessorTriggerBehavior(int,bool)), Qt::QueuedConnection);
+    connect(this,SIGNAL(setStopMode(int,bool)), &olvis, SLOT(setProcessorStopBehavior(int,bool)), Qt::QueuedConnection);
     if(!mInfo.isValid())
         mInfo.name = "newProcessor";
     ui->name->setText(mInfo.name);
@@ -49,6 +50,10 @@ ChangeProcessorDialog::ChangeProcessorDialog(int processorId, QWidget *parent) :
         ui->ignoreTrigger->setChecked(true);
     else
         ui->waitForTrigger->setChecked(true);
+    if(mInfo.stopOnNoOutput)
+        ui->stopOnNoOutput->setChecked(true);
+    else
+        ui->neverStop->setChecked(true);
     mTriggerId = -1;
     // is this processor triggered by another?
     foreach(ProcessingElementConnection conn, olvis.processingElementConnections())
@@ -98,7 +103,9 @@ void ChangeProcessorDialog::updateProcessor()
     QThread::Priority newPriority = static_cast<QThread::Priority>(ui->priorityComboBox->currentIndex());
     if(newPriority != mInfo.priority)
         emit setPriority(mInfo.id, newPriority);
-
+    bool stopOnNoOutput = ui->stopOnNoOutput->isChecked();
+    if(stopOnNoOutput != mInfo.stopOnNoOutput)
+        emit setStopMode(mInfo.id, stopOnNoOutput);
     if(mTriggerId > 0 && mTriggerId != trigger)
         emit disconnectProcessor(mTriggerId, mInfo.id);
     if(trigger > 0 && mTriggerId != trigger)

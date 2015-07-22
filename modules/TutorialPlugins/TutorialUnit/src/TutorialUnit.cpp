@@ -190,8 +190,8 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
         double deltaXa = qSin(alpha2) * d;
         double deltaYa = qCos(alpha2) * d;
 
-        qDebug() << "prev:" << deltaXp << ";" << deltaYp;
-        qDebug() << "corr:" << deltaXa << ";" << deltaYa;
+
+        qDebug() << "prev:" << deltaXp << ";" << deltaYp << "corr:" << deltaXa << ";" << deltaYa << "angl:" << mHapticStartAxes[Tc::Haptic::AxisYaw] << alpha1;
 
         moveGamepad(deltaXa, deltaYa, 0.0f);
     }

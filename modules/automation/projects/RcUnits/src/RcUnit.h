@@ -92,6 +92,7 @@ public:
     QVariant call(const QByteArray& method, QList<QVariant> params);
     RcUnitHelp getHelp() const;
     void registerStruct(int id, const QByteArray& name, const QStringList& typeNames, const QList<int>& types, RcWrapperFactoryItf* wrapper);
+    QMutex *getAcquireMutex(const QString &name);
     QVariantMap getConstants() const { return mConstantDefs; }
     void acquire();// { emit callAcquire(); }
     void release();// { emit callRelease(); }
@@ -163,6 +164,8 @@ protected:
     bool mHwConnected;
     RcUnitBaseObserver* mObserver;
     QVariantMap mUserInfo;
+    static QMutex sNameListMutex;
+    static QMap<QString, QMutex*> sNamedMutexes;
 };
 
 #endif // RCUNIT_H

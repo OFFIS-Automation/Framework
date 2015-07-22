@@ -44,6 +44,7 @@ signals:
     void setPriority(int id, int priority);
     void setStartupMode(int id, bool pausedOnStartup);
     void setTriggerMode(int id, bool ignoreTrigger);
+    void setStopMode(int id, bool stopMode);
 
 private:
     Ui::ChangeProcessorDialog *ui;

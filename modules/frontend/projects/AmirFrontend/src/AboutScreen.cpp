@@ -28,8 +28,7 @@ AboutScreen::AboutScreen(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    QString versionString = QString("Version: %1.%2 (Build %3, %4)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD).arg(Version::DATE);
-    ui->versionLabel->setText(versionString);
+    ui->versionLabel->setText(Version::versionString());
 }
 
 AboutScreen::~AboutScreen()

@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     a.setStyle(QStyleFactory::create("Fusion"));
     // Splash image
     QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
-    QString versionString = QObject::tr("Version: %1.%2 (Build %3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::BUILD);
+    QString versionString = Version::versionString();
     QPainter* painter=new QPainter(splashPicture);
     painter->drawText(QRect(0, 16, 250, 20), Qt::AlignCenter, versionString);
 

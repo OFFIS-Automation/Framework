@@ -31,16 +31,12 @@ HEADERS += \
     src/params/ParamInterface.h \
     src/params/BoolParameter.h \
     src/params/FloatParameter.h \
-    src/params/EnumerationParameter.h
+    src/params/EnumerationParameter.h \
+    $$PWD/src/params/ParameterTemplate.h
 
 SOURCES += \
     src/PylonPlugin.cpp \
-        src/PylonCamera.cpp \
-    src/params/IntegerParameter.cpp \
-    src/params/BoolParameter.cpp \
-    src/params/FloatParameter.cpp \
-    src/params/EnumerationParameter.cpp
-
+    src/PylonCamera.cpp
 
 DISTFILES += \
     README.txt

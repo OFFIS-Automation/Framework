@@ -11,7 +11,6 @@
 !define VERSION "nightly-build"
 !define REGKEY "OFFIS_Automation_Framework"
 !define NAME "OFFIS Automation Framework"
-
 Name "${NAME}"
 OutFile "OFFIS-Automation-Framework-Setup-${VERSION}.exe"
 

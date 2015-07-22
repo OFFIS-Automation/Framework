@@ -45,6 +45,7 @@ public:
     virtual Port* getPort(const QString& name) const;
 private slots:
     void onUserPortValueChanged(const QString& portId, const QVariant& value);
+    void onUserConstraintChanged(const QString& portId);
 private:
     void processBufferedUpdates();
     UserFilter* mUserFilter;

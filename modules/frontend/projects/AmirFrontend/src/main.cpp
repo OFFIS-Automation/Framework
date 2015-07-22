@@ -36,6 +36,7 @@
 int main(int argc, char *argv[])
 {
     Application a(argc, argv);
+    a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
     a.setStyle(QStyleFactory::create("Fusion"));

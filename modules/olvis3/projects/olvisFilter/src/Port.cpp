@@ -73,7 +73,12 @@ InputPortMode Port::mode() const
 }
 void Port::setConstraint(const QByteArray &key, const QVariant &value)
 {
-    d->info.constraints[key] = value;
+    if(d->info.constraints.value(key) != value)
+    {
+        d->info.constraints[key] = value;
+        if(d->in)
+            d->in->newConstraint();
+    }
 }
 
 void Port::recheck()

@@ -50,8 +50,10 @@ public:
     virtual void unsetChanged();
     virtual bool hasValue() { return mValue.isValid(); }
     virtual void recheck();
+    void newConstraint();
 signals:
     void portValueChanged(const QString& name, const QVariant& value);
+    void portConstraintsUpdated(const QString& name);
 protected:
     Port& mParent;
     QMutex mMutex;

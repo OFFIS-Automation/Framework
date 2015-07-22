@@ -30,7 +30,6 @@ Section "!OFFIS Automation Framework" SecToolbox
 	SetOutPath "$INSTDIR\plugins\hilec\python\rcunits"
 	File "..\..\bin\plugins\hilec\python\rcunits\olvis.py"
 	SetOutPath "$INSTDIR\plugins"
-	File "..\..\bin\plugins\Notifications.dll"
 	File "..\..\bin\plugins\Hilec*.dll"
 	File "..\..\bin\plugins\RcUnit*.dll"
 	File "..\..\bin\plugins\Remote*.dll"
@@ -51,27 +50,19 @@ Section "!OFFIS Automation Framework" SecToolbox
 	
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\*.exe"
-
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icudt52.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuin52.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\icuuc52.dll"
-	
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Core.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Gui.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Network.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5OpenGL.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5Widgets.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5PrintSupport.dll"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\bin\Qt5SerialPort.dll"
+	File "..\..\bin\Notifications.dll"
+	File "..\..\bin\Qt5*.dll"
+	File "..\..\bin\icu*.dll"
 	
 	SetOutPath "$INSTDIR\platforms"
-	File "$%AmirDevDir%\qt5\5.3\msvc2010_opengl\plugins\platforms\*"
+	File "..\..\bin\platforms\*"
 SectionEnd
 
 Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug"
 	File "..\..\bin\debug\gamepads.ini"
 	File "..\..\bin\debug\opencv*.dll"
+	File "..\..\bin\debug\Notifications.dll"
 	SetOutPath "$INSTDIR\debug\plugins"
 	File "..\..\bin\debug\plugins\olvis*.dll"
 	File "..\..\bin\debug\plugins\opencv*d.dll"
@@ -90,7 +81,6 @@ Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug\plugins\hilec\python\rcunits"
 	File "..\..\bin\debug\plugins\hilec\python\rcunits\olvis.py"
 	SetOutPath "$INSTDIR\debug\plugins"
-	File "..\..\bin\debug\plugins\Notifications.dll"
 	File "..\..\bin\debug\plugins\Hilec*.dll"
 	File "..\..\bin\debug\plugins\RcUnit*.dll"
 	File "..\..\bin\debug\plugins\Remote*.dll"

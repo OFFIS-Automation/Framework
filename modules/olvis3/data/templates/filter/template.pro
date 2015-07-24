@@ -1,7 +1,7 @@
 CONFIG(debug, debug|release) {
-    targetDir = $$quote($$(OFFIS_Automation_Toolbox)/debug/plugins)
+    targetDir = $$quote($$(OFFIS_Automation_Framework)/debug/plugins)
 } else {
-    targetDir = $$quote($$(OFFIS_Automation_Toolbox)/plugins)
+    targetDir = $$quote($$(OFFIS_Automation_Framework)/plugins)
 }
 
 include($${targetDir}/olvis/shared.pro)

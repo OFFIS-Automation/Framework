@@ -33,13 +33,15 @@ class QXmlStreamWriter;
 class QXmlStreamReader;
 class VideoDisplayWidget;
 
+
+
 class Overlay : public OverlayInterface, public PortListener
 {
     Q_OBJECT
 public:
     Overlay(QString name);
     virtual ~Overlay();
-    void setWidget(QWidget *widget) { mWidget = widget; }
+    void setParent(OverlayParent* parent) { mParent = parent; mWidget = parent->overlayParentWidget(); }
     void setOlvisInterface(OlvisInterface* itf);
 
     virtual void writeCurrentConfig(QXmlStreamWriter& writer);
@@ -75,6 +77,7 @@ signals:
 protected:
     QString mName;
     QWidget* mWidget;
+    OverlayParent* mParent;
     QMutex mMutex;
     PortId mPortId;
     QVariant mLastValue;

@@ -155,7 +155,7 @@ void VideoDisplayWidget::readConfig(QXmlStreamReader& reader)
             bool isOutput = reader.attributes().value("output").toInt() == 1;
             OverlayInterface* overlay = PluginContainer::getInstance().overlayFor(reader.name().toString(), isOutput, mMainOverlay == 0, &OlvisSingleton::instance());
             if (overlay != 0) {
-                overlay->setWidget(this);
+                overlay->setParent(this);
                 overlay->readConfig(reader);
                 if(!mMainOverlay)
                 {
@@ -420,7 +420,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
         if(!overlay)
             return;
         overlay->setPortId(portId, parts[0] == "output");
-        overlay->setWidget(this);
+        overlay->setParent(this);
         if(!mMainOverlay)
         {
             setMainOverlay(overlay);
@@ -430,7 +430,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
                 {
                     PortInfo info = OlvisSingleton::instance().getPortInfo(PortId(overlay->portId().filter, p.name));
                     OverlayInterface* scaleOverlay = PluginContainer::getInstance().overlayFor(info,true, false, &OlvisSingleton::instance());
-                    scaleOverlay->setWidget(this);
+                    scaleOverlay->setParent(this);
                     scaleOverlay->setPortId(PortId(portId.filter, info.name), true);
                     addOverlay(scaleOverlay);
                     scaleOverlay->setInitialPos(QPoint(15,15));
@@ -459,7 +459,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
         {
             QString sensorId = event->mimeData()->data("application/x-sensorSystem-value");
             overlay->setPortId(PortId(0, sensorId), true);
-            overlay->setWidget(this);
+            overlay->setParent(this);
             addOverlay(overlay);
             overlay->setInitialPos(mTransform.inverted().map(event->pos()));
         }
@@ -606,7 +606,7 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
             if(!overlay)
             {
                 overlay = PluginContainer::getInstance().overlayFor("MeasureOverlay", false, false, &OlvisSingleton::instance());
-                overlay->setWidget(this);
+                overlay->setParent(this);
                 addOverlay(overlay);
                 overlay->setPortId(mToolbar->currentPortId(), false);
             }
@@ -628,7 +628,7 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
                 if(overlay)
                 {
                     overlay->setPortId(mToolbar->currentPortId(), false);
-                    overlay->setWidget(this);
+                    overlay->setParent(this);
                     addOverlay(overlay);
                 }
             }

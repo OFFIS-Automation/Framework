@@ -145,16 +145,16 @@ void RectOverlay::ensureAspectRatio()
 void RectOverlay::ensureBounds()
 {
     if (mState == Scaling) {
-        mRect = mRect.intersected(QRect(QPoint(0,0), mWidget->size()));
+        mRect = mRect.intersected(QRect(QPoint(0,0), mParent->imageSize()));
     } else if (mState == Dragging) {
         if (mRect.left() < 0)
             mRect.moveLeft(0);
         if (mRect.top() < 0)
             mRect.moveTop(0);
-        if (mRect.right() > mWidget->size().width() - 1)
-            mRect.moveRight(mWidget->size().width() - 1);
-        if (mRect.bottom() > mWidget->size().height() - 1)
-            mRect.moveBottom(mWidget->size().height() - 1);
+        if (mRect.right() > mParent->imageSize().width() - 1)
+            mRect.moveRight(mParent->imageSize().width() - 1);
+        if (mRect.bottom() > mParent->imageSize().height() - 1)
+            mRect.moveBottom(mParent->imageSize().height() - 1);
     }
 }
 
@@ -202,7 +202,7 @@ void RectOverlay::mousePressEvent(QMouseEvent *event)
         } else {
             event->ignore();
         }
-    } else if (QRect(QPoint(0, 0), mWidget->size()).contains(pos)) {
+    } else if (QRect(QPoint(0, 0), mParent->imageSize()).contains(pos)) {
         mOrgRect = QRect(pos, QSize(0, 0));
         mState = Scaling;
     }

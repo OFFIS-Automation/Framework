@@ -23,6 +23,14 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <core/PortId.h>
+#include <QWidget>
+
+class OverlayParent
+{
+public:
+    virtual QSize imageSize() = 0;
+    virtual QWidget* overlayParentWidget() = 0;
+};
 
 class QMouseEvent;
 
@@ -31,7 +39,7 @@ class OverlayInterface : public QObject
     Q_OBJECT
 public:
     virtual QString name() = 0;
-    virtual void setWidget(QWidget* widget) = 0;
+    virtual void setParent(OverlayParent* parent) = 0;
     virtual PortId portId() = 0;
     virtual void setPortId(const PortId& id, bool output) = 0;
     virtual void setInitialPos(const QPoint& p) { Q_UNUSED(p); }

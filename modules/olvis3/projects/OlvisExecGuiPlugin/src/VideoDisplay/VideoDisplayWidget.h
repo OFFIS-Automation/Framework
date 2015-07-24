@@ -49,6 +49,7 @@ class VideoDisplayWidget :
 #else
         public QWidget
 #endif
+        , OverlayParent
 {
     Q_OBJECT
 public:
@@ -63,6 +64,7 @@ public:
 
     virtual void setOffset(int dx, int dy);
     virtual QSize imageSize();
+    virtual QWidget* overlayParentWidget() { return this; }
     virtual double imageRate();
     virtual void paintContent(QPainter& painter, bool showControls);
 

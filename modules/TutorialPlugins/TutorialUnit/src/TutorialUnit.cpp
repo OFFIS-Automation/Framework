@@ -21,6 +21,7 @@
 #include <QRect>
 #include <stdexcept>
 #include <QVector3D>
+#include <QtMath>
 
 #include <telecontrol/TcConfig.h>
 
@@ -29,6 +30,7 @@ TutorialUnit::TutorialUnit()
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
+    mSetHapticStartAxes = false;
     setScene(GraphicsView::instance());
 }
 
@@ -154,9 +156,48 @@ void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
     moveGamepad(x, y, yaw);
 }
 
+void TutorialUnit::startMoveHaptic(bool toogled)
+{
+    if(toogled){
+        mSetHapticStartAxes = true;
+    }
+}
+
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    moveGamepad(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY], axes[Tc::Haptic::AxisZ]*0.5);
+    if(axes.keys().count() == 0){
+        stop();
+    }
+
+    if(mSetHapticStartAxes){
+        mHapticStartAxes = axes;
+        mHapticPreviousAxes = axes;
+        mSetHapticStartAxes = false;
+    }
+
+    QPointF p0(mHapticPreviousAxes[Tc::Haptic::AxisX], mHapticPreviousAxes[Tc::Haptic::AxisY]);
+    QPointF p1(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]);
+
+    if(p0 != p1){
+        double deltaXp = p1.x() - p0.x();
+        double deltaYp = p1.y() - p0.y();
+
+        double alpha1 = qAtan(deltaXp/deltaYp);
+        double alpha2 = mHapticStartAxes[Tc::Haptic::AxisYaw] - alpha1;
+
+        double d = qSqrt(qPow(deltaXp, 2) + qPow(deltaYp, 2));
+
+        double deltaXa = qSin(alpha2) * d;
+        double deltaYa = qCos(alpha2) * d;
+
+
+        qDebug() << "prev:" << deltaXp << ";" << deltaYp << "corr:" << deltaXa << ";" << deltaYa << "angl:" << mHapticStartAxes[Tc::Haptic::AxisYaw] << alpha1;
+
+        moveGamepad(deltaXa, deltaYa, 0.0f);
+    }
+
+    // Store axes for next iteration
+    mHapticPreviousAxes = axes;
 
     // Create return value
     QMap<int, double> force;
@@ -165,7 +206,7 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
     force[Tc::Haptic::AxisZ] = 0.0;
 
     // Check if robot is in "bounds"
-    QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
+    /*QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
     QRect workspace = QRect(50,50,500,300);
 
     if(currentPosition.x() < workspace.left()){
@@ -182,7 +223,7 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
     } else if(workspace.bottom() < currentPosition.y()){
         // Robot left workspace on the bottom
         force[Tc::Haptic::AxisY] = abs(currentPosition.y()-workspace.bottom())*10.0;
-    }
+    }*/
 
     return force;
 }

@@ -35,6 +35,9 @@ Bilateral::Bilateral()
 
     mD.setName("d");
     mD.setDesc("Diameter of each pixel neighborhood that is used during filtering.");
+    mD.setDefault(3);
+    mD.setOnlyOdd();
+    mD.setRange(3, 100);
     addInputPort(mD);
 
     mSigmaColor.setName("sigmaColor");

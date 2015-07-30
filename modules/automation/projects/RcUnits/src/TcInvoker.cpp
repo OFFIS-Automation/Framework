@@ -176,8 +176,6 @@ void TcInvoker::setHapticParamaters(const QString& methodName, double sensitivit
     }
 }
 
-
-
 typedef QMap<int, double> QIntDoubleMap;
 void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
 {
@@ -251,8 +249,8 @@ void TcInvoker::handleHapticButtonToggled(int buttonId, bool pressed)
         mActiveHapticMethods.clear();
         mCurrentHapticActivationButton = -1;
     }
-    if(mHapticButtonMethods.contains(buttonId)){
-        RcUnit::TcButtonMethod& event = mHapticButtonMethods[buttonId];
+    if(mGamepadButtonMethods.contains(buttonId)){
+        RcUnit::TcButtonMethod& event = mGamepadButtonMethods[buttonId];
         if(pressed || event.toggleMode){
             try
             {

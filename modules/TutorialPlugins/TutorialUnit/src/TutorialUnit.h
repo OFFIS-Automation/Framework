@@ -49,6 +49,7 @@ public slots:
     void alternateGripper(bool open);
     void moveGamepad(double x, double y, double phi);
     void moveGamepad3d(double x, double y, double yaw);
+    void startMoveHaptic(bool toogled);
     QMap<int, double> moveHaptic(QMap<int, double> axes);
     void resetSetup();
     void resetSetup(bool randomize);
@@ -75,6 +76,9 @@ protected:
     GraphicsView* mScene;
     QMutex mMutex, mWaitMutex;
     QWaitCondition mWait;
+
+    QMap<int, double> mHapticStartAxes, mHapticPreviousAxes;
+    bool mSetHapticStartAxes;
 };
 
 #endif // TUTORIALUNIT_H

@@ -93,7 +93,7 @@ QPointF CustomRcUnit::position()
 void CustomRcUnit::moveGamepad(double xAxis, double yAxis)
 {
     QMutexLocker lock(&mMutex);  // ensure thread safety
-    if(!mIsConnected)
+    if(mIsConnected)
     {
         mPosition += QPointF(xAxis, yAxis);
     }

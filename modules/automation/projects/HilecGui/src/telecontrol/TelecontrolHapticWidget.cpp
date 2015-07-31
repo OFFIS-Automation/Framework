@@ -70,7 +70,7 @@ TelecontrolHapticWidget::~TelecontrolHapticWidget()
 
 void TelecontrolHapticWidget::sendHapticParamatersUpdate()
 {
-    double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, ui->gainSlider->maximum()+1);
+    double sensitivity = pow(2.0, ui->gainSlider->value()) / pow(2.0, ui->gainSlider->maximum());
     double forceScaling  = pow(2.0, ui->forceSlider->value()) / pow(2.0, numForceSteps);
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes){

@@ -188,7 +188,7 @@ void TcInvoker::handleHapticPositionData(const QMap<int,double> &data)
             QList<int>& axesIDs = activeMethod.analogDOFs;
             for(int i=0; i<axesIDs.size(); i++){
                 int axesId = axesIDs[i];
-                argMap[axesId] = data.value(axesId, 0.0) * activeMethod.sensitivity;
+                argMap[axesId] = data.value(axesId, 0.0) * (axesId <= Tc::Haptic::AxisZ ? activeMethod.sensitivity : 1.0);
                 if(activeMethod.inverts.value(i, false)){
                     argMap[axesId] = -argMap[axesId];
                 }

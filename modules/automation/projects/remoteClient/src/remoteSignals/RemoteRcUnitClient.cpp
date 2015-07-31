@@ -90,10 +90,7 @@ void RemoteRcUnitClient::setTcButton(int buttonId, const bool &pressed, uint tim
 
 void RemoteRcUnitClient::updateTelecontrolAssignment(const QString &telecontrolDeviceName, uint timeout)
 {
-    QMutexLocker lock(&mMutex);
-    uint id = mNextId++;
-    RemoteRcUnitClientBase::updateTelecontrolAssignment(id, telecontrolDeviceName);
-    waitTcCall(id, timeout);
+
 }
 
 void RemoteRcUnitClient::updateGamepadParameters(const QString &unitName, const QString &tcName, double sensitivity, const QList<bool> &inverts, uint timeout)

@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
         bool noUpdateNeeded = headerInfo.exists() && headerInfo.lastModified() > modifyDateDefFile;
         noUpdateNeeded &= sourceInfo.exists() && sourceInfo.lastModified() > modifyDateDefFile;
         if(noUpdateNeeded)
-            qWarning() << "Server source and header is newer than definition file; omiting file generation";
+            qWarning() << "Client source and header is newer than definition file; omiting file generation";
         else
             writeClass(id, methods, includes, targetDir, baseClassName, true);
         writeUserClass(targetDir, className + "Client");
@@ -339,7 +339,7 @@ int main(int argc, char *argv[])
         bool noUpdateNeeded = headerInfo.exists() && headerInfo.lastModified() > modifyDateDefFile;
         noUpdateNeeded &= sourceInfo.exists() && sourceInfo.lastModified() > modifyDateDefFile;
         if(noUpdateNeeded)
-            qWarning() << "Client source and header is newer than definition file; omiting file generation";
+            qWarning() << "Server source and header is newer than definition file; omiting file generation";
         else
             writeClass(id, methods, includes, targetDir, baseClassName, false);
         writeUserClass(targetDir, className + "Server");

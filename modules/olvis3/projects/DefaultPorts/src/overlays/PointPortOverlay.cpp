@@ -69,11 +69,11 @@ QPointF PointPortOverlay::closestValidPoint(QPoint p)
     QPointF result = mTransform.inverted().map(p);
     if (result.x() < 0)
         result.setX(0.0);
-    else if (result.x() >= mWidget->size().width())
-        result.setX(mWidget->size().width() - 1);
+    else if (result.x() >= mParent->imageSize().width())
+        result.setX(mParent->imageSize().width() - 1);
     if (result.y() < 0)
         result.setY(0.0);
-    else if (result.y() >= mWidget->size().height())
-        result.setY(mWidget->size().height() - 1);
+    else if (result.y() >= mParent->imageSize().height())
+        result.setY(mParent->imageSize().height() - 1);
     return result;
 }

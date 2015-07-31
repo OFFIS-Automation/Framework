@@ -89,7 +89,8 @@ QVariantList RemoteRcUnit::getFlags()
 
 void RemoteRcUnit::updateTelecontrolAssignment(const QString &telecontrolDeviceName)
 {
-    mRemote.updateTelecontrolAssignment(telecontrolDeviceName);
+   //@TODO
+    Q_UNUSED(telecontrolDeviceName)
 }
 
 void RemoteRcUnit::handleGamepadData(const QMap<int, double> &data)

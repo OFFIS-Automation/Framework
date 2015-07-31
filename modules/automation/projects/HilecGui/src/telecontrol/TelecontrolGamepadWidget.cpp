@@ -63,7 +63,7 @@ void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
 {
     if(sliderPosition < 0)
         sliderPosition = ui->slider->value();
-    double sensitivity = powf(2.0, sliderPosition) / powf(2.0, ui->slider->maximum()+1);
+    double sensitivity = powf(2.0, sliderPosition) / powf(2.0, ui->slider->maximum());
     QList<bool> inverts;
     foreach(QCheckBox* box, mCheckboxes)
         inverts << box->isChecked();

@@ -53,9 +53,8 @@ OTHER_FILES += \
 
 HEADERS += \
     src/remoteSignals/RemoteSignals.h \
-#    src/remoteSignals/RemoteRcUnitClient.h \
-    src/remoteSignals/RemoteRcUnitClientBase.h \
     src/remoteSignals/RemoteRcUnitClient.h \
+    src/remoteSignals/RemoteRcUnitClientBase.h \
     src/RemoteRcUnits.h \
     src/RemoteRcUnit.h \
     src/RemoteClientGlobal.h \
@@ -63,8 +62,7 @@ HEADERS += \
 
 SOURCES += \
     src/remoteSignals/RemoteSignals.cpp \
- #   src/remoteSignals/RemoteRcUnitClient.cpp \
-    src/remoteSignals/RemoteRcUnitClientBase.cpp \
     src/remoteSignals/RemoteRcUnitClient.cpp \
+    src/remoteSignals/RemoteRcUnitClientBase.cpp \
     src/RemoteRcUnits.cpp \
     src/RemoteRcUnit.cpp

@@ -3,7 +3,7 @@
 #include "RemoteRcUnitClientBase.h"
 
 RemoteRcUnitClientBase::RemoteRcUnitClientBase(QIODevice* writeDevice, QIODevice* readDevice, bool initialize)
-	: RemoteSignals(Q_UINT64_C(0x7192336e62a4174),Q_UINT64_C(0x77ab91543458f0), readDevice, writeDevice, initialize)
+	: RemoteSignals(Q_UINT64_C(0x35e14f2db0379b7),Q_UINT64_C(0x84f5f9200f8787ce), readDevice, writeDevice, initialize)
 {}
 
 void RemoteRcUnitClientBase::listUnits()
@@ -14,12 +14,12 @@ void RemoteRcUnitClientBase::listUnits()
 	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::callMethod(uint id, const QByteArray& unit, const QByteArray& method, const QVariantList& params)
+void RemoteRcUnitClientBase::callMethod(uint callId, const QByteArray& unit, const QByteArray& method, const QVariantList& params)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)3;
-    stream << id;
+	stream << callId;
 	stream << unit;
 	stream << method;
 	stream << params;
@@ -64,30 +64,20 @@ void RemoteRcUnitClientBase::setTcButton(uint id, int buttonId, const bool& pres
 	stream << id;
 	stream << buttonId;
 	stream << pressed;
-    transmitSignal(msgData);
+	transmitSignal(msgData);
 }
 
-void RemoteRcUnitClientBase::updateTelecontrolAssignment(uint id, const QString &telecontrolDeviceName)
-{
-    QByteArray msgData;
-    QDataStream stream(&msgData, QIODevice::WriteOnly);
-    stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
-    stream << id;
-    stream << telecontrolDeviceName;
-    transmitSignal(msgData);
-}
-
-void RemoteRcUnitClientBase::updateGamepadParameters(uint id, const QString& methodName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
+void RemoteRcUnitClientBase::updateGamepadParameters(uint id, const QString& unitName, const QString& sensName, const double& sensitivity, const QList<bool>& inverts)
 {
 	QByteArray msgData;
 	QDataStream stream(&msgData, QIODevice::WriteOnly);
 	stream << RemoteSignals::version() << RemoteSignals::gid1() << RemoteSignals::gid2() << (int)10;
 	stream << id;
-    stream << methodName;
+	stream << unitName;
 	stream << sensName;
 	stream << sensitivity;
 	stream << inverts;
-    transmitSignal(msgData);
+	transmitSignal(msgData);
 }
 
 void RemoteRcUnitClientBase::processRemoteInputs(const QByteArray& data)

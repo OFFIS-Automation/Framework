@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
     a.setStyle(QStyleFactory::create("Fusion"));
+
     // Splash image
     QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
     QString versionString = Version::versionString();

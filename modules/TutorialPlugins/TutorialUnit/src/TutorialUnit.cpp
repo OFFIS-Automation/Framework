@@ -25,12 +25,14 @@
 
 #include <telecontrol/TcConfig.h>
 
+#define IMAGE_WIDTH 600
+#define IMAGE_HEIGHT 400
+
 TutorialUnit::TutorialUnit()
 {
     mAcquired = false;
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
-    mSetHapticStartAxes = false;
     setScene(GraphicsView::instance());
 }
 
@@ -159,51 +161,56 @@ void TutorialUnit::moveGamepad3d(double x, double y, double yaw)
 void TutorialUnit::startMoveHaptic(bool toogled)
 {
     if(toogled){
-        mSetHapticStartAxes = true;
+        mHapticStartAxes = QMap<int, double>();
     }
 }
 
 QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
 {
-    if(axes.keys().count() == 0){
+    QMap<int, double> force;
+    if(axes.empty()){
         stop();
+        return force;
     }
 
-    if(mSetHapticStartAxes){
+    if(mHapticStartAxes.empty()){
         mHapticStartAxes = axes;
-        mHapticPreviousAxes = axes;
-        mSetHapticStartAxes = false;
+        mStartPosition = QPointF(getPosition().x, getPosition().y);
     }
 
-    QPointF p0(mHapticPreviousAxes[Tc::Haptic::AxisX], mHapticPreviousAxes[Tc::Haptic::AxisY]);
-    QPointF p1(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]);
+    qDebug() << "=========================";
+    qDebug() << "Start: " << mHapticStartAxes[Tc::Haptic::AxisX] << "," << mHapticStartAxes[Tc::Haptic::AxisX];
+    qDebug() << "Current: " << axes[Tc::Haptic::AxisX] << "," << axes[Tc::Haptic::AxisX];
 
-    if(p0 != p1){
-        double deltaXp = p1.x() - p0.x();
-        double deltaYp = p1.y() - p0.y();
+    axes[Tc::Haptic::AxisX] -= mHapticStartAxes[Tc::Haptic::AxisX];
+    axes[Tc::Haptic::AxisY] -= mHapticStartAxes[Tc::Haptic::AxisY];
+    axes[Tc::Haptic::AxisZ] -= mHapticStartAxes[Tc::Haptic::AxisZ];
 
-        double alpha1 = qAtan(deltaXp/deltaYp);
-        double alpha2 = mHapticStartAxes[Tc::Haptic::AxisYaw] - alpha1;
+    QPointF p(axes[Tc::Haptic::AxisX], axes[Tc::Haptic::AxisY]);
+    qDebug() << "Delta: " << axes[Tc::Haptic::AxisX] << "," << axes[Tc::Haptic::AxisX];
 
-        double d = qSqrt(qPow(deltaXp, 2) + qPow(deltaYp, 2));
+    // 1. Converte p to the rotated coordinate system
+    // Rotation around "z"-axis, all values in radian
+    // => R = [[cos(yaw),-sin(yaw)][sin(yaw), cos(yaw)]]
+    // => x' = p.x() * cos(yaw) - p.y() * sin(yaw)
+    //    y' = p.x() * sin(yaw) + p.y() * cos(yaw)
+    double yawRad = qDegreesToRadians(mHapticStartAxes[Tc::Haptic::AxisYaw]);
+    QPointF pNew(p.x() * qCos(yawRad) + p.y() * qSin(yawRad), p.x() * -qSin(yawRad) + p.y() * qCos(yawRad));
 
-        double deltaXa = qSin(alpha2) * d;
-        double deltaYa = qCos(alpha2) * d;
+    double targetX = qBound<double>(0.0, mStartPosition.x() + pNew.x() * IMAGE_WIDTH, IMAGE_WIDTH);
+    double targetY = qBound<double>(0.0, mStartPosition.y() + pNew.y() * IMAGE_HEIGHT, IMAGE_HEIGHT);
+    QPointF targetPosition(targetX, targetY);
 
+    qDebug() << "New: " << pNew.x() << "," << pNew.y() << " (" << mHapticStartAxes[Tc::Haptic::AxisYaw] << ")";
+    qDebug() << "Target: " << targetX << "," << targetY;
 
-        qDebug() << "prev:" << deltaXp << ";" << deltaYp << "corr:" << deltaXa << ";" << deltaYa << "angl:" << mHapticStartAxes[Tc::Haptic::AxisYaw] << alpha1;
+    //qDebug() << p << ";" << targetPosition;
 
-        moveGamepad(deltaXa, deltaYa, 0.0f);
-    }
+    //setPosition(targetPosition);
 
-    // Store axes for next iteration
-    mHapticPreviousAxes = axes;
+    return force;
 
     // Create return value
-    QMap<int, double> force;
-    force[Tc::Haptic::AxisX] = 0.0;
-    force[Tc::Haptic::AxisY] = 0.0;
-    force[Tc::Haptic::AxisZ] = 0.0;
 
     // Check if robot is in "bounds"
     /*QPointF currentPosition = QPointF(getPosition().x, getPosition().y);
@@ -225,7 +232,7 @@ QMap<int, double> TutorialUnit::moveHaptic(QMap<int, double> axes)
         force[Tc::Haptic::AxisY] = abs(currentPosition.y()-workspace.bottom())*10.0;
     }*/
 
-    return force;
+
 }
 
 void TutorialUnit::alternateGripper(bool open)

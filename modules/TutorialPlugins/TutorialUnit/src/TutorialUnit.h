@@ -18,10 +18,12 @@
 #define TUTORIALUNIT_H
 
 #include <QObject>
-#include "../../TutorialCore/src/GraphicsView.h"
-#include <rc/Pose2d.h>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QVector3D>
+
+#include "../../TutorialCore/src/GraphicsView.h"
+#include <rc/Pose2d.h>
 #include <rc/types/RobotRcUnit.h>
 
 class TutorialUnit : public RobotRcUnit
@@ -77,8 +79,8 @@ protected:
     QMutex mMutex, mWaitMutex;
     QWaitCondition mWait;
 
-    QMap<int, double> mHapticStartAxes, mHapticPreviousAxes;
-    bool mSetHapticStartAxes;
+    QMap<int, double> mHapticStartAxes;
+    QPointF mStartPosition;
 };
 
 #endif // TUTORIALUNIT_H

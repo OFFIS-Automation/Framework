@@ -497,7 +497,7 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
         return;
     }
     // Check for interesting button
-    if(buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight){
+    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || buttonId == Tc::Connexion::Rotate90Button){
         // Get the connected unit
         QString unitName;
         if(mGamepadMapping.contains(gamepadName)){
@@ -511,6 +511,8 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
         if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){
             emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
         } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
+        } else if(buttonId == Tc::Gamepad::ButtonDown){
             emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
         }
     }

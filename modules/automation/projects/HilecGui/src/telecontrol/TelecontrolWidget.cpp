@@ -192,13 +192,20 @@ void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &unitNam
 
 void TelecontrolWidget::onGamepadSwitchRequested(const QString &unitName, bool down)
 {
-    int index = mUnitIndexes.key(unitName, 0);
-    if(index > 1 && !down)
-        ui->tabWidget->setCurrentIndex(index-1);
-    else if(index < ui->tabWidget->count()-1 && down)
-        ui->tabWidget->setCurrentIndex(index+1);
-}
+    int currentIndex = mUnitIndexes.key(unitName, 0);
+    int newIndex = down? currentIndex-1 : currentIndex+1;
+    int minIndex = 0; int maxIndex = ui->tabWidget->count() - 1;
 
+    // Cycle through the list
+    if(newIndex < minIndex){
+        newIndex = maxIndex;
+    } else if (newIndex > maxIndex){
+        newIndex = minIndex;
+    }
+
+    // Set index
+    ui->tabWidget->setCurrentIndex(newIndex);
+}
 
 void TelecontrolWidget::editButtonAssignment(const QString &unit)
 {

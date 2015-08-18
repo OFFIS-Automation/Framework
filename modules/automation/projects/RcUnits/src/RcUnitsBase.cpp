@@ -497,7 +497,7 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
         return;
     }
     // Check for interesting button
-    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || (buttonId >= Tc::Connexion::TSqareButton && buttonId <= Tc::Connexion::RotateSqareButton)){
+    if(buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight){
         // Get the connected unit
         QString unitName;
         if(mGamepadMapping.contains(gamepadName)){
@@ -512,10 +512,6 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
         } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
             emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
-        } else if(buttonId == Tc::Connexion::RotateSqareButton || buttonId == Tc::Connexion::TSqareButton){
-            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Connexion::TSqareButton);
-        } else if(buttonId == Tc::Connexion::FSquareButton || buttonId == Tc::Connexion::RSquareButton){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::Connexion::RSquareButton);
         }
     }
 }

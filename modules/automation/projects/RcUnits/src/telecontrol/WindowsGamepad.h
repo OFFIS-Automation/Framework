@@ -38,9 +38,8 @@ protected:
     void createMapping();
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
-    void changeConnexionMode();
-
     static BOOL CALLBACK enumObject(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext);
+    void changeConnexionMode(int buttonId);
 
     LPDIRECTINPUTDEVICE8 mDevice;
     DIJOYSTATE2 mState;
@@ -56,10 +55,11 @@ protected:
     } mGamepadType;
     enum ConnexionMode
     {
-        DefaultMode,
+        FreeMode,
         TranslationMode,
         RotationMode
     } mConnexionMode;
+
 
     void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };

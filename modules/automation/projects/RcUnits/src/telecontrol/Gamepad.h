@@ -35,10 +35,10 @@ namespace Tc
     {
         enum ConnexionControlButtons
         {
-            TSqareButton = 2048,
-            RSquareButton,
-            FSquareButton,
-            RotateSqareButton,
+            TopButton = 2048,
+            RightButton,
+            FrontButton,
+            Rotate90Button,
             ModeButton
         };
     }

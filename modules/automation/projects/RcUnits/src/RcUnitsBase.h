@@ -97,6 +97,7 @@ protected:
     QMap<QString, HapticDevice *> mHapticDevices;
     QMap<QString, MasterTcInvoker*> mMasterTcInvokers;
     QStringList mUnitsHiddenforTc;
+    QMap<int, bool> mConnexionModifiersPressed;
 };
 
 #endif // RCUNITSBASE_H

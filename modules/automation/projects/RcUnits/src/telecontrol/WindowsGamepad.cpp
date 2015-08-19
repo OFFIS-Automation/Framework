@@ -239,25 +239,27 @@ float WindowsGamepad::correctedValue(float v)
 
 void WindowsGamepad::changeConnexionMode(int buttonId)
 {
-    if(buttonId == Tc::Connexion::TopButton){
-        mConnexionMode = TranslationMode;
-    } else if(buttonId == Tc::Connexion::RightButton){
-        mConnexionMode = RotationMode;
-    } else {
-        mConnexionMode = FreeMode;
-    }
+    if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
+        if(buttonId == Tc::Connexion::TopButton){
+            mConnexionMode = TranslationMode;
+        } else if(buttonId == Tc::Connexion::RightButton){
+            mConnexionMode = RotationMode;
+        } else {
+            mConnexionMode = FreeMode;
+        }
 
-    // Get string for mode and notify user
-    QString modeString;
-    if(mConnexionMode == TranslationMode){
-        modeString = "translation only";
-    } else if(mConnexionMode == RotationMode){
-        modeString = "rotation only";
-    } else {
-        modeString = "free";
+        // Get string for mode and notify user
+        QString modeString;
+        if(mConnexionMode == TranslationMode){
+            modeString = "translation only";
+        } else if(mConnexionMode == RotationMode){
+            modeString = "rotation only";
+        } else {
+            modeString = "free";
+        }
+        QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
+        notifyInfo(info);
     }
-    QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
-    notifyInfo(info);
 }
 
 WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
@@ -272,7 +274,7 @@ int WindowsGamepad::getResolution() const
     /* +/- 1400 matches the hardware 1:1 for 3DConnexion.
      * +/- 64 is suitable for all common gamepads.
      */
-    return mGamepadType == ConnexionJoystick ? 1050 : 64;
+    return mGamepadType == ConnexionJoystick ? 1400 : 64;
 }
 
 WindowsGamepad::~WindowsGamepad()
@@ -312,18 +314,16 @@ void WindowsGamepad::run()
             iter.next();
             int buttonId = iter.key();
             bool value = iter.value();
-            if(lastButtons.contains(buttonId)){
-                if(lastButtons[buttonId] != value){
-                    // Value has changed
-                    if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
-                        if(value){
-                            changeConnexionMode(buttonId);
-                        }
-                    } else {
-                        emit buttonToggled(buttonId, value, getName());
+
+            if(!lastButtons[buttonId] || (lastButtons[buttonId] && lastButtons[buttonId] != value)){
+                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
+                    if(value){
+                        changeConnexionMode(buttonId);
                     }
+                } else {
+                    emit buttonToggled(buttonId, value, getName());
                 }
-            } else if(value) {
+            } else {
                 // First run, emit if pressed
                 if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
                     if(value){

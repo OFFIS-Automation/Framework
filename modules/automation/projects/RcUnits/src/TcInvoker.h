@@ -55,6 +55,7 @@ protected:
     QList<RcUnit::TcMoveMethod> mHapticMethods;
     QList<int> mActiveHapticMethods;
     int mCurrentHapticActivationButton;
+    QMap<int, bool> mConnexionModifiersPressed;
 
     QObject* mDevice;
 };

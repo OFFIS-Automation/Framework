@@ -120,6 +120,7 @@ signals:
     void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
     void gamepadChangeSensitivityRequested(const QString& unit, bool increase);
     void gamepadSwitchRequested(const QString& unitName, bool down);
+    void gamepadSwitchRequested(int index);
 
     void hapticUpdated(bool hapticActive, const QString& controlledUnit);
 

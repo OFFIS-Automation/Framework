@@ -22,7 +22,7 @@
 
 
 TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepadMethods, const QList<RcUnit::TcButtonMethod>& gamepadButtonMethods, const QList<RcUnit::TcMoveMethod>& hapticMethods)
-    : mDevice(device)
+    : mDevice(device), mConnexionModifiersPressed(QMap<int, bool>())
 {
     // Init joystick method and buttons
     foreach(const RcUnit::TcMoveMethod& gamepadMethod, gamepadMethods){
@@ -100,6 +100,15 @@ void TcInvoker::handleGamepadData(const QMap<int, double> &data)
 
 void TcInvoker::handleGamepadButtonToggled(int buttonId, bool pressed)
 {
+    if(buttonId >= Tc::Connexion::MenuButton && buttonId <= Tc::Connexion::FitButton){
+        mConnexionModifiersPressed[buttonId] = pressed;
+        return;
+    }
+    // Check if one modifier is pressed
+    if(mConnexionModifiersPressed.values().contains(true)){
+        return;
+    }
+
     if(pressed){
         bool cleared = false;
         for(int i=0; i<mGamepadMethods.size(); i++){

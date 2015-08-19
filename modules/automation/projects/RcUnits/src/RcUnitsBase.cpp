@@ -218,6 +218,7 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepa
 
 bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
 {
+    Q_UNUSED(watched)
     if(event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
     {
         QKeyEvent* keyEvent = reinterpret_cast<QKeyEvent*>(event);

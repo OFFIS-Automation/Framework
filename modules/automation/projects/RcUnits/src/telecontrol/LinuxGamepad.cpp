@@ -97,9 +97,9 @@ void LinuxGamepad::run()
             bool value = iter.value();
             if(lastButtons.contains(buttonId)){
                 if(lastButtons[buttonId] != value) // value has changed
-                emit buttonToggled(buttonId, value);
+                emit buttonToggled(buttonId, QList<int>(), value);
             } else if(value) // first run, emit if pressed
-                emit buttonToggled(buttonId, value);
+                emit buttonToggled(buttonId, QList<int>(), value);
         }
         lastButtons = buttons;
         emit dataUpdate(joysticks);

@@ -74,17 +74,17 @@ void WindowsGamepad::createMapping()
             if(settings.value("type").toString().toLower() == "connexion"){
                 // Type
                 mGamepadType = ConnexionJoystick;
-                mConnexionMode = DefaultMode;
+                mConnexionMode = FreeMode;
                 // Mapping
                 // TODO: move string names somewhere else?
                 mButtonMapping[Tc::Connexion::MenuButton]  = settings.value("MenuButton").toInt();
                 mButtonMapping[Tc::Connexion::FitButton]  = settings.value("FitButton").toInt();
                 // The following mappings are optional
                 // The corresponding buttons are only on the pro series of connexion
-                mButtonMapping[Tc::Connexion::TSqareButton]     = settings.value("TSqareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::RSquareButton]    = settings.value("RSquareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::FSquareButton]    = settings.value("FSquareButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::RotateSqareButton]= settings.value("RotateSqareButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::TopButton]        = settings.value("TopButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::RightButton]      = settings.value("RightButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::FrontButton]      = settings.value("FrontButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::Rotate90Button]   = settings.value("Rotate90Button", 0).toInt();
                 mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton", 0).toInt();
                 mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton", 0).toInt();
                 mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton", 0).toInt();
@@ -159,7 +159,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         for(int i=Tc::Connexion::MenuButton; i<= Tc::Connexion::CtrlButton; i++){
             assignButton(buttons, status.rgbButtons, i);
         }
-        for(int i=Tc::Connexion::TSqareButton; i<= Tc::Connexion::ModeButton; i++){
+        for(int i=Tc::Connexion::TopButton; i<= Tc::Connexion::ModeButton; i++){
             assignButton(buttons, status.rgbButtons, i);
         }
         buttons[Tc::Connexion::ImplicitActivationButton] = false;
@@ -237,23 +237,29 @@ float WindowsGamepad::correctedValue(float v)
     }
 }
 
-void WindowsGamepad::changeConnexionMode()
+void WindowsGamepad::changeConnexionMode(int buttonId)
 {
-    QString modeString;
-    if(mConnexionMode == DefaultMode){
-        mConnexionMode = TranslationMode;
-        modeString = "translation only";
-    } else if(mConnexionMode == TranslationMode){
-        mConnexionMode = RotationMode;
-        modeString = "rotation only";
-    } else {
-        mConnexionMode = DefaultMode;
-        modeString = "default";
-    }
+    if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
+        if(buttonId == Tc::Connexion::TopButton){
+            mConnexionMode = TranslationMode;
+        } else if(buttonId == Tc::Connexion::RightButton){
+            mConnexionMode = RotationMode;
+        } else {
+            mConnexionMode = FreeMode;
+        }
 
-    // Notify user
-    QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
-    notifyInfo(info);
+        // Get string for mode and notify user
+        QString modeString;
+        if(mConnexionMode == TranslationMode){
+            modeString = "translation only";
+        } else if(mConnexionMode == RotationMode){
+            modeString = "rotation only";
+        } else {
+            modeString = "free";
+        }
+        QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
+        notifyInfo(info);
+    }
 }
 
 WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
@@ -268,7 +274,7 @@ int WindowsGamepad::getResolution() const
     /* +/- 1400 matches the hardware 1:1 for 3DConnexion.
      * +/- 64 is suitable for all common gamepads.
      */
-    return mGamepadType == ConnexionJoystick ? 1050 : 64;
+    return mGamepadType == ConnexionJoystick ? 1400 : 64;
 }
 
 WindowsGamepad::~WindowsGamepad()
@@ -308,22 +314,20 @@ void WindowsGamepad::run()
             iter.next();
             int buttonId = iter.key();
             bool value = iter.value();
-            if(lastButtons.contains(buttonId)){
-                if(lastButtons[buttonId] != value){
-                    // Value has changed
-                    if(buttonId == Tc::Connexion::ModeButton){
-                        if(value){
-                            changeConnexionMode();
-                        }
-                    } else {
-                        emit buttonToggled(buttonId, value, getName());
-                    }
-                }
-            } else if(value) {
-                // First run, emit if pressed
-                if(buttonId == Tc::Connexion::ModeButton){
+
+            if(!lastButtons[buttonId] || (lastButtons[buttonId] && lastButtons[buttonId] != value)){
+                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
                     if(value){
-                        changeConnexionMode();
+                        changeConnexionMode(buttonId);
+                    }
+                } else {
+                    emit buttonToggled(buttonId, value, getName());
+                }
+            } else {
+                // First run, emit if pressed
+                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
+                    if(value){
+                        changeConnexionMode(buttonId);
                     }
                 } else {
                     emit buttonToggled(buttonId, value, getName());
@@ -333,7 +337,7 @@ void WindowsGamepad::run()
         lastButtons = buttons;
 
         // Handle joysticks data
-        if(mGamepadType == ConnexionJoystick && mConnexionMode != DefaultMode){
+        if(mGamepadType == ConnexionJoystick && mConnexionMode != FreeMode){
             int from = mConnexionMode == TranslationMode ? Tc::Connexion::JoystickYaw : Tc::Connexion::JoystickX;
             int to = mConnexionMode == TranslationMode ? Tc::Connexion::JoystickRoll : Tc::Connexion::JoystickZ;
             for(int i = from; i <= to; i++){

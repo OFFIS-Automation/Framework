@@ -30,7 +30,7 @@
 #include "MasterTcInvoker.h"
 
 RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
-    QObject()
+    QObject(), mConnexionModifiersPressed(QMap<int, bool>())
 {
     mRcUnitDir = rcUnitPluginDir;
     qApp->installEventFilter(this);
@@ -55,12 +55,10 @@ RcUnitHelp RcUnitsBase::getHelp(const QString &unitName)
 
 TelecontrolConfig RcUnitsBase::getTelecontrolConfig(const QString &name)
 {
-    if(mUnits.contains(name))
+    if(mUnits.contains(name)){
         return mUnits[name]->telecontrolConfig();
-    /*
-    if(mMasterTcInvokers.contains(name))
-        return mMasterTcInvokers[name]->telecontrolConfig();
-    */
+    }
+    //@TODO check master tcInvoker
     return TelecontrolConfig();
 }
 
@@ -143,7 +141,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     mGamepadDevices = TelecontrolFactory::getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
         gamepad->disconnect(this);
-        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,QList<int>,bool,QString)), SLOT(onGamepadButtonPressed(int,QList<int>,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
     emit unitsUpdated();
@@ -360,9 +358,9 @@ void RcUnitsBase::activateGamepad(const QString &unitName)
     if(mGamepadDevices.keys().contains(currentTelecontrolDeviceName)){
         Gamepad *gamepad = mGamepadDevices[currentTelecontrolDeviceName];
 
-        // Connect bufttons to allow for sensitivity update and unit switch
+        // Connect buttons to allow for sensitivity update and unit switch
         gamepad->disconnect(this);
-        connect(gamepad, SIGNAL(buttonToggled(int,bool, QString)), SLOT(onGamepadButtonPressed(int,bool, QString)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
 
         // Disconnect old gamepad instances
@@ -493,30 +491,50 @@ void RcUnitsBase::stopAll()
 
 void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &gamepadName)
 {
-    // ignore all user available buttons
-    if(!pressed || buttonId < Tc::Gamepad::ButtonUp){
+    if(buttonId >= Tc::Connexion::MenuButton && buttonId <= Tc::Connexion::FitButton){
+        mConnexionModifiersPressed[buttonId] = pressed;
         return;
     }
+
+    if(pressed){
+        // Get the connected unit
+        QString unitName;
+        if(mGamepadMapping.contains(gamepadName)){
+            unitName = mGamepadMapping[gamepadName];
+
+            // Gamepad methods
+            if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){
+                emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
+            } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
+                emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
+            }
+
+            // Connexion methods
+            if(mConnexionModifiersPressed[Tc::Connexion::MenuButton]){
+                if(buttonId == Tc::Connexion::ShiftButton || buttonId == Tc::Connexion::CtrlButton){
+                    emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Connexion::CtrlButton);
+                } else if(buttonId == Tc::Connexion::EscButton || buttonId == Tc::Connexion::AltButton){
+                    emit gamepadSwitchRequested(unitName, buttonId == Tc::Connexion::AltButton);
+                }
+            }
+        }
+    }
+
+
     // Check for interesting button
-    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || (buttonId >= Tc::Connexion::TSqareButton && buttonId <= Tc::Connexion::RotateSqareButton)){
+    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || buttonId == Tc::Connexion::Rotate90Button){
         // Get the connected unit
         QString unitName;
         if(mGamepadMapping.contains(gamepadName)){
             unitName = mGamepadMapping[gamepadName];
         }
 
-        // allow gamepad button down, this is allowed if the gamepad chooser is on "None"
-        if(unitName.isEmpty() && buttonId != Tc::Gamepad::ButtonDown){
-            return; // there is no unit attached to this gamepad
-        }
         if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){
             emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
         } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
             emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
-        } else if(buttonId == Tc::Connexion::RotateSqareButton || buttonId == Tc::Connexion::TSqareButton){
-            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Connexion::TSqareButton);
-        } else if(buttonId == Tc::Connexion::FSquareButton || buttonId == Tc::Connexion::RSquareButton){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::Connexion::RSquareButton);
+        } else if(buttonId == Tc::Connexion::Rotate90Button){
+            emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
         }
     }
 }

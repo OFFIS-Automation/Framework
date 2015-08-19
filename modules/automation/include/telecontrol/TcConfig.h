@@ -21,9 +21,17 @@
 
 namespace Tc
 {
+    namespace Modifier
+    {
+        enum Buttons
+        {
+            None = -1
+        };
+    }
+
     namespace Gamepad
     {
-        enum Button
+        enum Buttons
         {
             NorthButton = 0,
             SouthButton,
@@ -57,14 +65,14 @@ namespace Tc
             WestButton = MenuButton, // small connexion buttons
             FitButton,
             EastButton = FitButton, // small connexion buttons
-            OneButton,
-            TwoButton,
-            ThreeButton,
-            FourButton,
             EscButton,
             AltButton,
             ShiftButton,
             CtrlButton,
+            OneButton,
+            TwoButton,
+            ThreeButton,
+            FourButton,
             ImplicitActivationButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero Use this for 6DOF joysticks if you don't wand a dead mans control
             FirstButton = MenuButton,
             LastButton = ImplicitActivationButton

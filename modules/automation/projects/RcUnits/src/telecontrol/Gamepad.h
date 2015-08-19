@@ -35,10 +35,10 @@ namespace Tc
     {
         enum ConnexionControlButtons
         {
-            TSqareButton = 2048,
-            RSquareButton,
-            FSquareButton,
-            RotateSqareButton,
+            TopButton = 2048,
+            RightButton,
+            FrontButton,
+            Rotate90Button,
             ModeButton
         };
     }
@@ -52,7 +52,7 @@ public:
     void stop();
 signals:
     void dataUpdate(const QMap<int,double>& data);
-    void buttonToggled(int buttonId, bool pressed, const QString& gamepadName = QString());
+    void buttonToggled(int buttonId, bool pressed = false, const QString& gamepadName = QString());
 
 protected:
     Gamepad();

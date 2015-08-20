@@ -81,19 +81,19 @@ void WindowsGamepad::createMapping()
                 mButtonMapping[Tc::Connexion::FitButton]  = settings.value("FitButton").toInt();
                 // The following mappings are optional
                 // The corresponding buttons are only on the pro series of connexion
-                mButtonMapping[Tc::Connexion::TopButton]        = settings.value("TopButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::RightButton]      = settings.value("RightButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::FrontButton]      = settings.value("FrontButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::Rotate90Button]   = settings.value("Rotate90Button", 0).toInt();
-                mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::FourButton]       = settings.value("FourButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::EscButton]        = settings.value("EscButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::AltButton]        = settings.value("AltButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ShiftButton]      = settings.value("ShiftButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::CtrlButton]       = settings.value("CtrlButton", 0).toInt();
-                mButtonMapping[Tc::Connexion::ModeButton]       = settings.value("ModeButton", 0).toInt();
+                mButtonMapping[Tc::Connexion::TopButton]        = settings.value("TopButton").toInt();
+                mButtonMapping[Tc::Connexion::RightButton]      = settings.value("RightButton").toInt();
+                mButtonMapping[Tc::Connexion::FrontButton]      = settings.value("FrontButton").toInt();
+                mButtonMapping[Tc::Connexion::Rotate90Button]   = settings.value("Rotate90Button").toInt();
+                mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton").toInt();
+                mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton").toInt();
+                mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton").toInt();
+                mButtonMapping[Tc::Connexion::FourButton]       = settings.value("FourButton").toInt();
+                mButtonMapping[Tc::Connexion::EscButton]        = settings.value("EscButton").toInt();
+                mButtonMapping[Tc::Connexion::AltButton]        = settings.value("AltButton").toInt();
+                mButtonMapping[Tc::Connexion::ShiftButton]      = settings.value("ShiftButton").toInt();
+                mButtonMapping[Tc::Connexion::CtrlButton]       = settings.value("CtrlButton").toInt();
+                mButtonMapping[Tc::Connexion::ModeButton]       = settings.value("ModeButton").toInt();
             } else {
                 // Type
                 mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
@@ -316,12 +316,18 @@ void WindowsGamepad::run()
             bool value = iter.value();
 
             if(!lastButtons.contains(buttonId) || (lastButtons.contains(buttonId) && lastButtons[buttonId] != value)){
-                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
+                if(buttonId >= Tc::Connexion::EscButton && buttonId <= Tc::Connexion::FrontButton){
                     if(value){
                         changeConnexionMode(buttonId);
                     }
                 } else {
-                    emit buttonToggled(buttonId, value, getName());
+                    if(lastButtons.contains(buttonId)){
+                        emit buttonToggled(buttonId, value, getName());
+                    } else {
+                        if(value){
+                            emit buttonToggled(buttonId, value, getName());
+                        }
+                    }
                 }
             }
         }

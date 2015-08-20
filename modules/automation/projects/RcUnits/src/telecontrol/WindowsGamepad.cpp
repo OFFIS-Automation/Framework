@@ -315,16 +315,7 @@ void WindowsGamepad::run()
             int buttonId = iter.key();
             bool value = iter.value();
 
-            if(!lastButtons[buttonId] || (lastButtons[buttonId] && lastButtons[buttonId] != value)){
-                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
-                    if(value){
-                        changeConnexionMode(buttonId);
-                    }
-                } else {
-                    emit buttonToggled(buttonId, value, getName());
-                }
-            } else {
-                // First run, emit if pressed
+            if(!lastButtons.contains(buttonId) || (lastButtons.contains(buttonId) && lastButtons[buttonId] != value)){
                 if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
                     if(value){
                         changeConnexionMode(buttonId);

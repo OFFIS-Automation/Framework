@@ -55,9 +55,8 @@ void ClientGui::on_echo_clicked()
 {
     QString text = ui->input->text();
     ui->input->clear();
-    //mClient.echo(text);
-    qDebug() << mClient.getVersion();
-    ui->input->setFocus();
+    QString echo = mClient.echo(text);
+    ui->echoOutput->appendPlainText(echo);
 }
 
 void ClientGui::on_connect_clicked(bool checked)
@@ -65,7 +64,7 @@ void ClientGui::on_connect_clicked(bool checked)
     mSocket.connectToServer("qtRemoteSignalsTest");
     if(mSocket.waitForConnected(1))
     {
-        connect(&mClient, SIGNAL(echoAnswer(QString)), ui->echoOutput, SLOT(appendPlainText(QString)));
+        connect(&mClient, SIGNAL(keepAlive()), ui->keepAlive, SLOT(stepUp()));
         mClient.initialize();
         ui->inputWidget->setEnabled(true);
         ui->connect->setEnabled(false);

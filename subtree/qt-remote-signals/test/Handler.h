@@ -21,6 +21,7 @@
 #include <QObject>
 #include <QString>
 #include <QLocalSocket>
+#include <QTimer>
 #include "TestDataServer.h"
 
 class Handler : public QObject
@@ -30,14 +31,12 @@ public:
     Handler(QLocalSocket* socket);
 
 private slots:
-    void echo(QString text);
     void logMessage(QString text);
     void logError(QString text);
-signals:
-    void echoAnswer(QString text);
 
 protected:
     TestDataServer mDataServer;
+    QTimer mTimer;
 
 };
 

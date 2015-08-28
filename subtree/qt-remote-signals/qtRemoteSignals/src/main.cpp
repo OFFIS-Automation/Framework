@@ -164,21 +164,29 @@ Method parseLine(const QString &line)
     return method;
 }
 
+void methodSendStaticStart(QTextStream &stream, int methodId, int numtabs = 1)
+{
+    QString tabs;
+    for(int i=0;i<numtabs;i++)
+        tabs += "\t";
+    stream << tabs << "QByteArray msgData;" << endl;
+    stream << tabs << "QDataStream sendStream(&msgData, QIODevice::WriteOnly);" << endl;
+    stream << tabs << "sendStream << RemoteSignals::version() << RemoteSignals::gid1() "
+              "<< RemoteSignals::gid2() << (int)" << QString::number(methodId)
+           << ";" << endl;
+}
+
 void writeMethod(QTextStream &stream, Method method, QString ns)
 {
     stream << method.returnType() << " " << ns << method.signature() << endl;
     stream << "{" << endl;
-    stream << "\tQByteArray msgData;" << endl;
-    stream << "\tQDataStream stream(&msgData, QIODevice::WriteOnly);" << endl;
-    stream << "\tstream << RemoteSignals::version() << RemoteSignals::gid1() "
-              "<< RemoteSignals::gid2() << (int)" << QString::number(method.id)
-           << ";" << endl;
+    methodSendStaticStart(stream, method.id);
+    foreach (const Parameter &param, method.params)
+        stream << "\tsendStream << " << param.name << ";" << endl;
     if (method.isBlocking) {
         stream << "\tquint64 callUid = RemoteSignals::nextCallUid();" << endl;
-        stream << "\tstream << callUid;" << endl;
+        stream << "\tsendStream << callUid;" << endl;
     }
-    foreach (const Parameter &param, method.params)
-        stream << "\tstream << " << param.name << ";" << endl;
     stream << "\ttransmitSignal(msgData);" << endl;
     if (method.isBlocking) {
         stream << "\tconst QByteArray responseData = "
@@ -202,8 +210,26 @@ void writeMethodParsing(QTextStream &stream, Method method)
         stream << "\t\t" << param.type << " " << param.name << ";" << endl;
     foreach (const Parameter &param, method.params)
         stream << "\t\tstream >> " << param.name << ";" << endl;
+    if(method.isBlocking)
+    {
+        stream << "\t\tqint64 callUid;" << endl;
+        stream << "\t\tstream >> callUid;" << endl;
+        stream << "\t\t";
+        if(method.returnType() != "void")
+            stream << method.returnType()<< " returnValue = ";
+        stream << method.name << "("
+               << method.paramNames().join(", ") << ");" << endl;
+        methodSendStaticStart(stream, method.id,2);
+        stream << "\t\tsendStream << callUid;" << endl;
+        if(method.returnType() != "void")
+            stream << "\t\tsendStream << returnValue;" << endl;
+        stream << "\t\ttransmitSignal(msgData);" << endl;
+    }
+    else
+    {
     stream << "\t\temit " << method.name << "("
            << method.paramNames().join(", ") << ");" << endl;
+    }
     stream << "\t\treturn;" << endl;
     stream << "\t}" << endl;
 }
@@ -329,6 +355,9 @@ void writeHeader(ID id, const QList<QString> &includes,
         if (method.isReverse != reverse && method.isBlocking)
             stream << "\t" << method.returnType() << " " << method.signature()
                    << ";" << endl;
+        if (method.isReverse == reverse && method.isBlocking)
+            stream << "\tvirtual " << method.returnType() << " " << method.signature()
+                   << " = 0;" << endl;
     }
     stream << endl;
     stream << "private:" << endl;

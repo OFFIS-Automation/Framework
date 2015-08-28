@@ -5,10 +5,8 @@
 // prefixing a method with signal will transfer it from client to server
 signal logMessage(QString data)
 signal logError(QString data)
-signal echo(QString text)
 // prefixing a method with slot will transfer a signal from server to client
-slot echoAnswer(QString text)
+slot keepAlive()
 
 // the definition of a return type or void makes it a blocking call
-int getVersion()
-QString getName(QString myName)
+QString echo(QString myName)

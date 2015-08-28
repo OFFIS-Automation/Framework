@@ -4,8 +4,8 @@ VPATH += $$PWD
 
 DEFINES += OVCORE_LIBRARY
 INCLUDEPATH += $${PWD}/../../include
-
-LIBS += -L$${targetDir}/plugins -lolvisFilter -lolvisPorts
+INCLUDEPATH += $${PWD}/../../../frontend/projects/Notifications/include
+LIBS += -L$${targetDir}/plugins -L$${targetDir} -lolvisFilter -lolvisPorts -lNotifications
 
 CONFIG+=dll
 

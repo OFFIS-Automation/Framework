@@ -21,7 +21,7 @@
 #include <core/Tracer.h>
 #include <core/PortListener.h>
 #include <core/Filter.h>
-
+#include <Notifications.h>
 #include <QDebug>
 #include <stdexcept>
 
@@ -171,7 +171,9 @@ void Processor::execute()
                 filters.previous()->shutdown();
             } catch( ... ) {}
         }
-        qCritical() << tr("Error starting node %1: %2", "1=name, 2=errorMsg").arg(filter->name(), err.what());
+        QString errStr = tr("Error starting node %1: %2", "1=name, 2=errorMsg").arg(filter->name(), err.what());
+        qCritical() <<  errStr;
+        Notifications::newError(errStr);
         emit filterStartupError(filter->name(), err.what(), id());
         return;
     }
@@ -229,9 +231,14 @@ void Processor::execute()
         }
         catch(std::runtime_error& e)
         {
-            emit filterExecutionError(filters.value()->name(), e.what(), id());
-            qWarning() << tr("Error executing node %1: %2", "1=name, 2=errorMsg").arg(filters.value()->name(), e.what());
-            mFilterWithErrors << filters.value();
+            if(!mFilterWithErrors.contains(filters.value()))
+            {
+                emit filterExecutionError(filters.value()->name(), e.what(), id());
+                QString err = tr("Error executing node %1: %2", "1=name, 2=errorMsg").arg(filters.value()->name(), e.what());
+                qWarning() << err;
+                Notifications::newWarning(err);
+                mFilterWithErrors << filters.value();
+            }
         }
 
         if(!mHasSource && !working)
@@ -261,6 +268,8 @@ void Processor::execute()
         }
     }
     qDebug() << "Processor" << mInfo.name << "finished";
+    if(!mStop) // this was not ended by the user!
+        Notifications::newInfo(tr("Image processor %1 has ended").arg(mInfo.name));
     foreach(ProcessingElement* trigger, targets())
     {
         trigger->triggerFinished();

@@ -40,11 +40,16 @@ protected:
 	const int version() const { return 1; }
     const quint64 gid1() const { return mGlobalId1; }
     const quint64 gid2() const { return mGlobalId2; }
+	quint64 nextCallUid();
+	const QByteArray waitForResponse(quint64 callUid);
     void handleError(int id);
     void checkId(int version, quint64 globalId1, quint64 globalId2);
     virtual void processRemoteInputs(const QByteArray& data) = 0;
 private slots:
     void onReadyRead();
+protected:
+    QMutex mUidMutex;
+    QMap<quint64, QByteArray> mResponses;
 
 private:
     int mReadSize;
@@ -52,6 +57,8 @@ private:
     QIODevice* mReadDevice;
     QIODevice* mWriteDevice;
     QMutex mMutex;
+    quint64 mCallUid;
+
 };
 
 #endif // REMOTESIGNALS_H

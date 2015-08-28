@@ -12,12 +12,10 @@ DESTDIR = $${PWD}/../bin
 
 
 SOURCES += src/main.cpp \
-    src/main.cpp
+    ../bin/RemoteSignals.cpp
 
-OTHER_FILES += \
-    testData.slots
-
-HEADERS +=
+HEADERS += \
+    ../bin/RemoteSignals.h
 
 dlls.path  =  $${DESTDIR}
 dllA.path   += $${DESTDIR}/platforms

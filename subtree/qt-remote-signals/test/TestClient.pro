@@ -15,7 +15,8 @@ TEMPLATE = app
 SOURCES += client.cpp\
         ClientGui.cpp \
         TestDataClientBase.cpp \
-    RemoteSignals.cpp
+    RemoteSignals.cpp \
+    TestDataClient.cpp
 
 HEADERS  += ClientGui.h \
     TestDataClient.h \

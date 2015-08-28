@@ -55,7 +55,8 @@ void ClientGui::on_echo_clicked()
 {
     QString text = ui->input->text();
     ui->input->clear();
-    mClient.echo(text);
+    //mClient.echo(text);
+    qDebug() << mClient.getVersion();
     ui->input->setFocus();
 }
 

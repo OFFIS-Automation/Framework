@@ -1,9 +1,14 @@
 // a // starts a comment
 // use simple types, no const, reference or pointer.
-// all used types must be possible to usable QDataStream
+// all used types must be possible to pipe in and out of QDataStream
 // you can use #include "file" statements, this will be written 1<>1 into the generated file
-logMessage(QString data)
-logError(QString data)
-echo(QString text)
-// a - in front means it is a reverse function Server->Client
--echoAnswer(QString text)
+// prefixing a method with signal will transfer it from client to server
+signal logMessage(QString data)
+signal logError(QString data)
+signal echo(QString text)
+// prefixing a method with slot will transfer a signal from server to client
+slot echoAnswer(QString text)
+
+// the definition of a return type or void makes it a blocking call
+int getVersion()
+QString getName(QString myName)

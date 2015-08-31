@@ -21,16 +21,14 @@
 
 namespace Tc
 {
-    namespace Modifier
-    {
-        enum Buttons
-        {
-            None = -1
-        };
-    }
-
     namespace Gamepad
     {
+        enum WheelButtons {
+            ButtonUp = 1024,
+            ButtonDown,
+            ButtonLeft,
+            ButtonRight
+        };
         enum Buttons
         {
             NorthButton = 0,
@@ -58,6 +56,14 @@ namespace Tc
     }
     namespace Connexion
     {
+        enum ControlButtons
+        {
+            TopButton = 2048,
+            RightButton,
+            FrontButton,
+            RotateButton,
+            ModeButton
+        };
         enum Buttons
         {
             // Connexion buttons start here

@@ -20,30 +20,6 @@
 #include <QThread>
 #include <QMap>
 
-namespace Tc
-{
-    namespace Gamepad
-    {
-        enum WheelButtons {
-            ButtonUp = 1024,
-            ButtonDown,
-            ButtonLeft,
-            ButtonRight
-        };
-    }
-    namespace Connexion
-    {
-        enum ConnexionControlButtons
-        {
-            TopButton = 2048,
-            RightButton,
-            FrontButton,
-            Rotate90Button,
-            ModeButton
-        };
-    }
-}
-
 class Gamepad : public QThread
 {
 public:

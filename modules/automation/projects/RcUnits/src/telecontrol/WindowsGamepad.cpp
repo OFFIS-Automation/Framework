@@ -84,7 +84,7 @@ void WindowsGamepad::createMapping()
                 mButtonMapping[Tc::Connexion::TopButton]        = settings.value("TopButton").toInt();
                 mButtonMapping[Tc::Connexion::RightButton]      = settings.value("RightButton").toInt();
                 mButtonMapping[Tc::Connexion::FrontButton]      = settings.value("FrontButton").toInt();
-                mButtonMapping[Tc::Connexion::Rotate90Button]   = settings.value("Rotate90Button").toInt();
+                mButtonMapping[Tc::Connexion::RotateButton]     = settings.value("RotateButton").toInt();
                 mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton").toInt();
                 mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton").toInt();
                 mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton").toInt();
@@ -156,7 +156,7 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
         }
 
         // Buttons
-        for(int i=Tc::Connexion::MenuButton; i<= Tc::Connexion::CtrlButton; i++){
+        for(int i=Tc::Connexion::MenuButton; i<= Tc::Connexion::FourButton; i++){
             assignButton(buttons, status.rgbButtons, i);
         }
         for(int i=Tc::Connexion::TopButton; i<= Tc::Connexion::ModeButton; i++){
@@ -230,11 +230,7 @@ float WindowsGamepad::correctedValue(float v)
     if(mGamepadType == ConnexionJoystick){
         v = qBound(-1.0f, v, 1.0f);
     }
-    if(v >-0.1 && v < 0.1){
-        return 0.0;
-    } else {
-        return v;
-    }
+    return v;
 }
 
 void WindowsGamepad::changeConnexionMode(int buttonId)
@@ -306,6 +302,7 @@ void WindowsGamepad::run()
             continue;
         }
         // Assign to internal data structures
+        buttons.clear();
         update(joysticks, buttons);
 
         // Check for button toggle
@@ -316,9 +313,13 @@ void WindowsGamepad::run()
             bool value = iter.value();
 
             if(!lastButtons.contains(buttonId) || (lastButtons.contains(buttonId) && lastButtons[buttonId] != value)){
-                if(buttonId >= Tc::Connexion::EscButton && buttonId <= Tc::Connexion::FrontButton){
+                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::RotateButton){
                     if(value){
                         changeConnexionMode(buttonId);
+                    }
+                    // If button is "Rotate" forward the press to allow for eucentric tilting
+                    if(buttonId == Tc::Connexion::RotateButton){
+                        emit buttonToggled(buttonId, value, getName());
                     }
                 } else {
                     if(lastButtons.contains(buttonId)){
@@ -343,7 +344,7 @@ void WindowsGamepad::run()
         }
         emit dataUpdate(joysticks);
 
-        // Eventually sleep thread, limit update rate to 20Hz
+        // Eventually sleep thread, limit update rate
         int remaining = 50 - timer.elapsed();
         if(remaining > 0){
             msleep(remaining);

@@ -9,11 +9,12 @@ TEMPLATE = app
 DESTDIR = $${PWD}/../bin
 
 SOURCES += server.cpp \
-    TestDataServer.cpp \
+    TestDataServerBase.cpp \
     RemoteSignals.cpp \
     Handler.cpp
 
 HEADERS += \
     TestDataServer.h \
+    TestDataServerBase.h \
     RemoteSignals.h \
     Handler.h

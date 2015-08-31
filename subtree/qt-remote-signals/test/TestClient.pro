@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += client.cpp\
         ClientGui.cpp \
-    TestDataClient.cpp \
-    RemoteSignals.cpp
+        TestDataClientBase.cpp \
+    RemoteSignals.cpp \
+    TestDataClient.cpp
 
 HEADERS  += ClientGui.h \
     TestDataClient.h \
+    TestDataClientBase.h \
     RemoteSignals.h
 
 FORMS    += ClientGui.ui

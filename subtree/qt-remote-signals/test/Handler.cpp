@@ -19,18 +19,11 @@
 
 Handler::Handler(QLocalSocket *socket) : mDataServer(socket, socket)
 {
-    connect(&mDataServer, SIGNAL(echo(QString)), SLOT(echo(QString)));
     connect(&mDataServer, SIGNAL(logError(QString)), SLOT(logError(QString)));
     connect(&mDataServer, SIGNAL(logMessage(QString)), SLOT(logMessage(QString)));
-    connect(this, SIGNAL(echoAnswer(QString)), &mDataServer, SLOT(echoAnswer(QString)));
     mDataServer.initialize();
-}
-
-void Handler::echo(QString text)
-{
-    QString answer = "ECHO: " + text;
-    qDebug() << answer;
-    emit echoAnswer(answer);
+    connect(&mTimer, SIGNAL(timeout()), &mDataServer, SLOT(keepAlive()));
+    mTimer.start(2000);
 }
 
 void Handler::logMessage(QString text)

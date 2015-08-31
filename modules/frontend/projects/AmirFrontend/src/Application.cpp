@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Application.h"
+#include <Notifications.h>
 
 Application::Application(int &argc, char* argv[]) : QApplication(argc, argv)
 {
@@ -29,6 +30,7 @@ bool Application::notify(QObject* receiver, QEvent* e)
     catch(const std::exception& err)
     {
         qCritical("%s", err.what());
+        Notifications::newError(err.what());
         return false;
     }
 }

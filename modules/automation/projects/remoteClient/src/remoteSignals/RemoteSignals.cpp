@@ -17,6 +17,7 @@
 #include "RemoteSignals.h"
 #include <QtEndian>
 #include <QDebug>
+#include <QCoreApplication>
 
 RemoteSignals::RemoteSignals(quint64 gid1, quint64 gid2, QIODevice *readDevice, QIODevice *writeDevice, bool init) :
     mGlobalId1(gid1),
@@ -25,6 +26,7 @@ RemoteSignals::RemoteSignals(quint64 gid1, quint64 gid2, QIODevice *readDevice, 
     mWriteDevice(writeDevice)
 {
     mReadSize = 0;
+    mCallUid = 0;
     connect(this, SIGNAL(transmitSignal(QByteArray)), SLOT(transmitSignalAsync(QByteArray)));
     if(init)
         initialize();
@@ -49,6 +51,23 @@ void RemoteSignals::transmitSignalAsync(const QByteArray &msgData)
 		throw std::runtime_error("Could not send signal: no worte device was specified!");
     mWriteDevice->write(sizeData);
     mWriteDevice->write(msgData);
+}
+
+quint64 RemoteSignals::nextCallUid()
+{
+    QMutexLocker lock(&mUidMutex);
+    return ++mCallUid;
+}
+
+const QByteArray RemoteSignals::waitForResponse(quint64 callUid)
+{
+    while(true)
+    {
+        QCoreApplication::processEvents();
+        QMutexLocker lock(&mUidMutex);
+        if(mResponses.contains(callUid))
+            return mResponses.take(callUid);
+    }
 }
 void RemoteSignals::onReadyRead()
 {

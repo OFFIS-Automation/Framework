@@ -36,6 +36,7 @@ SOURCES += \
     src/RectInput.cpp \
     src/ResizeImage.cpp \
     src/Rgb2Gray.cpp \
+    src/Rgb2Graphen.cpp \
     src/RotateImage.cpp \
     src/ScaleImage.cpp \
     src/SetRoiFilter.cpp \
@@ -50,7 +51,9 @@ SOURCES += \
     src/BrighnessContrast.cpp \
     src/BackgroundSubstraction.cpp \
     src/ColorExtraction.cpp \
+    src/VignetteCreator.cpp \
     src/VignettingCorrection.cpp \
+    src/VignettingCorrectionRGB.cpp \
     src/MultipleTemplateMatching.cpp \
     src/ColorPicker.cpp
 
@@ -68,6 +71,7 @@ HEADERS += \
     src/FlipImage.h \
     src/GaussianBlur.h \
     src/Gray2Rgb.h \
+    src/Rgb2Graphen.h \
     src/HistogramNode.h \
     src/ImageInput.h \
     src/ImageSubstraction.h \
@@ -99,7 +103,9 @@ HEADERS += \
     src/BrighnessContrast.h \
     src/BackgroundSubstraction.h \
     src/ColorExtraction.h \
+    src/VignetteCreator.h \
     src/VignettingCorrection.h \
+    src/VignettingCorrectionRGB.h \
     src/MultipleTemplateMatching.h \
     src/ColorPicker.h
 

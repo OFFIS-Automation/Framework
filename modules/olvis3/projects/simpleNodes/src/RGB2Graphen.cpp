@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "RGB2Graphen.h"
+#include "Rgb2Graphen.h"
 #include <opencv2/imgproc/imgproc.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
 
-REGISTER_FILTER(RGB2Graphen);
+REGISTER_FILTER(Rgb2Graphen);
 
 
-RGB2Graphen::RGB2Graphen()
+Rgb2Graphen::Rgb2Graphen()
 {
     setName("RGB2Graphen");
     setDesc("Extracts graphen layers from an RGB image");
@@ -91,7 +91,7 @@ RGB2Graphen::RGB2Graphen()
     addOutputPort(mOut);
 }
 
-std::vector<double> RGB2Graphen::splitString(std::string str)
+std::vector<double> Rgb2Graphen::splitString(std::string str)
 {
     std::vector<double> values;
     size_t pos = 0;
@@ -109,7 +109,7 @@ std::vector<double> RGB2Graphen::splitString(std::string str)
     return (values);
 }
 
-void RGB2Graphen::loadRGBConfig()
+void Rgb2Graphen::loadRGBConfig()
 {
     std::vector<double> singleRGBcache;
     std::vector<double> doubleRGBcache;
@@ -131,13 +131,13 @@ void RGB2Graphen::loadRGBConfig()
         return;
 
     // confiuration has the right size. Use new config
-    RGB2Graphen::mSingleRGBVector = singleRGBcache;
-    RGB2Graphen::mDoubleRGBVector = doubleRGBcache;
-    RGB2Graphen::mSingleVarianceVector = singleVariancecache;
-    RGB2Graphen::mDoubleVarianceVector = doubleVariancecache;
+    Rgb2Graphen::mSingleRGBVector = singleRGBcache;
+    Rgb2Graphen::mDoubleRGBVector = doubleRGBcache;
+    Rgb2Graphen::mSingleVarianceVector = singleVariancecache;
+    Rgb2Graphen::mDoubleVarianceVector = doubleVariancecache;
 }
 
-cv::Mat RGB2Graphen::gauss(cv::Mat matrix, double s, double m)
+cv::Mat Rgb2Graphen::gauss(cv::Mat matrix, double s, double m)
 {
     cv::Mat dest;
     matrix.convertTo(dest, CV_64F);
@@ -158,7 +158,7 @@ cv::Mat RGB2Graphen::gauss(cv::Mat matrix, double s, double m)
     return dest;
 }
 
-void RGB2Graphen::execute()
+void Rgb2Graphen::execute()
 {
     const cv::Mat input = mIn;
     GrayImage dest(input.rows, input.cols);

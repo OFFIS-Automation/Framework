@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_RGB2GRAPHEN_H
-#define USER_RGB2GRAPHEN_H
+#ifndef RGB2GRAPHEN_H
+#define RGB2GRAPHEN_H
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
@@ -25,10 +25,10 @@
 
 #include <string>
 
-class RGB2Graphen : public UserFilter
+class Rgb2Graphen : public UserFilter
 {
 public:
-    RGB2Graphen();
+    Rgb2Graphen();
     void execute();
     std::vector<double> getDoubleVariance() const;
     void setDoubleVariance(const std::vector<double> &value);
@@ -89,4 +89,4 @@ private:
 };
 
 
-#endif // USER_RGB2GRAPHEN_H
+#endif // RGB2GRAPHEN_H

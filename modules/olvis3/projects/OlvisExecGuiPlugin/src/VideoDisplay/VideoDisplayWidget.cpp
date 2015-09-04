@@ -622,9 +622,10 @@ void VideoDisplayWidget::mousePressEvent(QMouseEvent *event)
                 mNumberDragInput = FineNumberDrag;
         } else if (mToolbar->currentPortInfo().typeName == "Rect" || mToolbar->currentPortInfo().typeName == "Point") {
             OverlayInterface* overlay = getOverlay(mToolbar->currentPortId());
+            PortInfo info;
             if (overlay == 0) {
-                PortInfo info = OlvisSingleton::instance().getPortInfo(mToolbar->currentPortId());
-                OverlayInterface* overlay = PluginContainer::getInstance().overlayFor(info, false, false, &OlvisSingleton::instance());
+                info = OlvisSingleton::instance().getPortInfo(mToolbar->currentPortId());
+                overlay = PluginContainer::getInstance().overlayFor(info, false, false, &OlvisSingleton::instance());
                 if(overlay)
                 {
                     overlay->setPortId(mToolbar->currentPortId(), false);
@@ -673,6 +674,7 @@ void VideoDisplayWidget::mouseReleaseEvent(QMouseEvent *event)
             overlay->mouseReleaseEvent(event);
     } else if (mActiveOverlay != 0)
         mActiveOverlay->mouseReleaseEvent(event);
+    update();
 
 }
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_GAMEPAD_HQT
-#define RCUNITTOOLS_GAMEPAD_HQT
+#ifndef USER_VIGNETTINGCORRECTIONRGB_H
+#define USER_VIGNETTINGCORRECTIONRGB_H
 
-#include <QThread>
-#include <QMap>
+#include <filter/PluginInterface.h>
+#include <ports/ImagePort.h>
 
-class Gamepad : public QThread
+#include <ports/IntegerPort.h>
+#include <ports/StringPort.h>
+
+class VignettingCorrectionRGB : public UserFilter
 {
 public:
-    virtual QString getName() = 0;
-    virtual ~Gamepad();
-    void stop();
-signals:
-    void dataUpdate(const QMap<int,double>& data);
-    void buttonToggled(int buttonId, bool pressed = false, const QString& gamepadName = QString());
+    VignettingCorrectionRGB();
+    virtual void execute();
 
 protected:
-    Gamepad();
-    bool mStop;
+    enum Mode {
+        Difference = 0,
+        Ratio
+    };
+
+    in::Image mIn;
+    in::Image mVignetteIn;
+
+    in::Integer mMode;
+    in::String mStringOffset;
+
+    out::Image mOut;
 private:
-    Q_OBJECT
+    std::vector<double> mOffsetVector;
+    std::vector<double> splitString(std::string str);
+
 };
 
-#endif //RCUNITTOOLS_GAMEPAD_HQT
+#endif // USER_VIGNETTINGCORRECTIONRGB_H

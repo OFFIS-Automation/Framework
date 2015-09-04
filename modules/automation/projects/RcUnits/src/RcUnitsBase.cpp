@@ -141,7 +141,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     mGamepadDevices = TelecontrolFactory::getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
         gamepad->disconnect(this);
-        connect(gamepad, SIGNAL(buttonToggled(int,QList<int>,bool,QString)), SLOT(onGamepadButtonPressed(int,QList<int>,bool,QString)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
     emit unitsUpdated();
@@ -216,6 +216,7 @@ void RcUnitsBase::loadTcSensitivity(const QString& name, GamepadEndpoint *gamepa
 
 bool RcUnitsBase::eventFilter(QObject *watched, QEvent *event)
 {
+    Q_UNUSED(watched)
     if(event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
     {
         QKeyEvent* keyEvent = reinterpret_cast<QKeyEvent*>(event);
@@ -516,24 +517,6 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
                     emit gamepadSwitchRequested(unitName, buttonId == Tc::Connexion::AltButton);
                 }
             }
-        }
-    }
-
-
-    // Check for interesting button
-    if((buttonId >= Tc::Gamepad::ButtonUp && buttonId <= Tc::Gamepad::ButtonRight) || buttonId == Tc::Connexion::Rotate90Button){
-        // Get the connected unit
-        QString unitName;
-        if(mGamepadMapping.contains(gamepadName)){
-            unitName = mGamepadMapping[gamepadName];
-        }
-
-        if(buttonId == Tc::Gamepad::ButtonLeft || buttonId == Tc::Gamepad::ButtonRight){
-            emit gamepadSensitivityChangeRequested(unitName, buttonId == Tc::Gamepad::ButtonRight);
-        } else if(buttonId == Tc::Gamepad::ButtonDown || buttonId == Tc::Gamepad::ButtonUp){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
-        } else if(buttonId == Tc::Connexion::Rotate90Button){
-            emit gamepadSwitchRequested(unitName, buttonId == Tc::Gamepad::ButtonDown);
         }
     }
 }

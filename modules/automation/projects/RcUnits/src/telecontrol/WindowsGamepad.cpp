@@ -230,6 +230,9 @@ float WindowsGamepad::correctedValue(float v)
     if(mGamepadType == ConnexionJoystick){
         v = qBound(-1.0f, v, 1.0f);
     }
+    if(v >-0.1 && v < 0.1){
+        return 0.0;
+    }
     return v;
 }
 

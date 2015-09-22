@@ -135,9 +135,9 @@ void SrcFilter::startup()
         mUserFilter->start();
         mTracer->trace(Tracer::FilterStarted);
     }
-    catch(const std::runtime_error&)
+    catch(const std::exception& e)
     {
-        throw;
+        throw std::runtime_error(e.what());
     }
     catch(...)
     {
@@ -216,10 +216,10 @@ bool SrcFilter::execute(int runId)
             input->unsetChanged();
         }
     }
-    catch(const std::runtime_error&)
+    catch(const std::exception& e)
     {
         processBufferedUpdates();
-        throw;
+        throw std::runtime_error(e.what());
     }
 
     catch(...)

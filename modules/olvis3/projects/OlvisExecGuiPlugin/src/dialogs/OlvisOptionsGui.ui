@@ -53,17 +53,20 @@
             <height>0</height>
            </size>
           </property>
-          <property name="specialValueText">
-           <string>auto</string>
-          </property>
           <property name="suffix">
            <string/>
           </property>
           <property name="prefix">
            <string/>
           </property>
+          <property name="minimum">
+           <number>5</number>
+          </property>
           <property name="maximum">
-           <number>50</number>
+           <number>60</number>
+          </property>
+          <property name="value">
+           <number>15</number>
           </property>
          </widget>
         </item>

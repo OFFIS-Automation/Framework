@@ -57,7 +57,7 @@ protected:
     virtual void run();
 
     int mRate; // rate in ms (<=0: auto)
-    double mFps;
+    int mFps;
 
     QRect mRect;
     VideoDisplayWidget* mWidget;

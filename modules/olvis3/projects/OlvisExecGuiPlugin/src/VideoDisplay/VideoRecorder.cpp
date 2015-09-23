@@ -88,20 +88,12 @@ void VideoRecorder::startVideo(QRect rect, int fps)
 
     mTempFile = mTempFile.arg((long) mWidget);
     if(fps < 0)
-        mFps = QSettings().value("videoCapture/fps", 0).toInt();
+        mFps = QSettings().value("videoCapture/fps", 15).toInt();
     else
         mFps = fps;
-    if(mFps <= 0)
-    {
-        // auto fps
-        mFps = 1000.0/mWidget->imageRate();
-        mRate = 0;
-    }
-    else
-    {
-        mRate = 1000.0/mFps;
-        mTimer.start(mRate);
-    }
+    mFps = qBound(5, mFps, 60);
+    mRate = 1000.0/mFps;
+    mTimer.start(mRate);
 
     qDebug() << "recording at " << mFps << "fps";
     mFinished = false;

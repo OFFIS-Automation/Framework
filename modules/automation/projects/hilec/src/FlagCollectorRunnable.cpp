@@ -26,9 +26,10 @@ FlagCollectorRunnable::FlagCollectorRunnable(RcUnitBase *rcUnit)
 void FlagCollectorRunnable::run()
 {
     try {
-        if(mRcUnit->acquired())
+        if(mRcUnit->acquired()){
             emit flagsUpdated(mRcUnit->name(), mRcUnit->getFlags());
+        }
     }
-    catch(...) {}
+    catch(...){}
     mFinished = true;
 }

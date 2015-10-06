@@ -38,7 +38,6 @@ signals:
     void reloadPlugins();
 private slots:
     void on_actionCreatePlugin_triggered();
-
     void on_actionReloadPlugins_triggered();
 
     void onExecutionStarted();

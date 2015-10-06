@@ -45,11 +45,12 @@ public:
     virtual void setGuiInterface(const QString &name, QObject *guiInterface);
     virtual void loadProject(const QString &projectFile);
     virtual void closeProject();
+
 protected slots:
     virtual void writeXmlConfig(QXmlStreamWriter &writer);
     virtual void readXmlConfig(const QString &reader);
-
     void reloadPlugins();
+
 signals:
     void saveGraphString(QString& string);
     void loadGraphString(const QString& string);

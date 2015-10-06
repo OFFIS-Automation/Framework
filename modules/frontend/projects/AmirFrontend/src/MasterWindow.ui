@@ -26,6 +26,12 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
    <widget class="QMenu" name="menu_File">
     <property name="title">
      <string>&amp;File</string>
@@ -158,9 +164,9 @@
   </action>
  </widget>
  <resources>
-  <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
-  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
   <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
+  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
+  <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
   <include location="../images/images.qrc"/>
  </resources>
  <connections>

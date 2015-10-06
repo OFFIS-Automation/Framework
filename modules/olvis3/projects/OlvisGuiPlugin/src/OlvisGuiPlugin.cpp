@@ -136,10 +136,8 @@ void OlvisGuiPlugin::readXmlConfig(const QString& data)
     reader.readNextStartElement();
     while(reader.readNextStartElement())
     {
-
         if(reader.name() == getName())
         {
-
             while (reader.readNextStartElement()) {
                 if (reader.name() == "processorsWidget")
                     processors->restoreState(reader);
@@ -147,9 +145,9 @@ void OlvisGuiPlugin::readXmlConfig(const QString& data)
                     reader.skipCurrentElement();
             }
             break;
-        }
-        else
+        } else {
             reader.skipCurrentElement();
+        }
     }
 }
 

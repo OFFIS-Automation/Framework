@@ -193,7 +193,7 @@
    <item>
     <widget class="QWidget" name="errorWidget" native="true">
      <property name="styleSheet">
-      <string notr="true">background-color: #FF7777;</string>
+      <string notr="true">background-color: rgb(176,0,0);</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">

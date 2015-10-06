@@ -623,7 +623,8 @@ void OlvisCoreInterface::disconnectProcessor(int source, int targetId)
 
 int OlvisCoreInterface::addFilter(int processor, const QString& filterType, const QString& proposedName, int insertBefore)
 {
-    if(isRunning()) return 0;
+    if(isRunning())
+        return 0;
     FilterGroup* proc = getGroup(processor);
     if(!proc)
         return -1;
@@ -1612,7 +1613,8 @@ void OlvisCoreInterface::clear()
 
 void OlvisCoreInterface::loadFromData(const QString &str)
 {
-    if(isRunning()) return;
+    if(isRunning())
+        return;
     ConfigReader reader(*this, str);
     reader.createConfig();
     mChanged = true;

@@ -24,6 +24,7 @@
 #include <QtMath>
 
 #include <telecontrol/TcConfig.h>
+#include <SensorDataSystem.h>
 
 #define IMAGE_WIDTH 600
 #define IMAGE_HEIGHT 400
@@ -34,6 +35,10 @@ TutorialUnit::TutorialUnit()
     mOffset = QPointF(0, 0);
     mScaling = 1.0;
     setScene(GraphicsView::instance());
+
+    // Initialize sensor system
+    mDataProvider = SensorSystemInterface::createProvider("tutorial/position");
+
 }
 
 TutorialUnit::~TutorialUnit()
@@ -82,6 +87,8 @@ RcFlagDefinitions TutorialUnit::rcFlagDefinitions() const
 QVariantList TutorialUnit::rcFlags()
 {
     Pose2d pos = getPosition();
+    mDataProvider->update(QVector3D(pos.x, pos.y, pos.phi));
+
     QVariantList list;
     list << pos.x;
     list << pos.y;

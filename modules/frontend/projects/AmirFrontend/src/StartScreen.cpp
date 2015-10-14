@@ -29,7 +29,6 @@ StartScreen::StartScreen(QWidget *parent) :
 
     // Check for deleted items
     QStringList existing;
-
     foreach(QString projectPath, recent){
          if(QFileInfo(projectPath).exists())
             existing += projectPath;

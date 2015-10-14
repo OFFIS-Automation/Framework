@@ -24,9 +24,10 @@ TARGET = TutorialUnit
 DESTDIR = $${targetDir}/plugins/rcUnits
 
 INCLUDEPATH += ../../automation/include
+INCLUDEPATH += $${targetDir}/plugins/sensorSystem/include
 
-INCLUDEPATH += ../../sensorSystem/include
 LIBS += -L$${targetDir}/plugins/ -lTutorialUnitCore
+LIBS += -L$${targetDir}/plugins/sensorSystem/lib -lSensorSystem
 
 HEADERS += \
     src/TutorialUnitInterface.h \

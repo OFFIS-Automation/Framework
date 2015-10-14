@@ -106,7 +106,7 @@ void HilecGui::checkFile(const QString &filename)
 void HilecGui::loadProject(const QString &projectFile)
 {
     rcUnits->setProjectFile(projectFile);
-    hilec->loadConfig(projectFile);
+    hilec->loadFromFile(projectFile);
     runConfigurations->setConfigFile(projectFile);
     toolbar->setConfigFile(projectFile);
     callStack->setProjectFile(projectFile);

@@ -28,6 +28,3 @@ FORMS += \
 
 RESOURCES += \
     $$PWD/images/images.qrc
-
-DISTFILES += \
-    $$PWD/images/close.png

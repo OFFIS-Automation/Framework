@@ -1596,6 +1596,7 @@ QVariant OlvisCoreInterface::constrainedValue(const PortId &portId, const QVaria
         return var;
     return filter->constrainedPortValue(portId.port, var);
 }
+
 void OlvisCoreInterface::clear()
 {
     if(isRunning()) return;

@@ -74,7 +74,7 @@ public slots:
     void runFile(const QString &filename);
     void compileFile(const QString& filename);
     void userInput(int uid, int buttonId, const QList<QVariant>& data);
-    void loadConfig(const QString &filename);
+    void loadFromFile(const QString &filename);
     void releaseConfig();
     void addBreakpoint(QString file, int line);
     void removeBreakpoint(QString file, int line);

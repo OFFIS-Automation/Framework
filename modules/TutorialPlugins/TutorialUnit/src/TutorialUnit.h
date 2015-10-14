@@ -26,6 +26,8 @@
 #include <rc/Pose2d.h>
 #include <rc/types/RobotRcUnit.h>
 
+class DataProvider;
+
 class TutorialUnit : public RobotRcUnit
 {
     Q_OBJECT
@@ -81,6 +83,7 @@ protected:
 
     QMap<int, double> mHapticStartAxes;
     QPointF mStartPosition;
+    DataProvider* mDataProvider;
 };
 
 #endif // TUTORIALUNIT_H

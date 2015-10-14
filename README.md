@@ -28,10 +28,10 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Authors
 ### Current Authors
-- [Claas Diederichs](https://github.com/claasd/)
 - [Tobias Tiemerding](https://github.com/honkmaster/)
 
 ### Former Authors
+- [Claas Diederichs](https://github.com/claasd/)
 - [Daniel Jasper](mailto:djasper@google.com)
 
 ## License

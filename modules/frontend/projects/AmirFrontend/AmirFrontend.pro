@@ -40,7 +40,7 @@ win32-msvc*{
 
 DEFINES += MAJOR_VERSION=0
 DEFINES += MINOR_VERSION=1
-DEFINES += PATCH_VERSION=1
+DEFINES += PATCH_VERSION=3
 
 include(../../../properties/pathes.pro)
 
@@ -49,7 +49,7 @@ DESTDIR = $${targetDir}
 LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
 
 SOURCES += src/main.cpp\
-        src/MainWindow.cpp \
+    src/MainWindow.cpp \
     src/PluginLoader.cpp \
     src/DockWidgetTitle.cpp \
     src/PerspectiveControl.cpp \

@@ -23,6 +23,20 @@ Blur::Blur()
     setName("Blur");
     setDesc("Smoothes image using a normalized box filter.");
     setGroup("image/smoothing");
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output port");
+    addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input port");
+    addInputPort(mIn);
+
+    mKSize.setName("kernelSize");
+    mKSize.setDesc("Size of the used kernel for operation");
+    mKSize.setDefault(3);
+    mKSize.setRange(1,255);
+    mKSize.setOnlyOdd();
 }
 
 void Blur::execute()

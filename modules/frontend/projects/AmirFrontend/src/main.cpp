@@ -86,9 +86,10 @@ int main(int argc, char *argv[])
         if(multiScreen)
         {
             QString title = master->windowTitle();
+            QString titleDetail = QString("%1 %2.%3.%4").arg(title).arg(Version::MAJOR).arg(Version::MINOR).arg(Version::PATCHLEVEL);
             slave = new MainWindow();
-            master->setWindowTitle(a.translate("MainWindow", "%1 %2.%3 - Main window").arg(title).arg(Version::MAJOR).arg(Version::MINOR));
-            slave->setWindowTitle(a.translate("MainWindow", "%1 %2.%3 - Second window").arg(title).arg(Version::MAJOR).arg(Version::MINOR));
+            master->setWindowTitle(a.translate("MainWindow", "%1 - Main window").arg(titleDetail));
+            slave->setWindowTitle(a.translate("MainWindow", "%1 - Second window").arg(titleDetail));
         }
         QObject::connect(master, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
         QObject::connect(master, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
@@ -105,7 +106,6 @@ int main(int argc, char *argv[])
         if(multiScreen)
         {
             slave->setAlternative(master);
-
             int screen = 1;
             if(desktop->primaryScreen() == 1)
                 screen = 0;

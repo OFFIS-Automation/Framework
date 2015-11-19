@@ -25,10 +25,10 @@
      <normaloff>:/olvisExecGui/play.png</normaloff>:/olvisExecGui/play.png</iconset>
    </property>
    <property name="text">
-    <string>Run script</string>
+    <string>Run vision</string>
    </property>
    <property name="toolTip">
-    <string>Starts or resumes the current script</string>
+    <string>Starts or resumes a vision configuration</string>
    </property>
   </action>
   <action name="actionStop">
@@ -40,10 +40,10 @@
      <normaloff>:/olvisExecGui/stop.png</normaloff>:/olvisExecGui/stop.png</iconset>
    </property>
    <property name="text">
-    <string>Stop script</string>
+    <string>Stop vision</string>
    </property>
    <property name="toolTip">
-    <string>Stops the current script</string>
+    <string>Stops the currently running vision configuration</string>
    </property>
   </action>
   <action name="actionProblems">
@@ -52,10 +52,10 @@
      <normaloff>:/olvisExecGui/error.png</normaloff>:/olvisExecGui/error.png</iconset>
    </property>
    <property name="text">
-    <string>Problems in the image processing chain</string>
+    <string>Problems in the image processing configuration</string>
    </property>
    <property name="toolTip">
-    <string>Problems in the image processing chain</string>
+    <string>Problems in the image processing configuration</string>
    </property>
   </action>
   <action name="actionAllOkay">
@@ -67,10 +67,10 @@
      <normaloff>:/olvisExecGui/accept.png</normaloff>:/olvisExecGui/accept.png</iconset>
    </property>
    <property name="text">
-    <string>No problems in the image processing chain</string>
+    <string>No problems in the image processing configuration</string>
    </property>
    <property name="toolTip">
-    <string>No problems in the image processing chain</string>
+    <string>No problems in the image processing configuration</string>
    </property>
   </action>
   <action name="actionPause">
@@ -85,7 +85,7 @@
     <string>Pause execution</string>
    </property>
    <property name="toolTip">
-    <string>Pause vision execution</string>
+    <string>Pause execution of a running vision configuration</string>
    </property>
   </action>
   <action name="actionStep">
@@ -197,8 +197,8 @@
   <addaction name="actionSave"/>
  </widget>
  <resources>
-  <include location="../images/images.qrc"/>
   <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
+  <include location="../images/images.qrc"/>
  </resources>
  <connections>
   <connection>

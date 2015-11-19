@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent, bool setupCentral) :
     mCentral = new QWidget();
     mLayout = new QVBoxLayout();
     mCentral->setLayout(mLayout);
-    mLayout->setContentsMargins(0,0,0,0);
+    //mLayout->setContentsMargins(0,0,0,0);
     if(setupCentral)
         setCentralWidget(mCentral);
     setDockNestingEnabled(true);

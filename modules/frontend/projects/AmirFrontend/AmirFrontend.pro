@@ -40,7 +40,7 @@ win32-msvc*{
 
 DEFINES += MAJOR_VERSION=0
 DEFINES += MINOR_VERSION=1
-DEFINES += PATCH_VERSION=3
+DEFINES += PATCH_VERSION=4
 
 include(../../../properties/pathes.pro)
 

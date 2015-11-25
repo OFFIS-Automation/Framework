@@ -143,8 +143,6 @@ void ProjectEditor::addElements(MainWindowInterface* mainWindow)
     debugPerspective.addDockWidget(mFileTree);
 }
 
-
-
 void ProjectEditor::start()
 {
 }

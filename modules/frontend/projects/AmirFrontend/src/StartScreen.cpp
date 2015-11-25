@@ -42,7 +42,6 @@ StartScreen::StartScreen(QWidget *parent) :
     ui->comboBox->addItems(recent);
     if(recent.empty())
         ui->recentBox->setEnabled(false);
-
     ui->versionLabel->setText(Version::versionString());
 
     // Hide help button

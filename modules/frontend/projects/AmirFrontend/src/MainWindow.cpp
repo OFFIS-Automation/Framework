@@ -28,12 +28,15 @@ MainWindow::MainWindow(QWidget *parent, bool setupCentral) :
 {
     setWindowTitle("OFFIS Automation Framework");
     setWindowIcon(QIcon(":/img/icon.ico"));
+
     mCentral = new QWidget();
     mLayout = new QVBoxLayout();
+    mLayout->setContentsMargins(0,0,0,0);
     mCentral->setLayout(mLayout);
-    //mLayout->setContentsMargins(0,0,0,0);
     if(setupCentral)
+    {
         setCentralWidget(mCentral);
+    }
     setDockNestingEnabled(true);
 }
 
@@ -136,7 +139,8 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
         setCentralDockWidget(centralDock);
         centralDock->setVisible(true);
         DockWidgetTitle* title = qobject_cast<DockWidgetTitle*>(centralDock->titleBarWidget());
-        if(title) title->setOtherWindow(other);
+        if(title)
+            title->setOtherWindow(other);
     }
     foreach(dockName, docks)
     {
@@ -144,7 +148,8 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
         if(dock)
         {
             DockWidgetTitle* title = qobject_cast<DockWidgetTitle*>(dock->titleBarWidget());
-            if(title) title->setOtherWindow(other);
+            if(title)
+                title->setOtherWindow(other);
         }
     }
     foreach(QToolBar* bar, findChildren<QToolBar*>())
@@ -168,12 +173,16 @@ QStringList MainWindow::saveDocks()
     QStringList elements;
     QWidget* central = centralDockWidget();
     if(central)
+    {
         elements << central->objectName();
+    }
     QList<QDockWidget*> docks = findChildren<QDockWidget*>();
     foreach(QDockWidget* dock, docks)
     {
         if(dock != central)
+        {
             elements << dock->objectName();
+        }
     }
     return elements;
 }
@@ -192,7 +201,9 @@ QDockWidget* MainWindow::takeoverDock(const QString& name, MainWindow *other)
     {
         dock = other->findChild<QDockWidget*>(name);
         if(!dock)
+        {
             return 0;
+        }
         Qt::DockWidgetArea area = other->dockWidgetArea(dock);
         other->removeDockWidget(dock);
         addDockWidget(area, dock);

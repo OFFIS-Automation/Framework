@@ -20,6 +20,11 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QDockWidget>
+
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QStyle>
+
 #include "qglobal.h"
 
 #include "MasterWindow.h"
@@ -36,9 +41,9 @@ PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, 
     mToolBar->setObjectName("perspectiveToolbar");
     mToolBar->setStyleSheet("QToolBar { border: 0px }");
     QAction* a = mToolBar->addAction(QIcon(":/img/newPerspective.png"), tr("New\nperspective"), this, SLOT(createPerspective()));
-    a->setToolTip(tr("Create new perspective from current one"));
+    a->setToolTip(tr("Create new perspective based on the current one"));
     mResetAction = mToolBar->addAction(QIcon(":/img/resetPerspective.png"), tr("Reset\nperspective"), this, SLOT(resetPerspectives()));
-    mResetAction->setToolTip(tr("Reset current perspective"));
+    mResetAction->setToolTip(tr("Reset the current perspective"));
     mDeleteAction = mToolBar->addAction(QIcon(":/img/close.png"), tr("Delete\nperspective"), this, SLOT(deletePerspective()));
     mDeleteAction->setToolTip(tr("Delete the current perspective"));
     mToolBar->addSeparator();
@@ -143,10 +148,39 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     QSettings settings;
     settings.setValue("perspectiveSettings/last", name);
     mMaster->setUpdatesEnabled(true);
-    if(mSlave) mSlave->setUpdatesEnabled(true);
+    if(mSlave)
+        mSlave->setUpdatesEnabled(true);
     mDeleteAction->setEnabled(!mPerspectives[name].fixed);
     mResetAction->setEnabled(mPerspectives[name].fixed);
     mPerspectives[name].displayedOnce = true;
+
+    // Resize to not overlap the windows taskbar in any case
+    // In any case: Ask Tobi why this was necessary, needs longer explaination
+    // Master
+    QDesktopWidget* desktop = QApplication::desktop();
+    int screenNumber = desktop->screenNumber(mMaster);
+
+    int titleBarHeight = mMaster->style()->pixelMetric(QStyle::PM_TitleBarHeight);
+    int currentHeight = mMaster->size().height();
+    int availableHeight = desktop->availableGeometry(screenNumber).height();
+    int allowedHeight = availableHeight-titleBarHeight;
+
+    if(currentHeight  > allowedHeight){
+        mMaster->resize(mMaster->width(), availableHeight-titleBarHeight);
+    }
+    // Slave
+    if(mSlave)
+    {
+        screenNumber = desktop->screenNumber(mSlave);
+
+        currentHeight = mSlave->size().height();
+        availableHeight = desktop->availableGeometry(screenNumber).height();
+        allowedHeight = availableHeight-titleBarHeight;
+
+        if(currentHeight  > allowedHeight){
+            mSlave->resize(mSlave->width(), allowedHeight);
+        }
+    }
 
 }
 void PerspectiveControl::resetPerspectives()

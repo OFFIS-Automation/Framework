@@ -9,7 +9,11 @@ namespace Version
     static const QString DATE = QString(__DATE__).simplified();
     static QString versionString()
     {
-        return QObject::tr("Version: %1.%2.%3 (%4)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::PATCHLEVEL).arg(Version::DATE);
+        if(Version::PATCHLEVEL > 0){
+            return QObject::tr("Version: %1.%2.%3 (%4)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::PATCHLEVEL).arg(Version::DATE);
+        } else {
+            return QObject::tr("Version: %1.%2 (%3)").arg(Version::MAJOR).arg(Version::MINOR).arg(Version::DATE);
+        }
     }
 }
 

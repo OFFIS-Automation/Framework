@@ -7,10 +7,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)
@@ -47,10 +47,19 @@ using namespace Scintilla;
 #endif
 
 static bool IsSpaceEquiv(int state) {
-	return (state <= SCE_ECL_COMMENTDOC) ||
-		// including SCE_ECL_DEFAULT, SCE_ECL_COMMENT, SCE_ECL_COMMENTLINE
-		(state == SCE_ECL_COMMENTLINEDOC) || (state == SCE_ECL_COMMENTDOCKEYWORD) ||
-		(state == SCE_ECL_COMMENTDOCKEYWORDERROR);
+	switch (state) {
+	case SCE_ECL_DEFAULT:
+	case SCE_ECL_COMMENT:
+	case SCE_ECL_COMMENTLINE:
+	case SCE_ECL_COMMENTLINEDOC:
+	case SCE_ECL_COMMENTDOCKEYWORD:
+	case SCE_ECL_COMMENTDOCKEYWORDERROR:
+	case SCE_ECL_COMMENTDOC:
+		return true;
+
+	default:
+		return false;
+	}
 }
 
 static void ColouriseEclDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],

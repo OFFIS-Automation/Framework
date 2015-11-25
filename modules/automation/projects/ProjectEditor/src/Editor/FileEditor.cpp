@@ -275,7 +275,12 @@ void FileEditor::wheelEvent(QWheelEvent *event)
     }
 }
 
-void FileEditor::contextMenuEvent(QContextMenuEvent *e)
+void FileEditor::changeEvent(QEvent *event)
+{
+    QsciScintilla::changeEvent(event);
+}
+
+void FileEditor::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *menu = QsciScintilla::createStandardContextMenu();
 
@@ -288,7 +293,7 @@ void FileEditor::contextMenuEvent(QContextMenuEvent *e)
 
         // Display
         menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->popup(e->globalPos());
+        menu->popup(event->globalPos());
     }
 }
 
@@ -334,22 +339,23 @@ void FileEditor::updateMargins()
 void FileEditor::updateLexer()
 {
     // Choose lexer depending on content type
-    QString suffix = QFileInfo(filename()).completeSuffix();
+    QString suffix = QFileInfo(filename()).completeSuffix().toLower();
     QsciLexer *lexer = 0;
-    if(suffix.compare("cpp") == 0 || suffix.compare("h") == 0)
+    if(suffix.compare("cpp") == 0 || suffix.compare("hpp") == 0 || suffix.compare("h") == 0){
         lexer = new QsciLexerCPP();
+    }
     if(suffix.compare("py") == 0){
         lexer = new QsciLexerPython();
 
         // For python we have an predefined API
         QsciAPIs *api = new QsciAPIs(lexer);
-        QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.1.api";
+        QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.3.api";
         api->load(filename);
         api->prepare();
     }
-    if(suffix.compare("xml") == 0 || suffix.compare("ogr") == 0)
+    if(suffix.compare("xml") == 0 || suffix.compare("ogr") == 0){
         lexer = new QsciLexerXML();
-
+    }
     if(lexer){
         lexer->setFont(QFont("Courier"));
         lexer->setDefaultFont(QFont("Courier"));
@@ -376,7 +382,7 @@ void FileEditor::setupEditor()
 
     // Completions
     setAutoCompletionSource(AcsAll);
-    setAutoCompletionShowSingle(true);
+    setAutoCompletionUseSingle(AcusAlways);
     setAutoCompletionCaseSensitivity(false);
     setAutoCompletionThreshold(3);
 
@@ -386,6 +392,7 @@ void FileEditor::setupEditor()
     setUtf8(true);
     setWrapMode(WrapNone);
     setTabWidth(2);
+
     // Folding
     setFolding(BoxedTreeFoldStyle, 3);
     setMarginWidth(3, 12);

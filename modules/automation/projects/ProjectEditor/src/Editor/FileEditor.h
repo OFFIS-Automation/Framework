@@ -49,6 +49,7 @@ signals:
     void normalizeFontSizeRequested();
     void asyncRemoveChangeFlag();
     void close(const QString& filename);
+
 public slots:
     bool saveContent();
     void reloadContent();
@@ -67,7 +68,8 @@ protected:
     void focusInEvent(QFocusEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
-    void contextMenuEvent(QContextMenuEvent *e);
+    void changeEvent(QEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
 
     void prependStringToSelection(const QString& t);
     void deleteStringInSelection(const QString& t);

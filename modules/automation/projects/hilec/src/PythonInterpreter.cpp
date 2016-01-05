@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 #undef slots
 #include "Python.h"
 #include "PythonPlugin.h"
-
-
 
 PythonInterpreter::PythonInterpreter(const QString &configDir)
     : mDebugger(new PythonDebugger())
@@ -72,7 +70,6 @@ void PythonInterpreter::run()
     QString(mBaseDir + ":" + mConfigDir + "/python").toWCharArray(path);
 #endif
 
-
     Py_SetPath(path);
     mDebugger->initialize();
     Py_Initialize();
@@ -111,8 +108,6 @@ QList<QPair<QString, int> > PythonInterpreter::breakpoints() const
 {
     return mDebugger->breakpoints();
 }
-
-
 
 void PythonInterpreter::resume()
 {

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,27 +40,9 @@ class RcUnit : public QThread, public virtual RcUnitBase, public RcBase
     Q_OBJECT
 public:
 
-    struct Parameter
-    {
-        enum Type
-        {
-            Single,
-            List,
-            Struct
-        } type;
-        QByteArray name, realName;
-        QString sig;
-        int typeId;
-        int min, max; // for lists/repeatables
-    };
-
     struct Method : RcUnitHelp::Method
     {
-        bool hasReturn;
-        Parameter returnType;
-        QList<Parameter> arguments;
         bool configured;
-        QStringList paramNames;
         QMetaMethod meta;
         Method() { configured = false; }
     };
@@ -81,11 +63,11 @@ public:
     virtual ~RcUnit();
 
     QString name() const { return mName; }
-    void addMethod(const QString& name, const QString& shortDesc, const QString& longDesc);
+    void addMethod(const QString& name, const QString& shortDesc, const QString& longDesc, bool hiddenForScratch = false);
     void setDesc(const QString &desc) { mDesc = desc; }
     virtual void addConstant(const QString name, const QVariant& constant);
     bool acquired() { return mHwConnected; }
-    void setParamNames(const QString &methodName, const QStringList &names);
+    void setParameterNames(const QString &methodName, const QStringList &names);
     void setUserInfo(const QString& key, const QVariant& value);
     bool initialize(RcUnitInterface* plugin);
     UserRcUnit* rcUnit() { return mRcUnit; }
@@ -145,7 +127,7 @@ protected:
     static QString typeName(const char* str){return typeName(QString(str)); }
     static QString typeName(int type);
 
-    Parameter createParamInfo(QByteArray type, QByteArray name = "");
+    RcUnitHelp::Parameter createParamInfo(QByteArray type, QByteArray name = "");
     QString mName, mConfigFile;
     QString mDesc;
     UserRcUnit* mRcUnit;

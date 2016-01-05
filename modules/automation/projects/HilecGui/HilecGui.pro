@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2015 OFFIS e.V.
+# Copyright (C) 2013-2016 OFFIS e.V.
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -73,7 +73,9 @@ HEADERS += \
     src/rcUnits/RcUnitFlagWidget.h \
     src/telecontrol/TelecontrolSelectionComboBox.h \
     src/telecontrol/ConnexionAssignmentWidget.h \
-    src/rcUnits/RcFlagWidgetSettingsDialog.h
+    src/rcUnits/RcFlagWidgetSettingsDialog.h \
+    src/scratch/ScratchWidget.h \
+    src/scratch/ScratchProgramTreeWidget.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -111,7 +113,9 @@ SOURCES += \
     src/rcUnits/RcUnitFlagWidget.cpp \
     src/telecontrol/TelecontrolSelectionComboBox.cpp \
     src/telecontrol/ConnexionAssignmentWidget.cpp \
-    src/rcUnits/RcFlagWidgetSettingsDialog.cpp
+    src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
+    src/scratch/ScratchWidget.cpp \
+    src/scratch/ScratchProgramTreeWidget.cpp
 
 
 FORMS += \
@@ -143,7 +147,8 @@ FORMS += \
     src/rcUnits/RcUnitFlagWidget.ui \
     src/telecontrol/TelecontrolGamepadWidget.ui \
     src/telecontrol/TelecontrolSelectionComboBox.ui \
-    src/telecontrol/ConnexionAssignmentWidget.ui
+    src/telecontrol/ConnexionAssignmentWidget.ui \
+    src/scratch/ScratchWidget.ui
 
 
 RESOURCES += \

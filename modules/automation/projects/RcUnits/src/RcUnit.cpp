@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -93,9 +93,10 @@ void RcUnit::run()
     }
 }
 
-void RcUnit::addMethod(const QString &methodName, const QString &shortDesc, const QString &longDesc)
+void RcUnit::addMethod(const QString &methodName, const QString &shortDesc, const QString &longDesc, bool hiddenForScratch)
 {
     Method m;
+    m.hiddenForScratch = hiddenForScratch;
     m.name = methodName;
     m.shortDesc = shortDesc;
     m.longDesc = longDesc;
@@ -103,13 +104,13 @@ void RcUnit::addMethod(const QString &methodName, const QString &shortDesc, cons
     mMethods[methodName].append(m);
 }
 
-void RcUnit::setParamNames(const QString &methodName, const QStringList &names)
+void RcUnit::setParameterNames(const QString &methodName, const QStringList &names)
 {
     if(mMethods.contains(methodName)){
         QList<Method>& methods = mMethods[methodName];
         for(int i=0;i<methods.size();i++){
             Method& method = methods[i];
-            method.paramNames = names;
+            method.parameterNames = names;
         }
     }
     if(mTcGamepadMoveMethods.contains(methodName)){
@@ -132,8 +133,8 @@ RcUnitHelp RcUnit::getHelp() const
     QStringList names = mMethods.keys();
     names.sort();
     foreach(const QString& name, names){
-        foreach(const Method& m, mMethods[name]){
-            help.methods << m;
+        foreach(const Method& method, mMethods[name]){
+            help.methods << method;
         }
     }
 
@@ -239,17 +240,18 @@ void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
     QList<Method>& methods = mMethods[sig];
     if(methods.last().configured) // there is already a method, this is overloading
     {
-        if(methods.last().arguments.size() == method.parameterTypes().size())
+        if(methods.last().parameters.size() == method.parameterTypes().size())
             return; // overloading not possible with the same number of arguments
-        QStringList paramNames = methods.last().paramNames; // copy param names if set by user
+
+        QStringList paramNames = methods.last().parameterNames; // copy param names if set by user
         addMethod(methods.last().name, methods.last().shortDesc, methods.last().longDesc);
-        methods.last().paramNames = paramNames;  // copy param names if set by user
+        methods.last().parameterNames = paramNames;  // copy param names if set by user
     }
     Method& m = methods.last();
     QByteArray retType = method.typeName();
     m.hasReturn = !retType.isEmpty();
     if(m.hasReturn)
-        m.returnType = createParamInfo(method.typeName());
+        m.returnParameter = createParamInfo(method.typeName());
 
     m.sig = sig;
     QStringList params;
@@ -257,13 +259,13 @@ void RcUnit::configureRcMethod(const QMetaMethod &method, QString sig)
     QList<QByteArray> paramNames = method.parameterNames();
     foreach(QByteArray type, method.parameterTypes())
     {
-        QByteArray paramName = m.paramNames.value(pos, paramNames[pos]).toLocal8Bit();
+        QByteArray paramName = m.parameterNames.value(pos, paramNames[pos]).toLocal8Bit();
         pos++;
-        m.arguments << createParamInfo(type, paramName);
-        params << m.arguments.last().sig;
+        m.parameters << createParamInfo(type, paramName);
+        params << m.parameters.last().sig;
     }
     if(m.hasReturn)
-        m.sig = m.returnType.sig;
+        m.sig = m.returnParameter.sig;
     else
         m.sig = "void";
     m.sig += " " + sig + "(" + params.join(", ") + ")";
@@ -340,15 +342,15 @@ void RcUnit::configureHapticMethod(const QMetaMethod& method, QString sig)
 }
 
 
-RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
+RcUnitHelp::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
 {
-    Parameter p;
+    RcUnitHelp::Parameter p;
     QByteArray type = origType;
     type.replace("RcRepeatable", "QList");
 
     if(type.contains("QList"))
     {
-        p.type = Parameter::List;
+        p.type = RcUnitHelp::Parameter::List;
         p.min = 0;
         p.max = -1;
         int start = type.indexOf('<') + 1;
@@ -360,7 +362,7 @@ RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
             p.min = qMax(0, parts[1].toInt());
         if(parts.size() > 2)
             p.max = qMax(0, parts[2].toInt());
-        p.name = type;
+        p.typeName = type;
         QString range;
         if(p.min == p.max && p.min != 0)
             range = QString::number(p.min);
@@ -373,16 +375,17 @@ RcUnit::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray name)
     }
     else
     {
-        p.type = Parameter::Single;
-        p.name = type;
+        p.type = RcUnitHelp::Parameter::Single;
+        p.typeName = type;
         p.sig = QString("%1 %2").arg(QString(typeName(type)), QString(name)).trimmed();
     }
-    p.realName = origType;
-    p.typeId = QMetaType::type(p.name);
-    if(p.name.startsWith("Q"))
-        p.name = p.name.mid(1);
-    if(p.name.endsWith("F"))
-        p.name.chop(1);
+    p.realTypeName = origType;
+    p.name = name;
+    p.typeId = QMetaType::type(p.typeName);
+    if(p.typeName.startsWith("Q"))
+        p.typeName = p.typeName.mid(1);
+    if(p.typeName.endsWith("F"))
+        p.typeName.chop(1);
     return p;
 }
 

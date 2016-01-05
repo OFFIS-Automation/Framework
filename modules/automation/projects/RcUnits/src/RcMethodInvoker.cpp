@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,12 +34,12 @@ RcMethodInvoker::~RcMethodInvoker()
 bool RcMethodInvoker::parseArguments(const QList<QVariant> &arguments, QString& error)
 {
     try{
-        if(mMethod.arguments.count() != arguments.count())
-            throw RcError(tr("Wrong parameter count, expected %1, got %2").arg(mMethod.arguments.count()).arg(arguments.count()));
+        if(mMethod.parameters.count() != arguments.count())
+            throw RcError(tr("Wrong parameter count, expected %1, got %2").arg(mMethod.parameters.count()).arg(arguments.count()));
         for(int i=0; i<arguments.size(); i++)
             parseArgument(arguments[i], i);
         if(mMethod.hasReturn)
-            mReturnWrapper = createWrapper(mMethod.returnType.type == RcUnit::Parameter::List, mMethod.returnType.typeId, mMethod.returnType.realName);
+            mReturnWrapper = createWrapper(mMethod.returnParameter.type == RcUnitHelp::Parameter::List, mMethod.returnParameter.typeId, mMethod.returnParameter.realTypeName);
        return true;
     }
     catch(const std::exception& e)
@@ -52,8 +52,8 @@ bool RcMethodInvoker::parseArguments(const QList<QVariant> &arguments, QString& 
 void RcMethodInvoker::parseArgument(const QVariant &var, int pos)
 {
     RcArgumentWrapper* wrapper;
-    const RcUnit::Parameter& spec = mMethod.arguments[pos];
-    if(spec.type == RcUnit::Parameter::List)
+    const RcUnitHelp::Parameter& spec = mMethod.parameters[pos];
+    if(spec.type == RcUnitHelp::Parameter::List)
     {
         if(var.type() != QVariant::List && var.type() != QVariant::StringList) // check type
             throw RcError(tr("Wrong argument type at position %1: list expected").arg(pos));
@@ -67,7 +67,7 @@ void RcMethodInvoker::parseArgument(const QVariant &var, int pos)
         {
             checkType(elem, spec.typeId, pos);
         }
-        wrapper = createWrapper(true, spec.typeId, spec.realName);
+        wrapper = createWrapper(true, spec.typeId, spec.realTypeName);
     }
     else // plain type
     {
@@ -75,7 +75,7 @@ void RcMethodInvoker::parseArgument(const QVariant &var, int pos)
         wrapper = createWrapper(false, spec.typeId);
     }
     if(!wrapper)
-        throw RcError(tr("Could not create wrapper for argument type %1 at position &2").arg(QString(spec.name)).arg(pos));
+        throw RcError(tr("Could not create wrapper for argument type %1 at position &2").arg(QString(spec.typeName)).arg(pos));
     wrapper->convert(var);
     mWrapper << wrapper;
 }

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ class RcWrapperFactoryItf;
 class RcBase
 {
 public:
-    // remote control interface
     /**
      * @brief Adds a method to the published interface.
      * @param the method name
@@ -39,7 +38,7 @@ public:
      * Currently, supported types are bool, int, float, double, QString, QPoint, QPointF, QRect, RectF and QVector3D
      * Also, you can use QLists of the supported types
      */
-    virtual void addMethod(const QString& name, const QString& shortDesc, const QString& longDesc) = 0;
+    virtual void addMethod(const QString& name, const QString& shortDesc, const QString& longDesc, bool hiddenForScratch = false) = 0;
 
     /**
      * @brief adds a constant value to the object
@@ -98,13 +97,16 @@ public:
      */
     virtual void registerHapticMethod(QString methodName, const QList<Tc::Haptic::Axis> &defaultMapping, int defaultActivateButton, double defaultSensitivity = 1.0/64.0, double defaultForceScaling = 1.0/64.0) = 0;
 
-    /** register a user defined info about the RC-Unit
+    /**
+     * register a user defined info about the RC-Unit
      */
+
     virtual void setUserInfo(const QString& key, const QVariant& value) = 0;
+
     /**
      * overwrite the parameter names for a registered method
      */
-    virtual void setParamNames(const QString& methodName, const QStringList& names) = 0;
+    virtual void setParameterNames(const QString& methodName, const QStringList& names) = 0;
     /**
      * This function should never be called directly. Instead, use the static method @a rcRegisterStruct in RcStruct.h
      */
@@ -181,8 +183,6 @@ public:
      * @return The main widget of the gui or 0, if there is no gui for this RC-Unit
      * The gui is automatically deleted by the automation main gui
      */
-    //DEPCECATED virtual QWidget* guiForInstance(QObject* instance) = 0;
-
     virtual QWidget* settingsWidgetForInstance(UserRcUnit* instance) { Q_UNUSED(instance); return 0; }
 
     /**

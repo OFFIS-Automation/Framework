@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -75,18 +75,18 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     // rc.addMethod(methodName, shortDesc, longDesc);
     // method name must match the real method name exactly
 
-    rc.addMethod("acquire", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands.");
-    rc.addMethod("release", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called.");
+    rc.addMethod("acquire", "Connects to the hardware", "This command connects to the real hardware.\nIt must be called prior to any other commands.", true);
+    rc.addMethod("release", "Disconnects from the hardware", "After this command, no other commands except acquireHardware may be called.", true);
 
-    rc.addMethod("getPosition", "Returns the current position", "Returns he current robot position and rotation.");
+    rc.addMethod("getPosition", "Returns the current position", "Returns he current robot position and rotation.", true);
     rc.addMethod("setPosition", "Move robot to fixed position", "Moves the robot to a absolute x/y coordinate.");
     rc.addMethod("setRotation", "Rotate robot to fixed angle", "Moves the robot to an absolute rotational angle (in degrees).");
     rc.addMethod("closeGripper", "Closes the gripper", "Closes the robot's gripper and grasps one object that is between / next to the jaws.");
     rc.addMethod("openGripper", "Opens the gripper", "Opens the robot's gripper and releases any objects.");
 
-    rc.addMethod("resetSetup", "Resets the setup", "Places the robot and the spheres to the start positions.");
-    rc.addMethod("resetSetupRandom", "Resets the setup", "Places the robot at the start position and the spheres at random positions.");
-    rc.addMethod("randomizeCoordinateSystem", "Sets the coordinate system randomly", "The coordinate system of the robot will be no longer in sync with the image processing coordinate system.<br />Any reset command will reset the coordinate system.");
+    rc.addMethod("resetSetup", "Resets the setup", "Places the robot and the spheres to the start positions.", true);
+    rc.addMethod("resetSetupRandom", "Resets the setup", "Places the robot at the start position and the spheres at random positions.", true);
+    rc.addMethod("randomizeCoordinateSystem", "Sets the coordinate system randomly", "The coordinate system of the robot will be no longer in sync with the image processing coordinate system.<br />Any reset command will reset the coordinate system.", true);
 
     // if you have telecontrol methods, add them here
     // example: connects the left joystick on the gamepad. updates are only send if Button5 is pressed

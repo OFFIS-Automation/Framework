@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QStringList>
 #include <QFileInfo>
+#include <stdexcept>
 
 HilecCore* HilecCore::mInstance = 0;
 
@@ -263,6 +264,32 @@ void HilecCore::callRcUnitReleaseAll()
 void HilecCore::callRcUnitStop(const QString &unitName)
 {
     RcUnits::instance()->stop(unitName);
+}
+
+QVariant HilecCore::callRcUnitMethod(const QString &unitName, const QString &method, const QList<QVariant> &params)
+{
+    try
+    {
+        QVariant retVal;
+        QString errMsg;
+        try
+        {
+            RcUnits::instance()->call(unitName.toLocal8Bit(), method.toLocal8Bit(), params);
+        }
+        catch(const std::exception& err)
+        {
+            errMsg = err.what();
+        }
+        if(!errMsg.isEmpty()){
+            throw RcError(errMsg);
+        }
+        return retVal;
+    }
+    catch(const std::exception& err)
+    {
+        QString str = tr("Error calling <%1::%2>: %3").arg(unitName).arg(method).arg(err.what());
+        throw std::runtime_error(qPrintable(str));
+    }
 }
 
 QWidget *HilecCore::createHapticWidget(const QString &unitName)

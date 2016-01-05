@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,6 +63,8 @@ void HilecGui::initialize(const QString&)
     telecontrol = new TelecontrolWidget();
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
+    scratch = new ScratchWidget();
+
     connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     //connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
@@ -164,6 +166,8 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, telecontrol, tr("RC-Unit"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, rcContainer, tr("RC-Unit"));
 
+    mainWindow->addDockWidget(Qt::TopDockWidgetArea, scratch, tr("Scratch"));
+
     toolbar->createMenu(&mainWindow->getMenu(tr("RC-Unit")));
     toolbar->addHelpToMenu(&mainWindow->getMenu(tr("Help")));
 
@@ -190,6 +194,11 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
     debugPerspective.addDockWidget(scriptUi);
     debugPerspective.addDockWidget(runConfigurations);
     debugPerspective.addToolbar(toolbar);
+
+    PerspectiveInterface& scratchPerspective = mainWindow->getPerspective(tr("Scratch"));
+    scratchPerspective.setCentralWidget(help, 1);
+    scratchPerspective.addDockWidget(scratch);
+    scratchPerspective.addToolbar(toolbar);
 }
 
 

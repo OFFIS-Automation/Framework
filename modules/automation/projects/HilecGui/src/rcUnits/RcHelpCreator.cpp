@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2014 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ RcHelpCreator::RcHelpCreator(const QString &name)
         mStream << "<br />} </p>";
     }
     mStream << "<h2>" << tr("Methods", "Programming") << "</h2>";
+
     // restructure methods due to overloading
     QMap<QString, OverloadedMethod> newStructure;
     foreach(const RcUnitHelp::Method& m, help.methods)

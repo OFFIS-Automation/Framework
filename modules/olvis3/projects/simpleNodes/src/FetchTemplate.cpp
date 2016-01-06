@@ -38,18 +38,16 @@ FetchTemplate::FetchTemplate()
 
 void FetchTemplate::execute()
 {
-    if(mRoi.hasValue())
-    {
+    if(mRoi.hasValue()){
         QRect roi = mRoi;
         const cv::Mat source = mIn;
         QRect imageRect = QRect(0,0, source.cols, source.rows);
         roi = roi.intersected(imageRect);
-        if(roi.isValid())
-        {
-
+        if(roi.isValid()){
             mTemplate = source(port::Rect::rect(roi));
         }
     }
-    if(mTemplate.data)
+    if(mTemplate.data){
         mOut.send(mTemplate);
+    }
 }

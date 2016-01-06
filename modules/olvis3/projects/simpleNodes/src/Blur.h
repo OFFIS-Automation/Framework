@@ -19,12 +19,13 @@
 
 #include "KernelFilter.h"
 
-class Blur : public KernelFilter
+class Blur : public UserFilter
 {
 public:
     Blur();
     virtual void execute();
 protected:
+    in::Integer mKSize;
     in::Image mIn;
     out::Image mOut;
 };

@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
     // Create splash screen
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QFileInfo settingsFile(QSettings().fileName());
-    if(!settingsFile.exists())
-    {
+    if(!settingsFile.exists()){
         QFileInfo oldFile = settingsFile.dir().absoluteFilePath("Automation Toolbox.ini");
-        if(oldFile.exists())
+        if(oldFile.exists()){
             QFile::rename(oldFile.absoluteFilePath(), settingsFile.absoluteFilePath());
+        }
     }
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(*splashPicture);
@@ -68,8 +68,9 @@ int main(int argc, char *argv[])
     QDesktopWidget* desktop = a.desktop();
     bool multiScreen = desktop->screenCount() > 1;
     int retVal;
-    if(a.arguments().contains("--singleScreen"))
+    if(a.arguments().contains("--singleScreen")){
         multiScreen = false;
+    }
     bool noload = a.arguments().contains("--noload");
 
 #ifdef Q_OS_MAC
@@ -83,12 +84,12 @@ int main(int argc, char *argv[])
         QDockWidget* logWindow = new LogWindow();
         MasterWindow* master = new MasterWindow();
         MainWindow* slave = 0;
-        if(multiScreen)
-        {
+        if(multiScreen){
             QString title = master->windowTitle();
+            QString titleDetail = QString("%1 %2.%3.%4").arg(title).arg(Version::MAJOR).arg(Version::MINOR).arg(Version::PATCHLEVEL);
             slave = new MainWindow();
-            master->setWindowTitle(a.translate("MainWindow", "%1 %2.%3 - Main window").arg(title).arg(Version::MAJOR).arg(Version::MINOR));
-            slave->setWindowTitle(a.translate("MainWindow", "%1 %2.%3 - Second window").arg(title).arg(Version::MAJOR).arg(Version::MINOR));
+            master->setWindowTitle(a.translate("MainWindow", "%1 - Main window").arg(titleDetail));
+            slave->setWindowTitle(a.translate("MainWindow", "%1 - Second window").arg(titleDetail));
         }
         QObject::connect(master, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
         QObject::connect(master, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
@@ -101,14 +102,14 @@ int main(int argc, char *argv[])
         master->move(desktop->availableGeometry(0).topLeft());
 #endif
         master->showMaximized();
-        Notifications::setMainWindow(master);
-        if(multiScreen)
-        {
-            slave->setAlternative(master);
 
+        Notifications::setMainWindow(master);
+        if(multiScreen){
+            slave->setAlternative(master);
             int screen = 1;
-            if(desktop->primaryScreen() == 1)
+            if(desktop->primaryScreen() == 1){
                 screen = 0;
+            }
             slave->show();
             slave->move(desktop->availableGeometry(screen).topLeft());
             slave->showMaximized();
@@ -121,8 +122,9 @@ int main(int argc, char *argv[])
 
 
         loader.deinitializeGuis();
-        if(multiScreen)
+        if(multiScreen){
             delete slave;
+        }
         delete master;
     }
     loader.unload();

@@ -33,7 +33,6 @@ PythonInterpreter::PythonInterpreter(const QString &configDir)
     : mDebugger(new PythonDebugger())
 {
     mConfigDir = configDir;
-
     PyImport_AppendInittab("offisio", initIoModule);
 }
 
@@ -46,8 +45,9 @@ PythonInterpreter::~PythonInterpreter()
 
 void PythonInterpreter::start(const QString &filename, const QString &baseDir)
 {
-    if(filename.isEmpty())
+    if(filename.isEmpty()){
         return;
+    }
     mBaseDir = baseDir;
     mFilename = filename;
     QThread::start();
@@ -72,7 +72,6 @@ void PythonInterpreter::run()
     QString(mBaseDir + ":" + mConfigDir + "/python").toWCharArray(path);
 #endif
 
-
     Py_SetPath(path);
     mDebugger->initialize();
     Py_Initialize();
@@ -91,8 +90,9 @@ void PythonInterpreter::run()
 void PythonInterpreter::runFile(const QString &filename)
 {
     FILE* file = fopen(qPrintable(filename), "r");
-    if(!file)
+    if(!file){
         return;
+    }
     PyRun_SimpleFile(file, qPrintable(filename));
     fclose(file);
 }
@@ -111,8 +111,6 @@ QList<QPair<QString, int> > PythonInterpreter::breakpoints() const
 {
     return mDebugger->breakpoints();
 }
-
-
 
 void PythonInterpreter::resume()
 {

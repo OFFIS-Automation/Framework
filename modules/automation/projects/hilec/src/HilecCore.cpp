@@ -28,8 +28,9 @@ HilecCore* HilecCore::mInstance = 0;
 
 HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
 {
-    if(mInstance)
+    if(mInstance){
         throw std::runtime_error(tr("HilecCore already running").toStdString());
+    }
     mInstance = this;
     qRegisterMetaType< QList<bool> >("QList<bool>");
     qRegisterMetaType<ScriptCompileInfo>("ScriptCompileInfo");
@@ -60,10 +61,11 @@ bool HilecCore::waitForStop(uint timeout)
 
 void HilecCore::runFile(const QString &filename)
 {
-    if(mPython.isRunning())
+    if(mPython.isRunning()){
         resume();
-    else
+    } else {
         mPython.start(filename, mBaseDir);
+    }
 }
 
 void HilecCore::compileFile(const QString &filename)

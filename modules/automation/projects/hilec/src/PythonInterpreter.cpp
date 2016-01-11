@@ -31,7 +31,6 @@ PythonInterpreter::PythonInterpreter(const QString &configDir)
     : mDebugger(new PythonDebugger())
 {
     mConfigDir = configDir;
-
     PyImport_AppendInittab("offisio", initIoModule);
 }
 
@@ -44,8 +43,9 @@ PythonInterpreter::~PythonInterpreter()
 
 void PythonInterpreter::start(const QString &filename, const QString &baseDir)
 {
-    if(filename.isEmpty())
+    if(filename.isEmpty()){
         return;
+    }
     mBaseDir = baseDir;
     mFilename = filename;
     QThread::start();
@@ -88,8 +88,9 @@ void PythonInterpreter::run()
 void PythonInterpreter::runFile(const QString &filename)
 {
     FILE* file = fopen(qPrintable(filename), "r");
-    if(!file)
+    if(!file){
         return;
+    }
     PyRun_SimpleFile(file, qPrintable(filename));
     fclose(file);
 }

@@ -86,8 +86,7 @@ void PylonCamera::execute()
             converter.OutputPixelFormat = PixelType_BGR8packed;
             converter.OutputBitAlignment = OutputBitAlignment_MsbAligned;
             converter.Convert(target, ptrGrabResult);
-            RgbImage image(target.GetHeight(), target.GetWidth(),
-                            (uchar *)target.GetBuffer());
+            RgbImage image(target.GetHeight(), target.GetWidth(), (uchar *)target.GetBuffer());
             mOut.send(image.clone());
         }
     } catch (GenICam::GenericException &e) {

@@ -107,8 +107,12 @@ void RcUnitsBase::loadConfig(const QString &filename)
         QString type = settings.value("type").toString();
         QString name = settings.value("name").toString();
         QString config = settings.value("configFile").toString();
-        if(!config.isEmpty())
+        if(config == "encoded"){
+            config = filename;
+        } else if(!config.isEmpty()){
             config = QFileInfo(baseDir + "/" + config).absoluteFilePath();
+        }
+
         QString error;
         RcUnitInterface* plugin = loadPlugin(type, &error);
         if(plugin)
@@ -340,7 +344,6 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString &unitName, const QSt
     // Connet this unit
     unitToUpdate->updateTelecontrolAssignment(telecontrolDeviceName);
     emit telecontrolAssignmentUpdated(unitName, telecontrolDeviceName);
-
 }
 
 void RcUnitsBase::activateGamepad(const QString &unitName)

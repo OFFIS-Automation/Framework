@@ -1,32 +1,25 @@
 VPATH += $$PWD
 
-PYLON_ROOT = $$(PYLON_ROOT)
-isEmpty(PYLON_ROOT) {
-    error("Error: PYLON_ROOT not found. Please install Pylon SDK")
+PYLON_DEV_DIR = $$(PYLON_DEV_DIR)
+isEmpty(PYLON_DEV_DIR) {
+    error("Error: PYLON_DEV_DIR  not found. Please install Pylon SDK")
 } else {
-    message("Pylon found: $${PYLON_ROOT}");
-}
-
-GENICAM_ROOT = $$(PYLON_GENICAM_ROOT)
-isEmpty(GENICAM_ROOT) {
-    error("Error: PYLON_GENICAM_ROOT not found. Please install Pylon SDK")
-} else {
-    message("Pylon genicam found: $${GENICAM_ROOT}");
+    message("Pylon SDK found at $${PYLON_DEV_DIR}");
 }
 
 TEMPLATE = lib
 CONFIG += dll
 
-INCLUDEPATH += $$(PYLON_ROOT)/include
-LIBS += -L$$(PYLON_ROOT)/lib/Win32
-INCLUDEPATH += $$(PYLON_GENICAM_ROOT)/library/cpp/include
-LIBS+= -L$$(PYLON_GENICAM_ROOT)/library/cpp/lib/win32_i86
+INCLUDEPATH += $$(PYLON_DEV_DIR)/include
+LIBS += -L$$(PYLON_DEV_DIR)/lib/Win32
+#INCLUDEPATH += $$(PYLON_GENICAM_ROOT)/library/cpp/include
+#LIBS+= -L$$(PYLON_GENICAM_ROOT)/library/cpp/lib/win32_i86
 
 message($$LIBS)
 
 HEADERS += \
     src/PylonPlugin.h \
-        src/PylonCamera.h \
+    src/PylonCamera.h \
     src/params/IntegerParameter.h \
     src/params/ParamInterface.h \
     src/params/BoolParameter.h \

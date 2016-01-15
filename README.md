@@ -19,7 +19,6 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 * [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
 
-
 # Scientific publications
 
 * [A Rapid Automation Framework for Applications on the Micro- and Nanoscale](http://www.araa.asn.au/acra/acra2013/papers/pap110s1-file1.pdf)
@@ -37,7 +36,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 ## License
 
 OFFIS-Automation-Framework
-Copyright (C) 2013-2014 OFFIS e.V.
+Copyright (C) 2013-2016 OFFIS e.V.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

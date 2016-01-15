@@ -17,6 +17,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## Integrated / Included Frameworks
 
+* [Qt](http://www.qt.io/download-open-source/)
 * [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
 
 # Scientific publications
@@ -35,7 +36,8 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 
 ## License
 
-OFFIS-Automation-Framework
+OFFIS Automation Framework
+
 Copyright (C) 2013-2016 OFFIS e.V.
 
 This program is free software: you can redistribute it and/or modify

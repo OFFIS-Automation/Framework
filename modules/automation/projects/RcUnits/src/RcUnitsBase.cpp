@@ -17,6 +17,11 @@
 #include "RcUnitsBase.h"
 #include "RcUnit.h"
 
+#include "telecontrol/TelecontrolFactory.h"
+#include "telecontrol/RemoteGamepad.h"
+#include "telecontrol/Gamepad.h"
+#include "MasterTcInvoker.h"
+
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFileInfo>
@@ -26,8 +31,6 @@
 #include <rc/RcUnitInterface.h>
 #include <QKeyEvent>
 #include <QList>
-#include "telecontrol/TelecontrolFactory.h"
-#include "MasterTcInvoker.h"
 
 RcUnitsBase::RcUnitsBase(const QString &rcUnitPluginDir) :
     QObject(), mConnexionModifiersPressed(QMap<int, bool>())
@@ -428,7 +431,7 @@ void RcUnitsBase::deactivateGamepadAll()
 void RcUnitsBase::updateGamepadParameters(const QString &unitName, const QString &methodName, double sensitivity, const QList<bool>& inverts)
 {
     // removed master tc invokers
-    GamepadEndpoint* unitToUpdate = 0;//mMasterTcInvokers.value(unitName, 0);
+    GamepadEndpoint* unitToUpdate = 0;
     if(!unitToUpdate){
         unitToUpdate = mUnits.value(unitName, 0);
     }
@@ -445,6 +448,24 @@ void RcUnitsBase::updateGamepadParameters(const QString &unitName, const QString
         invertList << QString(invert ? "1" : "0");
     }
     settings.setValue("inverts", invertList);
+}
+
+void RcUnitsBase::remoteGamepadDataUpdated(const QMap<int, double> &data, const QString &gamepadName)
+{
+    foreach (Gamepad *gamepad, mGamepadDevices){
+        if(gamepad->getGamepadType() == Gamepad::Remote){
+            ((RemoteGamepad *)gamepad)->onRemoteGamepadDataUpdated(data, gamepadName);
+        }
+    }
+}
+
+void RcUnitsBase::remoteGamepadButtonToggled(int buttonId, const bool &pressed, const QString &gamepadName)
+{
+    foreach (Gamepad *gamepad, mGamepadDevices){
+        if(gamepad->getGamepadType() == Gamepad::Remote){
+            ((RemoteGamepad *)gamepad)->onRemoteGamepadButtonToggled(buttonId, pressed, gamepadName);
+        }
+    }
 }
 
 void RcUnitsBase::acquire(const QString &unitName)

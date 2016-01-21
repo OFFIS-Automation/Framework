@@ -225,12 +225,12 @@ void HilecCore::updateGamepadParameters(const QString &unitName, const QString &
 
 void HilecCore::remoteGamepadDataUpdated(const QMap<int, double> &data, const QString &gamepadName)
 {
-
+   RcUnits::instance()->remoteGamepadDataUpdated(data, gamepadName);
 }
 
 void HilecCore::remoteGamepadButtonToggled(int buttonId, const bool &pressed, const QString &gamepadName)
 {
-
+    RcUnits::instance()->remoteGamepadButtonToggled(buttonId, pressed, gamepadName);
 }
 
 void HilecCore::activateHaptic(const QString &unitName)

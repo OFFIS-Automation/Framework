@@ -31,7 +31,8 @@ protected:
     LinuxGamepad();
     virtual void run();
     virtual bool initialize();
-    virtual QString getName() { return mName; }
+    QString getName() { return mName; }
+    GamepadType getGamepadType() { return GamepadType::Linux; }
 
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);

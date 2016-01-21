@@ -23,9 +23,19 @@
 class Gamepad : public QThread
 {
 public:
+    enum GamepadType
+    {
+        Windows,
+        Linux,
+        Remote
+    };
+
     virtual QString getName() = 0;
+    virtual GamepadType getGamepadType() = 0;
     virtual ~Gamepad();
     void stop();
+
+
 signals:
     void dataUpdated(const QMap<int,double>& data, const QString& gamepadName = QString());
     void buttonToggled(int buttonId, bool pressed = false, const QString& gamepadName = QString());

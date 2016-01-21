@@ -37,8 +37,8 @@ SOURCES += src/RcUnit.cpp \
     src/RcUnitsBase.cpp\
     src/telecontrol/Gamepad.cpp \
     src/MasterTcInvoker.cpp \
-    src/telecontrol/WindowsTelecontrolFactory.cpp
-
+    src/telecontrol/WindowsTelecontrolFactory.cpp \
+    src/telecontrol/RemoteGamepad.cpp
 
 HEADERS += src/RcUnit.h \
     src/TcInvoker.h \
@@ -57,17 +57,16 @@ HEADERS += src/RcUnit.h \
     ../../include/rc/types/RobotRcUnit.h \
     ../../include/rc/types/UserRcUnit.h \
     ../../include/telecontrol/HapticInterface.h \
-    src/telecontrol/WindowsTelecontrolFactory.h
+    src/telecontrol/WindowsTelecontrolFactory.h \
+    src/telecontrol/RemoteGamepad.h
 
 win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \
         ../../include/telecontrol/GamepadInterface.h
-        src/telecontrol/WindowsRemoteGamepad.h
 
     LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
 
-    SOURCES += src/telecontrol/WindowsGamepad.cpp \
-        src/telecontrol/WindowsRemoteGamepad.cpp
+    SOURCES += src/telecontrol/WindowsGamepad.cpp
 }
 
 unix:!macx{

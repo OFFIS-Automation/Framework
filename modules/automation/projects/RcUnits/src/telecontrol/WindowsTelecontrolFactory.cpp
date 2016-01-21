@@ -22,7 +22,6 @@
 #include <QCoreApplication>
 #include <QPluginLoader>
 #include <telecontrol/GamepadInterface.h>
-
 #include <QUuid>
 
 QMap<QString, Gamepad *> WindowsTelecontrolFactory::sGamepadDevices;

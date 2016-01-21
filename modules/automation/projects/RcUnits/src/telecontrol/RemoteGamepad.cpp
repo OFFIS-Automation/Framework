@@ -14,17 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "WindowsRemoteGamepad.h"
+#include "RemoteGamepad.h"
+
+#include <telecontrol/TcConfig.h>
+#include <../projects/hilec/src/HilecCore.h>
 
 #include <QDebug>
-#include <telecontrol/TcConfig.h>
+#include <QElapsedTimer>
 
-WindowsRemoteGamepad::WindowsRemoteGamepad(const QString &name, const QString &guid) :
-    mName(name),
-    mGuid(guid)
+RemoteGamepad::RemoteGamepad(const QString &name) :
+    mName(name)
 {
 }
 
-WindowsRemoteGamepad::~WindowsRemoteGamepad()
+RemoteGamepad::~RemoteGamepad()
 {
+}
+
+void RemoteGamepad::onRemoteGamepadDataUpdated(const QMap<int, double> &data, const QString &gamepadName)
+{
+    Q_UNUSED(gamepadName)
+    emit dataUpdated(data, mName);
+}
+
+void RemoteGamepad::onRemoteGamepadButtonToggled(int buttonId, const bool &pressed, const QString &gamepadName)
+{
+    Q_UNUSED(gamepadName)
+    emit buttonToggled(buttonId, pressed, mName);
 }

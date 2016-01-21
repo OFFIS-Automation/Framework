@@ -56,6 +56,9 @@ public:
     void deactivateGamepadAll();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
+    void remoteGamepadDataUpdated(const QMap<int, double>& data, const QString& gamepadName);
+    void remoteGamepadButtonToggled(int buttonId, const bool& pressed, const QString& gamepadName);
+
     void activateHaptic(const QString& unitName);
     void deactivateHaptic(const QString& unitName);
     void deactivateHapticAll();
@@ -69,6 +72,7 @@ public:
     void releaseAll();
     void stop(const QString& unitName);
     void stopAll();
+
 signals:
     void unitsUpdated();
     void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);

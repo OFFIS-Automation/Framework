@@ -94,7 +94,8 @@ void PylonCamera::execute()
     }
 }
 
-void PylonCamera::stop() {
+void PylonCamera::stop()
+{
     mCam->StopGrabbing();
     updateParams();
 }

@@ -15,13 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TelecontrolFactory.h"
+#include "RemoteGamepad.h"
+
 #include <QDir>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QPluginLoader>
 
 #ifdef Q_OS_WIN
-
 #include "WindowsTelecontrolFactory.h"
 #elif defined(Q_OS_LINUX)
 #include "LinuxTelecontrolFactory.h"
@@ -45,6 +46,10 @@ QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
 
     #ifdef Q_OS_WIN
         gamepadDevices = WindowsTelecontrolFactory::getGamepadDevices();
+        // Add the remote gamepad for now, find a better location later
+        QString remoteGamepadname = tr("Remote gamepad");
+        RemoteGamepad* remoteGamepad = new RemoteGamepad(remoteGamepadname);
+        gamepadDevices.insert(remoteGamepadname, remoteGamepad);
     #elif defined(Q_OS_LINUX)
         #pragma warning(Fix me)
         //gamepad = LinuxTelecontrolFactory::createGamepad();

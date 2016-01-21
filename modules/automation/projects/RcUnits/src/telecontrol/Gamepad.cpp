@@ -26,7 +26,6 @@ Gamepad::Gamepad() : mStop(false)
 {
 }
 
-
 void Gamepad::stop()
 {
     mStop = true;

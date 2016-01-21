@@ -34,7 +34,8 @@ protected:
     WindowsGamepad(const QString& name, const QString& guid);
     virtual void run();
     virtual bool initialize();
-    virtual QString getName() { return mName; }
+    QString getName() { return mName; }
+    GamepadType getGamepadType() { return GamepadType::Windows; }
     void createMapping();
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);

@@ -93,6 +93,9 @@ public slots:
     virtual void deactivateGamepadAll();
     virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
+    virtual void remoteGamepadDataUpdated(const QMap<int, double>& data, const QString& gamepadName);
+    virtual void remoteGamepadButtonToggled(int buttonId, const bool& pressed, const QString& gamepadName);
+
     virtual void activateHaptic(const QString& unitName);
     virtual void deactivateHaptic(const QString& unitName);
     virtual void deactivateHapticAll();

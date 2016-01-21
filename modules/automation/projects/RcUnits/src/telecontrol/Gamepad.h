@@ -27,7 +27,7 @@ public:
     virtual ~Gamepad();
     void stop();
 signals:
-    void dataUpdate(const QMap<int,double>& data);
+    void dataUpdated(const QMap<int,double>& data, const QString& gamepadName = QString());
     void buttonToggled(int buttonId, bool pressed = false, const QString& gamepadName = QString());
 
 protected:

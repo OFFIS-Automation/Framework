@@ -345,7 +345,7 @@ void WindowsGamepad::run()
                 joysticks[i] = 0;
             }
         }
-        emit dataUpdate(joysticks);
+        emit dataUpdated(joysticks, getName());
 
         // Eventually sleep thread, limit update rate
         int remaining = 50 - timer.elapsed();

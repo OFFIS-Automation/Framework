@@ -12,8 +12,6 @@ CONFIG += dll
 
 INCLUDEPATH += $$(PYLON_DEV_DIR)/include
 LIBS += -L$$(PYLON_DEV_DIR)/lib/Win32
-#INCLUDEPATH += $$(PYLON_GENICAM_ROOT)/library/cpp/include
-#LIBS+= -L$$(PYLON_GENICAM_ROOT)/library/cpp/lib/win32_i86
 
 message($$LIBS)
 

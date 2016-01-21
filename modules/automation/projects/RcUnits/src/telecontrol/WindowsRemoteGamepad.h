@@ -14,28 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_GAMEPAD_HQT
-#define RCUNITTOOLS_GAMEPAD_HQT
+#ifndef RCUNITTOOLS_WINDOWSREMOTEGAMEPAD_HQT
+#define RCUNITTOOLS_WINDOWSREMOTEGAMEPAD_HQT
 
-#include <QThread>
-#include <QMap>
+#include "Gamepad.h"
 
-class Gamepad : public QThread
+class WindowsTelecontrolFactory;
+class WindowsRemoteGamepad : public Gamepad
 {
 public:
-    virtual QString getName() = 0;
-    virtual ~Gamepad();
-    void stop();
-signals:
-    void dataUpdate(const QMap<int,double>& data);
-    void buttonToggled(int buttonId, bool pressed = false, const QString& gamepadName = QString());
+    virtual ~WindowsRemoteGamepad();
 
 protected:
-    Gamepad();
-    bool mStop;
-
-private:
-    Q_OBJECT
+    WindowsRemoteGamepad(const QString& name, const QString& guid);
+    virtual QString getName() { return mName; }
+    friend class WindowsTelecontrolFactory;
+    QString mName, mGuid;
 };
 
-#endif //RCUNITTOOLS_GAMEPAD_HQT
+#endif //RCUNITTOOLS_WINDOWSREMOTEGAMEPAD_HQT

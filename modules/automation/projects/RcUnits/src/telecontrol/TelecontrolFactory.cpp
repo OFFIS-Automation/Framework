@@ -39,7 +39,6 @@ TelecontrolFactory &TelecontrolFactory::instance()
     return factory;
 }
 
-
 QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
 {
     QMap<QString, Gamepad *> gamepadDevices = QMap<QString, Gamepad *>();

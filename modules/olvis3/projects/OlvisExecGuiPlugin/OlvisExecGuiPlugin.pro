@@ -29,6 +29,7 @@ win32-msvc*{
         DEFINES += OPENGL_ES
     } else {
         QT += opengl
+        LIBS += -lopengl32
         DEFINES += OPEN_GL
         message("Build with OpenGL")
     }

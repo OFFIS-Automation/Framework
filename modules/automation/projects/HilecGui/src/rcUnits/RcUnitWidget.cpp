@@ -32,7 +32,7 @@ RcUnitWidget::RcUnitWidget(QWidget *parent) :
     ui->setupUi(this);
     HilecInterface* hilec = HilecSingleton::hilec();
     connect(hilec, SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits()));
-    connect(this, SIGNAL(projectFileChanged(QString)), hilec, SLOT(loadConfig(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(projectFileChanged(QString)), hilec, SLOT(loadFromFile(QString)), Qt::QueuedConnection);
     connect(this, SIGNAL(callRcAcquire(QString)), hilec, SLOT(callRcUnitAcquire(QString)), Qt::QueuedConnection);
     connect(this, SIGNAL(callRcRelease(QString)), hilec, SLOT(callRcUnitRelease(QString)), Qt::QueuedConnection);
 }

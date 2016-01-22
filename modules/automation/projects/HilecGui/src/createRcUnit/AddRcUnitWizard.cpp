@@ -47,8 +47,7 @@ AddRcUnitWizard::AddRcUnitWizard(const QString &projectFile, QWidget *parent) :
 
     // Hide help button
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-    connect(this, SIGNAL(projectFileChanged(QString)), HilecSingleton::hilec(), SLOT(loadConfig(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(projectFileChanged(QString)), HilecSingleton::hilec(), SLOT(loadFromFile(QString)), Qt::QueuedConnection);
 }
 
 AddRcUnitWizard::~AddRcUnitWizard()
@@ -58,10 +57,10 @@ AddRcUnitWizard::~AddRcUnitWizard()
 
 void AddRcUnitWizard::addPlugin()
 {
-    if(!mRcUnit)
+    if(!mRcUnit) {
         return;
-    if(mRcUnit->createConfig(ui->configFile->text(), parentWidget()))
-    {
+    }
+    if(mRcUnit->createConfig(ui->configFile->text(), parentWidget())) {
         QSettings settings(mProjectFile, QSettings::IniFormat);
         int size = settings.beginReadArray("hilecConfig");
         settings.endArray();
@@ -85,8 +84,9 @@ void AddRcUnitWizard::on_selectFileButton_clicked()
 {
     QString dir = QFileInfo(mProjectFile).absolutePath();
     QString name = QFileDialog::getSaveFileName(this, tr("Select config file"), dir, "*." +mFileExtension, 0, QFileDialog::DontConfirmOverwrite);
-    if(!name.isEmpty())
+    if(!name.isEmpty()){
         ui->configFile->setText(name);
+    }
 }
 
 void AddRcUnitWizard::on_rcUnitSelect_currentIndexChanged(const QString &type)
@@ -98,45 +98,39 @@ void AddRcUnitWizard::on_rcUnitSelect_currentIndexChanged(const QString &type)
     QStringList names;
     names << type + ".dll" << type + ".dylib" << type + ".so";
     QString rcUnitDir = QCoreApplication::applicationDirPath() + "/plugins/rcUnits";
-    foreach(QString name, names)
-    {
+    foreach(QString name, names){
         QString path = rcUnitDir + "/" + name;
-        if(QFileInfo(path).exists())
-        {
+        if(QFileInfo(path).exists()){
             found = path;
             break;
         }
     }
-    if(found.isEmpty())
+    if(found.isEmpty()){
         return;
+    }
     QString currentDir = QDir::current().absolutePath();
     QDir::setCurrent(QCoreApplication::applicationDirPath() + "/plugins");
     QPluginLoader loader(found);
     mRcUnit = 0;
     QObject* obj = loader.instance();
-    if(!obj)
-    {
+    if(!obj) {
         QString error = tr("The selected plugin could not be loaded: %1").arg(loader.errorString());
         ui->description->setTextColor(Qt::red);
         ui->description->setText(error);
-    }
-    else
-    {
+    } else {
         mRcUnit = qobject_cast<RcUnitInterface*>(obj);
-        if(!mRcUnit)
-        {
+        if(!mRcUnit) {
             QString error = tr("The selected plugin could not be loaded: %1").arg(tr("The selected module is not a valid plugin. Maybe an old version?"));
             ui->description->setTextColor(Qt::red);
             ui->description->setText(error);
-        }
-        else
-        {
+        } else {
             ui->description->setTextColor(Qt::black);
             ui->description->setText(mRcUnit->description());
             ui->defaultName->setText(mRcUnit->name());
             ui->fileBox->setVisible(mRcUnit->needsConfigFile());
-            if(!mRcUnit->needsConfigFile())
+            if(!mRcUnit->needsConfigFile()){
                 setField("file", "none");
+            }
             mFileExtension = mRcUnit->configFileExtension();
         }
     }
@@ -146,11 +140,9 @@ void AddRcUnitWizard::on_name_textChanged(const QString &arg1)
 {
     QSettings settings(mProjectFile, QSettings::IniFormat);
     int size = settings.beginReadArray("hilecConfig");
-    for(int i=0; i< size; i++)
-    {
+    for(int i=0; i< size; i++) {
         settings.setArrayIndex(i);
-        if(settings.value("name").toString() == arg1)
-        {
+        if(settings.value("name").toString() == arg1) {
             ui->definePage->setHasError(true);
             ui->nameError->show();
             return;
@@ -163,17 +155,16 @@ void AddRcUnitWizard::on_name_textChanged(const QString &arg1)
 void AddRcUnitWizard::on_configFile_textChanged(const QString &arg1)
 {
     ui->fileWarning->hide();
-    if(arg1.isEmpty())
+    if(arg1.isEmpty()) {
         return;
+    }
     QString filePath = QFileInfo(mProjectFile).absoluteDir().relativeFilePath(arg1);
     QSettings settings(mProjectFile, QSettings::IniFormat);
     int size = settings.beginReadArray("hilecConfig");
 
-    for(int i=0; i< size; i++)
-    {
+    for(int i=0; i< size; i++) {
         settings.setArrayIndex(i);
-        if(settings.value("configFile").toString() == filePath)
-        {
+        if(settings.value("configFile").toString() == filePath) {
             ui->fileWarning->show();
             return;
         }

@@ -102,6 +102,8 @@ Section /o "Development version" SecDevFiles
 	
 	SetOutPath "$INSTDIR\debug"
 	File "..\..\bin\debug\*.exe"
+	File "..\..\bin\debug\Qt5*.dll"
+	File "..\..\bin\debug\icu*.dll"
 	
 	SetOutPath "$INSTDIR\debug\plugins"
 SectionEnd

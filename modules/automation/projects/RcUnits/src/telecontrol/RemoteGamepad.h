@@ -32,7 +32,7 @@ public slots:
 protected:
     RemoteGamepad(const QString& name);
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return GamepadType::Remote; }
+    GamepadType getGamepadType() { return Remote; }
     friend class TelecontrolFactory;
     QString mName;
 };

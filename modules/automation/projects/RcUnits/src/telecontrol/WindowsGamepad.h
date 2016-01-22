@@ -35,7 +35,7 @@ protected:
     virtual void run();
     virtual bool initialize();
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return GamepadType::Windows; }
+    GamepadType getGamepadType() { return Windows; }
     void createMapping();
     virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);

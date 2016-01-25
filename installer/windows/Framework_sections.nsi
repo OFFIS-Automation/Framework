@@ -1,4 +1,3 @@
-
 Section ""
 	SetOutPath "$INSTDIR"
 	File "license.txt"

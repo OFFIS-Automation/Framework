@@ -36,34 +36,38 @@ PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
 
 void PylonCamera::initialize()
 {
-    mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
-    mCam->Open();
-    // for safety
-    mCam->StopGrabbing();
+    try {
+        mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
+        mCam->Open();
+        mCam->StopGrabbing();
 
-    // create a subset of parameters. If a parameter is not found, it is simply not added and therefor not available
-    createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
-    createParam<IntegerParameter>("Width", AdvancedPortVisibility);
-    createParam<IntegerParameter>("Height", AdvancedPortVisibility);
-    createParam<IntegerParameter>("OffsetX", AdvancedPortVisibility);
-    createParam<IntegerParameter>("OffsetY", AdvancedPortVisibility);
-    createParam<BoolParameter>("ReverseX", ExpertPortVisibility);
-    createParam<BoolParameter>("ReverseY", ExpertPortVisibility);
-    createParam<EnumerationParameter>("AutoFunctionProfile", ExpertPortVisibility);
-    createParam<EnumerationParameter>("GainAuto", AdvancedPortVisibility);
-    // if a camera has no Gain parameter, try the GainRaw parameter
-    if(!createParam<FloatParameter>("Gain", AdvancedPortVisibility)) {
-        createParam<IntegerParameter>("GainRaw", AdvancedPortVisibility);
-    }
-    createParam<EnumerationParameter>("BalanceWhiteAuto", AdvancedPortVisibility);
-    createParam<EnumerationParameter>("ShutterMode", ExpertPortVisibility);
-    createParam<EnumerationParameter>("ExposureAuto", AdvancedPortVisibility);
-    createParam<EnumerationParameter>("ExposureMode", ExpertPortVisibility);
-    // if a camera has no ExposureTime parameter, try ExposureTimeAbs and ExposureTimeRaw
-    if(!createParam<FloatParameter>("ExposureTime", AdvancedPortVisibility)) {
-        if(!createParam<FloatParameter>("ExposureTimeAbs", AdvancedPortVisibility)) {
-            createParam<IntegerParameter>("ExposureTimeRaw", AdvancedPortVisibility);
+        // create a subset of parameters. If a parameter is not found, it is simply not added and therefor not available
+        createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
+        createParam<IntegerParameter>("Width", AdvancedPortVisibility);
+        createParam<IntegerParameter>("Height", AdvancedPortVisibility);
+        createParam<IntegerParameter>("OffsetX", AdvancedPortVisibility);
+        createParam<IntegerParameter>("OffsetY", AdvancedPortVisibility);
+        createParam<BoolParameter>("ReverseX", ExpertPortVisibility);
+        createParam<BoolParameter>("ReverseY", ExpertPortVisibility);
+        createParam<EnumerationParameter>("AutoFunctionProfile", ExpertPortVisibility);
+        createParam<EnumerationParameter>("GainAuto", AdvancedPortVisibility);
+        // if a camera has no Gain parameter, try the GainRaw parameter
+        if(!createParam<FloatParameter>("Gain", AdvancedPortVisibility)) {
+            createParam<IntegerParameter>("GainRaw", AdvancedPortVisibility);
         }
+        createParam<EnumerationParameter>("BalanceWhiteAuto", AdvancedPortVisibility);
+        createParam<EnumerationParameter>("ShutterMode", ExpertPortVisibility);
+        createParam<EnumerationParameter>("ExposureAuto", AdvancedPortVisibility);
+        createParam<EnumerationParameter>("ExposureMode", ExpertPortVisibility);
+        // if a camera has no ExposureTime parameter, try ExposureTimeAbs and ExposureTimeRaw
+        if(!createParam<FloatParameter>("ExposureTime", AdvancedPortVisibility)) {
+            if(!createParam<FloatParameter>("ExposureTimeAbs", AdvancedPortVisibility)) {
+                createParam<IntegerParameter>("ExposureTimeRaw", AdvancedPortVisibility);
+            }
+        }
+    } catch(const std::exception& e) {
+        qWarning() << tr("Could not initialize pylon:") << " " <<  e.what();
+        return;
     }
 }
 

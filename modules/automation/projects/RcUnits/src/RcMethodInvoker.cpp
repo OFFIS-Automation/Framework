@@ -109,6 +109,8 @@ void RcMethodInvoker::checkType(const QVariant& arg, int specType, int pos)
         return;
     if(arg.type() == QVariant::Int && specType == QMetaType::Double)
         return;
+    if(arg.type() == QVariant::List && specType == QMetaType::QVariantList)
+        return;
     if(arg.type() == QVariant::List)
     {
         if(!mFactories.contains(specType))

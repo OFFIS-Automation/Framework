@@ -20,7 +20,7 @@
 #include "MainOverlay.h"
 
 #include <opencv2/core/core.hpp>
-#include <QImage>
+#include <QPixmap>
 
 class ImagePortOverlay : public MainOverlay
 {
@@ -34,7 +34,7 @@ public:
 
 protected:
     double mScale;
-    QImage mImage;
+    QPixmap mPixmap;
     cv::Mat converted;
 };
 

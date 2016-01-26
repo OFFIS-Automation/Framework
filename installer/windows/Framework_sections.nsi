@@ -72,8 +72,8 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\opencv*.dll"
 	
 	SetOutPath "$INSTDIR\debug\plugins"
-	File "..\..\bin\debug\plugins\olvis*d.dll"
-	File /x "opencv*d.dll" "..\..\bin\debug\plugins\opencv*.dll"
+	File "..\..\bin\debug\plugins\olvis*.dll"
+	File "..\..\bin\debug\plugins\opencv*d.dll"
 	
 	SetOutPath "$INSTDIR\debug\plugins\olvisGuiPlugins"
 	File "..\..\bin\debug\plugins\olvisGuiPlugins\*.dll"

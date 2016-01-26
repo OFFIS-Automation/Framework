@@ -102,6 +102,6 @@ void LinuxGamepad::run()
                 emit buttonToggled(buttonId, QList<int>(), value);
         }
         lastButtons = buttons;
-        emit dataUpdate(joysticks);
+        emit dataUpdated(joysticks);
     }
 }

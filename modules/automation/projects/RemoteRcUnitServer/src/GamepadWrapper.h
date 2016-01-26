@@ -24,11 +24,11 @@ class GamepadWrapper : public QObject
     Q_OBJECT
 public:
     explicit GamepadWrapper(QObject *parent = 0);
-    void handleData(const QMap<int, double>& data) { emit dataUpdate(data); }
+    void handleData(const QMap<int, double>& data) { emit dataUpdated(data); }
     void handleButton(int buttonId, bool pressed) { emit buttonToggled(buttonId, pressed); }
 signals:
     void buttonToggled(int buttonId, bool pressed);
-    void dataUpdate(const QMap<int,double>& data);
+    void dataUpdated(const QMap<int,double>& data);
 public slots:
 
 };

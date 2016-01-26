@@ -42,7 +42,7 @@ TcInvoker::TcInvoker(QObject* device, const QList<RcUnit::TcMoveMethod>& gamepad
 void TcInvoker::connectGamepad(QObject *gamepad)
 {
     connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(handleGamepadButtonToggled(int,bool)), Qt::DirectConnection);
-    connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
+    connect(gamepad, SIGNAL(dataUpdated(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
 }
 
 void TcInvoker::disconnectGamepad(QObject *gamepad)

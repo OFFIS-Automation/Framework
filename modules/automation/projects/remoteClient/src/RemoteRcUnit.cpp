@@ -39,7 +39,7 @@ void RemoteRcUnit::connectGamepad(QObject *gamepad)
 {
     mRemote.enableTelecontrol(name());
     connect(gamepad, SIGNAL(buttonToggled(int,bool)), SLOT(setGamepadButton(int,bool)), Qt::DirectConnection);
-    connect(gamepad, SIGNAL(dataUpdate(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
+    connect(gamepad, SIGNAL(dataUpdated(QMap<int,double>)), SLOT(handleGamepadData(QMap<int,double>)), Qt::DirectConnection);
 
 }
 

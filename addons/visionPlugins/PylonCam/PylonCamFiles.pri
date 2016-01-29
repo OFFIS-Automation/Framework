@@ -13,8 +13,6 @@ CONFIG += dll
 INCLUDEPATH += $$(PYLON_DEV_DIR)/include
 LIBS += -L$$(PYLON_DEV_DIR)/lib/Win32
 
-message($$LIBS)
-
 HEADERS += \
     src/PylonPlugin.h \
     src/PylonCamera.h \

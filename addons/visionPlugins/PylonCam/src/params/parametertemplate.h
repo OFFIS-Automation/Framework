@@ -79,9 +79,9 @@ template <class PORT, class PARAM>
 bool ParameterTemplate<PORT, PARAM>::initialize(GenApi::INodeMap &nodes)
 {
     mCamParam = nodes.GetNode(mName.toLocal8Bit().data());
-    if (!GenApi::IsReadable(mCamParam))
+    if (!GenApi::IsReadable(mCamParam)){
         return false;
-    else {
+    } else {
         mPort.setName(mCamParam->GetNode()->GetDisplayName().c_str());
         mPort.setDesc(mCamParam->GetNode()->GetDescription().c_str());
         readUpdate(true);
@@ -93,12 +93,12 @@ template <class PORT, class PARAM>
 bool ParameterTemplate<PORT, PARAM>::update()
 {
     bool success = true;
-    if(mPort.hasChanged())
-    {
-        if(writable())
+    if(mPort.hasChanged()) {
+        if(writable()) {
             writeNewValue();
-        else
+        } else {
             success = false;
+        }
     }
     return success;
 }
@@ -113,8 +113,9 @@ void ParameterTemplate<PORT, PARAM>::readUpdate(bool forceUpdate = false)
 template <class PORT, class PARAM>
 void DefaultParameterTemplate<PORT, PARAM>::readValue(bool ignoreCache, bool forceUpdate)
 {
-    if(forceUpdate || (mPort.getValue() != mCamParam->GetValue(false, ignoreCache)))
+    if(forceUpdate || (mPort.getValue() != mCamParam->GetValue(false, ignoreCache))){
         mPort.setDefault(mCamParam->GetValue(false, ignoreCache));
+    }
 }
 
 #endif // PARAMETERTEMPLATE_H

@@ -31,10 +31,11 @@ class PylonCamera : public UserFilter
 {
 public:
     /**
-     * creates an instance based on the camera info. Only the info is used, the camera is not opened
+     * @brief creates an instance based on the camera info. Only the info is used, the camera is not opened
      * sets up name and description of the camera
      */
     PylonCamera(Pylon::CDeviceInfo info);
+
     /**
      * @brief initialize is called when a camera is added to the image processing chain.
      * Opens the camera and sets up a subset of camera parameters

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ScriptErrorWidget</class>
- <widget class="QWidget" name="ScriptErrorWidget">
+ <widget class="QDockWidget" name="ScriptErrorWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,115 +13,113 @@
   <property name="windowTitle">
    <string>Script problems</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QTreeWidget" name="treeWidget">
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QTreeWidget" name="treeWidget">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <attribute name="headerVisible">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Message</string>
          </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">File</string>
          </property>
-         <attribute name="headerVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
+        </column>
+        <column>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="enableErrors">
           <property name="text">
-           <string>Message</string>
+           <string>Error</string>
           </property>
-         </column>
-         <column>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/exclamation.png</normaloff>:/ProjectEditor/exclamation.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="enableWarnings">
           <property name="text">
-           <string notr="true">File</string>
+           <string>Warning</string>
           </property>
-         </column>
-         <column>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/error.png</normaloff>:/ProjectEditor/error.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="enableInfos">
           <property name="text">
-           <string>Line</string>
+           <string>Info</string>
           </property>
-         </column>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="enableErrors">
-           <property name="text">
-            <string>Error</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../ProjectEditor/images/images.qrc">
-             <normaloff>:/ProjectEditor/exclamation.png</normaloff>:/ProjectEditor/exclamation.png</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="enableWarnings">
-           <property name="text">
-            <string>Warning</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../ProjectEditor/images/images.qrc">
-             <normaloff>:/ProjectEditor/error.png</normaloff>:/ProjectEditor/error.png</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="enableInfos">
-           <property name="text">
-            <string>Info</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../ProjectEditor/images/images.qrc">
-             <normaloff>:/ProjectEditor/information.png</normaloff>:/ProjectEditor/information.png</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-  </layout>
+          <property name="icon">
+           <iconset resource="../../../ProjectEditor/images/images.qrc">
+            <normaloff>:/ProjectEditor/information.png</normaloff>:/ProjectEditor/information.png</iconset>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources>
   <include location="../../../ProjectEditor/images/images.qrc"/>

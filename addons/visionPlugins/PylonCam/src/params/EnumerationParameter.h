@@ -1,7 +1,6 @@
 #ifndef ENUMERATIONPARAMETER_H
 #define ENUMERATIONPARAMETER_H
 
-
 #include "ParameterTemplate.h"
 #include <QString>
 #include <ports/IntegerPort.h>
@@ -22,12 +21,10 @@ public:
      * @see ParameterInterface and ParameterTemplate for more information
      */
     bool initialize(GenApi::INodeMap &nodes) {
-        if(EnumerationParameterInterface::initialize(nodes))
-        {
+        if(EnumerationParameterInterface::initialize(nodes)){
             Pylon::StringList_t entries;
             mCamParam->GetSymbolics(entries);
-            for(uint i=0;i<entries.size(); i++)
-            {
+            for(uint i=0;i<entries.size(); i++){
                 Pylon::String_t entryName = entries.at(i);
                 int value = mCamParam->GetEntryByName(entryName)->GetValue();
                 mPort.addChoice(value, entryName.c_str());
@@ -47,8 +44,9 @@ public:
      * @see ParameterTemplate
      */
     void readValue(bool ignoreCache, bool forceUpdate) {
-        if(forceUpdate || (mCamParam->GetIntValue(false, ignoreCache) != mPort.getValue()))
+        if(forceUpdate || (mCamParam->GetIntValue(false, ignoreCache) != mPort.getValue())){
             mPort.setDefault(mCamParam->GetIntValue(false, ignoreCache));
+        }
     }
 };
 

@@ -1,7 +1,6 @@
 #ifndef FLOATPARAMETER_H
 #define FLOATPARAMETER_H
 
-
 #include "ParameterTemplate.h"
 #include <QString>
 #include <ports/RealPort.h>

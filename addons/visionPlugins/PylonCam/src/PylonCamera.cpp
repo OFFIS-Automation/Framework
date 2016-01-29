@@ -23,13 +23,14 @@
 #include "params/FloatParameter.h"
 #include "params/EnumerationParameter.h"
 
+// Namespace for using pylon objects.
 using namespace Pylon;
-using namespace GenApi;
 
 PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
 {
     setName(info.GetFriendlyName().c_str());
     setGroup(QString("input/pylon/") + info.GetDeviceClass().c_str());
+
     mOut.setName("output");
     addOutputPort(mOut);
 }
@@ -37,11 +38,15 @@ PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
 void PylonCamera::initialize()
 {
     try {
+        // Create an instant camera object with given device information.
         mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
         mCam->Open();
+
+        // For safety reasons (and just in case) stop grabbing
         mCam->StopGrabbing();
 
-        // create a subset of parameters. If a parameter is not found, it is simply not added and therefor not available
+        // Create a subset of parameters. If a parameter is not found, it is simply
+        // not added and therefor not available
         createParam<EnumerationParameter>("PixelFormat", ExpertPortVisibility);
         createParam<IntegerParameter>("Width", AdvancedPortVisibility);
         createParam<IntegerParameter>("Height", AdvancedPortVisibility);
@@ -65,49 +70,87 @@ void PylonCamera::initialize()
                 createParam<IntegerParameter>("ExposureTimeRaw", AdvancedPortVisibility);
             }
         }
-    } catch(const std::exception& e) {
-        qWarning() << tr("Could not initialize pylon:") << " " <<  e.what();
-        return;
+    }
+    catch(const GenericException &e) {
+        throw std::runtime_error(e.GetDescription());
+    }
+    catch(const std::exception& e) {
+        throw std::runtime_error(e.GetDescription());
     }
 }
 
 void PylonCamera::start()
 {
-    updateParams();
-    mCam->StartGrabbing(GrabStrategy_LatestImageOnly);
+    try
+    {
+        updateParams();
+        // Start the grabbing images.
+        mCam->StartGrabbing(GrabStrategy_LatestImageOnly);
+    }
+    catch(const GenericException &e) {
+        throw std::runtime_error(e.GetDescription());
+    }
+    catch(const std::exception& e) {
+        throw std::runtime_error(e.GetDescription());
+    }
 }
 
 void PylonCamera::execute()
 {
+    if(!mCam) {
+        return;
+    }
+
     try {
         updateParams();
+        // This smart pointer will receive the grab result data.
         CGrabResultPtr ptrGrabResult;
-        mCam->RetrieveResult(500, ptrGrabResult);
-        if (ptrGrabResult->GrabSucceeded()) {
+        // Wait for an image and then retrieve it. A timeout of 1000 ms is used.
+        mCam->RetrieveResult(1000, ptrGrabResult);
+
+        // Image grabbed successfully=
+        if (ptrGrabResult && ptrGrabResult->GrabSucceeded()) {
             CPylonImage target;
-            // convert to correct format for vision system
+            // Convert to correct format for vision system
             CImageFormatConverter converter;
             converter.OutputPixelFormat = PixelType_BGR8packed;
             converter.OutputBitAlignment = OutputBitAlignment_MsbAligned;
             converter.Convert(target, ptrGrabResult);
+
+            // Now the grab result can be released. The grab result buffer is now
+            // only held by the pylon image.
+            ptrGrabResult.Release();
+
+            // Create an RGBImage from converted data
             RgbImage image(target.GetHeight(), target.GetWidth(), (uchar *)target.GetBuffer());
             mOut.send(image.clone());
+
+            // The Release() method can be used to release any data.
+            target.Release();
         }
     } catch (GenICam::GenericException &e) {
+        throw std::runtime_error(e.GetDescription());
+    }
+    catch(const std::exception& e) {
         throw std::runtime_error(e.GetDescription());
     }
 }
 
 void PylonCamera::stop()
 {
-    mCam->StopGrabbing();
+    if(mCam->IsGrabbing()) {
+        mCam->StopGrabbing();
+    }
     updateParams();
 }
 
 void PylonCamera::deinitialize()
 {
     if (mCam) {
-        mCam->Close();
+        // Destroy the Pylon Device representing the detached camera device.
+        // It cannot be used anymore.
+        // Calls closed automatically beforehand.
+        mCam->DestroyDevice();
         delete mCam;
     }
     mCam = 0;
@@ -116,19 +159,20 @@ void PylonCamera::deinitialize()
 void PylonCamera::updateParams()
 {
     // first, write all updates. Then, read all updates. Writing one parameter might effect values of others
-    foreach (ParameterInterface *param, mParams)
+    foreach (ParameterInterface *param, mParams) {
         param->update();
-    foreach (ParameterInterface *param, mParams)
+    }
+    foreach (ParameterInterface *param, mParams) {
         param->readUpdate();
-
+    }
 }
 
 Port *PylonCamera::portByName(const QString &name)
 {
-    foreach (ParameterInterface *param, mParams)
-    {
-        if(name == param->name())
+    foreach (ParameterInterface *param, mParams) {
+        if(name == param->name()) {
             return &param->port();
+        }
     }
     return 0;
 }

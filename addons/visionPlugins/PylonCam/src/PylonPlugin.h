@@ -2,7 +2,6 @@
 #define PYLONPLUGIN_H
 #include <filter/OlvisPlugin.h>
 
-
 class PylonPlugin : public OlvisPlugin
 {
     Q_OBJECT

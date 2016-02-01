@@ -22,7 +22,6 @@ class PylonFactory : UserFilterFactoryI
         catch(const std::exception& e) {
             throw std::runtime_error(e.what());
         }
-
     }
 
     virtual int numFilters()

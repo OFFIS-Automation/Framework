@@ -132,7 +132,7 @@ void PylonCamera::execute()
         throw std::runtime_error(e.GetDescription());
     }
     catch(const std::exception& e) {
-        throw std::runtime_error(e.GetDescription());
+        throw std::runtime_error(e.what());
     }
 }
 

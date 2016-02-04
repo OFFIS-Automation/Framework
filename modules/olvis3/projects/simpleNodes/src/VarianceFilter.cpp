@@ -21,7 +21,7 @@ REGISTER_FILTER(VarianceFilter);
 VarianceFilter::VarianceFilter()
 {
     setName("Variance");
-    setDesc("Calculates the variance inside the imageor region of interest.");
+    setDesc("Calculates the variance inside the image or region of interest");
     setGroup("image/analysis");
     mIn.setName("imageIn");
     mVarianceOut.setName("variance");

@@ -26,7 +26,7 @@ HistogramNode::HistogramNode()
 {
     setGroup("image/analysis");
     setName("Histogram");
-    setDesc("Creates a histogram of the incoming image.");
+    setDesc("Creates a histogram of the incoming image");
     addInputPort(mIn);
     addOutputPort(mOut);
 }

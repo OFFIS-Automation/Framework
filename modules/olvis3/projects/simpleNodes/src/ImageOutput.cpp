@@ -22,7 +22,7 @@ REGISTER_FILTER(ImageOutput);
 ImageOutput::ImageOutput()
 {
     setName("ImageOutput");
-    setDesc("Writes the incoming image to the given file.");
+    setDesc("Writes the incoming image to the given file");
     setGroup("output");
     mImage.setName("inImage");
     mImage.setDesc("Image input port");

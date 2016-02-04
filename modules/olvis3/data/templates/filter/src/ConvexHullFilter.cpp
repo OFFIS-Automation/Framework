@@ -21,13 +21,15 @@ REGISTER_FILTER(ConvexHullFilter);
 ConvexHullFilter::ConvexHullFilter()
 {
     setName("ConvexHullFilter");
-    setDesc("calculates the convex hull of contour");
+    setDesc("Calculates the convex hull of contour");
     setGroup("user");
+	
     mIn.setName("input");
     mIn.setDesc("A list of outer contours or a single one");
+	addInputListPort(mIn);
+	
     mOut.setName("convexHull");
-    mOut.setDesc("the convex hulls in the same order as the inputs");
-    addInputListPort(mIn);
+    mOut.setDesc("The convex hulls in the same order as the inputs");
     addOutputListPort(mOut);
 }
 

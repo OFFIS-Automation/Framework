@@ -21,11 +21,11 @@ REGISTER_FILTER(BackgroundSubstraction);
 BackgroundSubstraction::BackgroundSubstraction()
 {
     setName("BackgroundSubstraction");
-    setDesc("Automatic background substraction.");
+    setDesc("Automatic background subtraction");
     setGroup("image/math");
 
     mMode.setName("mode");
-    mMode.setDesc("Select the operation mode.");
+    mMode.setDesc("Select the operation mode");
     mMode.addChoice(MOG, "Default MOG");
     mMode.addChoice(MOG2, "MOG2");
     mMode.setDefault(MOG);

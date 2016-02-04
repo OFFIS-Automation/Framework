@@ -24,19 +24,19 @@ PathCreator::PathCreator()
     mNumber = 0;
 
     setName("PathCreator");
-    setDesc("Creates a filepath in the given directory with the given prefix. The output file path is [dir]/[prefix][number].[extension].");
+    setDesc("Creates a file path in the given directory with the given prefix. The output file path is [dir]/[prefix][number].[extension]");
     setGroup("output");
     mDir.setName("inDirectory");
     mDir.setDesc("Directory");
     addInputPort(mDir);
 
     mPrefix.setName("inPrefix");
-    mPrefix.setDesc("Filename prefix");
+    mPrefix.setDesc("File name prefix");
     mPrefix.setDefault("image_");
     addInputPort(mPrefix);
 
     mExtension.setName("inFileExtension");
-    mExtension.setDesc("Filename extension");
+    mExtension.setDesc("File name extension");
     mExtension.setDefault("png");
     addInputPort(mExtension);
 
@@ -51,7 +51,7 @@ PathCreator::PathCreator()
     addOutputPort(mFileId);
 
     mOut.setName("outFile");
-    mOut.setDesc("The constructed filename");
+    mOut.setDesc("The constructed file name");
     addOutputPort(mOut);
 }
 

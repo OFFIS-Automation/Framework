@@ -21,17 +21,20 @@ REGISTER_FILTER(ContoursFilter);
 ContoursFilter::ContoursFilter()
 {
     setName("ContoursFilter");
-    setDesc("Extracts contours from an image. The image should be thresholded.");
+    setDesc("Extracts contours from an image. The image should be thresholded");
     setGroup("user");
-    mIn.setName("input");
-    mIn.setDesc("thresholded input image");
-    mOffsetIn.setName("offset");
+    
+	mIn.setName("input");
+    mIn.setDesc("Thresholded input image");
+    addInputPort(mIn);
+	
+	mOffsetIn.setName("offset");
     mOffsetIn.setDesc("Offset that will be added to all calculated positions");
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
+	addInputPort(mOffsetIn);
+	
     mContourOut.setName("contour");
     mContourOut.setDesc("A list of the calculated outer contours");
-    addInputPort(mIn);
-    addInputPort(mOffsetIn);
     addOutputListPort(mContourOut);
 }
 

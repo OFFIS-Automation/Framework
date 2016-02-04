@@ -26,7 +26,7 @@ PointInput::PointInput(bool list)
         setName("PointList");
     else
         setName("Point");
-    setDesc("Input filter for the automation.");
+    setDesc("Input filter for the automation");
     setGroup("automation/input");
     mIn.setName("input point");
     mIn.setMode(SingleShotPortMode);

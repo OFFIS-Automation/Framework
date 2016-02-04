@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,15 +22,16 @@ REGISTER_FILTER(ThresholdFilter);
 
 ThresholdFilter::ThresholdFilter()
 {
-    setName("ThresholdFilter");
+    setName("Threshold");
     setDesc("Thresholds an image");
     setGroup("user");
-    mOut.setName("outImage");
-    mOut.setDesc("image output port");
+
+    mOut.setName("imageOut");
     addOutputPort(mOut);
-    mIn.setName("inImage");
-    mIn.setDesc("image input");
+
+    mIn.setName("imageIn");
     addInputPort(mIn);
+
     mThreshold.setName("threshold");
     mThreshold.setDesc("Threshold value");
     mThreshold.setDefault(128);
@@ -38,20 +39,21 @@ ThresholdFilter::ThresholdFilter()
     addInputPort(mThreshold);
 
     mMode.setName("mode");
-    mMode.setDesc("Threshold mode");
-    mMode.addChoice(cv::THRESH_BINARY, "Binary");
-    mMode.addChoice(cv::THRESH_BINARY_INV, "Binary inverted");
-    mMode.addChoice(cv::THRESH_TOZERO, "to zero");
+    mMode.setDesc("Thresholding mode");
+    mMode.addChoice(cv::THRESH_BINARY, "Binary (value = value > threshold ? max_value : 0 )");
+    mMode.addChoice(cv::THRESH_BINARY_INV, "Binary inverted (value = value > threshold ? 0 : max_value)");
+    mMode.addChoice(cv::THRESH_TOZERO, "To zero (value = value > threshold ? value : 0)");
+    mMode.addChoice(cv::THRESH_TOZERO_INV, "To zero inverted (value = value > threshold ? 0 : value)");
+    mMode.addChoice(cv::THRESH_TRUNC, "Truncate (value = value > threshold ? threshold : value)");
     mMode.setDefault(cv::THRESH_BINARY);
     addInputPort(mMode);
 }
 
 void ThresholdFilter::execute()
 {
-    int threshold= mThreshold;
-	int mode = mMode;
-    const GrayImage& src = mIn;
+    int threshold = mThreshold;
+    const GrayImage src = mIn;
     GrayImage dest;
-    cv::threshold(src, dest, threshold, 255, mode);
+    cv::threshold(src, dest, threshold, 255, mMode);
     mOut.send(dest);
 }

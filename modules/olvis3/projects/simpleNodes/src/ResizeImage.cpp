@@ -22,7 +22,7 @@ REGISTER_FILTER(ResizeImage);
 ResizeImage::ResizeImage()
 {
     setName("Resize");
-    setDesc("Resizes an image to the given size. If the filter should constrain to with and height both, the width is in favor.");
+    setDesc("Resizes an image to the given size. If the filter should constrain to with and height both, the width is in favour");
     setGroup("image/reshape");
 
     // Input
@@ -30,7 +30,7 @@ ResizeImage::ResizeImage()
 
     mAspectRatio.setName("aspectRatioMode");
     mAspectRatio.setDesc("how to deal with aspect ratios");
-    mAspectRatio.addChoice(IgnoreAspectRatio, "Inore aspect ratio");
+    mAspectRatio.addChoice(IgnoreAspectRatio, "Ignore aspect ratio");
     mAspectRatio.addChoice(KeepAspectRatioByWidth, "Keep aspect ratio, ignore height");
     mAspectRatio.addChoice(KeepAspectRatioByHeight, "Keep aspect ratio, ignore width");
     mAspectRatio.setDefault(IgnoreAspectRatio);
@@ -38,11 +38,11 @@ ResizeImage::ResizeImage()
     addInputPort(mAspectRatio);
 
     mWidth.setName("width");
-    mWidth.setDesc("Width of the ouput image");
+    mWidth.setDesc("Width of the output image");
     addInputPort(mWidth);
 
     mHeight.setName("height");
-    mHeight.setDesc("Height of the ouput image");
+    mHeight.setDesc("Height of the output image");
     addInputPort(mHeight);
 
     // Output

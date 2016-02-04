@@ -21,7 +21,7 @@ REGISTER_FILTER(ScaleImage);
 ScaleImage::ScaleImage()
 {
     setName("Scale");
-    setDesc("Scales an image by a factor.");
+    setDesc("Scales an image by a factor");
     setGroup("image/reshape");
     mScale.setName("scale");
     mScale.setDesc("The new image size in percent of the original image");

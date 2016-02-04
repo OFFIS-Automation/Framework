@@ -21,7 +21,7 @@ REGISTER_FILTER(MedianBlur);
 MedianBlur::MedianBlur()
 {
     setName("Median");
-    setDesc("Smoothes an image using median filter.");
+    setDesc("Smoothes an image using median filter");
     setGroup("image/smoothing");
 }
 

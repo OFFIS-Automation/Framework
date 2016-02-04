@@ -26,6 +26,7 @@ class HistogramFilter : public UserFilter
 public:
     HistogramFilter();
     virtual void execute();
+	
 protected:
     in::Image mIn;
     out::Histogram mOut;

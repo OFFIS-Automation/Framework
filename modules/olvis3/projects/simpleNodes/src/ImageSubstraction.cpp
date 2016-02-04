@@ -21,7 +21,7 @@ REGISTER_FILTER(ImageSubstraction);
 ImageSubstraction::ImageSubstraction()
 {
     setName("ImageSubstraction");
-    setDesc("Substracts a background from an input image.");
+    setDesc("Subtracts a background from an input image.");
     setGroup("image/math");
     mIn.setName("imageIn");
     addInputPort(mIn);

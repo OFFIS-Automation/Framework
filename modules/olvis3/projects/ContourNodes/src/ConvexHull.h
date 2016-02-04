@@ -18,7 +18,6 @@
 #define USER_CONVEXHULL_H
 
 #include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
 #include <ports/PolygonPort.h>
 #include <ports/PointPort.h>
 

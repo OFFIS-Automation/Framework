@@ -23,7 +23,7 @@ REGISTER_FILTER(BrighnessContrast);
 BrighnessContrast::BrighnessContrast()
 {
     setName("BrightnessContrast");
-    setDesc("Adjusts brightness and contrast.");
+    setDesc("Adjusts brightness and contrast");
     setGroup("image/color");
     mIn.setName("imageIn");
     mOut.setName("imageOut");

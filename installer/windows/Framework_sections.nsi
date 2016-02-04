@@ -62,7 +62,6 @@ Section "!OFFIS Automation Framework" SecToolbox
 SectionEnd
 
 Section /o "Development version" SecDevFiles
-	SectionIn RO
 	SetOutPath "$INSTDIR\debug"
 	File "..\..\bin\debug\*.exe"
 	File "..\..\bin\debug\Notifications.dll"

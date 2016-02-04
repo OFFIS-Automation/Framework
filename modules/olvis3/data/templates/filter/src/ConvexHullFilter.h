@@ -18,7 +18,6 @@
 #define USER_CONVEXHULLFILTER_H
 
 #include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
 #include <ports/PolygonPort.h>
 #include <ports/PointPort.h>
 
@@ -31,7 +30,6 @@ public:
 protected:
     in::Polygon mIn;
     out::Polygon mOut;
-
 };
 
 #endif // USER_CONVEXHULLFILTER_H

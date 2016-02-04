@@ -21,8 +21,9 @@ REGISTER_FILTER(ConvexHull);
 ConvexHull::ConvexHull()
 {
     setName("ConvexHull");
-    setDesc("calculates the convex hull of contour");
+    setDesc("Calculates the convex hull of contour");
     setGroup("image/contour");
+
     mIn.setName("input");
     mOut.setName("convexHull");
     addInputListPort(mIn);

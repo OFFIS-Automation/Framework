@@ -16,9 +16,7 @@
 
 #ifndef GAUSSIANBLUR_H
 #define GAUSSIANBLUR_H
-#include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
-#include <ports/IntegerPort.h>
+
 #include "KernelFilter.h"
 
 class GaussianBlur : public KernelFilter

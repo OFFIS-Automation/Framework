@@ -23,7 +23,7 @@ TemplateMatching::TemplateMatching()
 {
     setName("TemplateMatching");
     setDesc("Match a template on an image and output the best position, the "
-            "matching score and the result image.");
+            "matching score and the result image");
     setGroup("image/object detection");
     mImageIn.setName("image");
     addInputPort(mImageIn);
@@ -46,9 +46,9 @@ TemplateMatching::TemplateMatching()
 
     mFastSearchRange.setName("fast search");
     mFastSearchRange.setDesc("set the fast search pixels. The search area is "
-                             "the template rectange at the last found position "
+                             "the template rectangle at the last found position "
                              "plus this value on each border. A value of zero "
-                             "means no fast search.");
+                             "means no fast search");
     mFastSearchRange.setDefault(0);
     mFastSearchRange.setRange(0, 9999);
     mFastSearchRange.setVisibility(AdvancedPortVisibility);

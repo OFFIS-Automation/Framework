@@ -23,14 +23,14 @@ MinimumFps::MinimumFps()
 {
     setName("MinimumFps");
     setGroup("helper");
-    setDesc("Insert a variable delay in your chain. This end-to-end time of this processor in always >= the requred frames per second");
+    setDesc("Insert a variable delay in your chain. This end-to-end time of this processor in always >= the required frames per second");
     mFps.setName("inFps");
-    mFps.setDesc("minimump fps");
+    mFps.setDesc("minimum fps");
     mFps.setRange(0.1,1000.0);
     mFps.setDefault(5.0);
     addInputPort(mFps);
     mMode.setName("mode");
-    mMode.setDesc("Active wait is cpu-time consuming, but on most systems more precise than sleep wait");
+    mMode.setDesc("Active wait is CPU-time consuming, but on most systems more precise than sleep wait");
     mMode.addChoice(SleepMode, "Sleep wait");
     mMode.addChoice(ActiveWaitMode, "Active wait");
     mMode.setDefault(SleepMode);

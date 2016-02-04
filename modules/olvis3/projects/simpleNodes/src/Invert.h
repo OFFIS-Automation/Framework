@@ -20,7 +20,6 @@
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 
-
 class Invert : public UserFilter
 {
 public:

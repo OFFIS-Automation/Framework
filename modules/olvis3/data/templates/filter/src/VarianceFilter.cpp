@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,33 +21,38 @@ REGISTER_FILTER(VarianceFilter);
 VarianceFilter::VarianceFilter()
 {
     setName("VarianceFilter");
-    setDesc("calculates the variance inside the image/roi");
+    setDesc("Calculates the variance inside the image or region of interest");
     setGroup("user");
-    mIn.setName("input");
-    mVarianceOut.setName("variance");
-    mMeanOut.setName("mean grayscale");
-    mRoiIn.setMode(OptionalPortMode);
+   
+	mIn.setName("imageIn");
+	addInputPort(mIn);
+	
+	mRoiIn.setMode(OptionalPortMode);
     mRoiIn.setName("roi");
-    addInputPort(mIn);
-    addInputPort(mRoiIn);
-    addOutputPort(mVarianceOut);
+	addInputPort(mRoiIn);
+	
+    mVarianceOut.setName("variance");
+	addOutputPort(mVarianceOut);
+	
+    mMeanOut.setName("mean grayscale");
     addOutputPort(mMeanOut);
 }
 
 void VarianceFilter::execute()
 {
-    cv::Mat source = mIn;
+    const cv::Mat source = mIn;
+    cv::Mat image = source;
     if(mRoiIn.hasValue())
     {
-        cv::Size size = source.size();
+        cv::Size size = image.size();
         QRectF imageRect(0,0, size.width, size.height);
         QRectF roi = mRoiIn;
         roi = roi.intersected(imageRect);
         if(roi.isValid())
-            source = source(port::Rect::rect(roi));
+            image = image(port::Rect::rect(roi));
     }
     cv::Scalar mean, stdDev;
-    cv::meanStdDev(source,mean, stdDev);
+    cv::meanStdDev(image,mean, stdDev);
     double variance = stdDev.val[0]*stdDev.val[0];
     mVarianceOut.send(variance);
     mMeanOut.send(mean[0]);

@@ -21,7 +21,7 @@ REGISTER_FILTER(ColorCorrection);
 ColorCorrection::ColorCorrection()
 {
     setName("ColorCorrection");
-    setDesc("Multiplies each color with a factor.");
+    setDesc("Multiplies each color with a factor");
     setGroup("image/color");
     mIn.setName("imageIn");
     mOut.setName("imageOut");

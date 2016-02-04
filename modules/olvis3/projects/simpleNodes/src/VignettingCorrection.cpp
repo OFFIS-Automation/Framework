@@ -21,7 +21,7 @@ REGISTER_FILTER(VignettingCorrection);
 VignettingCorrection::VignettingCorrection()
 {
     setName("VignettingCorrection");
-    setDesc("Corrects vignetting, a common lens effect, uisng a given vignette-mask.");
+    setDesc("Corrects vignetting, a common lens effect, using a given vignette-mask");
     setGroup("image/math");
     mIn.setName("imageIn");
     addInputPort(mIn);

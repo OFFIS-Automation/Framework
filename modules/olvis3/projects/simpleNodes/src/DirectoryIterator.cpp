@@ -23,10 +23,10 @@ DirectoryIterator::DirectoryIterator()
     : mIter(mFileList)
 {
     setName("DirectoryIterator");
-    setDesc("Iterates through a directory and outputs all files that fit the filter.");
+    setDesc("Iterates through a directory and outputs all files that fit the filter");
     setGroup("input");
     mNameOut.setName("file name");
-    mNameOut.setDesc("The filename only, without the path");
+    mNameOut.setDesc("The file name only, without the path");
     addOutputPort(mNameOut);
     mOut.setName("file");
     mOut.setDesc("the full file path");
@@ -34,7 +34,7 @@ DirectoryIterator::DirectoryIterator()
     addOutputPort(mOut);
     mFilter.setName("nameFilter");
     mFilter.setMode(OptionalPortMode);
-    mFilter.setDesc("File extension filter, seperated by space. example: *.png *.jpg *.xpm");
+    mFilter.setDesc("File extension filter, separated by space. example: *.png *.jpg *.xpm");
     addInputPort(mFilter);
     mIn.setName("dir");
     mIn.setDesc("directory to iterate");

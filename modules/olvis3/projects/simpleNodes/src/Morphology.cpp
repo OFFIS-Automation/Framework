@@ -26,7 +26,7 @@ Morphology::Morphology()
     setGroup("image/math");
 
     mOperation.setName("operation");
-    mOperation.setDesc("Perform the selected morphology operation.");
+    mOperation.setDesc("Perform the selected morphology operation");
     mOperation.addChoice(cv::MORPH_ERODE, "erode");
     mOperation.addChoice(cv::MORPH_DILATE, "dilate");
     mOperation.addChoice(cv::MORPH_OPEN, "open");
@@ -37,7 +37,7 @@ Morphology::Morphology()
     addInputPort(mOperation);
 
     mIterations.setName("iterations");
-    mIterations.setDesc("Number of iterations to perform.");
+    mIterations.setDesc("Number of iterations to perform");
     mIterations.setDefault(1);
     mIterations.setRange(1, 255);
     addInputPort(mIterations);
@@ -51,7 +51,7 @@ Morphology::Morphology()
     addInputPort(mElementType);
 
     mUserElement.setName("specialElement");
-    mUserElement.setDesc("Special structuring element, overrides element and size if connected.");
+    mUserElement.setDesc("Special structuring element, overrides element and size if connected");
     mUserElement.setMode(OptionalPortMode);
     mUserElement.setVisibility(AdvancedPortVisibility);
     addInputPort(mUserElement);

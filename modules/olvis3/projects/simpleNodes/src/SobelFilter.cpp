@@ -22,7 +22,7 @@ REGISTER_FILTER(SobelFilter);
 SobelFilter::SobelFilter()
 {
     setName("Sobel");
-    setDesc("Applies a sobel filter to an image.");
+    setDesc("Applies a sobel filter to an image");
     setGroup("image/edge detection");
     mIn.setName("imageIn");
     mOut.setName("imageOut");

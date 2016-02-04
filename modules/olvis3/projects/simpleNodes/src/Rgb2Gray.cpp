@@ -21,10 +21,10 @@ REGISTER_FILTER(Rgb2Gray);
 Rgb2Gray::Rgb2Gray()
 {
     setName("RgbToGray");
-    setDesc("Converts an RGB image into a grayscale image. Can extract a single channel.");
+    setDesc("Converts an RGB image into a grayscale image. Can extract a single channel");
     setGroup("image/color");
     mMode.setName("channel");
-    mMode.setDesc("Select the color channel.");
+    mMode.setDesc("Select the color channel");
     mMode.addChoice(GrayscaleMode, "Default RGB->Gray");
     mMode.addChoice(BlueMode, "Blue");
     mMode.addChoice(GreenMode, "Green");

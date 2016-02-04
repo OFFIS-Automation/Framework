@@ -61,11 +61,8 @@ private slots:
     void showMenu(const QPoint &pos);
 
     void on_actionDeleteFilter_triggered();
-
     void on_actionRename_triggered();
-
     void on_name_returnPressed();
-
     void on_name_editingFinished();
     void on_name_doubleClicked();
 
@@ -79,7 +76,7 @@ private:
     Ui::FilterWidget *ui;
     QPoint mDragStartPos;
     int mFilterId;
-    QString mFilterType, mName;
+    QString mFilterType, mName, mDescription;
 };
 
 #endif // FILTERWIDGET_H

@@ -23,7 +23,7 @@ NormalizeHistogramm::NormalizeHistogramm()
 {
     setGroup("image/analysis");
     setName("EqualizeHistogram");
-    setDesc("Improves the contrast of an image by equalizing the histogram.");
+    setDesc("Improves the contrast of an image by equalizing the histogram");
     addInputPort(mIn);
     addOutputPort(mOut);
 }

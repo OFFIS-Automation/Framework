@@ -21,7 +21,7 @@ REGISTER_FILTER(FetchTemplate);
 FetchTemplate::FetchTemplate()
 {
     setName("FetchTemplate");
-    setDesc("Fetches a template from the given image on the ROI position.");
+    setDesc("Fetches a template from the given image on the ROI position");
     setGroup("image/object detection");
     mIn.setName("imageIn");
     mOut.setName("templateOut");
@@ -29,7 +29,7 @@ FetchTemplate::FetchTemplate()
     addOutputPort(mOut);
 
     mRoi.setName("roi");
-    mRoi.setDesc("Region where the template is extracted. Only applied when changed.");
+    mRoi.setDesc("Region where the template is extracted. Only applied when changed");
     mRoi.setMode(SingleShotPortMode);
     mRoi.setDisplayVisibility(false);
     addInputPort(mRoi);

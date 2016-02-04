@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 
 #ifndef USER_THRESHOLDFILTER_H
 #define USER_THRESHOLDFILTER_H
+
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
@@ -25,11 +26,13 @@ class ThresholdFilter : public UserFilter
 public:
     ThresholdFilter();
     virtual void execute();
+	
 protected:
     in::GrayImage mIn;
     in::Integer mThreshold;
     in::Integer mMode;
     out::GrayImage mOut;
+    bool mInvert;
 };
 
 

@@ -21,7 +21,7 @@ REGISTER_FILTER(VignettingCorrectionRGB);
 VignettingCorrectionRGB::VignettingCorrectionRGB()
 {
     setName("VignettingCorrectionRGB");
-    setDesc("Corrects vignetting, a common lens effect, uisng a given vignette-mask.");
+    setDesc("Corrects vignetting, a common lens effect, using a given vignette-mask");
     setGroup("image/math");
 
     mIn.setName("imageIn");
@@ -29,7 +29,7 @@ VignettingCorrectionRGB::VignettingCorrectionRGB()
     addInputPort(mIn);
 
     mVignetteIn.setName("VignetteIn");
-    mVignetteIn.setDesc("Vignette to correct the imageIn.");
+    mVignetteIn.setDesc("Vignette to correct the imageIn");
     addInputPort(mVignetteIn);
 
     mMode.setName("mode");
@@ -39,7 +39,7 @@ VignettingCorrectionRGB::VignettingCorrectionRGB()
     addInputPort(mMode);
 
     mStringOffset.setName("rgb offset");
-    mStringOffset.setDesc("Comma seperated int values that will be added to the result image. This way the output can be normed.");
+    mStringOffset.setDesc("Comma seperated int values that will be added to the result image. This way the output can be normed");
     mStringOffset.setDefault("0,0,0");
     addInputPort(mStringOffset);
 

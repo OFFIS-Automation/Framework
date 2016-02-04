@@ -22,7 +22,7 @@ REGISTER_FILTER(MultipleTemplateMatching);
 MultipleTemplateMatching::MultipleTemplateMatching()
 {
     setName("MultipleTemplateMatching");
-    setDesc("Match a template on an image and output the all found positions, the matching scores and the result image.");
+    setDesc("Match a template on an image and output the all found positions, the matching scores and the result image");
     setGroup("image/object detection");
     mImageIn.setName("image");
     addInputPort(mImageIn);

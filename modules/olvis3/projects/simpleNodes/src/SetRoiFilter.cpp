@@ -21,13 +21,13 @@ REGISTER_FILTER(SetRoiFilter);
 SetRoiFilter::SetRoiFilter()
 {
     setName("ImageRoi");
-    setDesc("Extracts a region of interest from an image.");
+    setDesc("Extracts a region of interest from an image");
     setGroup("image/reshape");
     mImageOut.setName("imageIn");
     mImageIn.setDesc("image input");
     addInputPort(mImageIn);
     mOffsetIn.setName("offsetIn");
-    mOffsetIn.setDesc("adjust the position of the roi using this input port");
+    mOffsetIn.setDesc("adjust the position of the ROI using this input port");
     mOffsetIn.setMode(OptionalPortMode);
     mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);

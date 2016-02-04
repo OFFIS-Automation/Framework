@@ -25,14 +25,14 @@ ColorExtraction::ColorExtraction()
     setName("ColorExtraction");
     setDesc("Extracts a color from an input image. The result image contains "
             "all pixels that are close to the given color within a given "
-            "tolerance.");
+            "tolerance");
     setGroup("image/color");
     mIn.setName("imageIn");
     mIn.setDesc("input image");
     addInputPort(mIn);
 
     mColor.setName("color");
-    mColor.setDesc("The color to search for.");
+    mColor.setDesc("The color to search for");
     addInputPort(mColor);
 
     mTolerance.setName("tolerance");

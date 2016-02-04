@@ -24,7 +24,7 @@ REGISTER_FILTER(ImageInput);
 ImageInput::ImageInput()
 {
     setName("ImageInput");
-    setDesc("Reads a single image from disc and outputs it.");
+    setDesc("Reads a single image from disc and outputs it");
     setGroup("input");
     mOut.setName("outImage");
     mOut.setDesc("Image output port");

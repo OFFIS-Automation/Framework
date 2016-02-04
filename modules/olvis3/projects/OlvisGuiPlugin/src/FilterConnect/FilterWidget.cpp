@@ -37,9 +37,9 @@ FilterWidget::FilterWidget(const FilterInfo& info, QWidget *parent) :
     ui->setupUi(this);
     mFilterId = info.id;
     mFilterType = info.typeInfo.uid;
+    mDescription = info.typeInfo.desc;
     onFilterRename(info);
     clearError();
-
 
     connect(&OlvisSingleton::instance(), SIGNAL(filterRenamed(FilterInfo,QString)), SLOT(onFilterRename(FilterInfo)));
 
@@ -90,7 +90,7 @@ void FilterWidget::showError(const QString& errorMsg)
 void FilterWidget::clearError()
 {
     setStyleSheet("background-color: lightgray;");
-    setToolTip(mName);
+    setToolTip(mDescription);
 }
 
 void FilterWidget::setPortVisibility(int visibility)

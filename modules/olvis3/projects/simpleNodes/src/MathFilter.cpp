@@ -22,7 +22,7 @@ MathFilter::MathFilter()
 {
     setName("MathFilter");
     setGroup("helper");
-    setDesc("Applies some fancy math to the input.");
+    setDesc("Applies some fancy math to the input");
 
     //mIn.setName("inValues");
     //mIn.setDesc("input values for calculation");

@@ -20,24 +20,25 @@ REGISTER_FILTER(InvertFilter);
 
 InvertFilter::InvertFilter()
 {
-    setName("InvertFilter");
-    setDesc("Inverts the image");
+	setName("InvertFilter");
+    setDesc("Inverts the pixel values of each channel of the image");
     setGroup("user");
-    mIn.setName("input");
-    mOut.setName("output");
+
+	mIn.setName("input");
     addInputPort(mIn);
+	
+	mOut.setName("output");
     addOutputPort(mOut);
 }
 
 void InvertFilter::execute()
 {
-    const cv::Mat input = mIn;
-	cv::Mat output = input.clone();
-    unsigned char* data = output.datastart;
-    while(data < output.dataend)
+    cv::Mat mat = mIn.getValue().clone();
+    unsigned char* data = mat.datastart;
+    while(data < mat.dataend)
     {
-        *data = 255-(*data);
+        *data = 255-*data;
         data++;
     }
-	mOut.send(output);
+    mOut.send(mat);
 }

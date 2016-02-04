@@ -27,8 +27,8 @@ REGISTER_FILTER(Rgb2Graphen);
 Rgb2Graphen::Rgb2Graphen()
 {
     setName("RGB2Graphen");
-    setDesc("Extracts graphen layers from an RGB image");
-    setGroup("application/graphen");
+    setDesc("Extracts graphene layers from an RGB image");
+    setGroup("application/graphene");
 
     // define image input
     mIn.setName("imageIn");

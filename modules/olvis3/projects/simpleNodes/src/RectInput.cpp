@@ -21,7 +21,7 @@ REGISTER_FILTER(RectInput);
 RectInput::RectInput()
 {
     setName("Rect");
-    setDesc("Input filter for the automation.");
+    setDesc("Input filter for the automation");
     setGroup("automation/input");
     mIn.setName("input rect");
     mIn.setMode(SingleShotPortMode);

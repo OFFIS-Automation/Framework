@@ -21,17 +21,15 @@ REGISTER_FILTER(GaussianBlur);
 GaussianBlur::GaussianBlur()
 {
     setName("Gaussian");
-    setDesc("Smoothes an image using a gaussian filter.");
+    setDesc("Smoothes an image using a gaussian filter");
     setGroup("image/smoothing");
 }
 
 void GaussianBlur::execute()
 {
-    cv::Size kSize;
-    kSize.height = mKSize;
-    kSize.width = mKSize;
+    int kSize = mKSize;
     const cv::Mat src = mIn;
     cv::Mat dest;
-    cv::GaussianBlur(src, dest, kSize, 0, 0, 0);
+    cv::GaussianBlur(src, dest, cv::Size(kSize, kSize), 0, 0, 0);
     mOut.send(dest);
 }

@@ -25,7 +25,7 @@ REGISTER_FILTER(BlobDetection);
 BlobDetection::BlobDetection()
 {
     setName("BlobDetection");
-    setDesc("Finds binary large objects in an image. The input image must be be thresholded.");
+    setDesc("Finds binary large objects in an image. The input image must be be thresholded");
     setGroup("image/object detection");
     mIn.setName("imageIn");
     addInputPort(mIn);
@@ -38,7 +38,7 @@ BlobDetection::BlobDetection()
     mMaxPixels.setDefault(INT_MAX);
     mMaxPixels.setVisibility(AdvancedPortVisibility);
     mUseAxis.setName("useMainAxis");
-    mUseAxis.setDesc("Enables the calculation of the objecst main axis and PCe value.");
+    mUseAxis.setDesc("Enables the calculation of the objects main axis and PCe value.");
     mUseAxis.setDefault(true);
     mUseAxis.setVisibility(AdvancedPortVisibility);
     mNumBlobs.setName("numBlobs");

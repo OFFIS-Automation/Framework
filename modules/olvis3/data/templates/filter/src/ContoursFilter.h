@@ -20,7 +20,6 @@
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/PolygonPort.h>
-#include <ports/RectPort.h>
 #include <ports/PointPort.h>
 
 class ContoursFilter : public UserFilter

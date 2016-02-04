@@ -24,7 +24,10 @@ Invert::Invert()
     setDesc("Inverts the pixel values of each channel of the image");
     setGroup("image/color");
 
+    mIn.setName("input");
     addInputPort(mIn);
+
+    mOut.setName("output");
     addOutputPort(mOut);
 }
 

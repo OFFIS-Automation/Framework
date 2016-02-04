@@ -22,7 +22,7 @@ Delay::Delay()
 {
     setName("Delay");
     setGroup("helper");
-    setDesc("Insert a specific delay into your image processing chain.");
+    setDesc("Insert a specific delay into your image processing chain");
     mDelay.setName("delayTime");
     mDelay.setDesc("Delay time in ms");
     mDelay.setRange(1,10000);

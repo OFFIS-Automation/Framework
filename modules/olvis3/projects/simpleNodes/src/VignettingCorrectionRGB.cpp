@@ -25,7 +25,7 @@ VignettingCorrectionRGB::VignettingCorrectionRGB()
     setGroup("image/math");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image or stream to correct.");
+    mIn.setDesc("Image or stream to correct");
     addInputPort(mIn);
 
     mVignetteIn.setName("VignetteIn");

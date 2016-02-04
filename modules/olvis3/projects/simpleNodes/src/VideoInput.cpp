@@ -57,7 +57,7 @@ VideoInput::VideoInput()
     addInputPort(mSpeed);
     /*
     mFpsMode.setName("fpsMode");
-    mFpsMode.setDesc("Active wait is cpu-time consuming, but on most systems more precise than sleep wait.");
+    mFpsMode.setDesc("Active wait is cpu-time consuming, but on most systems more precise than sleep wait");
     mFpsMode.addChoice(SleepMode, "Sleep wait");
     mFpsMode.addChoice(ActiveWaitMode, "Active wait");
     mFpsMode.setDefault(SleepMode);

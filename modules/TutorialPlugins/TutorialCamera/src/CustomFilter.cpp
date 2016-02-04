@@ -24,7 +24,7 @@ REGISTER_FILTER(CustomFilter);
 CustomFilter::CustomFilter()
 {
     setName("Tutorial Camera");
-    setDesc("A virtual camera for the Framework tutorial.");
+    setDesc("A virtual camera for the Framework tutorial");
     setGroup("tutorial");
     mOut.setName("output");
     mOut.setDesc("the image of the robot scene");

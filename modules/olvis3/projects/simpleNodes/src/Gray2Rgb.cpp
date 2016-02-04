@@ -22,7 +22,7 @@ REGISTER_FILTER(Gray2Rgb);
 Gray2Rgb::Gray2Rgb()
 {
     setName("GrayToRgb");
-    setDesc("Converts a gray image to RGB using different filters.");
+    setDesc("Converts a gray image to RGB using different filters");
     setGroup("image/color");
     mMode.setName("mode");
     mMode.setDesc("Conversion mode");

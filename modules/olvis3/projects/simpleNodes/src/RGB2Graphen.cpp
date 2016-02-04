@@ -62,17 +62,17 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define RGB inputs
     mSingleRGBString.setName("single layer RGB");
-    mSingleRGBString.setDesc("Defines the searched RGB value in R,G,B format.");
+    mSingleRGBString.setDesc("Defines the searched RGB value in R,G,B format");
     mSingleRGBString.setDefault("66,67,72");
     addInputPort(mSingleRGBString);
 
     mDoubleRGBString.setName("double layer RGB");
-    mDoubleRGBString.setDesc("Defines the searched RGB value in R,G,B format.");
+    mDoubleRGBString.setDesc("Defines the searched RGB value in R,G,B format");
     mDoubleRGBString.setDefault("56,57,70");
     addInputPort(mDoubleRGBString);
 
     mSingleVarianceString.setName("single layer variance");
-    mSingleVarianceString.setDesc("Defines the variance of the searched RGB value in R,G,B format.");
+    mSingleVarianceString.setDesc("Defines the variance of the searched RGB value in R,G,B format");
     mSingleVarianceString.setDefault("2.23423,1.56613,1.55053");
     addInputPort(mSingleVarianceString);
 

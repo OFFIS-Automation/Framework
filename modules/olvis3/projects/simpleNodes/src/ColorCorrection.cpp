@@ -23,10 +23,15 @@ ColorCorrection::ColorCorrection()
     setName("ColorCorrection");
     setDesc("Multiplies each color with a factor");
     setGroup("image/color");
+
     mIn.setName("imageIn");
-    mOut.setName("imageOut");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
+
     mRFactor.setName("red gain");
     mRFactor.setDefault(1.0);
     mGFactor.setName("green gain");

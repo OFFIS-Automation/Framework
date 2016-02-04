@@ -25,18 +25,23 @@ BrighnessContrast::BrighnessContrast()
     setName("BrightnessContrast");
     setDesc("Adjusts brightness and contrast");
     setGroup("image/color");
+
     mIn.setName("imageIn");
-    mOut.setName("imageOut");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
+
     mBrighness.setName("adjustBrightness");
-    mBrighness.setDesc("adjust the brightness");
+    mBrighness.setDesc("Adjust the brightness");
     mBrighness.setDefault(0);
     mBrighness.setRange(-100, 100);
     addInputPort(mBrighness);
 
     mContrast.setName("adjustContrast");
-    mContrast.setDesc("adjust the contrast");
+    mContrast.setDesc("Adjust the contrast");
     mContrast.setDefault(0);
     mContrast.setRange(-100, 100);
     addInputPort(mContrast);

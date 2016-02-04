@@ -27,9 +27,14 @@ ColorExtraction::ColorExtraction()
             "all pixels that are close to the given color within a given "
             "tolerance");
     setGroup("image/color");
+
     mIn.setName("imageIn");
-    mIn.setDesc("input image");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
 
     mColor.setName("color");
     mColor.setDesc("The color to search for");
@@ -49,10 +54,6 @@ ColorExtraction::ColorExtraction()
     mFillColor.setVisibility(AdvancedPortVisibility);
     mFillColor.setMode(OptionalPortMode);
     addInputPort(mFillColor);
-
-    mOut.setName("imageOut");
-    mOut.setDesc("output image");
-    addOutputPort(mOut);
 }
 
 void ColorExtraction::execute()

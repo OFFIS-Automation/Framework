@@ -24,6 +24,15 @@ RotateImage::RotateImage()
     setName("Rotate");
     setGroup("image/reshape");
     setDesc("Rotates an image");
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
+
     mAngle.setName("angle");
     mAngle.setDesc("Angle of the rotation");
     mAngle.addChoice(0, "None");
@@ -32,9 +41,6 @@ RotateImage::RotateImage()
     mAngle.addChoice(270, "90 degree counter-clockwise");
     mAngle.setDefault(0);
     addInputPort(mAngle);
-    addInputPort(mIn);
-    addOutputPort(mOut);
-
 }
 
 void RotateImage::execute()

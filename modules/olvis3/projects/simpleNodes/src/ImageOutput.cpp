@@ -25,7 +25,7 @@ ImageOutput::ImageOutput()
     setDesc("Writes the incoming image to the given file");
     setGroup("output");
     mImage.setName("inImage");
-    mImage.setDesc("Image input port");
+    mImage.setDesc("Image input");
     addInputPort(mImage);
     mFile.setName("outFile");
     mFile.setDesc("File to write");

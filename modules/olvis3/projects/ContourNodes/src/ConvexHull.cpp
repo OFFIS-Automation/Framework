@@ -24,8 +24,12 @@ ConvexHull::ConvexHull()
     setDesc("Calculates the convex hull of contour");
     setGroup("image/contour");
 
-    mIn.setName("input");
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
+
     mOut.setName("convexHull");
+    mOut.setDesc("Convex hull of input image");
     addInputListPort(mIn);
     addOutputListPort(mOut);
 }

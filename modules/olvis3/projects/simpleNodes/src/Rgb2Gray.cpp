@@ -37,10 +37,14 @@ Rgb2Gray::Rgb2Gray()
     mMode.setDefault(GrayscaleMode);
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     addInputPort(mMode);
-    mIn.setName("imageIn");
-    addInputPort(mIn);
+
     mOut.setName("imageOut");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
 }
 
 void Rgb2Gray::execute()

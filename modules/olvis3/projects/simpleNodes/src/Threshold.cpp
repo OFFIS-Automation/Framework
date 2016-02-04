@@ -27,7 +27,7 @@ Threshold::Threshold()
     setGroup("image/color");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output port");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
 
     mIn.setName("imageIn");

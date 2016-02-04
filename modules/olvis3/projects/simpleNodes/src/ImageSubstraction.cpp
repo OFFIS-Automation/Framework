@@ -23,14 +23,17 @@ ImageSubstraction::ImageSubstraction()
     setName("ImageSubstraction");
     setDesc("Subtracts a background from an input image");
     setGroup("image/math");
+
     mIn.setName("imageIn");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
 
     mBackgroundIn.setName("backgroundIn");
     addInputPort(mBackgroundIn);
-
-    mOut.setName("imageOut");
-    addOutputPort(mOut);
 }
 
 void ImageSubstraction::execute()

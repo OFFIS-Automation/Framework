@@ -94,7 +94,7 @@ VideoInput::VideoInput()
     addOutputPort(mElapsedOut);
 
     mOut.setName("outImage");
-    mOut.setDesc("Image output port");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
 }
 

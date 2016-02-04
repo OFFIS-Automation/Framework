@@ -23,13 +23,20 @@ ScaleImage::ScaleImage()
     setName("Scale");
     setDesc("Scales an image by a factor");
     setGroup("image/reshape");
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
+
     mScale.setName("scale");
     mScale.setDesc("The new image size in percent of the original image");
     mScale.setRange(10, 1000);
     mScale.setDefault(100.0);
-    addInputPort(mIn);
     addInputPort(mScale);
-    addOutputPort(mOut);
 }
 
 void ScaleImage::execute()

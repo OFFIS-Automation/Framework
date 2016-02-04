@@ -24,11 +24,13 @@ Invert::Invert()
     setDesc("Inverts the pixel values of each channel of the image");
     setGroup("image/color");
 
-    mIn.setName("input");
-    addInputPort(mIn);
-
-    mOut.setName("output");
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
 }
 
 void Invert::execute()

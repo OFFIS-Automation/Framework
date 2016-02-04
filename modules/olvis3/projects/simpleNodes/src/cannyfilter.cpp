@@ -25,11 +25,11 @@ CannyFilter::CannyFilter()
     setGroup("image/edge detection");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output port");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input port");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
 
     mThreshhold.setName("threshold");

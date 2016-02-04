@@ -26,13 +26,13 @@ Denoising::Denoising()
     setDesc("Removes noise from a given image. (Noise is expected to be Gaussian)");
     setGroup("image/smoothing");
 
-    mOut.setName("imageout");
-    mOut.setDesc("Image output port");
-    addOutputPort(mOut);
-
     mIn.setName("imageIn");
-    mIn.setDesc("Image input port");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
 
     mTemplateWindowSize.setName("templateWindowSize");
     mTemplateWindowSize.setDesc("Size in pixels of the template patch that is used to compute weights");

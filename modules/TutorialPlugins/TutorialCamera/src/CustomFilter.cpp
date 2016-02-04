@@ -24,10 +24,10 @@ REGISTER_FILTER(CustomFilter);
 CustomFilter::CustomFilter()
 {
     setName("Tutorial Camera");
-    setDesc("A virtual camera for the Framework tutorial");
+    setDesc("A virtual camera for the tutorial robot");
     setGroup("tutorial");
-    mOut.setName("output");
-    mOut.setDesc("the image of the robot scene");
+    mOut.setName("imageOut");
+    mOut.setDesc("The image of the robot scene");
     addOutputPort(mOut);
 }
 

@@ -27,7 +27,7 @@ ImageInput::ImageInput()
     setDesc("Reads a single image from disc and outputs it");
     setGroup("input");
     mOut.setName("outImage");
-    mOut.setDesc("Image output port");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
     mIn.setName("filename");
     mIn.setDesc("File to read");

@@ -23,10 +23,15 @@ CorrectPosition::CorrectPosition()
     setName("CorrectPosition");
     setDesc("Corrects the given position by adding an offset");
     setGroup("geometric/position");
+
     mIn.setName("input");
-    mOut.setName("output");
+    mIn.setDesc("Input port");
     addInputPort(mIn);
+
+    mOut.setName("output");
+    mOut.setDesc("Output port");
     addOutputPort(mOut);
+
     mXOffset.setName("xCorrection");
     mXOffset.setDesc("This value will be added to the x value of the position");
     mXOffset.setRange(INT_MIN, INT_MAX);

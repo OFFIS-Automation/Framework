@@ -32,6 +32,7 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define image input
     mIn.setName("imageIn");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
 
     // define mode selection menu
@@ -88,6 +89,7 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define image output
     mOut.setName("imageOut");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
 }
 

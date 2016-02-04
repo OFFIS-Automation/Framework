@@ -24,6 +24,15 @@ Gray2Rgb::Gray2Rgb()
     setName("GrayToRgb");
     setDesc("Converts a gray image to RGB using different filters");
     setGroup("image/color");
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc("Image output");
+    addOutputPort(mOut);
+
     mMode.setName("mode");
     mMode.setDesc("Conversion mode");
     mMode.addChoice(DebayerRG, "De-bayer starting with rg");
@@ -33,10 +42,6 @@ Gray2Rgb::Gray2Rgb()
     mMode.setDefault(DebayerRG);
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     addInputPort(mMode);
-    mIn.setName("imageIn");
-    addInputPort(mIn);
-    mOut.setName("imageOut");
-    addOutputPort(mOut);
 }
 
 void Gray2Rgb::execute()

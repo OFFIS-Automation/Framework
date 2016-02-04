@@ -24,10 +24,14 @@ SobelFilter::SobelFilter()
     setName("Sobel");
     setDesc("Applies a sobel filter to an image");
     setGroup("image/edge detection");
-    mIn.setName("imageIn");
+
     mOut.setName("imageOut");
-    addInputPort(mIn);
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc("Image input");
+    addInputPort(mIn);
 }
 
 void SobelFilter::execute()

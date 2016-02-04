@@ -23,9 +23,13 @@ FetchTemplate::FetchTemplate()
     setName("FetchTemplate");
     setDesc("Fetches a template from the given image on the ROI position");
     setGroup("image/object detection");
+
     mIn.setName("imageIn");
-    mOut.setName("templateOut");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
+    mOut.setName("templateOut");
+    mOut.setDesc("Template output port");
     addOutputPort(mOut);
 
     mRoi.setName("roi");

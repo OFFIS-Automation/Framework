@@ -26,11 +26,11 @@ Bilateral::Bilateral()
     setGroup("image/smoothing");
 
     mIn.setName("inImage");
-    mIn.setDesc("Image input port");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
 
     mOut.setName("outImage");
-    mOut.setDesc("Image output port");
+    mOut.setDesc("Image output");
     addOutputPort(mOut);
 
     mD.setName("d");

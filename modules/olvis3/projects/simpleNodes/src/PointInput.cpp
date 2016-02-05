@@ -28,17 +28,21 @@ PointInput::PointInput(bool list)
         setName("Point");
     setDesc("Input filter for the automation");
     setGroup("automation/input");
+
     mIn.setName("input point");
     mIn.setMode(SingleShotPortMode);
+
     mOut.setName("output");
+
     mSingleOut.setName("singleShot");
     mSingleOut.setVisibility(ExpertPortVisibility);
+
     mUpdated.setName("updated");
     mUpdated.setVisibility(ExpertPortVisibility);
     if(list)
     {
         mPoly.setName("shape");
-        mPoly.setDesc("the points connected to a shape");
+        mPoly.setDesc("The points connected to a shape");
         mPoly.setVisibility(AdvancedPortVisibility);
         addInputListPort(mIn);
         addOutputListPort(mOut);

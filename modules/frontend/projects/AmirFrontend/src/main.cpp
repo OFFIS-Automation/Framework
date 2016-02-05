@@ -117,11 +117,18 @@ int main(int argc, char *argv[])
         splash->finish(master);
         perspectives.start();
         retVal = a.exec();
-        loader.closeProject();
+
+        // Free notification reference
+        Notifications::setMainWindow(0);
+
+        // Save view for next use
         perspectives.savePerspective();
 
-
+        // Close project and DLLs
+        loader.closeProject();
         loader.deinitializeGuis();
+
+        // Free memory
         if(multiScreen){
             delete slave;
         }

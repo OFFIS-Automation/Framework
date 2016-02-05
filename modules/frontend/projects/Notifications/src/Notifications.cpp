@@ -27,7 +27,7 @@ Notifications::Notifications()
 
 void Notifications::setMainWindow(QWidget *mainWindow, bool useAnimations)
 {
-    QMutexLocker locke(&instance().mMutex);
+    QMutexLocker lock(&instance().mMutex);
     if(instance().mWidget != 0)
     {
         instance().mWidget->setParent(0);

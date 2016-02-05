@@ -27,6 +27,7 @@ BlobDetection::BlobDetection()
     setName("BlobDetection");
     setDesc("Finds binary large objects in an image. The input image must be be thresholded");
     setGroup("image/object detection");
+
     mIn.setName("imageIn");
     addInputPort(mIn);
     mMinPixels.setName("minPixels");

@@ -31,10 +31,14 @@ BackgroundSubstraction::BackgroundSubstraction()
     mMode.setDefault(MOG);
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     addInputPort(mMode);
+
     mIn.setName("imageIn");
+    mIn.setDesc("Image input");
     addInputPort(mIn);
+
     mBackgroundOut.setName("backgroundOut");
     addOutputPort(mBackgroundOut);
+
     mForegroundOut.setName("foregroundOut");
     addOutputPort(mForegroundOut);
 }

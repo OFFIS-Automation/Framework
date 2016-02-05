@@ -23,12 +23,12 @@ REGISTER_FILTER(VignetteCreator);
 VignetteCreator::VignetteCreator()
 {
     setName("VignetteCreator");
-    setDesc("Creates a Vignette from the provided image. It is assumed, that a RGB image of a clean single colored substrate is provided");
+    setDesc(QObject::tr("Creates a Vignette from the provided image. It is assumed, that a RGB image of a clean single colored substrate is provided"));
     setGroup("image/math");
 
     // define image input port
-    mIn.setName("input");
-    mIn.setDesc("Image of clean single colored substrate");
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image of clean single colored substrate"));
     addInputPort(mIn);
 
     // define mode
@@ -39,16 +39,15 @@ VignetteCreator::VignetteCreator()
     addInputPort(mMode);
 
     mStringSetPoint.setName("setPoint");
-    mStringSetPoint.setDesc("");
     addInputPort(mStringSetPoint);
 
     // define output port
-    mOut.setName("output");
-    mOut.setDesc("Calculated Vignette");
+    mOut.setName("vignette");
+    mOut.setDesc(QObject::tr("Calculated Vignette"));
     addOutputPort(mOut);
 
     mStringOffset.setName("offset");
-    mStringOffset.setDesc("Comma separated list of the offset to be used (R,G,B)");
+    mStringOffset.setDesc(QObject::tr("Comma separated list of the offset to be used (R,G,B)"));
     addOutputPort(mStringOffset);
 }
 

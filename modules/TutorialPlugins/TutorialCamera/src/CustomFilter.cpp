@@ -24,10 +24,11 @@ REGISTER_FILTER(CustomFilter);
 CustomFilter::CustomFilter()
 {
     setName("Tutorial Camera");
-    setDesc("A virtual camera for the tutorial robot");
+    setDesc(QObject::tr("A virtual camera for the tutorial robot"));
     setGroup("tutorial");
+
     mOut.setName("imageOut");
-    mOut.setDesc("The image of the robot scene");
+    mOut.setDesc(QObject::tr("The image of the robot scene"));
     addOutputPort(mOut);
 }
 

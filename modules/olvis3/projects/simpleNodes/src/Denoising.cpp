@@ -23,31 +23,31 @@ REGISTER_FILTER(Denoising);
 Denoising::Denoising()
 {
     setName("Non-local Means de-noising");
-    setDesc("Removes noise from a given image. (Noise is expected to be Gaussian)");
+    setDesc(QObject::tr("Removes noise from a given image. (Noise is expected to be Gaussian)"));
     setGroup("image/smoothing");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mTemplateWindowSize.setName("templateWindowSize");
-    mTemplateWindowSize.setDesc("Size in pixels of the template patch that is used to compute weights");
+    mTemplateWindowSize.setDesc(QObject::tr("Size in pixels of the template patch that is used to compute weights"));
     mTemplateWindowSize.setDefault(7);
     mTemplateWindowSize.setOnlyOdd();
     addInputPort(mTemplateWindowSize);
 
     mSearchWindowSize.setName("searchWindowSize");
-    mSearchWindowSize.setDesc("Size in pixels of the window that is used to compute weighted average for given pixel");
+    mSearchWindowSize.setDesc(QObject::tr("Size in pixels of the window that is used to compute weighted average for given pixel"));
     mSearchWindowSize.setDefault(21);
     mSearchWindowSize.setOnlyOdd();
     addInputPort(mSearchWindowSize);
 
     mH.setName("h");
-    mH.setDesc("Parameter regulating filter strength");
+    mH.setDesc(QObject::tr("Parameter regulating filter strength"));
     mH.setDefault(3);
     addInputPort(mH);
 }

@@ -24,14 +24,14 @@ REGISTER_FILTER(ContourWriter);
 ContourWriter::ContourWriter()
 {
     setName("ContourWriter");
-    setDesc("Writes a extracted contour to disc");
+    setDesc(QObject::tr("Writes a extracted contour to disc"));
     setGroup("image/contour");
     mFile.setName("fileName");
     mOffsetIn.setName("offset");
-    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
+    mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     mContour.setName("contour");
-    mContour.setDesc("A list of the calculated outer contours");
+    mContour.setDesc(QObject::tr("A list of the calculated outer contours"));
     addInputPort(mFile);
     addInputPort(mOffsetIn);
     addInputListPort(mContour);

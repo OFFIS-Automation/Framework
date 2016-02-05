@@ -24,17 +24,20 @@ REGISTER_FILTER(ImageInput);
 ImageInput::ImageInput()
 {
     setName("ImageInput");
-    setDesc("Reads a single image from disc and outputs it");
+    setDesc(QObject::tr("Reads a single image from disc and outputs it"));
     setGroup("input");
-    mOut.setName("outImage");
-    mOut.setDesc("Image output");
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
-    mIn.setName("filename");
-    mIn.setDesc("File to read");
+
+    mIn.setName("fileName");
+    mIn.setDesc(QObject::tr("File to read"));
     mIn.setFilter("*.jpg *.png *.bmp");
+
     mAlwaysRead.setName("alwaysReload");
     mAlwaysRead.setDefault(false);
-    mAlwaysRead.setDesc("Read the file from disc every time");
+    mAlwaysRead.setDesc(QObject::tr("Read the file from disc every time"));
     mAlwaysRead.setVisibility(AdvancedPortVisibility);
     addInputPort(mIn);
     addInputPort(mAlwaysRead);

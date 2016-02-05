@@ -23,22 +23,22 @@ RotateImage::RotateImage()
 {
     setName("Rotate");
     setGroup("image/reshape");
-    setDesc("Rotates an image");
+    setDesc(QObject::tr("Rotates an image"));
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mAngle.setName("angle");
-    mAngle.setDesc("Angle of the rotation");
-    mAngle.addChoice(0, "None");
-    mAngle.addChoice(90, "90 degree clockwise");
-    mAngle.addChoice(180, "180 degree");
-    mAngle.addChoice(270, "90 degree counter-clockwise");
+    mAngle.setDesc(QObject::tr("Angle of the rotation"));
+    mAngle.addChoice(0, tr("None"));
+    mAngle.addChoice(90, tr("90 degree clockwise"));
+    mAngle.addChoice(180, tr("180 degree"));
+    mAngle.addChoice(270, tr("90 degree counter-clockwise"));
     mAngle.setDefault(0);
     addInputPort(mAngle);
 }

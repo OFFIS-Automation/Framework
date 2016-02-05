@@ -22,23 +22,23 @@ REGISTER_FILTER(Gray2Rgb);
 Gray2Rgb::Gray2Rgb()
 {
     setName("GrayToRgb");
-    setDesc("Converts a gray image to RGB using different filters");
+    setDesc(QObject::tr("Converts a gray image to RGB using different filters"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mMode.setName("mode");
-    mMode.setDesc("Conversion mode");
-    mMode.addChoice(DebayerRG, "De-bayer starting with rg");
-    mMode.addChoice(DebayerGR, "De-bayer starting with gr");
-    mMode.addChoice(DebayerBG, "De-bayer starting with bg");
-    mMode.addChoice(DebayerGB, "De-bayer starting with gb");
+    mMode.setDesc(QObject::tr("Conversion mode"));
+    mMode.addChoice(DebayerRG, tr("De-bayer starting with rg"));
+    mMode.addChoice(DebayerGR, tr("De-bayer starting with gr"));
+    mMode.addChoice(DebayerBG, tr("De-bayer starting with bg"));
+    mMode.addChoice(DebayerGB, tr("De-bayer starting with gb"));
     mMode.setDefault(DebayerRG);
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     addInputPort(mMode);

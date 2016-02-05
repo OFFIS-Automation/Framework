@@ -21,15 +21,15 @@ REGISTER_FILTER(Invert);
 Invert::Invert()
 {
     setName("Invert");
-    setDesc("Inverts the pixel values of each channel of the image");
+    setDesc(QObject::tr("Inverts the pixel values of each channel of the image"));
     setGroup("image/color");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 }
 

@@ -25,7 +25,7 @@ REGISTER_FILTER(BlobDetection);
 BlobDetection::BlobDetection()
 {
     setName("BlobDetection");
-    setDesc("Finds binary large objects in an image. The input image must be be thresholded");
+    setDesc(QObject::tr("Finds binary large objects in an image. The input image must be be thresholded"));
     setGroup("image/object detection");
 
     mIn.setName("imageIn");
@@ -39,7 +39,7 @@ BlobDetection::BlobDetection()
     mMaxPixels.setDefault(INT_MAX);
     mMaxPixels.setVisibility(AdvancedPortVisibility);
     mUseAxis.setName("useMainAxis");
-    mUseAxis.setDesc("Enables the calculation of the objects main axis and PCe value");
+    mUseAxis.setDesc(QObject::tr("Enables the calculation of the objects main axis and PCe value"));
     mUseAxis.setDefault(true);
     mUseAxis.setVisibility(AdvancedPortVisibility);
     mNumBlobs.setName("numBlobs");
@@ -56,12 +56,12 @@ BlobDetection::BlobDetection()
     mPCe.setVisibility(AdvancedPortVisibility);
     addOutputListPort(mPCe);
     mOffsetIn.setName("offset");
-    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
+    mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);
     mLines.setName("lines");
-    mLines.setDesc("Lines in main direction, to detect the length");
+    mLines.setDesc(QObject::tr("Lines in main direction, to detect the length"));
     addOutputListPort(mLines);
     mPCe.setVisibility(ExpertPortVisibility);
 }

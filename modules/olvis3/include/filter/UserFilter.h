@@ -20,6 +20,7 @@
 #include <filter/Port.h>
 #include "FilterBaseGlobal.h"
 #include <QObject>
+
 class Filter;
 struct FilterTypeInfo;
 struct UserFilterPrivate;

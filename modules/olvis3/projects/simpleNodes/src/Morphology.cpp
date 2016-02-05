@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Morphology.h"
-#include <QDebug>
 #include <opencv2/imgproc/imgproc.hpp>
 
 REGISTER_FILTER(Morphology);
@@ -26,32 +25,32 @@ Morphology::Morphology()
     setGroup("image/math");
 
     mOperation.setName("operation");
-    mOperation.setDesc("Perform the selected morphology operation");
-    mOperation.addChoice(cv::MORPH_ERODE, "erode");
-    mOperation.addChoice(cv::MORPH_DILATE, "dilate");
-    mOperation.addChoice(cv::MORPH_OPEN, "open");
-    mOperation.addChoice(cv::MORPH_CLOSE, "close");
-    mOperation.addChoice(cv::MORPH_GRADIENT, "gradient");
-    mOperation.addChoice(cv::MORPH_TOPHAT, "top hat");
-    mOperation.addChoice(cv::MORPH_BLACKHAT, "black hat");
+    mOperation.setDesc(QObject::tr("Perform the selected morphology operation"));
+    mOperation.addChoice(cv::MORPH_ERODE, tr("erode"));
+    mOperation.addChoice(cv::MORPH_DILATE, tr("dilate"));
+    mOperation.addChoice(cv::MORPH_OPEN, tr("open"));
+    mOperation.addChoice(cv::MORPH_CLOSE, tr("close"));
+    mOperation.addChoice(cv::MORPH_GRADIENT, tr("gradient"));
+    mOperation.addChoice(cv::MORPH_TOPHAT, tr("top hat"));
+    mOperation.addChoice(cv::MORPH_BLACKHAT, tr("black hat"));
     addInputPort(mOperation);
 
     mIterations.setName("iterations");
-    mIterations.setDesc("Number of iterations to perform");
+    mIterations.setDesc(QObject::tr("Number of iterations to perform"));
     mIterations.setDefault(1);
     mIterations.setRange(1, 255);
     addInputPort(mIterations);
 
     mElementType.setName("element");
-    mElementType.setDesc("Element type");
+    mElementType.setDesc(QObject::tr("Element type"));
     mElementType.setDefault(cv::MORPH_RECT);
-    mElementType.addChoice(cv::MORPH_RECT, "Rectangle");
-    mElementType.addChoice(cv::MORPH_ELLIPSE, "Ellipse");
-    mElementType.addChoice(cv::MORPH_CROSS, "Cross");
+    mElementType.addChoice(cv::MORPH_RECT, tr("Rectangle"));
+    mElementType.addChoice(cv::MORPH_ELLIPSE, tr("Ellipse"));
+    mElementType.addChoice(cv::MORPH_CROSS, tr("Cross"));
     addInputPort(mElementType);
 
     mUserElement.setName("specialElement");
-    mUserElement.setDesc("Special structuring element, overrides element and size if connected");
+    mUserElement.setDesc(QObject::tr("Special structuring element, overrides element and size if connected"));
     mUserElement.setMode(OptionalPortMode);
     mUserElement.setVisibility(AdvancedPortVisibility);
     addInputPort(mUserElement);

@@ -21,12 +21,16 @@ REGISTER_FILTER(DepthMapWriter);
 DepthMapWriter::DepthMapWriter()
 {
     setName("DepthMapWriter");
-    setDesc("Inverts the image");
+    setDesc(QObject::tr("Inverts the image"));
     setGroup("depth map");
-    mIn.setName("imageIn");
+
     mOut.setName("imageOut");
-    addInputPort(mIn);
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputPort(mIn);
 }
 
 void DepthMapWriter::execute()

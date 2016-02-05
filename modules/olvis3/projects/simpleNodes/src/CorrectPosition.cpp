@@ -21,25 +21,25 @@ REGISTER_FILTER(CorrectPosition);
 CorrectPosition::CorrectPosition()
 {
     setName("CorrectPosition");
-    setDesc("Corrects the given position by adding an offset");
+    setDesc(QObject::tr("Corrects the given position by adding an offset"));
     setGroup("geometric/position");
 
     mIn.setName("input");
-    mIn.setDesc("Input port");
+    mIn.setDesc(QObject::tr("Input point"));
     addInputPort(mIn);
 
     mOut.setName("output");
-    mOut.setDesc("Output port");
+    mOut.setDesc(QObject::tr("Output point"));
     addOutputPort(mOut);
 
     mXOffset.setName("xCorrection");
-    mXOffset.setDesc("This value will be added to the x value of the position");
+    mXOffset.setDesc(QObject::tr("This value will be added to the x value of the position"));
     mXOffset.setRange(INT_MIN, INT_MAX);
     mXOffset.setDefault(0.0);
     addInputPort(mXOffset);
 
     mYOffset.setName("yCorrection");
-    mYOffset.setDesc("This value will be added to the y value of the position");
+    mYOffset.setDesc(QObject::tr("This value will be added to the y value of the position"));
     mYOffset.setRange(INT_MIN, INT_MAX);
     mYOffset.setDefault(0.0);
     addInputPort(mYOffset);

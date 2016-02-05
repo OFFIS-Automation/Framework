@@ -21,12 +21,16 @@ REGISTER_FILTER(DepthMap2Image);
 DepthMap2Image::DepthMap2Image()
 {
     setName("DepthMap2Image");
-    setDesc("Creates a grayscale image from the DepthMap");
+    setDesc(QObject::tr("Creates a grayscale image from the DepthMap"));
     setGroup("depth map");
-    mIn.setName("input");
+
     mOut.setName("imageOut");
-    addInputPort(mIn);
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputPort(mIn);
 }
 
 void DepthMap2Image::execute()

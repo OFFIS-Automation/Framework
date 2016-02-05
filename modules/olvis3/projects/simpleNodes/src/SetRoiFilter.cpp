@@ -21,19 +21,19 @@ REGISTER_FILTER(SetRoiFilter);
 SetRoiFilter::SetRoiFilter()
 {
     setName("ImageRoi");
-    setDesc("Extracts a region of interest from an image");
+    setDesc(QObject::tr("Extracts a region of interest from an image"));
     setGroup("image/reshape");
     mImageOut.setName("imageIn");
-    mImageIn.setDesc("image input");
+    mImageIn.setDesc(QObject::tr("image input"));
     addInputPort(mImageIn);
     mOffsetIn.setName("offsetIn");
-    mOffsetIn.setDesc("adjust the position of the ROI using this input port");
+    mOffsetIn.setDesc(QObject::tr("adjust the position of the ROI using this input port"));
     mOffsetIn.setMode(OptionalPortMode);
     mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);
 
     mOffsetModeIn.setName("offsetInMode");
-    mOffsetModeIn.setDesc("Where to apply the input offset");
+    mOffsetModeIn.setDesc(QObject::tr("Where to apply the input offset"));
     mOffsetModeIn.addChoice(TopLeftOffset, "Top left");
     mOffsetModeIn.addChoice(CenterOffset, "center");
     mOffsetModeIn.setVisibility(AdvancedPortVisibility);
@@ -42,15 +42,15 @@ SetRoiFilter::SetRoiFilter()
     addInputPort(mOffsetModeIn);
 
     mRoiIn.setName("roi");
-    mRoiIn.setDesc("The selected region of interest x");
+    mRoiIn.setDesc(QObject::tr("The selected region of interest x"));
     mRoiIn.setMode(OptionalPortMode);
     mRoiIn.setDisplayVisibility(false);
     addInputPort(mRoiIn);
     mImageOut.setName("imageOut");
-    mImageOut.setDesc("image output");
+    mImageOut.setDesc(QObject::tr("image output"));
     addOutputPort(mImageOut);
     mOffsetOut.setName("imageOffset");
-    mOffsetOut.setDesc("Image top left offset point");
+    mOffsetOut.setDesc(QObject::tr("Image top left offset point"));
     addOutputPort(mOffsetOut);
 }
 

@@ -28,15 +28,15 @@ public:
         setGroup("image/convert");
 
         mOut.setName("imageOut");
-        mOut.setDesc("Image output");
+        mOut.setDesc(QObject::tr("Image output"));
         addOutputPort(mOut);
 
         mIn.setName("imageIn");
-        mIn.setDesc("Image input");
+        mIn.setDesc(QObject::tr("Image input"));
         addInputPort(mIn);
 
         mKSize.setName("kernelSize");
-        mKSize.setDesc("Size of the used kernel for operation");
+        mKSize.setDesc(QObject::tr("Size of the used kernel for operation"));
         mKSize.setDefault(3);
         mKSize.setRange(1,255);
         mKSize.setOnlyOdd();

@@ -21,14 +21,14 @@ REGISTER_FILTER(FlipImage);
 FlipImage::FlipImage()
 {
     setName("Flip");
-    setDesc("Flips an image horizontal, vertical or both");
+    setDesc(QObject::tr("Flips an image horizontal, vertical or both"));
     setGroup("image/reshape");
     addInputPort(mImageIn);
     addOutputPort(mImageOut);
     mFlipModeIn.setName("flipMode");
-    mFlipModeIn.addChoice(0, "Vertical");
-    mFlipModeIn.addChoice(1, "Horizontal");
-    mFlipModeIn.addChoice(-1, "Both");
+    mFlipModeIn.addChoice(0, tr("Vertical"));
+    mFlipModeIn.addChoice(1, tr("Horizontal"));
+    mFlipModeIn.addChoice(-1, tr("Both"));
     mFlipModeIn.setDefault(0);
     addInputPort(mFlipModeIn);
 }

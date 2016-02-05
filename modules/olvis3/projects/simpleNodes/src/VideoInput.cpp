@@ -25,76 +25,68 @@ REGISTER_FILTER(VideoInput);
 VideoInput::VideoInput()
 {
     setName("VideoInput");
-    setDesc("Reads a video data stream and outputs the single frames (with variable frame rate). The fps-rate of this processor in always >= the requested fps");
+    setDesc(QObject::tr("Reads a video data stream and outputs the single frames (with variable frame rate). The fps-rate of this processor in always >= the requested fps"));
     setGroup("input");
 
     // Inputs
-    mIn.setName("filename");
-    mIn.setDesc("File to read video data stream from");
+    mIn.setName("fileName");
+    mIn.setDesc(QObject::tr("File to read video data stream from"));
     mIn.setFilter("*.avi *.wmv *.m4v *.mp4");
     addInputPort(mIn);
 
     mRepeat.setName("repeat");
     mRepeat.setDefault(true);
-    mRepeat.setDesc("Repeat from beginning if the video data stream has finished");
+    mRepeat.setDesc(QObject::tr("Repeat from beginning if the video data stream has finished"));
     mRepeat.setIcon(QImage(":/SimpleNodes/repeat.png"));
     mRepeat.setVisibility(AdvancedPortVisibility);
     addInputPort(mRepeat);
 
     mSpeed.setName("speed");
-    mSpeed.setDesc("Playback speed");
+    mSpeed.setDesc(QObject::tr("Playback speed"));
     mSpeed.setDefault(1.0);
     mSpeed.addChoice(0.01, "0.01x");
     mSpeed.addChoice(0.1, "0.1x");
     mSpeed.addChoice(0.25, "0.25x");
     mSpeed.addChoice(0.5, "0.5x");
-    mSpeed.addChoice(1.0, "Normal");
+    mSpeed.addChoice(1.0, QObject::tr("Normal"));
     mSpeed.addChoice(2.0, "2x");
     mSpeed.addChoice(4.0, "4x");
     mSpeed.addChoice(10.0, "10x");
-    mSpeed.addChoice(1000.0, "fastest");
-
+    mSpeed.addChoice(1000.0, QObject::tr("fastest"));
     addInputPort(mSpeed);
-    /*
-    mFpsMode.setName("fpsMode");
-    mFpsMode.setDesc("Active wait is cpu-time consuming, but on most systems more precise than sleep wait");
-    mFpsMode.addChoice(SleepMode, "Sleep wait");
-    mFpsMode.addChoice(ActiveWaitMode, "Active wait");
-    mFpsMode.setDefault(SleepMode);
-    addInputPort(mFpsMode);
-*/
+
     mStart.setName("startPosition");
-    mStart.setDesc("Start offset (range: 0.0 to 1.0)");
+    mStart.setDesc(QObject::tr("Start offset (range: 0.0 to 1.0)"));
     mStart.setRange(0.0, 1.0);
     mStart.setDefault(0.0);
     mStart.setVisibility(AdvancedPortVisibility);
     addInputPort(mStart);
+
     mEnd.setName("endPosition");
-    mEnd.setDesc("End offset (range: 0.0 to 1.0)");
+    mEnd.setDesc(QObject::tr("End offset (range: 0.0 to 1.0)"));
     mEnd.setRange(0.0, 1.0);
     mEnd.setDefault(1.0);
     mEnd.setVisibility(AdvancedPortVisibility);
     addInputPort(mStart);
     addInputPort(mEnd);
 
-
     // Outputs
-    mFpsOut.setName("outFps");
-    mFpsOut.setDesc("Original fps of input video data stream");
+    mFpsOut.setName("fps");
+    mFpsOut.setDesc(QObject::tr("Original fps of input video data stream"));
     addOutputPort(mFpsOut);
 
     mPositionOut.setName("outPosition");
-    mPositionOut.setDesc("Position of the current video file (range: 0.0 to 1.0)");
+    mPositionOut.setDesc(QObject::tr("Position of the current video file (range: 0.0 to 1.0)"));
     mPositionOut.setVisibility(AdvancedPortVisibility);
     addOutputPort(mPositionOut);
 
     mElapsedOut.setName("outElapsed");
-    mElapsedOut.setDesc("Elapsed time of the current video file in seconds");
+    mElapsedOut.setDesc(QObject::tr("Elapsed time of the current video file in seconds"));
     mElapsedOut.setVisibility(AdvancedPortVisibility);
     addOutputPort(mElapsedOut);
 
-    mOut.setName("outImage");
-    mOut.setDesc("Image output");
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 }
 

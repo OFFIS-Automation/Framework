@@ -21,7 +21,7 @@ REGISTER_FILTER(Blur);
 Blur::Blur()
 {
     setName("Blur");
-    setDesc("Smoothes image using a normalized box filter");
+    setDesc(QObject::tr("Smoothes image using a normalized box filter"));
     setGroup("image/smoothing");
 }
 

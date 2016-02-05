@@ -23,26 +23,27 @@ DirectoryIterator::DirectoryIterator()
     : mIter(mFileList)
 {
     setName("DirectoryIterator");
-    setDesc("Iterates through a directory and outputs all files that fit the filter");
+    setDesc(QObject::tr("Iterates through a directory and outputs all files that fit the filter"));
     setGroup("input");
     mNameOut.setName("file name");
-    mNameOut.setDesc("The file name only, without the path");
+    mNameOut.setDesc(QObject::tr("The file name only, without the path"));
     addOutputPort(mNameOut);
     mOut.setName("file");
-    mOut.setDesc("the full file path");
+    mOut.setDesc(QObject::tr("The full file path"));
 
     addOutputPort(mOut);
     mFilter.setName("nameFilter");
     mFilter.setMode(OptionalPortMode);
-    mFilter.setDesc("File extension filter, separated by space. example: *.png *.jpg *.xpm");
+    mFilter.setDesc(QObject::tr("File extension filter, separated by space. example: *.png *.jpg *.xpm"));
     addInputPort(mFilter);
+
     mIn.setName("dir");
-    mIn.setDesc("directory to iterate");
+    mIn.setDesc(QObject::tr("Directory to iterate"));
     addInputPort(mIn);
 
     mRepeat.setName("repeat");
     mRepeat.setDefault(false);
-    mRepeat.setDesc("repeat from beginning of the list if finished");
+    mRepeat.setDesc(QObject::tr("Repeat from beginning of the list if finished"));
     mRepeat.setIcon(QImage(":/SimpleNodes/repeat.png"));
     addInputPort(mRepeat);
 }

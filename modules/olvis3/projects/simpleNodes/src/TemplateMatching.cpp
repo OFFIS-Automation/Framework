@@ -22,8 +22,8 @@ REGISTER_FILTER(TemplateMatching);
 TemplateMatching::TemplateMatching()
 {
     setName("TemplateMatching");
-    setDesc("Match a template on an image and output the best position, the "
-            "matching score and the result image");
+    setDesc(QObject::tr("Match a template on an image and output the best position, the "
+            "matching score and the result image"));
     setGroup("image/object detection");
     mImageIn.setName("image");
     addInputPort(mImageIn);
@@ -31,10 +31,9 @@ TemplateMatching::TemplateMatching()
     mTemplateIn.setName("template");
     addInputPort(mTemplateIn);
     mMethodIn.setName("method");
-    mMethodIn.addChoice(CV_TM_CCORR_NORMED, "normalized cross correlation");
-    mMethodIn.addChoice(CV_TM_CCOEFF_NORMED,
-                        "fast normalized cross correlation");
-    mMethodIn.addChoice(CV_TM_SQDIFF_NORMED, "normalized squared differences");
+    mMethodIn.addChoice(CV_TM_CCORR_NORMED, tr("normalized cross correlation"));
+    mMethodIn.addChoice(CV_TM_CCOEFF_NORMED, tr("fast normalized cross correlation"));
+    mMethodIn.addChoice(CV_TM_SQDIFF_NORMED, tr("normalized squared differences"));
     mMethodIn.setDefault(CV_TM_CCOEFF_NORMED);
     mMethodIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mMethodIn);
@@ -45,64 +44,63 @@ TemplateMatching::TemplateMatching()
     addInputPort(mMinScoreIn);
 
     mFastSearchRange.setName("fast search");
-    mFastSearchRange.setDesc("set the fast search pixels. The search area is "
+    mFastSearchRange.setDesc(QObject::tr("set the fast search pixels. The search area is "
                              "the template rectangle at the last found position "
                              "plus this value on each border. A value of zero "
-                             "means no fast search");
+                             "means no fast search"));
     mFastSearchRange.setDefault(0);
     mFastSearchRange.setRange(0, 9999);
     mFastSearchRange.setVisibility(AdvancedPortVisibility);
     addInputPort(mFastSearchRange);
 
     mSendInvalidPos.setName("send invalid pos");
-    mSendInvalidPos.setDesc("If set to false, no position will be send if the "
+    mSendInvalidPos.setDesc(QObject::tr("If set to false, no position will be send if the "
                             "score is to low. If true, an invalid position "
-                            "(-1, -1) will be send");
+                            "(-1, -1) will be send"));
     mSendInvalidPos.setDefault(false);
     mSendInvalidPos.setVisibility(AdvancedPortVisibility);
     addInputPort(mSendInvalidPos);
 
     mSendResultImage.setName("send result image");
-    mSendResultImage.setDesc("Set this to true if the result image of the "
+    mSendResultImage.setDesc(QObject::tr("Set this to true if the result image of the "
                              "template matching should be send on the port "
-                             "<result>");
+                             "<result>"));
     mSendResultImage.setDefault(false);
     mSendResultImage.setVisibility(ExpertPortVisibility);
     addInputPort(mSendResultImage);
 
     mOffsetIn.setName("offset");
-    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
+    mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     addInputPort(mOffsetIn);
 
     mResultOut.setName("result");
-    mResultOut.setDesc("The result image from the template matching operation. "
+    mResultOut.setDesc(QObject::tr("The result image from the template matching operation. "
                        "Only sent if the port <send result image> is set to "
-                       "true");
+                       "true"));
     mResultOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOut);
 
     mScoreOut.setName("score");
-    mScoreOut.setDesc("The matching score of the found position");
+    mScoreOut.setDesc(QObject::tr("The matching score of the found position"));
     addOutputPort(mScoreOut);
     mPositionOut.setName("position");
     addOutputPort(mPositionOut);
 
     mFastSearchOut.setName("search area");
-    mFastSearchOut.setDesc(
-        "The area in the input image where the template was searched");
+    mFastSearchOut.setDesc(QObject::tr("The area in the input image where the template was searched"));
     mFastSearchOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mFastSearchOut);
 
     mResultOffset.setName("result offset");
-    mResultOffset.setDesc("The offset of the result image from the original "
+    mResultOffset.setDesc(QObject::tr("The offset of the result image from the original "
                           "image. Only sent if the port <send result image> is "
-                          "set to true");
+                          "set to true"));
     mResultOffset.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOffset);
 
     mNeedNewImage.setName("fresh image only");
-    mNeedNewImage.setDesc("Only execute if the main input has a new image");
+    mNeedNewImage.setDesc(QObject::tr("Only execute if the main input has a new image"));
     mNeedNewImage.setDefault(true);
     mResultOffset.setVisibility(AdvancedPortVisibility);
     addInputPort(mNeedNewImage);

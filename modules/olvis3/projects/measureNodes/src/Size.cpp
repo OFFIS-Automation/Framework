@@ -21,7 +21,7 @@
 Size::Size()
 {
     setName("Size");
-    setDesc("Extracts contours from an image. The image should be thresholded.");
+    setDesc(QObject::tr("Extracts contours from an image. The image should be thresholded"));
     setGroup("measurement");
 }
 

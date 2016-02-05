@@ -21,11 +21,13 @@ REGISTER_FILTER(BoundingRect);
 BoundingRect::BoundingRect()
 {
     setName("BoundingRect");
-    setDesc("Calculates the boudning rectangle contour.");
+    setDesc(QObject::tr("Calculates the boudning rectangle contour."));
     setGroup("image/contour");
-    mIn.setName("input");
-    mOut.setName("boundingRect");
+
+    mIn.setName("inputRect");
     addInputListPort(mIn);
+
+    mOut.setName("boundingRect");
     addOutputListPort(mOut);
 }
 

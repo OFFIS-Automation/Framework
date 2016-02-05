@@ -21,10 +21,10 @@ REGISTER_FILTER(Rgb2Gray);
 Rgb2Gray::Rgb2Gray()
 {
     setName("RgbToGray");
-    setDesc("Converts an RGB image into a grayscale image. Can extract a single channel");
+    setDesc(QObject::tr("Converts an RGB image into a grayscale image. Can extract a single channel"));
     setGroup("image/color");
     mMode.setName("channel");
-    mMode.setDesc("Select the color channel");
+    mMode.setDesc(QObject::tr("Select the color channel"));
     mMode.addChoice(GrayscaleMode, "Default RGB->Gray");
     mMode.addChoice(BlueMode, "Blue");
     mMode.addChoice(GreenMode, "Green");
@@ -39,11 +39,11 @@ Rgb2Gray::Rgb2Gray()
     addInputPort(mMode);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 }
 

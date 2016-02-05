@@ -22,17 +22,14 @@ REGISTER_FILTER(PointListInput);
 PointInput::PointInput(bool list)
 {
     mAsList = list;
-    if(list)
-        setName("PointList");
-    else
-        setName("Point");
-    setDesc("Input filter for the automation");
+    setName(list ? "PointList" : "Point");
+    setDesc(QObject::tr("Input filter for the automation"));
     setGroup("automation/input");
 
-    mIn.setName("input point");
+    mIn.setName(list ? "input point" : "input points");
     mIn.setMode(SingleShotPortMode);
 
-    mOut.setName("output");
+    mOut.setName(list ? "output point" : "output points");
 
     mSingleOut.setName("singleShot");
     mSingleOut.setVisibility(ExpertPortVisibility);
@@ -42,7 +39,7 @@ PointInput::PointInput(bool list)
     if(list)
     {
         mPoly.setName("shape");
-        mPoly.setDesc("The points connected to a shape");
+        mPoly.setDesc(QObject::tr("The points connected to a shape"));
         mPoly.setVisibility(AdvancedPortVisibility);
         addInputListPort(mIn);
         addOutputListPort(mOut);

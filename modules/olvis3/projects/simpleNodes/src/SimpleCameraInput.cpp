@@ -25,13 +25,15 @@ REGISTER_FILTER(SimpleCameraInput);
 SimpleCameraInput::SimpleCameraInput()
 {
     setName("Webcam");
-    setDesc("Reads a the default webcam with the default setup");
+    setDesc(QObject::tr("Reads a the default webcam with the default setup"));
     setGroup("input");
-    mOut.setName("outImage");
-    mOut.setDesc("image output port");
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
     mFps.setName("fps");
-    mFps.setDesc("Camera fps. Must be connected to a minimum fps core to avoid sending the same image multiple times");
+    mFps.setDesc(QObject::tr("Camera fps. Must be connected to a minimum fps core to avoid sending the same image multiple times"));
     addOutputPort(mFps);
 }
 

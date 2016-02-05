@@ -22,13 +22,15 @@ REGISTER_FILTER(ImageOutput);
 ImageOutput::ImageOutput()
 {
     setName("ImageOutput");
-    setDesc("Writes the incoming image to the given file");
+    setDesc(QObject::tr("Writes the incoming image to the given file"));
     setGroup("output");
-    mImage.setName("inImage");
-    mImage.setDesc("Image input");
+
+    mImage.setName("imageIn");
+    mImage.setDesc(QObject::tr("Image input"));
     addInputPort(mImage);
-    mFile.setName("outFile");
-    mFile.setDesc("File to write");
+
+    mFile.setName("file");
+    mFile.setDesc(QObject::tr("File to write"));
     mFile.setFilter("*.jpg *.png *.bmp");
     addInputPort(mFile);
 }

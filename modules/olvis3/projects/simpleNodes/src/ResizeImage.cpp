@@ -22,27 +22,27 @@ REGISTER_FILTER(ResizeImage);
 ResizeImage::ResizeImage()
 {
     setName("Resize");
-    setDesc("Resizes an image to the given size. If the filter should constrain to with and height both, the width is in favour");
+    setDesc(QObject::tr("Resizes an image to the given size. If the filter should constrain to with and height both, the width is in favour"));
     setGroup("image/reshape");
 
     // Input
     addInputPort(mIn);
 
     mAspectRatio.setName("aspectRatioMode");
-    mAspectRatio.setDesc("how to deal with aspect ratios");
-    mAspectRatio.addChoice(IgnoreAspectRatio, "Ignore aspect ratio");
-    mAspectRatio.addChoice(KeepAspectRatioByWidth, "Keep aspect ratio, ignore height");
-    mAspectRatio.addChoice(KeepAspectRatioByHeight, "Keep aspect ratio, ignore width");
+    mAspectRatio.setDesc(QObject::tr("how to deal with aspect ratios"));
+    mAspectRatio.addChoice(IgnoreAspectRatio, tr("Ignore aspect ratio"));
+    mAspectRatio.addChoice(KeepAspectRatioByWidth, tr("Keep aspect ratio, ignore height"));
+    mAspectRatio.addChoice(KeepAspectRatioByHeight, tr("Keep aspect ratio, ignore width"));
     mAspectRatio.setDefault(IgnoreAspectRatio);
     mAspectRatio.setIcon(QImage(":/SimpleNodes/constrain.png"));
     addInputPort(mAspectRatio);
 
     mWidth.setName("width");
-    mWidth.setDesc("Width of the output image");
+    mWidth.setDesc(QObject::tr("Width of the output image"));
     addInputPort(mWidth);
 
     mHeight.setName("height");
-    mHeight.setDesc("Height of the output image");
+    mHeight.setDesc(QObject::tr("Height of the output image"));
     addInputPort(mHeight);
 
     // Output

@@ -24,34 +24,34 @@ PathCreator::PathCreator()
     mNumber = 0;
 
     setName("PathCreator");
-    setDesc("Creates a file path in the given directory with the given prefix. The output file path is [dir]/[prefix][number].[extension]");
+    setDesc(QObject::tr("Creates a file path in the given directory with the given prefix. The output file path is [dir]/[prefix][number].[extension]"));
     setGroup("output");
-    mDir.setName("inDirectory");
-    mDir.setDesc("Directory");
+
+    mDir.setName("directory");
     addInputPort(mDir);
 
-    mPrefix.setName("inPrefix");
-    mPrefix.setDesc("File name prefix");
+    mPrefix.setName("prefix");
+    mPrefix.setDesc(QObject::tr("File name prefix"));
     mPrefix.setDefault("image_");
     addInputPort(mPrefix);
 
-    mExtension.setName("inFileExtension");
-    mExtension.setDesc("File name extension");
+    mExtension.setName("fileExtension");
+    mExtension.setDesc(QObject::tr("File name extension"));
     mExtension.setDefault("png");
     addInputPort(mExtension);
 
     mFileName.setName("fileName");
-    mFileName.setDesc("The file name as string without the directory");
+    mFileName.setDesc(QObject::tr("The file name as string without the directory"));
     mFileName.setVisibility(AdvancedPortVisibility);
     addOutputPort(mFileName);
 
     mFileId.setName("fileId");
-    mFileId.setDesc("The assigned number");
+    mFileId.setDesc(QObject::tr("The assigned number"));
     mFileId.setVisibility(AdvancedPortVisibility);
     addOutputPort(mFileId);
 
-    mOut.setName("outFile");
-    mOut.setDesc("The constructed file name");
+    mOut.setName("file");
+    mOut.setDesc(QObject::tr("The constructed file name"));
     addOutputPort(mOut);
 }
 

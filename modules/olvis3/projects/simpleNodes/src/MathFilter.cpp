@@ -22,22 +22,22 @@ MathFilter::MathFilter()
 {
     setName("MathFilter");
     setGroup("helper");
-    setDesc("Applies some fancy math to the input");
+    setDesc(QObject::tr("Applies some fancy math to the input"));
 
     //mIn.setName("inValues");
-    //mIn.setDesc("input values for calculation");
+    //mIn.setDesc(QObject::tr("input values for calculation"));
     //addOutputPort(mIn);
 
     mMode.setName("mode");
-    mMode.setDesc("Calculation mode");
-    mMode.addChoice(SumMode, "Sum");
-    mMode.addChoice(MeanMode, "Mean");
+    mMode.setDesc(QObject::tr("Calculation mode"));
+    mMode.addChoice(SumMode, tr("sum"));
+    mMode.addChoice(MeanMode, tr("mean"));
     mMode.setDefault(SumMode);
     mMode.setMode(SingleShotPortMode);
     addInputPort(mMode);
 
     mOut.setName("result");
-    mOut.setDesc("Calculation result");
+    mOut.setDesc(QObject::tr("Calculation result"));
     addOutputPort(mOut);
 }
 

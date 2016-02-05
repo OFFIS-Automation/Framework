@@ -21,11 +21,11 @@ REGISTER_FILTER(BackgroundSubstraction);
 BackgroundSubstraction::BackgroundSubstraction()
 {
     setName("BackgroundSubstraction");
-    setDesc("Automatic background subtraction");
+    setDesc(QObject::tr("Automatic background subtraction"));
     setGroup("image/math");
 
     mMode.setName("mode");
-    mMode.setDesc("Select the operation mode");
+    mMode.setDesc(QObject::tr("Select the operation mode"));
     mMode.addChoice(MOG, "Default MOG");
     mMode.addChoice(MOG2, "MOG2");
     mMode.setDefault(MOG);
@@ -33,13 +33,15 @@ BackgroundSubstraction::BackgroundSubstraction()
     addInputPort(mMode);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
-    mBackgroundOut.setName("backgroundOut");
+    mBackgroundOut.setName("background");
+    mBackgroundOut.setDesc(QObject::tr("Extracted background from image input"));
     addOutputPort(mBackgroundOut);
 
-    mForegroundOut.setName("foregroundOut");
+    mForegroundOut.setName("foreground");
+    mBackgroundOut.setDesc(QObject::tr("Extracted foreground from image input"));
     addOutputPort(mForegroundOut);
 }
 

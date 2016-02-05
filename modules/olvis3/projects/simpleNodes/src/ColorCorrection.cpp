@@ -21,15 +21,15 @@ REGISTER_FILTER(ColorCorrection);
 ColorCorrection::ColorCorrection()
 {
     setName("ColorCorrection");
-    setDesc("Multiplies each color with a factor");
+    setDesc(QObject::tr("Multiplies each color with a factor"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mRFactor.setName("red gain");

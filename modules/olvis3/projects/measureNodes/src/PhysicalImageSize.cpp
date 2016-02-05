@@ -21,16 +21,22 @@ REGISTER_FILTER(PhysicalImageSize);
 PhysicalImageSize::PhysicalImageSize()
 {
     setName("PhysicalImageSize");
-    setDesc("Inverts the image");
+    setDesc(QObject::tr("Inverts the image"));
     setGroup("measurement");
-    mIn.setName("input");
-    mOut.setName("output");
-    addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputPort(mIn);
+
     mMPerPixel.setName("m/pixel");
     addOutputPort(mMPerPixel);
+
     mTotalWidth.setName("width");
-    mTotalWidth.setDesc("The total image width im mm");
+    mTotalWidth.setDesc(QObject::tr("The total image width in mm"));
     addInputPort(mTotalWidth);
 
 }

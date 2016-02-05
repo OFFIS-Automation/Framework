@@ -18,5 +18,6 @@
         <file>restoreProject.png</file>
         <file>bug.png</file>
         <file>arrow_refresh.png</file>
+		<file>offis.png</file>
     </qresource>
 </RCC>

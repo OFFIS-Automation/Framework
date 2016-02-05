@@ -23,13 +23,13 @@ REGISTER_FILTER(MomentFilter);
 MomentFilter::MomentFilter()
 {
     setName("Moments");
-    setDesc("Calculates the moments of a contour.");
+    setDesc(QObject::tr("Calculates the moments of a contour."));
     setGroup("image/contour");
     mIn.setName("input");
     mNumPixelsOut.setName("numPixels");
-    mNumPixelsOut.setDesc("The number of pixels inside a contour(m00)");
+    mNumPixelsOut.setDesc(QObject::tr("The number of pixels inside a contour(m00)"));
     mCogOut.setName("cog");
-    mCogOut.setDesc("The center of gravity (based on m01, m10 and m00");
+    mCogOut.setDesc(QObject::tr("The center of gravity (based on m01, m10 and m00"));
     addInputListPort(mIn);
     addOutputListPort(mNumPixelsOut);
     addOutputListPort(mCogOut);

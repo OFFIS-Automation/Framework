@@ -23,34 +23,33 @@ REGISTER_FILTER(ColorExtraction);
 ColorExtraction::ColorExtraction()
 {
     setName("ColorExtraction");
-    setDesc("Extracts a color from an input image. The result image contains "
+    setDesc(QObject::tr("Extracts a color from an input image. The result image contains "
             "all pixels that are close to the given color within a given "
-            "tolerance");
+            "tolerance"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mColor.setName("color");
-    mColor.setDesc("The color to search for");
+    mColor.setDesc(QObject::tr("The color to search for"));
     addInputPort(mColor);
 
     mTolerance.setName("tolerance");
-    mTolerance.setDesc("The search tolerance in pixel. a value of 10 results "
-                       "in a search window of [c-5:c+5]");
+    mTolerance.setDesc(QObject::tr("The search tolerance in pixel. a value of 10 results "
+                       "in a search window of [c-5:c+5]"));
     mTolerance.setOnlyEven(false);
     mTolerance.setDefault(10);
     mTolerance.setRange(0, 128);
     addInputPort(mTolerance);
 
     mFillColor.setName("fillColor");
-    mFillColor.setDesc(
-        "The color for the pixels that are not within the found range");
+    mFillColor.setDesc(QObject::tr("The color for the pixels that are not within the found range"));
     mFillColor.setVisibility(AdvancedPortVisibility);
     mFillColor.setMode(OptionalPortMode);
     addInputPort(mFillColor);

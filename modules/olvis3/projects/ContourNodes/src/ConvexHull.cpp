@@ -21,16 +21,15 @@ REGISTER_FILTER(ConvexHull);
 ConvexHull::ConvexHull()
 {
     setName("ConvexHull");
-    setDesc("Calculates the convex hull of contour");
+    setDesc(QObject::tr("Calculates the convex hull of contour"));
     setGroup("image/contour");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
-    addInputPort(mIn);
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputListPort(mIn);
 
     mOut.setName("convexHull");
-    mOut.setDesc("Convex hull of input image");
-    addInputListPort(mIn);
+    mOut.setDesc(QObject::tr("Convex hull of input image"));
     addOutputListPort(mOut);
 }
 

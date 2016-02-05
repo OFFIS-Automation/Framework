@@ -21,19 +21,19 @@ REGISTER_FILTER(FetchTemplate);
 FetchTemplate::FetchTemplate()
 {
     setName("FetchTemplate");
-    setDesc("Fetches a template from the given image on the ROI position");
+    setDesc(QObject::tr("Fetches a template from the given image on the ROI position"));
     setGroup("image/object detection");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
-    mOut.setName("templateOut");
-    mOut.setDesc("Template output port");
+    mOut.setName("template");
+    mOut.setDesc(QObject::tr("Template output port"));
     addOutputPort(mOut);
 
     mRoi.setName("roi");
-    mRoi.setDesc("Region where the template is extracted. Only applied when changed");
+    mRoi.setDesc(QObject::tr("Region where the template is extracted. Only applied when changed"));
     mRoi.setMode(SingleShotPortMode);
     mRoi.setDisplayVisibility(false);
     addInputPort(mRoi);

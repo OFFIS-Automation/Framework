@@ -22,9 +22,9 @@ Delay::Delay()
 {
     setName("Delay");
     setGroup("helper");
-    setDesc("Insert a specific delay into your image processing chain");
+    setDesc(QObject::tr("Insert a specific delay into your image processing chain"));
     mDelay.setName("delayTime");
-    mDelay.setDesc("Delay time in ms");
+    mDelay.setDesc(QObject::tr("Delay time in ms"));
     mDelay.setRange(1,10000);
     mDelay.setDefault(1000);
     addInputPort(mDelay);

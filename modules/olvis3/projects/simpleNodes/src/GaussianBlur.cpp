@@ -21,7 +21,7 @@ REGISTER_FILTER(GaussianBlur);
 GaussianBlur::GaussianBlur()
 {
     setName("Gaussian");
-    setDesc("Smoothes an image using a gaussian filter");
+    setDesc(QObject::tr("Smoothes an image using a gaussian filter"));
     setGroup("image/smoothing");
 }
 

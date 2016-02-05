@@ -22,15 +22,15 @@ REGISTER_FILTER(SobelFilter);
 SobelFilter::SobelFilter()
 {
     setName("Sobel");
-    setDesc("Applies a sobel filter to an image");
+    setDesc(QObject::tr("Applies a sobel filter to an image"));
     setGroup("image/edge detection");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 }
 

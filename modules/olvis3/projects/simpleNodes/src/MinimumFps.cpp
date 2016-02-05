@@ -21,18 +21,20 @@ REGISTER_FILTER(MinimumFps);
 
 MinimumFps::MinimumFps()
 {
-    setName("MinimumFps");
+    setName("MinimumFPS");
     setGroup("helper");
-    setDesc("Insert a variable delay in your chain. This end-to-end time of this processor in always >= the required frames per second");
-    mFps.setName("inFps");
-    mFps.setDesc("minimum fps");
+    setDesc(QObject::tr("Insert a variable delay in your chain. This end-to-end time of this processor in always >= the required frames per second"));
+
+    mFps.setName("fps");
+    mFps.setDesc(QObject::tr("Minimum FPS"));
     mFps.setRange(0.1,1000.0);
     mFps.setDefault(5.0);
     addInputPort(mFps);
+
     mMode.setName("mode");
-    mMode.setDesc("Active wait is CPU-time consuming, but on most systems more precise than sleep wait");
-    mMode.addChoice(SleepMode, "Sleep wait");
-    mMode.addChoice(ActiveWaitMode, "Active wait");
+    mMode.setDesc(QObject::tr("Active wait is CPU-time consuming, but on most systems more precise than sleep wait"));
+    mMode.addChoice(SleepMode, QObject::tr("Sleep wait"));
+    mMode.addChoice(ActiveWaitMode, QObject::tr("Active wait"));
     mMode.setDefault(SleepMode);
     mMode.setVisibility(AdvancedPortVisibility);
     addInputPort(mMode);

@@ -22,17 +22,20 @@ REGISTER_FILTER(ColorPicker);
 ColorPicker::ColorPicker()
 {
     setName("ColorPicker");
-    setDesc("Extracts the color of a given point of the input image");
+    setDesc(QObject::tr("Extracts the color of a given point of the input image"));
     setGroup("image/color");
-    mIn.setName("input");
-    mIn.setDesc("input image");
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Input image"));
     addInputPort(mIn);
+
     mPointIn.setName("position");
-    mPointIn.setDesc("The position inside the image where the color is extracted");
+    mPointIn.setDesc(QObject::tr("The position inside the image where the color is extracted"));
     mPointIn.setDefault(QPointF(0,0));
     addInputPort(mPointIn);
+
     mColorOut.setName("color");
-    mColorOut.setDesc("The extracted color");
+    mColorOut.setDesc(QObject::tr("The extracted color"));
     addOutputPort(mColorOut);
 
 }

@@ -21,30 +21,30 @@ REGISTER_FILTER(VignettingCorrectionRGB);
 VignettingCorrectionRGB::VignettingCorrectionRGB()
 {
     setName("VignettingCorrectionRGB");
-    setDesc("Corrects vignetting, a common lens effect, using a given vignette-mask");
+    setDesc(QObject::tr("Corrects vignetting, a common lens effect, using a given vignette-mask"));
     setGroup("image/math");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image or stream to correct");
+    mIn.setDesc(QObject::tr("Image or stream to correct"));
     addInputPort(mIn);
 
     mVignetteIn.setName("VignetteIn");
-    mVignetteIn.setDesc("Vignette to correct the imageIn");
+    mVignetteIn.setDesc(QObject::tr("Vignette to correct the imageIn"));
     addInputPort(mVignetteIn);
 
     mMode.setName("mode");
-    mMode.addChoice(Difference, "Difference: I_{channel} - V_{channel}");
-    mMode.addChoice(Ratio, "Ratio: I_{channel} * (V_{channel}/ V_max_{channel}})");
+    mMode.addChoice(Difference, tr("Difference: I_{channel} - V_{channel}"));
+    mMode.addChoice(Ratio, tr("Ratio: I_{channel} * (V_{channel}/ V_max_{channel}})"));
     mMode.setDefault(Difference);
     addInputPort(mMode);
 
     mStringOffset.setName("rgb offset");
-    mStringOffset.setDesc("Comma seperated int values that will be added to the result image. This way the output can be normed");
+    mStringOffset.setDesc(QObject::tr("Comma seperated int values that will be added to the result image. This way the output can be normed"));
     mStringOffset.setDefault("0,0,0");
     addInputPort(mStringOffset);
 
-    mOut.setName("output");
-    mOut.setDesc("Corrected output for imageIn");
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Corrected output for imageIn"));
     addOutputPort(mOut);
 }
 

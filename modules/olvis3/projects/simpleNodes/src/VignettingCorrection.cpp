@@ -21,7 +21,7 @@ REGISTER_FILTER(VignettingCorrection);
 VignettingCorrection::VignettingCorrection()
 {
     setName("VignettingCorrection");
-    setDesc("Corrects vignetting, a common lens effect, using a given vignette-mask");
+    setDesc(QObject::tr("Corrects vignetting, a common lens effect, using a given vignette-mask"));
     setGroup("image/math");
     mIn.setName("imageIn");
     addInputPort(mIn);
@@ -30,6 +30,7 @@ VignettingCorrection::VignettingCorrection()
     addInputPort(mVignetteIn);
 
     mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 }
 

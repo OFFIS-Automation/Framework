@@ -21,15 +21,20 @@ REGISTER_FILTER(RectInput);
 RectInput::RectInput()
 {
     setName("Rect");
-    setDesc("Input filter for the automation");
+    setDesc(QObject::tr("Input filter for the automation"));
     setGroup("automation/input");
-    mIn.setName("input rect");
+
+    mIn.setName("inputRect");
     mIn.setMode(SingleShotPortMode);
-    mOut.setName("output");
+
+    mOut.setName("outputRect");
+
     mSingleOut.setName("singleShot");
     mSingleOut.setVisibility(ExpertPortVisibility);
+
     mUpdated.setName("updated");
-    mUpdated.setDisplayVisibility(ExpertPortVisibility);
+    mUpdated.setVisibility(ExpertPortVisibility);
+
     addInputPort(mIn);
     addOutputPort(mOut);
     addOutputPort(mSingleOut);

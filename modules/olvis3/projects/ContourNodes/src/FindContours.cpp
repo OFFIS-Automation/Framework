@@ -21,15 +21,19 @@ REGISTER_FILTER(FindContours);
 FindContours::FindContours()
 {
     setName("FindContours");
-    setDesc("Extracts contours from an image");
+    setDesc(QObject::tr("Extracts contours from an image"));
     setGroup("image/contour");
+
     mIn.setName("imageIn");
-    mOffsetIn.setName("offset");
-    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
-    mOffsetIn.setDefault(QPointF(0.0, 0.0));
-    mContourOut.setName("contour");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
+
+    mOffsetIn.setName("offset");
+    mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
+    mOffsetIn.setDefault(QPointF(0.0, 0.0));
     addInputPort(mOffsetIn);
+
+    mContourOut.setName("contour");
     addOutputListPort(mContourOut);
 }
 

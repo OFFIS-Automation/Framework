@@ -21,19 +21,19 @@ REGISTER_FILTER(ScaleImage);
 ScaleImage::ScaleImage()
 {
     setName("Scale");
-    setDesc("Scales an image by a factor");
+    setDesc(QObject::tr("Scales an image by a factor"));
     setGroup("image/reshape");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mScale.setName("scale");
-    mScale.setDesc("The new image size in percent of the original image");
+    mScale.setDesc(QObject::tr("The new image size in percent of the original image"));
     mScale.setRange(10, 1000);
     mScale.setDefault(100.0);
     addInputPort(mScale);

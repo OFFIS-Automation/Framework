@@ -33,7 +33,6 @@ FilterWidget::FilterWidget(const FilterInfo& info, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::FilterWidget)
 {
-
     ui->setupUi(this);
     mFilterId = info.id;
     mFilterType = info.typeInfo.uid;
@@ -72,8 +71,6 @@ FilterWidget::FilterWidget(const FilterInfo& info, QWidget *parent) :
         else
             ui->rightOutputs->addWidget(outWidget);
     }
-
-    // connect to controller
 }
 
 FilterWidget::~FilterWidget()

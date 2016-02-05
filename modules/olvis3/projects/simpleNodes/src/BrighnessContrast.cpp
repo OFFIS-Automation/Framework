@@ -23,25 +23,25 @@ REGISTER_FILTER(BrighnessContrast);
 BrighnessContrast::BrighnessContrast()
 {
     setName("BrightnessContrast");
-    setDesc("Adjusts brightness and contrast");
+    setDesc(QObject::tr("Adjusts brightness and contrast"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
-    mBrighness.setName("adjustBrightness");
-    mBrighness.setDesc("Adjust the brightness");
+    mBrighness.setName("brightnessFactor");
+    mBrighness.setDesc(QObject::tr("Adjust the brightness"));
     mBrighness.setDefault(0);
     mBrighness.setRange(-100, 100);
     addInputPort(mBrighness);
 
-    mContrast.setName("adjustContrast");
-    mContrast.setDesc("Adjust the contrast");
+    mContrast.setName("contrastFactor");
+    mContrast.setDesc(QObject::tr("Adjust the contrast"));
     mContrast.setDefault(0);
     mContrast.setRange(-100, 100);
     addInputPort(mContrast);

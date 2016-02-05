@@ -33,8 +33,6 @@ Port::Port(int id, const QString &name, bool isMainType) : d(new PortData())
 void Port::setName(const QString &name)
 {
     d->info.name = name;
-    if(d->info.desc.isEmpty())
-        setDesc(name);
 }
 
 void Port::setDesc(const QString &desc)

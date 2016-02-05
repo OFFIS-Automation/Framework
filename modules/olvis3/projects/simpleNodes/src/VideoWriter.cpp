@@ -22,14 +22,19 @@ REGISTER_FILTER(VideoWriter);
 VideoWriter::VideoWriter()
 {
     setName("VideoOutput");
-    setDesc("Writes incoming data to an *.avi video file");
+    setDesc(QObject::tr("Writes incoming data to an *.avi video file"));
     setGroup("output");
+
     mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
+
     mFileName.setName("file");
-    mFpsIn.setName("fps");
     addInputPort(mFileName);
+
+    mFpsIn.setName("fps");
     addInputPort(mFpsIn);
+
     mMode.setName("compression");
     mMode.addChoice(CV_FOURCC('X','V','I','D'), "XVid");
     mMode.addChoice(CV_FOURCC('D','I','V','X'), "DivX");

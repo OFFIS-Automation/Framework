@@ -22,17 +22,18 @@ REGISTER_FILTER(MultipleTemplateMatching);
 MultipleTemplateMatching::MultipleTemplateMatching()
 {
     setName("MultipleTemplateMatching");
-    setDesc("Match a template on an image and output the all found positions, the matching scores and the result image");
+    setDesc(QObject::tr("Match a template on an image and output the all found positions, the matching scores and the result image"));
     setGroup("image/object detection");
     mImageIn.setName("image");
     addInputPort(mImageIn);
 
     mTemplateIn.setName("template");
     addInputPort(mTemplateIn);
+
     mMethodIn.setName("method");
-    mMethodIn.addChoice(CV_TM_CCORR_NORMED,"normalized cross correlation");
-    mMethodIn.addChoice(CV_TM_CCOEFF_NORMED,"fast normalized cross correlation");
-    mMethodIn.addChoice(CV_TM_SQDIFF_NORMED,"normalized squared differences");
+    mMethodIn.addChoice(CV_TM_CCORR_NORMED,tr("normalized cross correlation"));
+    mMethodIn.addChoice(CV_TM_CCOEFF_NORMED, tr("fast normalized cross correlation"));
+    mMethodIn.addChoice(CV_TM_SQDIFF_NORMED, tr("normalized squared differences"));
     mMethodIn.setDefault(CV_TM_CCOEFF_NORMED);
     mMethodIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mMethodIn);
@@ -43,32 +44,32 @@ MultipleTemplateMatching::MultipleTemplateMatching()
     addInputPort(mMinScoreIn);
 
     mOffsetIn.setName("offset");
-    mOffsetIn.setDesc("Offset that will be added to all calculated positions");
+    mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     addInputPort(mOffsetIn);
     mOffsetIn.setVisibility(AdvancedPortVisibility);
 
     mScoreOuts.setName("scores");
-    mScoreOuts.setDesc("The matching score of the found position");
+    mScoreOuts.setDesc(QObject::tr("The matching score of the found position"));
     addOutputListPort(mScoreOuts);
 
     mPositionOuts.setName("positions");
     addOutputListPort(mPositionOuts);
 
     mNeedNewImage.setName("fresh image only");
-    mNeedNewImage.setDesc("Only execute if the main input has a new image");
+    mNeedNewImage.setDesc(QObject::tr("Only execute if the main input has a new image"));
     mNeedNewImage.setDefault(true);
     mNeedNewImage.setVisibility(AdvancedPortVisibility);
     addInputPort(mNeedNewImage);
 
     mSendResultImage.setName("send result image");
-    mSendResultImage.setDesc("Set this to true if the result image of the template matching should be send on the port <result>");
+    mSendResultImage.setDesc(QObject::tr("Set this to true if the result image of the template matching should be send on the port <result>"));
     mSendResultImage.setDefault(false);
     mSendResultImage.setVisibility(ExpertPortVisibility);
     addInputPort(mSendResultImage);
 
     mResultOut.setName("result");
-    mResultOut.setDesc("The result image from the template matching operation. Only sent if the port <send result image> is set to true");
+    mResultOut.setDesc(QObject::tr("The result image from the template matching operation. Only sent if the port <send result image> is set to true"));
     mResultOut.setVisibility(ExpertPortVisibility);
     addOutputPort(mResultOut);
 }

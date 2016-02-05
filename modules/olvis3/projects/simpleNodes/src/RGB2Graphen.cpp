@@ -27,17 +27,17 @@ REGISTER_FILTER(Rgb2Graphen);
 Rgb2Graphen::Rgb2Graphen()
 {
     setName("RGB2Graphen");
-    setDesc("Extracts graphene layers from an RGB image");
+    setDesc(QObject::tr("Extracts graphene layers from an RGB image"));
     setGroup("application/graphene");
 
     // define image input
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     // define mode selection menu
     mMode.setName("mode");
-    mMode.setDesc("Select the operation mode");
+    mMode.setDesc(QObject::tr("Select the operation mode"));
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     // define choices
     mMode.addChoice(BlueSubstractDefault, "B - R/2 - G/2 - |R - G|/2");
@@ -49,11 +49,11 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define target selection menu
     mTarget.setName("target");
-    mTarget.setDesc("Set the targeted graphene");
+    mTarget.setDesc(QObject::tr("Set the targeted graphene"));
     mTarget.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     // define choices
-    mTarget.addChoice(SingleLayerGraphen, "Single layer graphene");
-    mTarget.addChoice(DoubleLayerGraphen, "Double layer graphene");
+    mTarget.addChoice(SingleLayerGraphen, tr("Single layer graphene"));
+    mTarget.addChoice(DoubleLayerGraphen, tr("Double layer graphene"));
     addInputPort(mTarget);
 
     // multiplicator for the variance values
@@ -63,25 +63,26 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define RGB inputs
     mSingleRGBString.setName("single layer RGB");
-    mSingleRGBString.setDesc("Defines the searched RGB value in R,G,B format");
+    mSingleRGBString.setDesc(QObject::tr("Defines the searched RGB value in R,G,B format"));
     mSingleRGBString.setDefault("66,67,72");
     addInputPort(mSingleRGBString);
 
     mDoubleRGBString.setName("double layer RGB");
-    mDoubleRGBString.setDesc("Defines the searched RGB value in R,G,B format");
+    mDoubleRGBString.setDesc(QObject::tr("Defines the searched RGB value in R,G,B format"));
     mDoubleRGBString.setDefault("56,57,70");
     addInputPort(mDoubleRGBString);
 
     mSingleVarianceString.setName("single layer variance");
-    mSingleVarianceString.setDesc("Defines the variance of the searched RGB value in R,G,B format");
+    mSingleVarianceString.setDesc(QObject::tr("Defines the variance of the searched RGB value in R,G,B format"));
     mSingleVarianceString.setDefault("2.23423,1.56613,1.55053");
     addInputPort(mSingleVarianceString);
 
     mDoubleVarianceString.setName("double layer variance");
-    mDoubleVarianceString.setDesc("Defines the variance of the searched RGB value in R,G,B format.");
+    mDoubleVarianceString.setDesc(QObject::tr("Defines the variance of the searched RGB value in R,G,B format."));
     mDoubleVarianceString.setDefault("2.57551,2.23036,1.58594");
     addInputPort(mDoubleVarianceString);
 
+    mChannel.setName("channel");
     mChannel.addChoice(0, "0");
     mChannel.addChoice(1, "1");
     mChannel.addChoice(2, "2");
@@ -89,7 +90,7 @@ Rgb2Graphen::Rgb2Graphen()
 
     // define image output
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 }
 

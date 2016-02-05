@@ -29,6 +29,8 @@ FilterPortWidget::FilterPortWidget(int filterId, const PortInfo& info, QWidget *
     mFilterId(filterId),
     mInfo(info)
 {
+    QString a = info.desc;
+
     ui->setupUi(this);
     ui->text->setToolTip(info.desc);
     setNewName(info.name);

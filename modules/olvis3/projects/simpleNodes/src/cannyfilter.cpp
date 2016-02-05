@@ -21,31 +21,31 @@ REGISTER_FILTER(CannyFilter);
 CannyFilter::CannyFilter()
 {
     setName("Canny");
-    setDesc("Canny edge filter");
+    setDesc(QObject::tr("Canny edge filter"));
     setGroup("image/edge detection");
 
     mOut.setName("imageOut");
-    mOut.setDesc("Image output");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc("Image input");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
     mThreshhold.setName("threshold");
-    mThreshhold.setDesc("Lower threshold");
+    mThreshhold.setDesc(QObject::tr("Lower threshold"));
     mThreshhold.setDefault(50);
     mThreshhold.setRange(1,300);
     addInputPort(mThreshhold);
 
     mRatio.setName("ratio");
-    mRatio.setDesc("The ratio between lower and upper threshold");
+    mRatio.setDesc(QObject::tr("The ratio between lower and upper threshold"));
     mRatio.setDefault(3.0);
     mRatio.setRange(2, 3);
     addInputPort(mRatio);
 
     mUseL1Gradient.setName("fastNormalization");
-    mUseL1Gradient.setDesc("Use the faster but less accurate L1 normalization instead of L2 normalization");
+    mUseL1Gradient.setDesc(QObject::tr("Use the faster but less accurate L1 normalization instead of L2 normalization"));
     mUseL1Gradient.setDefault(true);
     mUseL1Gradient.setVisibility(AdvancedPortVisibility);
     addInputPort(mUseL1Gradient);

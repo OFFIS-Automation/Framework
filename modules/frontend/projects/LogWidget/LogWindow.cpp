@@ -39,7 +39,6 @@ LogWindow::LogWindow(QWidget *parent) :
     mLogStream.setDevice(&mLogFile);
 
     ui->plainTextEdit->setMaximumBlockCount(200);
-//    ui->plainTextEdit->setCenterOnScroll(true);
     mHighlighter = new LogSyntaxHighlighter(ui->plainTextEdit->document());
 
     addLogType(InfoLogType, tr("Info"), "INF", QColor(64, 64, 64));
@@ -113,7 +112,6 @@ void LogWindow::addMessage(QtMsgType type, const QMessageLogContext & /*context 
 
 void LogWindow::onTimeout()
 {
-
     QMap<QPlainTextEdit*, QStringList> updates;
     QStringList buffer;
     {

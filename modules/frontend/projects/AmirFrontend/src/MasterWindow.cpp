@@ -45,6 +45,7 @@ MasterWindow::MasterWindow(QWidget *parent) :
     updateRecentProjects();
     ui->actionClose_project->setEnabled(false);
     ui->actionReload_project->setEnabled(false);
+
     // Start screen
     mStartScreen = new StartScreen();
     connect(this, SIGNAL(showStartScreen()), mStartScreen, SLOT(exec()), Qt::QueuedConnection);
@@ -211,5 +212,4 @@ void MasterWindow::setVisible(bool visible)
         ui->menu_File->addAction(ui->actionExit);
         emit showStartScreen();
     }
-
 }

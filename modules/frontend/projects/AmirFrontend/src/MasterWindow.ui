@@ -44,7 +44,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="separator"/>
     <addaction name="actionAbout_OFFIS_Automation_Toolbox"/>
@@ -164,10 +164,10 @@
   </action>
  </widget>
  <resources>
-  <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
-  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
   <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
+  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
   <include location="../images/images.qrc"/>
+  <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -34,7 +34,7 @@ public:
     PluginLoader(const QString& path);
     virtual ~PluginLoader();
     void load(QSplashScreen* splash);
-    void configure(QSplashScreen *splash, PerspectiveControl* mainWindow, bool nostart);
+    void configure(QSplashScreen *splash, PerspectiveControl* perspectiveControl, bool nostart);
     void deinitializeGuis();
     void deinitializeModels();
     void unload();

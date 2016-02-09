@@ -41,13 +41,11 @@ int main(int argc, char *argv[])
     a.setApplicationName("Automation Framework");
     a.setStyle(QStyleFactory::create("Fusion"));
 
-    // Splash image
-    QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
-    QString versionString = Version::versionString();
-    QPainter* painter=new QPainter(splashPicture);
-    painter->drawText(QRect(0, 16, 250, 20), Qt::AlignCenter, versionString);
+    // Initialize translator
+    TranslationLoader translator;
+    translator.installSystemTranslator();
 
-    // Create splash screen
+    // Migrate old settings
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QFileInfo settingsFile(QSettings().fileName());
     if(!settingsFile.exists()){
@@ -56,73 +54,85 @@ int main(int argc, char *argv[])
             QFile::rename(oldFile.absoluteFilePath(), settingsFile.absoluteFilePath());
         }
     }
-    QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(*splashPicture);
-    // Show
-    splash->show();
-    TranslationLoader translator;
-    translator.installSystemTranslator();
-    splash->showMessage(a.translate("splash screen", "Starting"), Qt::AlignHCenter);
 
-    a.processEvents();
+    // Create splash screen
+    QPixmap* splashPicture = new QPixmap(":/img/SplashScreen.png");
+    QString versionString = Version::versionString();
+    QPainter* painter=new QPainter(splashPicture);
+    painter->drawText(QRect(0, 16, 250, 20), Qt::AlignCenter, versionString);
+
+    QSplashScreen splashScreen;
+    splashScreen.setPixmap(*splashPicture);
+
+    // Show
+    splashScreen.show();
+    splashScreen.showMessage(a.translate("splash screen", "Starting"), Qt::AlignHCenter);
+
+    // Get window arguments
     QDesktopWidget* desktop = a.desktop();
     bool multiScreen = desktop->screenCount() > 1;
-    int retVal;
     if(a.arguments().contains("--singleScreen")){
         multiScreen = false;
     }
     bool noload = a.arguments().contains("--noload");
 
-#ifdef Q_OS_MAC
-    PluginLoader loader(a.applicationDirPath() + "/../../../plugins");
-#else
     PluginLoader loader(a.applicationDirPath() + "/plugins");
-#endif
+    loader.load(&splashScreen);
 
-    QSettings settings;
+    int retVal;
     {
-        QDockWidget* logWindow = new LogWindow();
-        MasterWindow* master = new MasterWindow();
-        MainWindow* slave = 0;
+        MasterWindow* masterWindow = new MasterWindow();
+        MainWindow* slaveWindow = 0;
         if(multiScreen){
-            QString title = master->windowTitle();
-            QString titleDetail = QString("%1 %2.%3.%4").arg(title).arg(Version::MAJOR).arg(Version::MINOR).arg(Version::PATCHLEVEL);
-            slave = new MainWindow();
-            master->setWindowTitle(a.translate("MainWindow", "%1 - Main window").arg(titleDetail));
-            slave->setWindowTitle(a.translate("MainWindow", "%1 - Second window").arg(titleDetail));
+            slaveWindow = new MainWindow();
         }
-        QObject::connect(master, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
-        QObject::connect(master, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
-        loader.load(splash);
-        PerspectiveControl perspectives(master, slave);
-        perspectives.addDockWidget(Qt::BottomDockWidgetArea, logWindow, "Default");
-        loader.configure(splash, &perspectives, noload);
-        master->setAlternative(slave);
-#ifdef Q_OS_LINUX
-        master->move(desktop->availableGeometry(0).topLeft());
-#endif
-        master->showMaximized();
 
-        Notifications::setMainWindow(master);
+        // Set windowm titles
+        QString title = QString("%1 %2.%3").arg(masterWindow->windowTitle()).arg(Version::MAJOR).arg(Version::MINOR);
+        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(title));
         if(multiScreen){
-            slave->setAlternative(master);
-            int screen = 1;
-            if(desktop->primaryScreen() == 1){
-                screen = 0;
-            }
-            slave->show();
-            slave->move(desktop->availableGeometry(screen).topLeft());
-            slave->showMaximized();
+            slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(title));
         }
-        splash->finish(master);
-        perspectives.start();
+
+        // Signal / slot connections
+        QObject::connect(masterWindow, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
+        QObject::connect(masterWindow, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
+
+        // Create perspectives (inside master / slave)
+        PerspectiveControl perspectiveControl(masterWindow, slaveWindow);
+        perspectiveControl.start();
+
+        // Add logWindow as default widget
+        QDockWidget* logWindow = new LogWindow();
+        perspectiveControl.addDockWidget(Qt::BottomDockWidgetArea, logWindow, "Default");
+
+        // Load all other widgets (depending on perspective)
+        loader.configure(&splashScreen, &perspectiveControl, noload);
+
+        // Shows windows
+        masterWindow->setAlternative(slaveWindow);
+        masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
+        masterWindow->showMaximized();
+
+        if(multiScreen){
+            slaveWindow->setAlternative(masterWindow);
+            int screen = desktop->primaryScreen() == 0 ? 1 : 0;
+            slaveWindow->move(desktop->availableGeometry(screen).topLeft());
+            slaveWindow->showMaximized();
+        }
+
+        splashScreen.finish(masterWindow);
+
+        // Set notification reference
+        Notifications::setMainWindow(masterWindow);
+
         retVal = a.exec();
 
         // Free notification reference
         Notifications::setMainWindow(0);
 
         // Save view for next use
-        perspectives.savePerspective();
+        perspectiveControl.savePerspective();
 
         // Close project and DLLs
         loader.closeProject();
@@ -130,9 +140,9 @@ int main(int argc, char *argv[])
 
         // Free memory
         if(multiScreen){
-            delete slave;
+            delete slaveWindow;
         }
-        delete master;
+        delete masterWindow;
     }
     loader.unload();
     return retVal;

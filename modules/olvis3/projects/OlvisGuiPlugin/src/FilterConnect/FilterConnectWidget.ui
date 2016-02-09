@@ -21,21 +21,6 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>3</number>
-    </property>
-    <property name="leftMargin">
-     <number>3</number>
-    </property>
-    <property name="topMargin">
-     <number>3</number>
-    </property>
-    <property name="rightMargin">
-     <number>3</number>
-    </property>
-    <property name="bottomMargin">
-     <number>3</number>
-    </property>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="leftMargin">
@@ -214,8 +199,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>379</width>
-              <height>455</height>
+              <width>365</width>
+              <height>457</height>
              </rect>
             </property>
             <property name="autoFillBackground">
@@ -253,8 +238,8 @@
   </widget>
  </widget>
  <resources>
-  <include location="../../../../../sensorSystem/projects/SensorSystemGui/images/images.qrc"/>
   <include location="../../images/images.qrc"/>
+  <include location="../../../../../sensorSystem/projects/SensorSystemGui/images/images.qrc"/>
  </resources>
  <connections>
   <connection>

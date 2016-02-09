@@ -142,7 +142,7 @@ void PluginLoader::load(QSplashScreen *splash)
     QDir::setCurrent(current.canonicalPath());
 }
 
-void PluginLoader::configure(QSplashScreen *splash, PerspectiveControl *mainWindow, bool nostart)
+void PluginLoader::configure(QSplashScreen *splash, PerspectiveControl *perspectiveControl, bool nostart)
 {
     QMapIterator<QString, GuiPluginInterface*> guis(mGuiPlugins);
     while(guis.hasNext())
@@ -150,7 +150,7 @@ void PluginLoader::configure(QSplashScreen *splash, PerspectiveControl *mainWind
         GuiPluginInterface* gui = guis.next().value();
         if(gui->requirementsMet())
         {
-            gui->addElements(mainWindow);
+            gui->addElements(perspectiveControl);
             splash->showMessage(QApplication::translate("SplashScreen", "Starting plugin: %1").arg(gui->getName()), Qt::AlignHCenter);
             QApplication::processEvents();
             if(!nostart)

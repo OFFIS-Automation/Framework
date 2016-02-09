@@ -135,7 +135,6 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
     QDockWidget* centralDock = takeoverDock(dockName, other);
     if(centralDock)
     {
-
         setCentralDockWidget(centralDock);
         centralDock->setVisible(true);
         DockWidgetTitle* title = qobject_cast<DockWidgetTitle*>(centralDock->titleBarWidget());
@@ -158,6 +157,7 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
     }
     foreach(QDockWidget* w, findChildren<QDockWidget*>())
     {
+        w->setMinimumSize(100, 100);
         w->setVisible(visibleObjects.contains(w->objectName()));
     }
 }

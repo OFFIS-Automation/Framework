@@ -50,7 +50,6 @@ bool HilecGui::requirementsMet()
 
 void HilecGui::initialize(const QString&)
 {
-
     toolbar = new HilecGuiToolbar();
     scriptOutput = new ScriptOutput();
     scriptUi = new ScriptUi();
@@ -66,7 +65,6 @@ void HilecGui::initialize(const QString&)
     scratch = new ScratchWidget();
 
     connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
-    //connect(toolbar, SIGNAL(showHelpWidget()), help, SLOT(show()));
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
     connect(toolbar, SIGNAL(addRcServer()), rcUnits, SLOT(addRcServer()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));
@@ -124,6 +122,7 @@ void HilecGui::loadProject(const QString &projectFile)
     toolbar->setEnabled(true);
     rcUnits->enableContent();
 }
+
 void HilecGui::closeProject()
 {
     hilec->quit();
@@ -168,8 +167,8 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
 
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, scratch, tr("Scratch"));
 
-    toolbar->createMenu(&mainWindow->getMenu(tr("RC-Unit")));
-    toolbar->addHelpToMenu(&mainWindow->getMenu(tr("Help")));
+    toolbar->createMenu(&mainWindow->getMenu(tr("&RC-Unit")));
+    toolbar->addHelpToMenu(&mainWindow->getMenu(tr("&Help")));
 
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Automation"));
     perspective.setCentralWidget(help, 1);
@@ -201,12 +200,9 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
     scratchPerspective.addToolbar(toolbar);
 }
 
-
 void HilecGui::start()
 {
 }
-
-
 
 QStringList HilecGui::allPythonFiles(QDir dir, int depth)
 {

@@ -40,12 +40,18 @@ PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, 
     mToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     mToolBar->setObjectName("perspectiveToolbar");
     mToolBar->setStyleSheet("QToolBar { border: 0px }");
+
     QAction* a = mToolBar->addAction(QIcon(":/img/newPerspective.png"), tr("New\nperspective"), this, SLOT(createPerspective()));
     a->setToolTip(tr("Create new perspective based on the current one"));
+
     mResetAction = mToolBar->addAction(QIcon(":/img/resetPerspective.png"), tr("Reset\nperspective"), this, SLOT(resetPerspectives()));
     mResetAction->setToolTip(tr("Reset the current perspective"));
+    mResetAction->setEnabled(false);
+
     mDeleteAction = mToolBar->addAction(QIcon(":/img/close.png"), tr("Delete\nperspective"), this, SLOT(deletePerspective()));
     mDeleteAction->setToolTip(tr("Delete the current perspective"));
+    mDeleteAction->setEnabled(false);
+
     mToolBar->addSeparator();
 
     QSettings settings;
@@ -63,16 +69,17 @@ PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, 
         p.slaveState = QByteArray::fromBase64(settings.value("slave/state").toByteArray());
         settings.endGroup();
     }
-    mDeleteAction->setEnabled(false);
-    mResetAction->setEnabled(false);
+
     foreach(QString name, perspectives())
     {
         QAction* action = mToolBar->addAction(QIcon(":/img/usePerspective.png"), name, this, SLOT(perspectiveActionTriggered()));
         action->setCheckable(true);
+        action->setToolTip("");
         mActionGroup.addAction(action);
         mTriggers[name] = action;
     }
     reassignShortcuts();
+
 #ifdef Q_OS_WIN
     addToolBar(Qt::LeftToolBarArea, mToolBar, "Default");
 #else
@@ -97,7 +104,7 @@ void PerspectiveControl::startDelayed()
         mTriggers[lastPerspective]->trigger();
     }
     if(!mElementMenu)
-        mElementMenu = mMaster->getMenu(tr("Widgets"));
+        mElementMenu = mMaster->getMenu(tr("&Widgets"));
     updateElements();
 }
 
@@ -128,7 +135,6 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     Perspective& p = mPerspectives[name];
     mMaster->setUpdatesEnabled(false);
 
-
     QDockWidget dummy1, dummy2;
     mMaster->setCentralDockWidget(&dummy1);
     if(mSlave)
@@ -145,11 +151,14 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     if(mSlave)
         mSlave->restoreState(p.slaveState);
     mCurrenPerspective = name;
+
     QSettings settings;
     settings.setValue("perspectiveSettings/last", name);
+
     mMaster->setUpdatesEnabled(true);
     if(mSlave)
         mSlave->setUpdatesEnabled(true);
+
     mDeleteAction->setEnabled(!mPerspectives[name].fixed);
     mResetAction->setEnabled(mPerspectives[name].fixed);
     mPerspectives[name].displayedOnce = true;
@@ -157,7 +166,7 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     // Resize to not overlap the windows taskbar in any case
     // In any case: Ask Tobi why this was necessary, needs longer explaination
     // Master
-    QDesktopWidget* desktop = QApplication::desktop();
+    /*QDesktopWidget* desktop = QApplication::desktop();
     int screenNumber = desktop->screenNumber(mMaster);
 
     int titleBarHeight = mMaster->style()->pixelMetric(QStyle::PM_TitleBarHeight);
@@ -180,7 +189,7 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
         if(currentHeight  > allowedHeight){
             mSlave->resize(mSlave->width(), allowedHeight);
         }
-    }
+    }*/
 
 }
 void PerspectiveControl::resetPerspectives()

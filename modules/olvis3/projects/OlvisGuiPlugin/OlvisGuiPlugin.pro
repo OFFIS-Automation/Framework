@@ -37,7 +37,7 @@ INCLUDEPATH += $${PWD}
 
 
 configs.path    = $${DESTDIR}/olvis
-configs.files  += $$(AmirDevDir)/opencv3/opencv_version.pro
+configs.files  += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/opencv_version.pro
 configs.files  += ../../data/*
 INSTALLS       += configs
 

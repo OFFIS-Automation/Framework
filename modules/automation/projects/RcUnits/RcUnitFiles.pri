@@ -64,7 +64,7 @@ win32*{
     HEADERS += src/telecontrol/WindowsGamepad.h \
         ../../include/telecontrol/GamepadInterface.h
 
-    LIBS += -L$$(AmirDevDir)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
 
     SOURCES += src/telecontrol/WindowsGamepad.cpp
 }

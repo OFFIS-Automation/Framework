@@ -16,12 +16,12 @@
 
 
 win32-msvc*{
-    CVINCLUDEDIR = $$(AmirDevDir)/opencv3/include
-    CVLIBDIR = $$(AmirDevDir)/opencv3/x86/vc12/lib
-    CVBINDIR = $$(AmirDevDir)/opencv3/x86/vc12/bin
+    CVINCLUDEDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/include
+    CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc12/lib
+    CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc12/bin
     INCLUDEPATH += $$CVINCLUDEDIR
     DEFINES += _CRT_SECURE_NO_WARNINGS # supress win32 stdlib warnings
-    include($$(AmirDevDir)/opencv3/opencv_version.pro)
+    include($$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/opencv_version.pro)
     CONFIG(debug, debug|release) {
         LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgcodecs$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d -lopencv_video$${CVVERSION}d -lopencv_videoio$${CVVERSION}d -lopencv_photo$${CVVERSION}d
     } else {

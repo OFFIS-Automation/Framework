@@ -17,7 +17,6 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 
-
 SUBDIRS += projects/olvisFilter
 SUBDIRS += projects/olvisPorts
 SUBDIRS += projects/olvisCore

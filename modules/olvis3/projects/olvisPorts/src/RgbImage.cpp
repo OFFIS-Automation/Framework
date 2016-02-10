@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ports/RgbImage.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 RgbImage::RgbImage() : Mat()
@@ -24,11 +24,6 @@ RgbImage::RgbImage() : Mat()
 
 RgbImage::RgbImage(int rows, int cols) : Mat(rows, cols, CV_8UC3)
 {
-}
-
-RgbImage::RgbImage(const CvMat *m, bool copyData) : Mat(m ,copyData)
-{
-    makeRgb();
 }
 
 RgbImage::RgbImage(const RgbImage &m) : Mat(m)
@@ -49,7 +44,7 @@ RgbImage::RgbImage(const cv::Mat &m) : Mat(m)
     makeRgb();
 }
 
-RgbImage::RgbImage(const IplImage *img, bool copyData) : Mat(img, copyData)
+RgbImage::RgbImage(const IplImage *img) : Mat(cv::cvarrToMat(img))
 {
     makeRgb();
 }

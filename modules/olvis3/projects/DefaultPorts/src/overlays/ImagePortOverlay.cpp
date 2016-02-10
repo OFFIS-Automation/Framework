@@ -24,7 +24,7 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 ImagePortOverlay::ImagePortOverlay(QString name)
     : MainOverlay(name), mScale(1.0), mPixmap()

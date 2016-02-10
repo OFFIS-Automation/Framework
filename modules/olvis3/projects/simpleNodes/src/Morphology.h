@@ -18,7 +18,7 @@
 #define MORPHOLOGY_H
 #include <filter/PluginInterface.h>
 #include <ports/IntegerPort.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "KernelFilter.h"
 

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ports/GrayImage.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 GrayImage::GrayImage() : Mat()
@@ -24,11 +24,6 @@ GrayImage::GrayImage() : Mat()
 
 GrayImage::GrayImage(int rows, int cols) : Mat(rows, cols, CV_8UC1)
 {
-}
-
-GrayImage::GrayImage(const CvMat *m, bool copyData) : Mat(m ,copyData)
-{
-    makeGrayscale();
 }
 
 GrayImage::GrayImage(const GrayImage &m) : Mat(m)
@@ -49,11 +44,10 @@ GrayImage::GrayImage(const cv::Mat &m) : Mat(m)
     makeGrayscale();
 }
 
-GrayImage::GrayImage(const IplImage *img, bool copyData) : Mat(img, copyData)
+GrayImage::GrayImage(const IplImage *img) : Mat(cv::cvarrToMat(img))
 {
     makeGrayscale();
 }
-
 
 GrayImage::GrayImage(cv::Size size) : Mat(size, CV_8UC1)
 {

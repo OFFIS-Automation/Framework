@@ -36,7 +36,7 @@ Invert::Invert()
 void Invert::execute()
 {
     cv::Mat mat = mIn.getValue().clone();
-    unsigned char* data = mat.datastart;
+    uchar* data = (uchar*)mat.datastart;
     while(data < mat.dataend)
     {
         *data = 255-*data;

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BlobDetection.h"
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 #include <cmath>
 #include <QDebug>
 
@@ -112,9 +112,9 @@ void BlobDetection::execute()
             pcaData = pcaData.rowRange(0, pcaId);
             cv::Mat coVar;
             cv::Mat mean;// = cv::Mat(1,2, CV_32FC1);
-            cv::calcCovarMatrix(pcaData,coVar, mean,  CV_COVAR_NORMAL | CV_COVAR_ROWS, CV_32F);
+            cv::calcCovarMatrix(pcaData, coVar, mean,  CV_COVAR_NORMAL | CV_COVAR_ROWS, CV_32F);
             cv::Mat eigenValues, eigenVectors;
-            cv::eigen(coVar,true,eigenValues, eigenVectors);
+            cv::eigen(coVar, eigenValues, eigenVectors);
             alpha = atan2(eigenVectors.at<float>(0,0), eigenVectors.at<float>(0, 1));
             double eigen1 = eigenValues.at<float>(0,0);
             double eigen2 = eigenValues.at<float>(1,0);

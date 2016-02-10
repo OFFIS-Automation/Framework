@@ -18,7 +18,7 @@
 #define RgbImage_H
 
 #include "DefaultPortsGlobal.h"
-#include <opencv2/core/core.hpp>
+#include <opencv2/core.hpp>
 
 class DEFAULTPORTSSHARED_EXPORT RgbImage : public cv::Mat
 {
@@ -35,10 +35,8 @@ public:
     // creates a matrix header for a part of the bigger matrix
     RgbImage(const RgbImage& m, const cv::Range& rowRange, const cv::Range& colRange);
     RgbImage(const RgbImage& m, const cv::Rect& roi);
-    // converts old-style CvMat to the new matrix; the data is not copied by default
-    RgbImage(const CvMat* m, bool copyData=false);
     // converts old-style IplImage to the new matrix; the data is not copied by default
-    RgbImage(const IplImage* img, bool copyData=false);
+    RgbImage(const IplImage* img);
     // helper constructor to compile matrix expressions
     RgbImage(const cv::MatExpr& expr);
     // assignment operators

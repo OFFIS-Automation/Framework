@@ -38,7 +38,7 @@ message(Qt version: $$[QT_VERSION])
 message(Qt is installed in $$[QT_INSTALL_PREFIX])
 message(Qt resources can be found in the following locations:)
 message(Header files: $$[QT_INSTALL_HEADERS])
-message(Libraries: $$[QT_INSTALL_LIBS])
+message(Library files: $$[QT_INSTALL_LIBS])
 message(Binary files (executables): $$[QT_INSTALL_BINS])
 
 unix:!macx{

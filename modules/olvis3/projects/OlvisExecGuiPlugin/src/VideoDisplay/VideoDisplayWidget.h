@@ -30,7 +30,7 @@
 //#include "VideoControlToolbar.h"
 #include "VideoRecorder.h"
 
-#include <opencv2/core/core.hpp>
+#include <opencv2/core.hpp>
 #include <Timer.h>
 #include <gui/OverlayInterface.h>
 

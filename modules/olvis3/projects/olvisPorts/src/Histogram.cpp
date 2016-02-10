@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ports/Histogram.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 Histogram::Histogram() : Mat()
@@ -24,11 +24,6 @@ Histogram::Histogram() : Mat()
 
 Histogram::Histogram(int rows) : Mat(rows, 1, CV_8UC1)
 {
-}
-
-Histogram::Histogram(const CvMat *m, bool copyData) : Mat(m ,copyData)
-{
-    makeHistogram();
 }
 
 Histogram::Histogram(const Histogram &m) : Mat(m)
@@ -40,7 +35,7 @@ Histogram::Histogram(const cv::Mat &m) : Mat(m)
     makeHistogram();
 }
 
-Histogram::Histogram(const IplImage *img, bool copyData) : Mat(img, copyData)
+Histogram::Histogram(const IplImage *img) : Mat(cv::cvarrToMat(img))
 {
     makeHistogram();
 }

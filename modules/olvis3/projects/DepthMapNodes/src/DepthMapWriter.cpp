@@ -37,7 +37,7 @@ void DepthMapWriter::execute()
 {
     const cv::Mat input = mIn;
 	cv::Mat output = input.clone();
-    unsigned char* data = output.datastart;
+    unsigned char* data = (unsigned char*)output.datastart;
     while(data < output.dataend)
     {
         *data = 255-(*data);

@@ -29,10 +29,8 @@ public:
     Histogram(const cv::Mat& m);
     // constructor for matrix headers pointing to user-allocated data
     Histogram(int rows, unsigned char* data, size_t step=AUTO_STEP);
-    // converts old-style CvMat to the new matrix; the data is not copied by default
-    Histogram(const CvMat* m, bool copyData=false);
     // converts old-style IplImage to the new matrix; the data is not copied by default
-    Histogram(const IplImage* img, bool copyData=false);
+    Histogram(const IplImage* img);
 
     // helper constructor to compile matrix expressions
     Histogram(const cv::MatExpr& expr);

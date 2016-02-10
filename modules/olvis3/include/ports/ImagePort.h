@@ -18,7 +18,7 @@
 #define IMAGEPORT_H
 
 #include "DefaultPortsGlobal.h"
-#include <opencv2/core/core.hpp>
+#include <opencv2/core.hpp>
 #include "GrayImage.h"
 #include "RgbImage.h"
 #include "RgbaImage.h"

@@ -17,7 +17,6 @@
 
 #include "VignetteCreator.h"
 
-//#include <opencv2/imgproc/imgproc.hpp>
 REGISTER_FILTER(VignetteCreator);
 
 VignetteCreator::VignetteCreator()

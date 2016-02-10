@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BackgroundSubstraction.h"
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(BackgroundSubstraction);
 BackgroundSubstraction::BackgroundSubstraction()
@@ -24,11 +24,12 @@ BackgroundSubstraction::BackgroundSubstraction()
     setDesc(QObject::tr("Automatic background subtraction"));
     setGroup("image/math");
 
+    // Ports
     mMode.setName("mode");
     mMode.setDesc(QObject::tr("Select the operation mode"));
-    mMode.addChoice(MOG, "Default MOG");
-    mMode.addChoice(MOG2, "MOG2");
-    mMode.setDefault(MOG);
+    mMode.addChoice(MOG2, "Default MOG2");
+    mMode.addChoice(KNN, "KNN");
+    mMode.setDefault(MOG2);
     mMode.setIcon(QImage(":/SimpleNodes/colorMode.png"));
     addInputPort(mMode);
 
@@ -43,6 +44,10 @@ BackgroundSubstraction::BackgroundSubstraction()
     mForegroundOut.setName("foreground");
     mBackgroundOut.setDesc(QObject::tr("Extracted foreground from image input"));
     addOutputPort(mForegroundOut);
+
+    // Create algorithm instances
+    mMog2 = cv::createBackgroundSubtractorMOG2();
+    mKNN = cv::createBackgroundSubtractorKNN();
 }
 
 void BackgroundSubstraction::execute()
@@ -50,12 +55,12 @@ void BackgroundSubstraction::execute()
     const cv::Mat input = mIn;
     cv::Mat foreground, background;
 
-    if(mMode == MOG){
-        mMog.operator ()(input, foreground);
-        mMog.getBackgroundImage(background);
+    if(mMode == KNN){
+        mKNN->apply(input, foreground);
+        mKNN->getBackgroundImage(background);
     } else {
-        mMog2.operator ()(input, foreground);
-        mMog2.getBackgroundImage(background);
+        mMog2->apply(input, foreground);
+        mMog2->getBackgroundImage(background);
     }
 
     mForegroundOut.send(foreground);

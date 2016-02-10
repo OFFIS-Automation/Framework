@@ -18,7 +18,7 @@
 #define COLORPORT_H
 
 #include "DefaultPortsGlobal.h"
-#include <opencv2/core/core.hpp>
+#include <opencv2/core.hpp>
 namespace port
 {
     class DEFAULTPORTSSHARED_EXPORT Color : public Port

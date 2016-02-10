@@ -24,9 +24,10 @@
 #include <QMessageBox>
 #include "VideoDisplayWidget.h"
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/videoio.hpp>
 
 VideoRecorder::VideoRecorder(VideoDisplayWidget* widget)
   : mRate(0), mRect(), mWidget(widget), mVideoWriter(0), mPaintThread(), mTimer(&mPaintThread)

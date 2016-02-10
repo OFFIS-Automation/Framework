@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "VignettingCorrectionRGB.h"
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 REGISTER_FILTER(VignettingCorrectionRGB);
 
 VignettingCorrectionRGB::VignettingCorrectionRGB()
@@ -75,10 +75,11 @@ void VignettingCorrectionRGB::execute()
         mOffsetVector = splitString(mStringOffset.getValue().toStdString());
 
     // spliting into single channels
-    std::vector<cv::Mat> image(3);
-    std::vector<cv::Mat> vignette(3);
-    cv::split(mIn,image);
-    cv::split(mVignetteIn,vignette);
+    cv::Mat image[3];
+    cv::Mat vignette[3];
+
+    cv::split(mIn, image);
+    cv::split(mVignetteIn, vignette);
 
     if (mode == Difference)
     {
@@ -111,6 +112,6 @@ void VignettingCorrectionRGB::execute()
     for (int i = 0; i <= 2; i++)
         cv::add(image[i], mOffsetVector.at(2-i), image[i]);
 
-    cv::merge(image, dest);
+    cv::merge(image, 3, dest);
     mOut.send(dest);
 }

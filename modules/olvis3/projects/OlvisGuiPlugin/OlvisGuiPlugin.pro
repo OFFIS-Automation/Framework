@@ -37,25 +37,25 @@ INCLUDEPATH += $${PWD}
 
 
 configs.path    = $${DESTDIR}/olvis
-configs.files  += $$(AmirDevDir)/opencv2/opencv_version.pro
+configs.files  += $$(AmirDevDir)/opencv3/opencv_version.pro
 configs.files  += ../../data/*
 INSTALLS       += configs
 
-ovlibs.path    = $${DESTDIR}/olvis/lib
+ovlibs.path     = $${DESTDIR}/olvis/lib
 ovlibs.files   += $${DESTDIR}/olvisFilter.lib
 ovlibs.files   += $${DESTDIR}/olvisPorts.lib
 ovlibs.files   += $${DESTDIR}/olvisPlugin.lib
-INSTALLS     += ovlibs
+INSTALLS       += ovlibs
 
-includes.path    = $${DESTDIR}/olvis/include
-includes.files   += ../../include/filter
-includes.files   += ../../include/ports
-INSTALLS     += includes
+includes.path   = $${DESTDIR}/olvis/include
+includes.files += ../../include/filter
+includes.files += ../../include/ports
+INSTALLS       += includes
 
-opencv.path    = $${DESTDIR}/olvis/opencv
-opencv.files  += $$CVINCLUDEDIR
-opencv.files  += $$CVLIBDIR
-INSTALLS      += opencv
+opencv.path     = $${DESTDIR}/olvis/opencv
+opencv.files   += $$CVINCLUDEDIR
+opencv.files   += $$CVLIBDIR
+INSTALLS       += opencv
 
 
 SOURCES += \

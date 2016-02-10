@@ -16,34 +16,15 @@
 
 
 win32-msvc*{
-    CVINCLUDEDIR = $$(AmirDevDir)/opencv2/include
-    CVLIBDIR = $$(AmirDevDir)/opencv2/lib
-    CVBINDIR = $$(AmirDevDir)/opencv2/bin
+    CVINCLUDEDIR = $$(AmirDevDir)/opencv3/include
+    CVLIBDIR = $$(AmirDevDir)/opencv3/x86/vc12/lib
+    CVBINDIR = $$(AmirDevDir)/opencv3/x86/vc12/bin
     INCLUDEPATH += $$CVINCLUDEDIR
     DEFINES += _CRT_SECURE_NO_WARNINGS # supress win32 stdlib warnings
-    include($$(AmirDevDir)/opencv2/opencv_version.pro)
+    include($$(AmirDevDir)/opencv3/opencv_version.pro)
     CONFIG(debug, debug|release) {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d -lopencv_video$${CVVERSION}d -lopencv_photo$${CVVERSION}d
+        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgcodecs$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d -lopencv_video$${CVVERSION}d -lopencv_videoio$${CVVERSION}d -lopencv_photo$${CVVERSION}d
     } else {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION} -lopencv_video$${CVVERSION} -lopencv_photo$${CVVERSION}
+        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgcodecs$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION} -lopencv_video$${CVVERSION} -lopencv_videoio$${CVVERSION} -lopencv_photo$${CVVERSION}
     }
-}
-
-macx{
-    message("Including OpenCV 2.4.2 Mac OS X")
-    CVINCLUDEDIR = /usr/local/include/opencv2
-    CVLIBDIR = /usr/local/lib
-    CVVERSION = .2.4.2
-    debug {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION}
-    } else {
-        LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION}
-    }
-}
-
-unix:!macx{
-    message("Including OpenCV 2.4.2 UNIX")
-    unix:!macx:CONFIG += link_pkgconfig
-    unix:!macx:PKGCONFIG += opencv
-    LIBS += `pkg-config opencv --libs --cflags`
 }

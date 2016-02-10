@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ports/RgbaImage.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 RgbaImage::RgbaImage() : Mat()
@@ -24,11 +24,6 @@ RgbaImage::RgbaImage() : Mat()
 
 RgbaImage::RgbaImage(int rows, int cols) : Mat(rows, cols, CV_8UC4)
 {
-}
-
-RgbaImage::RgbaImage(const CvMat *m, bool copyData) : Mat(m ,copyData)
-{
-    makeRgba();
 }
 
 RgbaImage::RgbaImage(const RgbaImage &m) : Mat(m)
@@ -49,7 +44,7 @@ RgbaImage::RgbaImage(const cv::Mat &m) : Mat(m)
     makeRgba();
 }
 
-RgbaImage::RgbaImage(const IplImage *img, bool copyData) : Mat(img, copyData)
+RgbaImage::RgbaImage(const IplImage *img) : Mat(cv::cvarrToMat(img))
 {
     makeRgba();
 }

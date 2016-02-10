@@ -24,8 +24,6 @@ TEMPLATE = app
 
 DESTDIR = $${PWD}/../bin
 
-
-
 SOURCES += src/main.cpp \
     ../bin/RemoteSignals.cpp
 

@@ -27,10 +27,6 @@
 
 class VideoDisplayWidget;
 
-namespace cv {
-    class VideoWriter;
-};
-
 class VideoRecorder : public QThread
 {
     Q_OBJECT

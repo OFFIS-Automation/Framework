@@ -23,8 +23,8 @@
 #include <ports/FilePort.h>
 #include <ports/IntegerPort.h>
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 class VideoWriter : public UserFilter
 {

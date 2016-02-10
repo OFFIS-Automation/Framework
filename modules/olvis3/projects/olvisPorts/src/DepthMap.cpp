@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <ports/DepthMap.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 DepthMap::DepthMap() : Mat(),
@@ -26,12 +26,6 @@ DepthMap::DepthMap() : Mat(),
 DepthMap::DepthMap(int rows, int cols) : Mat(rows, cols, CV_64FC1),
     muMPerPixel(-1)
 {
-}
-
-DepthMap::DepthMap(const CvMat *m, bool copyData) : Mat(m ,copyData),
-    muMPerPixel(-1)
-{
-    makeDepthMap();
 }
 
 DepthMap::DepthMap(const DepthMap &m) : Mat(m),
@@ -56,7 +50,7 @@ DepthMap::DepthMap(const cv::Mat &m) : Mat(m),
     makeDepthMap();
 }
 
-DepthMap::DepthMap(const IplImage *img, bool copyData) : Mat(img, copyData),
+DepthMap::DepthMap(const IplImage *img) : Mat(cv::cvarrToMat(img)),
     muMPerPixel(-1)
 {
     makeDepthMap();

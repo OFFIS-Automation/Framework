@@ -17,7 +17,7 @@
 #ifndef BACKGROUNDSUBSTRACTION_H
 #define BACKGROUNDSUBSTRACTION_H
 
-#include <opencv2/video/background_segm.hpp>
+#include <opencv2/video.hpp>
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
@@ -31,8 +31,8 @@ public:
 protected:
     enum Mode
     {
-        MOG = 0,
-        MOG2
+        MOG2 = 0,
+        KNN
     };
 
     in::Image mIn;
@@ -40,8 +40,8 @@ protected:
     out::Image mBackgroundOut;
     out::Image mForegroundOut;
 private:
-    cv::BackgroundSubtractorMOG mMog;
-    cv::BackgroundSubtractorMOG2 mMog2;
+    cv::Ptr<cv::BackgroundSubtractorKNN> mKNN;
+    cv::Ptr<cv::BackgroundSubtractorMOG2> mMog2;
 };
 
 #endif // BACKGROUNDSUBSTRACTION_H

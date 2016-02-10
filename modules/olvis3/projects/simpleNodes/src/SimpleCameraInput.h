@@ -21,7 +21,7 @@
 #include <ports/FilePort.h>
 #include <ports/RealPort.h>
 
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui.hpp>
 
 class SimpleCameraInput : public UserFilter
 {

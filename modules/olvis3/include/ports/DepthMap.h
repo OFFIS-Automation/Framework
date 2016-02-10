@@ -34,10 +34,8 @@ public:
     // creates a matrix header for a part of the bigger matrix
     DepthMap(const DepthMap& m, const cv::Range& rowRange, const cv::Range& colRange);
     DepthMap(const DepthMap& m, const cv::Rect& roi);
-    // converts old-style CvMat to the new matrix; the data is not copied by default
-    DepthMap(const CvMat* m, bool copyData=false);
     // converts old-style IplImage to the new matrix; the data is not copied by default
-    DepthMap(const IplImage* img, bool copyData=false);
+    DepthMap(const IplImage* img);
 
     // helper constructor to compile matrix expressions
     DepthMap(const cv::MatExpr& expr);

@@ -18,13 +18,13 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 # Do all the other stuff
-SUBDIRS +=  subtree/qt-remote-signals/QtRemoteSignals \
+SUBDIRS +=  subtree/qt-remote-signals/qtRemoteSignals \
             modules/frontend/projects/LogWidget \
             modules/frontend/projects/Notifications \
-            modules/SensorSystem \
+            modules/sensorSystem \
             modules/frontend/projects/AmirFrontend \
-            modules/Automation \
-            modules/Olvis3 \
+            modules/automation \
+            modules/olvis3 \
             modules/TutorialPlugins
 
 # Print enviroment variables

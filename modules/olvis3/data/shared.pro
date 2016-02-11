@@ -21,8 +21,8 @@ include(opencv_version.pro)
 INCLUDEPATH += $${PWD}/include
 INCLUDEPATH += $$CVINCLUDEDIR
 CONFIG(debug, debug|release) {
-	LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d
+	LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION}d -lopencv_imgcodecs$${CVVERSION}d -lopencv_imgproc$${CVVERSION}d -lopencv_highgui$${CVVERSION}d -lopencv_video$${CVVERSION}d -lopencv_videoio$${CVVERSION}d -lopencv_photo$${CVVERSION}d
 } else {
-	LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION}
+	LIBS +=  -L$${CVLIBDIR} -lopencv_core$${CVVERSION} -lopencv_imgcodecs$${CVVERSION} -lopencv_imgproc$${CVVERSION} -lopencv_highgui$${CVVERSION} -lopencv_video$${CVVERSION} -lopencv_videoio$${CVVERSION} -lopencv_photo$${CVVERSION}
 }
 LIBS += -L$${PWD}/lib -lolvisFilter -lolvisPorts -lolvisPlugin

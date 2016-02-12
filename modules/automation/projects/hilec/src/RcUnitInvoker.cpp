@@ -28,8 +28,8 @@ RcUnitInvoker::RcUnitInvoker()
 
 PyObject* RcUnitInvoker::execute(PyObject* args)
 {
-    char* unit = "";
-    char* method = "";
+    const char* unit = "";
+    const char* method = "";
     PyObject* pyParams = 0;
     if(!PyArg_ParseTuple(args, "ssO", &unit, &method, &pyParams))
     {
@@ -76,7 +76,7 @@ PyObject* RcUnitInvoker::execute(PyObject* args)
 
 PyObject* RcUnitInvoker::getConstants(PyObject *args)
 {
-    char* unit = "";
+    const char* unit = "";
     if(!PyArg_ParseTuple(args, "s", &unit))
     {
         PyErr_SetString(PyExc_RuntimeError, "Wrong number of parameters");

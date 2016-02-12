@@ -140,9 +140,9 @@ extern "C"
         {
 
             PyObject* stackItem = PyList_GetItem(stack, i);
-            char* file = "<unknown>";
-            char* module = "<unknown>";
-            char* method = "<unknown>";
+            const char* file = "<unknown>";
+            const char* module = "<unknown>";
+            const char* method = "<unknown>";
             long line = -1;
             PyArg_ParseTuple(stackItem, "slss", &file, &line, &module, &method);
             ScriptException::Trace trace;

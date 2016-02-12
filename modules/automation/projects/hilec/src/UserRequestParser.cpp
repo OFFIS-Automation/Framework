@@ -42,7 +42,7 @@ void UserRequestParser::parseParams(PyObject *args)
     {
         PyObject* request = PyList_GetItem(requests,i);
         PyObject* options = 0;
-        char * type = " ";
+        const char * type =  "";
         PyArg_ParseTuple(request, "sO", &type, &options);
         switch (type[0])
         {

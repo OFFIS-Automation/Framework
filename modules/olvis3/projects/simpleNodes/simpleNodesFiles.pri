@@ -16,6 +16,8 @@
 
 VPATH += $$PWD
 
+QT  += multimedia
+
 DEFINES += DEFAULTPORTS_LIBRARY
 INCLUDEPATH += $$PWD/../../include
 
@@ -71,7 +73,8 @@ SOURCES += \
     src/VignettingCorrection.cpp \
     src/VignettingCorrectionRGB.cpp \
     src/MultipleTemplateMatching.cpp \
-    src/ColorPicker.cpp
+    src/ColorPicker.cpp \
+    src/Webcam.cpp
 
 HEADERS += \ 
     src/BilateralFilter.h \
@@ -123,7 +126,8 @@ HEADERS += \
     src/VignettingCorrection.h \
     src/VignettingCorrectionRGB.h \
     src/MultipleTemplateMatching.h \
-    src/ColorPicker.h
+    src/ColorPicker.h \
+    src/Webcam.h
 
 RESOURCES += \
     images/images.qrc

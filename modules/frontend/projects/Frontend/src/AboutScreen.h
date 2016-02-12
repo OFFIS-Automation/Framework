@@ -14,38 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SensorSystemGui.h"
+#ifndef ABOUTSCREEN_H
+#define ABOUTSCREEN_H
 
-#include <QtPlugin>
+#include <QDialog>
 
-SensorSystemGui::SensorSystemGui()
-{
+namespace Ui {
+class AboutScreen;
 }
 
-void SensorSystemGui::initialize(const QString & /*pluginDir*/)
+class AboutScreen : public QDialog
 {
-    mSensors = new SensorWidget();
-    mSensors->setEnabled(false);
-}
+    Q_OBJECT
+    
+public:
+    explicit AboutScreen(QWidget *parent = 0);
+    ~AboutScreen();
+    
+private slots:
+    void on_closeButton_clicked();
 
-void SensorSystemGui::deinitialize()
-{
-}
+private:
+    Ui::AboutScreen *ui;
+};
 
-void SensorSystemGui::addElements(MainWindowInterface *mainWindow)
-{
-    //QMenu& menu = mainWindow->getMenu("&Sensors");
-    mainWindow->addDockWidget(Qt::TopDockWidgetArea, mSensors, tr("Sensors"));
-}
-
-void SensorSystemGui::loadProject(const QString &projectFile)
-{
-    mSensors->load(projectFile);
-    mSensors->setEnabled(true);
-}
-
-void SensorSystemGui::closeProject()
-{
-    mSensors->clear();
-    mSensors->setEnabled(false);
-}
+#endif // ABOUTSCREEN_H

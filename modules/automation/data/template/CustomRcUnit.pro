@@ -1,7 +1,7 @@
 CONFIG(debug, debug|release) {
-    targetDir = $$quote($$(OFFIS_Automation_Framework)/debug/plugins)
+    targetDir = $$quote($$(OFFIS_AUTOMATION_FRAMEWORK)/debug/plugins)
 } else {
-    targetDir = $$quote($$(OFFIS_Automation_Framework)/plugins)
+    targetDir = $$quote($$(OFFIS_AUTOMATION_FRAMEWORK)/plugins)
 }
 TEMPLATE = lib
 CONFIG += dll

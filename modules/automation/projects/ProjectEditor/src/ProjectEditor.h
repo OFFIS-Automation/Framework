@@ -19,11 +19,11 @@
 
 #include <interfaces/GuiPluginInterface.h>
 #include <core/HilecInterface.h>
+
 #include "EditorToolBar.h"
 #include "FileTree/FileTree.h"
 #include "Editor/EditArea.h"
 #include "search.h"
-
 
 class ProjectEditor : public QObject, public GuiPluginInterface
 {

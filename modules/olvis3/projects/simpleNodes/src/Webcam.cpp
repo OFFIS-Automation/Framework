@@ -14,38 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SensorSystemGui.h"
+#include "Webcam.h"
 
-#include <QtPlugin>
+#include <QCameraInfo>
 
-SensorSystemGui::SensorSystemGui()
+REGISTER_FILTER(Webcam);
+
+Webcam::Webcam()
+{
+    setName("Webcam");
+    setDesc(QObject::tr("Outputs data from a webcam"));
+    setGroup("input");
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
+    addOutputPort(mOut);
+}
+
+void Webcam::execute()
+{
+
+}
+
+void Webcam::initialize()
 {
 }
 
-void SensorSystemGui::initialize(const QString & /*pluginDir*/)
+void Webcam::deinitialize()
 {
-    mSensors = new SensorWidget();
-    mSensors->setEnabled(false);
-}
-
-void SensorSystemGui::deinitialize()
-{
-}
-
-void SensorSystemGui::addElements(MainWindowInterface *mainWindow)
-{
-    //QMenu& menu = mainWindow->getMenu("&Sensors");
-    mainWindow->addDockWidget(Qt::TopDockWidgetArea, mSensors, tr("Sensors"));
-}
-
-void SensorSystemGui::loadProject(const QString &projectFile)
-{
-    mSensors->load(projectFile);
-    mSensors->setEnabled(true);
-}
-
-void SensorSystemGui::closeProject()
-{
-    mSensors->clear();
-    mSensors->setEnabled(false);
 }

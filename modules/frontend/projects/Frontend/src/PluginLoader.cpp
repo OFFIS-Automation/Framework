@@ -30,7 +30,6 @@
 PluginLoader::PluginLoader(const QString &path)
 {
     mPath = path;
-
 }
 
 PluginLoader::~PluginLoader()

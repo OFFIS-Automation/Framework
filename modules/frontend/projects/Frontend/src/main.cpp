@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2016 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -79,71 +79,67 @@ int main(int argc, char *argv[])
     PluginLoader loader(a.applicationDirPath() + "/plugins");
     loader.load(&splashScreen);
 
-    int retVal;
-    {
-        MasterWindow* masterWindow = new MasterWindow();
-        MainWindow* slaveWindow = 0;
-        if(multiScreen){
-            slaveWindow = new MainWindow();
-        }
-
-        // Set windowm titles
-        QString title = QString("%1 %2.%3").arg(masterWindow->windowTitle()).arg(Version::MAJOR).arg(Version::MINOR);
-        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(title));
-        if(multiScreen){
-            slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(title));
-        }
-
-        // Signal / slot connections
-        QObject::connect(masterWindow, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
-        QObject::connect(masterWindow, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
-
-        // Create perspectives (inside master / slave)
-        PerspectiveControl perspectiveControl(masterWindow, slaveWindow);
-        perspectiveControl.start();
-
-        // Add logWindow as default widget
-        QDockWidget* logWindow = new LogWindow();
-        perspectiveControl.addDockWidget(Qt::BottomDockWidgetArea, logWindow, "Default");
-
-        // Load all other widgets (depending on perspective)
-        loader.configure(&splashScreen, &perspectiveControl, noload);
-
-        // Shows windows
-        masterWindow->setAlternative(slaveWindow);
-        masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
-        masterWindow->showMaximized();
-
-        if(multiScreen){
-            slaveWindow->setAlternative(masterWindow);
-            int screen = desktop->primaryScreen() == 0 ? 1 : 0;
-            slaveWindow->move(desktop->availableGeometry(screen).topLeft());
-            slaveWindow->showMaximized();
-        }
-
-        splashScreen.finish(masterWindow);
-
-        // Set notification reference
-        Notifications::setMainWindow(masterWindow);
-
-        retVal = a.exec();
-
-        // Free notification reference
-        Notifications::setMainWindow(0);
-
-        // Save view for next use
-        perspectiveControl.savePerspective();
-
-        // Close project and DLLs
-        loader.closeProject();
-        loader.deinitializeGuis();
-
-        // Free memory
-        if(multiScreen){
-            delete slaveWindow;
-        }
-        delete masterWindow;
+    MasterWindow* masterWindow = new MasterWindow();
+    MainWindow* slaveWindow = 0;
+    if(multiScreen){
+        slaveWindow = new MainWindow();
     }
+
+    // Set windowm titles
+    if(multiScreen){
+        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(masterWindow->windowTitle()));
+        slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(masterWindow->windowTitle()));
+    }
+
+    // Signal / slot connections
+    QObject::connect(masterWindow, SIGNAL(openProject(QString)), &loader, SLOT(openProject(QString)));
+    QObject::connect(masterWindow, SIGNAL(closeProject()), &loader, SLOT(closeProject()));
+
+    // Create perspectives (inside master / slave)
+    PerspectiveControl perspectiveControl(masterWindow, slaveWindow);
+
+    // Add logWindow as default widget
+    QDockWidget* logWindow = new LogWindow();
+    perspectiveControl.addDockWidget(Qt::BottomDockWidgetArea, logWindow, "Default");
+
+    // Load all other widgets (depending on perspective), than start perspective
+    loader.configure(&splashScreen, &perspectiveControl, noload);
+    perspectiveControl.start();
+
+    // Shows windows
+    masterWindow->setAlternative(slaveWindow);
+    masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
+    masterWindow->showMaximized();
+
+    if(multiScreen){
+        slaveWindow->setAlternative(masterWindow);
+        int screen = desktop->primaryScreen() == 0 ? 1 : 0;
+        slaveWindow->move(desktop->availableGeometry(screen).topLeft());
+        slaveWindow->showMaximized();
+    }
+    splashScreen.finish(masterWindow);
+
+
+    // Set notification reference
+    Notifications::setMainWindow(masterWindow);
+
+    // Run
+    int retVal = a.exec();
+
+    // Free notification reference
+    Notifications::setMainWindow(0);
+
+    // Close project, save perspective, then deinit GUIs
+    perspectiveControl.savePerspective();
+    loader.closeProject();
+    loader.deinitializeGuis();
+
+    // Free memory
+    if(multiScreen){
+        delete slaveWindow;
+    }
+    delete masterWindow;
+
     loader.unload();
     return retVal;
 }

@@ -33,7 +33,6 @@
 #include "runConfigurations/ConfigurationWidget.h"
 #include "telecontrol/TelecontrolWidget.h"
 #include "ScriptErrors/ScriptErrorWidget.h"
-#include "scratch/ScratchWidget.h"
 
 class HilecGui : public QObject, public GuiPluginInterface
 {
@@ -79,7 +78,6 @@ protected:
     RcUnitContainerWidget* rcContainer;
     CallStackWidget* callStack;
     ScriptErrorWidget* errors;
-    ScratchWidget* scratch;
 };
 
 #endif // PROJECTEDITOR_H

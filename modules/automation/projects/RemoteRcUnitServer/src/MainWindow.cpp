@@ -32,6 +32,7 @@ MainWindow::MainWindow(QObject* server, QWidget *parent) :
     ui->statusConnected->setVisible(false);
     addDockWidget(Qt::BottomDockWidgetArea, new LogWindow());
     ui->errorString->hide();
+
     connect(this, SIGNAL(reconnect(QString,int)), server, SLOT(restart(QString, int)));
     connect(server, SIGNAL(stateChanged(int)), SLOT(updateStatus(int)));
     connect(server, SIGNAL(listenError(QString)), SLOT(showListenError(QString)));

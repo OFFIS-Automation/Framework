@@ -19,5 +19,6 @@
         <file>bug.png</file>
         <file>arrow_refresh.png</file>
 		<file>offis.png</file>
+		<file>AMiR.png</file>
     </qresource>
 </RCC>

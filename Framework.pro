@@ -19,13 +19,13 @@ CONFIG += ordered
 
 # Do all the other stuff
 SUBDIRS +=  subtree/qt-remote-signals/qtRemoteSignals \
-            modules/frontend/projects/LogWidget \
-            modules/frontend/projects/Notifications \
-            modules/sensorSystem \
-            modules/frontend/projects/AmirFrontend \
-            modules/automation \
-            modules/olvis3 \
-            modules/TutorialPlugins
+    modules/sensorSystem \
+    modules/frontend/projects/LogWidget \
+    modules/frontend/projects/Notifications \
+    modules/frontend/projects/Frontend \
+    modules/automation \
+    modules/olvis3 \
+    modules/TutorialPlugins
 
 # Print enviroment variables
 message(Qt version: $$[QT_VERSION])
@@ -40,4 +40,3 @@ win32-msvc*:contains(QMAKE_TARGET.arch, x86_64):{
 } else {
     message("Building for 32 bit Windows")
 }
-

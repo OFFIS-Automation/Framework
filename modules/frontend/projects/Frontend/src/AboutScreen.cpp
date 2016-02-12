@@ -40,9 +40,3 @@ void AboutScreen::on_closeButton_clicked()
 {
     close();
 }
-
-void AboutScreen::on_supportButton_clicked()
-{
-    QString url = QString("http://www.automation.offis.de");
-    QDesktopServices::openUrl(QUrl(url));
-}

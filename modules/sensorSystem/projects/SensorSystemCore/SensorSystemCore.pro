@@ -27,8 +27,6 @@ TEMPLATE = lib
 
 INCLUDEPATH += ../../include
 
-
-
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 

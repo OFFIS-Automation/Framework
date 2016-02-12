@@ -80,7 +80,7 @@
   </action>
   <action name="openExplorer">
    <property name="icon">
-    <iconset resource="../../../../../frontend/projects/AmirFrontend/images/images.qrc">
+    <iconset resource="../../../../../frontend/projects/Frontend/images/images.qrc">
      <normaloff>:/img/loadProject.png</normaloff>:/img/loadProject.png</iconset>
    </property>
    <property name="text">
@@ -93,7 +93,7 @@
  </widget>
  <resources>
   <include location="../../images/images.qrc"/>
-  <include location="../../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
+  <include location="../../../../../frontend/projects/Frontend/images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

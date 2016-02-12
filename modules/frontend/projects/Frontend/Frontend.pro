@@ -39,8 +39,8 @@ win32-msvc*{
 }
 
 DEFINES += MAJOR_VERSION=0
-DEFINES += MINOR_VERSION=2
-DEFINES += PATCH_VERSION=3
+DEFINES += MINOR_VERSION=3
+DEFINES += PATCH_VERSION=0
 
 include(../../../properties/pathes.pro)
 
@@ -110,6 +110,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5PrintSupportd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5SerialPortd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimediad.dll
 } else {
     dlls.files += $$[QT_INSTALL_BINS]/icudt5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
@@ -122,6 +123,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5PrintSupport.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5SerialPort.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimedia.dll
 }
 dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
 dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qico.dll

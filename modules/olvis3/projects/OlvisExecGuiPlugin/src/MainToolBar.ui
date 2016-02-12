@@ -150,7 +150,7 @@
   </action>
   <action name="actionRestore">
    <property name="icon">
-    <iconset resource="../../../../frontend/projects/AmirFrontend/images/images.qrc">
+    <iconset resource="../../../../frontend/projects/Frontend/images/images.qrc">
      <normaloff>:/img/restoreProject.png</normaloff>:/img/restoreProject.png</iconset>
    </property>
    <property name="text">
@@ -162,7 +162,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../../../../frontend/projects/AmirFrontend/images/images.qrc">
+    <iconset resource="../../../../frontend/projects/Frontend/images/images.qrc">
      <normaloff>:/img/saveProjectAs.png</normaloff>:/img/saveProjectAs.png</iconset>
    </property>
    <property name="text">
@@ -197,7 +197,7 @@
   <addaction name="actionSave"/>
  </widget>
  <resources>
-  <include location="../../../../frontend/projects/AmirFrontend/images/images.qrc"/>
+  <include location="../../../../frontend/projects/Frontend/images/images.qrc"/>
   <include location="../images/images.qrc"/>
  </resources>
  <connections>

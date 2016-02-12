@@ -33,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent, bool setupCentral) :
     mLayout = new QVBoxLayout();
     mLayout->setContentsMargins(0,0,0,0);
     mCentral->setLayout(mLayout);
-    if(setupCentral)
-    {
+
+    if(setupCentral){
         setCentralWidget(mCentral);
     }
     setDockNestingEnabled(true);
@@ -60,25 +60,14 @@ void MainWindow::addCentralDockWidget(Qt::DockWidgetArea area, QDockWidget *chil
 {
     updateDockWidget(child);
     QMainWindow::addDockWidget(area, child);
-    if(!centralDockWidget())
+    if(!centralDockWidget()){
         setCentralDockWidget(child);
+    }
 }
 
 void MainWindow::removeDockWidget(QDockWidget *dockwidget)
 {
     QMainWindow::removeDockWidget(dockwidget);
-}
-
-void MainWindow::setAlternative(MainWindow *window)
-{
-    mOther = window;
-    QList<QDockWidget*> children = findChildren<QDockWidget*>();
-    foreach(QDockWidget* child, children)
-    {
-        updateDockWidget(child);
-    }
-    if(window)
-        connect(window, SIGNAL(aboutToClose()), SLOT(close()));
 }
 
 void MainWindow::addToolBar(Qt::ToolBarArea area, QToolBar *toolbar)
@@ -91,6 +80,18 @@ void MainWindow::addToolBar(QToolBar *toolbar)
     QMainWindow::addToolBar(toolbar);
 }
 
+void MainWindow::setAlternative(MainWindow *window)
+{
+    mOther = window;
+    QList<QDockWidget*> children = findChildren<QDockWidget*>();
+    foreach(QDockWidget* child, children){
+        updateDockWidget(child);
+    }
+    if(window){
+        connect(window, SIGNAL(aboutToClose()), SLOT(close()));
+    }
+}
+
 void MainWindow::closeEvent(QCloseEvent *ev)
 {
     emit aboutToClose();
@@ -99,26 +100,28 @@ void MainWindow::closeEvent(QCloseEvent *ev)
 
 QDockWidget* MainWindow::centralDockWidget()
 {
-    if(mLayout->count() > 0)
+    if(mLayout->count() > 0){
         return qobject_cast<QDockWidget*>(mLayout->itemAt(0)->widget());
+    }
     return 0;
 }
 
 void MainWindow::setCentralDockWidget(QDockWidget *dock)
 {
     Qt::DockWidgetArea area = dockWidgetArea(dock);
-    if(area == Qt::NoDockWidgetArea)
+    if(area == Qt::NoDockWidgetArea){
         area = Qt::LeftDockWidgetArea;
+    }
     removeDockWidget(dock);
+
     mLayout->addWidget(dock);
     dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    if(mLayout->count() > 1)
-    {
+    if(mLayout->count() > 1){
         QDockWidget* current = qobject_cast<QDockWidget*>(mLayout->itemAt(0)->widget());
-        if(current && current != dock)
-        {
+        if(current && current != dock){
             mLayout->removeWidget(current);
             addDockWidget(area, current);
+
             current->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable);
             current->setVisible(true);
         }
@@ -128,10 +131,12 @@ void MainWindow::setCentralDockWidget(QDockWidget *dock)
 
 void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList visibleObjects)
 {
-    if(docks.size() == 0)
+    if(docks.size() == 0){
         return;
+    }
     QString dockName = docks.takeFirst();
     visibleObjects << dockName; // make sure central dock is visible
+
     QDockWidget* centralDock = takeoverDock(dockName, other);
     if(centralDock)
     {
@@ -157,7 +162,6 @@ void MainWindow::restoreDocks(QStringList docks, MainWindow* other, QStringList 
     }
     foreach(QDockWidget* w, findChildren<QDockWidget*>())
     {
-        w->setMinimumSize(100, 100);
         w->setVisible(visibleObjects.contains(w->objectName()));
     }
 }
@@ -167,20 +171,17 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
     QMainWindow::keyPressEvent(e);
 }
 
-
 QStringList MainWindow::saveDocks()
 {
     QStringList elements;
     QWidget* central = centralDockWidget();
-    if(central)
-    {
+    if(central){
         elements << central->objectName();
     }
+
     QList<QDockWidget*> docks = findChildren<QDockWidget*>();
-    foreach(QDockWidget* dock, docks)
-    {
-        if(dock != central)
-        {
+    foreach(QDockWidget* dock, docks){
+        if(dock != central){
             elements << dock->objectName();
         }
     }
@@ -191,17 +192,13 @@ QDockWidget* MainWindow::takeoverDock(const QString& name, MainWindow *other)
 {
     // is it mine?
     QDockWidget* dock = findChild<QDockWidget*>(name);
-    if(dock)
-    {
-        //removeDockWidget(dock);
+    if(dock){
         return dock;
     }
     // its not mine
-    if(other)
-    {
+    if(other){
         dock = other->findChild<QDockWidget*>(name);
-        if(!dock)
-        {
+        if(!dock){
             return 0;
         }
         Qt::DockWidgetArea area = other->dockWidgetArea(dock);
@@ -210,16 +207,15 @@ QDockWidget* MainWindow::takeoverDock(const QString& name, MainWindow *other)
         return dock;
     }
     return 0;
-
 }
 
 void MainWindow::updateDockWidget(QDockWidget *child)
 {
     child->setAllowedAreas(Qt::AllDockWidgetAreas);
     child->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable);
+
     DockWidgetTitle* title = qobject_cast<DockWidgetTitle*>(child->titleBarWidget());
-    if(!title)
-    {
+    if(!title){
         title = new DockWidgetTitle(child);
         child->setTitleBarWidget(title);
     }

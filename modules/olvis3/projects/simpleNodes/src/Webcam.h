@@ -14,29 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ABOUTSCREEN_H
-#define ABOUTSCREEN_H
+#ifndef WEBCAM_H
+#define WEBCAM_H
 
-#include <QDialog>
+#include <filter/PluginInterface.h>
+#include <ports/ImagePort.h>
 
-namespace Ui {
-class AboutScreen;
-}
+#include <QCamera>
 
-class AboutScreen : public QDialog
+class Webcam : public UserFilter
 {
-    Q_OBJECT
-    
 public:
-    explicit AboutScreen(QWidget *parent = 0);
-    ~AboutScreen();
-    
-private slots:
-    void on_closeButton_clicked();
-    void on_supportButton_clicked();
-
-private:
-    Ui::AboutScreen *ui;
+    Webcam();
+    virtual void execute();
+    virtual void initialize();
+    virtual void deinitialize();
+protected:
+    out::Image mOut;
+    QCamera *mCamera;
 };
 
-#endif // ABOUTSCREEN_H
+
+#endif // WEBCAM_H

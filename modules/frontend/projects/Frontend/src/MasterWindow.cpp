@@ -66,10 +66,10 @@ MasterWindow::~MasterWindow()
 QMenu *MasterWindow::getMenu(QString name)
 {
     QMenuBar* bar = menuBar();
-    foreach(QAction* action, bar->actions())
-    {
-        if(action->text() == name && action->menu() != 0)
+    foreach(QAction* action, bar->actions()){
+        if(action->text() == name && action->menu() != 0){
             return action->menu();
+        }
     }
     QMenu* newMenu = new QMenu(name);
     bar->insertMenu(ui->menuHelp->menuAction(), newMenu);
@@ -81,18 +81,21 @@ void MasterWindow::on_actionOpen_project_triggered()
     QString defaultOpen = QDir::homePath();
     if(!mRecentProjects.empty())
         defaultOpen = mRecentProjects.first();
+
     QString filter = "OFFIS automation projects (*.oap);;Old projects (*.pro *.ogr)";
     QString filename = QFileDialog::getOpenFileName(this, tr("Open project"), defaultOpen, filter);
+
     if(filename.isEmpty())
         return;
     if(!QFileInfo(filename).exists())
         return;
+
+    // Convert old
     bool oldAutomationFile = filename.endsWith(".pro", Qt::CaseInsensitive);
     bool oldOlvisFile = filename.endsWith(".ogr", Qt::CaseInsensitive);
     if(oldAutomationFile || oldOlvisFile)
     {
-        if (QMessageBox::information(this, tr("Update project"), tr("The project needs to be updated. Proceed?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes)
-                == QMessageBox::Yes)
+        if (QMessageBox::information(this, tr("Update project"), tr("The project needs to be updated. Proceed?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
         {
             QFileInfo info(filename);
             QString newName = info.absolutePath() + "/" + info.baseName() + ".oap";
@@ -156,12 +159,14 @@ void MasterWindow::onOpenRecentTriggered()
     QAction * action = qobject_cast<QAction*>(sender());
     if(action)
         open(action->text());
-
 }
 
 void MasterWindow::open(const QString &projectPath)
 {
+    // Close current project
     emit closeProject();
+
+    // Check if project file exist => then reopen
     if(!QFileInfo(projectPath).exists())
     {
         QMessageBox::warning(this, tr("Project file not found"), tr("The project could not be loaded, the project file was not found"));
@@ -170,6 +175,7 @@ void MasterWindow::open(const QString &projectPath)
     }
     updateRecentProjects(projectPath);
     emit openProject(projectPath);
+
     ui->actionClose_project->setEnabled(true);
     ui->actionReload_project->setEnabled(true);
 }

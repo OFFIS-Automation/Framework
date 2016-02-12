@@ -69,8 +69,8 @@ void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
     const OlvisInterface& model = *mInterface;
     toolbar = new MainToolBar(model);
     videoWidget = new VideoWidget();
-    if(mHilec)
-    {
+
+    if(mHilec){
         connect(mHilec, SIGNAL(videoCaptureStartRequested(int,int)), videoWidget, SLOT(startCapture(int,int)));
         connect(mHilec, SIGNAL(videoCaptureEndRequested(QString,int)), videoWidget, SLOT(endCapture(QString,int)));
         connect(mHilec, SIGNAL(saveScreenshotRequested(QString,int)), videoWidget, SLOT(saveScreenshot(QString,int)));
@@ -78,9 +78,9 @@ void OlvisExecGuiPlugin::initialize(const QString& pluginDir)
     connect(toolbar, SIGNAL(setNumDisplays(int)), videoWidget, SLOT(updateMaxDisplays(int)), Qt::QueuedConnection);
     connect(toolbar, SIGNAL(restoreRequested()), SLOT(restore()));
     connect(toolbar, SIGNAL(saveRequested()), SLOT(save()));
-    // prototype:
-    //connect(toolbar, SIGNAL(), mInterface, SLOT(), Qt::QueuedConnection);
+
     toolbar->setEnabled(false);
+    videoWidget->setEnabled(false);
 }
 
 void OlvisExecGuiPlugin::start()
@@ -108,8 +108,8 @@ void OlvisExecGuiPlugin::addElements(MainWindowInterface *mainWindow)
     mainWindow->addToolBar(toolbar, tr("Vision"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, videoWidget, tr("Vision"));
 
-    QMenu* fileMenu = &mainWindow->getMenu(tr("&File"));
-    toolbar->initMenu(fileMenu, &mainWindow->getMenu(tr("&Vision")));
+    QMenu* fileMenu = &mainWindow->getMenu(tr("File"));
+    toolbar->initMenu(fileMenu, &mainWindow->getMenu(tr("Vision")));
 
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Vision"));
     perspective.setCentralWidget(videoWidget, 1);
@@ -259,6 +259,7 @@ void OlvisExecGuiPlugin::loadProject(const QString &projectFile)
     }
     mInterface->clearUpdateFlag();
     toolbar->setEnabled(true);
+    videoWidget->setEnabled(true);
     mTimer.start();
 }
 
@@ -284,6 +285,6 @@ void OlvisExecGuiPlugin::closeProject()
     QFile(autoSaveFile).remove();
     autoSaveFile = QString();
     toolbar->setEnabled(false);
+    videoWidget->setEnabled(false);
     mInterface->clear();
-
 }

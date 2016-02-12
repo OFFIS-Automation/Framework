@@ -92,9 +92,9 @@ void MainToolBar::initMenu(QMenu* fileMenu, QMenu* olvisMenu)
 {
     if(fileMenu->actions().size() > 0)
         fileMenu->addSeparator();
-
     if(olvisMenu->actions().size() > 0)
         olvisMenu->addSeparator();
+
     olvisMenu->addAction(ui->actionImageDisplays);
     olvisMenu->addAction(ui->actionRun);
     olvisMenu->addAction(ui->actionStop);
@@ -103,8 +103,6 @@ void MainToolBar::initMenu(QMenu* fileMenu, QMenu* olvisMenu)
     olvisMenu->addAction(ui->actionOptions);
     olvisMenu->addAction(ui->actionEnableTracing);
     olvisMenu->addAction(ui->actionExportTrace);
-
-
 }
 
 MainToolBar::~MainToolBar()

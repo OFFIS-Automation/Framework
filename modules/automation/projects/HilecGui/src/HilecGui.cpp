@@ -62,7 +62,6 @@ void HilecGui::initialize(const QString&)
     telecontrol = new TelecontrolWidget();
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
-    scratch = new ScratchWidget();
 
     connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
@@ -112,6 +111,7 @@ void HilecGui::loadProject(const QString &projectFile)
     callStack->setProjectFile(projectFile);
     errors->setProjectFile(projectFile);
     telecontrol->setConfigFile(projectFile);
+
     // compile all files
     foreach(const QString& file, allPythonFiles(QFileInfo(projectFile).absoluteDir(), 1))
     {
@@ -119,8 +119,20 @@ void HilecGui::loadProject(const QString &projectFile)
     }
 
     runConfigurations->enableContent();
-    toolbar->setEnabled(true);
     rcUnits->enableContent();
+
+    toolbar->setEnabled(true);
+    scriptUi->setEnabled(true);
+    scriptOutput->setEnabled(true);
+    scriptException->setEnabled(true);
+    rcUnits->setEnabled(true);
+    help->setEnabled(true);
+    debugVars->setEnabled(true);
+    runConfigurations->setEnabled(true);
+    telecontrol->setEnabled(true);
+    rcContainer->setEnabled(true);
+    callStack->setEnabled(true);
+    errors->setEnabled(true);
 }
 
 void HilecGui::closeProject()
@@ -134,12 +146,25 @@ void HilecGui::closeProject()
     }
 
     runConfigurations->disableContent();
-    toolbar->setEnabled(false);
     rcUnits->disableContent();
+
     rcUnits->clear();
     errors->clear();
     telecontrol->clear();
     hilec->releaseConfig();
+
+    toolbar->setEnabled(false);
+    scriptUi->setEnabled(false);
+    scriptOutput->setEnabled(false);
+    scriptException->setEnabled(false);
+    rcUnits->setEnabled(false);
+    help->setEnabled(false);
+    debugVars->setEnabled(false);
+    runConfigurations->setEnabled(false);
+    telecontrol->setEnabled(false);
+    rcContainer->setEnabled(false);
+    callStack->setEnabled(false);
+    errors->setEnabled(false);
 }
 
 QObject* HilecGui::getConnectObject()
@@ -165,10 +190,8 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, telecontrol, tr("RC-Unit"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, rcContainer, tr("RC-Unit"));
 
-    mainWindow->addDockWidget(Qt::TopDockWidgetArea, scratch, tr("Scratch"));
-
-    toolbar->createMenu(&mainWindow->getMenu(tr("&RC-Unit")));
-    toolbar->addHelpToMenu(&mainWindow->getMenu(tr("&Help")));
+    toolbar->createMenu(&mainWindow->getMenu(tr("RC-Unit")));
+    toolbar->addHelpToMenu(&mainWindow->getMenu(tr("Help")));
 
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Automation"));
     perspective.setCentralWidget(help, 1);
@@ -193,11 +216,6 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
     debugPerspective.addDockWidget(scriptUi);
     debugPerspective.addDockWidget(runConfigurations);
     debugPerspective.addToolbar(toolbar);
-
-    PerspectiveInterface& scratchPerspective = mainWindow->getPerspective(tr("Scratch"));
-    scratchPerspective.setCentralWidget(help, 1);
-    scratchPerspective.addDockWidget(scratch);
-    scratchPerspective.addToolbar(toolbar);
 }
 
 void HilecGui::start()

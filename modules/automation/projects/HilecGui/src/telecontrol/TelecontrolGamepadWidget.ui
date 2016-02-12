@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>366</width>
-    <height>86</height>
+    <width>384</width>
+    <height>109</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,15 +35,6 @@
       <string>GroupBox</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
       <item>
        <layout class="QFormLayout" name="formLayout">
         <property name="sizeConstraint">

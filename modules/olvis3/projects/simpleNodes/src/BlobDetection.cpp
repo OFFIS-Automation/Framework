@@ -17,7 +17,6 @@
 #include "BlobDetection.h"
 #include <opencv2/imgproc.hpp>
 #include <cmath>
-#include <QDebug>
 
 REGISTER_FILTER(BlobDetection);
 

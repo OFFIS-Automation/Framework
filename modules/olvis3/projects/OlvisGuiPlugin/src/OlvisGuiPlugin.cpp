@@ -85,12 +85,11 @@ void OlvisGuiPlugin::deinitialize()
 
 void OlvisGuiPlugin::addElements(MainWindowInterface *mainWindow)
 {
-
     mainWindow->addDockWidget(Qt::LeftDockWidgetArea, search, Qt::Horizontal, tr("Vision"));
     mainWindow->addDockWidget(Qt::LeftDockWidgetArea, connections, Qt::Horizontal, tr("Vision"));
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, info, Qt::Vertical, tr("Vision"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, processors, Qt::Horizontal, tr("Vision"));
-    toolbar->initMenu(&mainWindow->getMenu("&Vision"));
+    toolbar->initMenu(&mainWindow->getMenu("Vision"));
 
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Vision"));
     perspective.setCentralWidget(connections);
@@ -112,8 +111,10 @@ void OlvisGuiPlugin::setGuiInterface(const QString &name, QObject * guiPlugin)
     }
 }
 
-void OlvisGuiPlugin::loadProject(const QString & /*projectFile */)
+void OlvisGuiPlugin::loadProject(const QString & projectFile)
 {
+    Q_UNUSED(projectFile)
+
     connections->setEnabled(true);
     search->setEnabled(true);
     processors->setEnabled(true);

@@ -97,7 +97,6 @@ void ProjectEditor::initialize(const QString&)
     connect(mEditArea, SIGNAL(cutCopyStatusChanged(bool)), mToolbar, SLOT(onCutCopyStatusChanged(bool)));
 
     closeProject();
-
 }
 
 void ProjectEditor::deinitialize()
@@ -125,7 +124,7 @@ void ProjectEditor::addElements(MainWindowInterface* mainWindow)
     mainWindow->addDockWidget(Qt::LeftDockWidgetArea, mFileTree, tr("Scripting"));
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, mEditArea, tr("Scripting"));
 
-    mToolbar->initMenu(&mainWindow->getMenu(tr("&File")));
+    mToolbar->initMenu(&mainWindow->getMenu(tr("File")));
 
     PerspectiveInterface& perspective = mainWindow->getPerspective(tr("Automation"));
     perspective.addToolbar(mToolbar);
@@ -141,9 +140,6 @@ void ProjectEditor::addElements(MainWindowInterface* mainWindow)
     debugPerspective.addToolbar(mToolbar);
     debugPerspective.setCentralWidget(mEditArea);
     debugPerspective.addDockWidget(mFileTree);
-
-    PerspectiveInterface& scratchPerspective = mainWindow->getPerspective(tr("Scratch"));
-    scratchPerspective.addToolbar(mToolbar);
 }
 
 void ProjectEditor::start()
@@ -157,9 +153,11 @@ void ProjectEditor::loadProject(const QString &projectName)
     mBaseDir = QFileInfo(projectName).absolutePath();
     mToolbar->setBaseDir(mBaseDir);
     mFileTree->updateTree(mBaseDir);
-    mFileTree->setEnabled(true);
-    //mToolbar->onProjectOpened(projectName);
     mEditArea->setBaseDir(mBaseDir);
+
+    mToolbar->setEnabled(true);
+    mFileTree->setEnabled(true);
+    mEditArea->setEnabled(true);
 }
 
 void ProjectEditor::closeProject()
@@ -169,6 +167,9 @@ void ProjectEditor::closeProject()
     mProjectName.clear();
     mBaseDir.clear();
     mFileTree->clear();
-    mFileTree->setEnabled(false);
     mToolbar->setBaseDir(QString());
+
+    mToolbar->setEnabled(false);
+    mFileTree->setEnabled(false);
+    mEditArea->setEnabled(false);
 }

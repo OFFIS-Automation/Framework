@@ -32,8 +32,10 @@ FilterInfoWidget::FilterInfoWidget(const OlvisInterface& model, QWidget *parent)
     ui(new Ui::FilterInfoWidget)
 {
     ui->setupUi(this);
+    ui->visibilityWidget->setHidden(true);
     mPortVisibility = UserPortVisiblility;
-    // some testing
+
+    // Signal / Slots
     connect(&mInterface, SIGNAL(filterCreated(FilterInfo,int)), SLOT(showFilter(FilterInfo)));
     connect(&mInterface, SIGNAL(portValueChanged(int, QString,QVariant)), SLOT(updatePortValue(int, QString, QVariant)));
     connect(&mInterface, SIGNAL(filterConnected(PortId,PortId,int)), SLOT(addPortConnection(PortId, PortId)));
@@ -90,6 +92,8 @@ void FilterInfoWidget::clearPorts()
 void FilterInfoWidget::updatePorts(const FilterInfo &filter)
 {
     clearPorts();
+    ui->visibilityWidget->setVisible(filter.typeInfo.inputs.count() > 0);
+
     QListIterator<PortInfo> inputs(filter.typeInfo.inputs);
     while(inputs.hasNext())
     {

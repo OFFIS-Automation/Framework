@@ -22,7 +22,7 @@
      <number>9</number>
     </property>
     <property name="topMargin">
-     <number>9</number>
+     <number>15</number>
     </property>
     <property name="rightMargin">
      <number>9</number>
@@ -40,9 +40,6 @@
       </property>
       <property name="currentIndex">
        <number>0</number>
-      </property>
-      <property name="movable">
-       <bool>false</bool>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -63,6 +60,9 @@
         </property>
         <item>
          <widget class="ExtendedTextEdit" name="plainTextEdit">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -79,7 +79,7 @@
   <customwidget>
    <class>ExtendedTextEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>ExtendedTextEdit.h</header>
+   <header location="global">ExtendedTextEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

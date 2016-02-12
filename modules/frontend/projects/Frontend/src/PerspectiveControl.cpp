@@ -32,8 +32,9 @@
 PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, QObject *parent) :
     QObject(parent), mMaster(master), mSlave(slave), mActionGroup(this), mElementMenu(0)
 {
-    if(mSlave == mMaster)
+    if(mSlave == mMaster){
         mSlave = 0;
+    }
 
     mToolBar = new QToolBar(tr("Perspectives"));
     mToolBar->setIconSize(QSize(cButtonWidth, 26));
@@ -55,9 +56,11 @@ PerspectiveControl::PerspectiveControl(MasterWindow *master, MainWindow *slave, 
     mToolBar->addSeparator();
 
     QSettings settings;
+    QString s = settings.fileName();
     settings.remove("perspectives");
     settings.remove("lastPerspective");
     settings.beginGroup("perspectiveSettings");
+
     QStringList names = settings.childGroups();
     foreach(QString name, names)
     {
@@ -97,70 +100,80 @@ void PerspectiveControl::startDelayed()
 {
     QSettings settings;
     QString lastPerspective = settings.value("perspectiveSettings/last").toString();
-    if(!mTriggers.empty())
-    {
-        if(!mTriggers.contains(lastPerspective))
+    if(!mTriggers.empty()){
+        if(!mTriggers.contains(lastPerspective)){
             lastPerspective = mTriggers.keys().first();
+        }
         mTriggers[lastPerspective]->trigger();
     }
-    if(!mElementMenu)
-        mElementMenu = mMaster->getMenu(tr("&Widgets"));
+    if(!mElementMenu){
+        mElementMenu = mMaster->getMenu(tr("Widgets"));
+    }
     updateElements();
 }
 
 void PerspectiveControl::savePerspective(QString name)
 {
-    if(name.isEmpty())
+    if(name.isEmpty()){
         name = currentPerspective();
-    if(name.isEmpty())
+    }
+    if(name.isEmpty()){
         return;
+    }
     Perspective& p = mPerspectives[name];
     p.masterObjects = mMaster->saveDocks();
     p.masterState = mMaster->saveState();
-    if(mSlave)
-    {
+
+    if(mSlave){
         p.slaveObjects = mSlave->saveDocks();
         p.slaveState = mSlave->saveState();
     }
+
     storePerspectives(name);
 }
 
 void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
 {
-    if(!mPerspectives.contains(name))
+    if(!mPerspectives.contains(name)){
         return;
-    if(saveCurrent)
+    }
+    if(saveCurrent){
         savePerspective();
+    }
 
-    Perspective& p = mPerspectives[name];
     mMaster->setUpdatesEnabled(false);
+    if(mSlave){
+        mSlave->setUpdatesEnabled(false);
+    }
 
     QDockWidget dummy1, dummy2;
     mMaster->setCentralDockWidget(&dummy1);
-    if(mSlave)
-    {
-        mSlave->setUpdatesEnabled(false);
+    if(mSlave){
         mSlave->setCentralDockWidget(&dummy2);
     }
 
+    Perspective& p = mPerspectives[name];
     mMaster->restoreDocks(p.masterObjects, mSlave, p.visibleObjects);
-    if(mSlave)
+    if(mSlave){
         mSlave->restoreDocks(p.slaveObjects, mMaster, p.visibleObjects);
+    }
 
     mMaster->restoreState(p.masterState);
-    if(mSlave)
+    if(mSlave){
         mSlave->restoreState(p.slaveState);
+    }
     mCurrenPerspective = name;
 
     QSettings settings;
     settings.setValue("perspectiveSettings/last", name);
 
     mMaster->setUpdatesEnabled(true);
-    if(mSlave)
+    if(mSlave){
         mSlave->setUpdatesEnabled(true);
+    }
 
-    mDeleteAction->setEnabled(!mPerspectives[name].fixed);
     mResetAction->setEnabled(mPerspectives[name].fixed);
+    mDeleteAction->setEnabled(!mPerspectives[name].fixed);
     mPerspectives[name].displayedOnce = true;
 
     // Resize to not overlap the windows taskbar in any case
@@ -194,18 +207,19 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
 }
 void PerspectiveControl::resetPerspectives()
 {
-    QString key = currentPerspective();
-    if(!mPerspectives.contains(key))
+    QString name = currentPerspective();
+    if(!mPerspectives.contains(name))
         return;
-    Perspective& p = mPerspectives[key];
-    if(!p.fixed)
+    if(mPerspectives[name].fixed)
         return;
+
+    Perspective& p = mPerspectives[name];
     p.masterState.clear();
     p.slaveState.clear();
     p.masterObjects = p.defaultMasterObjects;
     p.slaveObjects = p.defaultSlaveObjects;
-    storePerspectives(key);
-    loadPerspective(key, false);
+    storePerspectives(name);
+    loadPerspective(name, false);
 }
 
 void PerspectiveControl::storePerspectives(const QString& perspective)

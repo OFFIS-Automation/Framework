@@ -216,11 +216,10 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
     if(edit.exec())
     {
         edit.saveConfig(mConfigFile);
-        QMessageBox::information(this, tr("Relaod required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
+        QMessageBox::information(this, tr("Reload required"), tr("You need to reload your project for changes to take effect"), QMessageBox::Ok);
     }
     */
 }
-
 
 void TelecontrolWidget::openButtonAssignment(const QString &unit)
 {

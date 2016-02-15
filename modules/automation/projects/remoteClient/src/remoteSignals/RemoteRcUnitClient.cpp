@@ -43,7 +43,6 @@ uint RemoteRcUnitClient::defaultTimeout()
     return mDefaultTimeout;
 }
 
-
 void RemoteRcUnitClient::waitTcCall(uint id, uint timeout)
 {
     if(timeout == DefaultTimeout)
@@ -90,7 +89,8 @@ void RemoteRcUnitClient::setTcButton(int buttonId, const bool &pressed, uint tim
 
 void RemoteRcUnitClient::updateTelecontrolAssignment(const QString &telecontrolDeviceName, uint timeout)
 {
-
+    Q_UNUSED(telecontrolDeviceName)
+    Q_UNUSED(timeout)
 }
 
 void RemoteRcUnitClient::updateGamepadParameters(const QString &unitName, const QString &tcName, double sensitivity, const QList<bool> &inverts, uint timeout)

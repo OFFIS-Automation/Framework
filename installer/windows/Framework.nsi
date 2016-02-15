@@ -1,6 +1,5 @@
 ;--------------------------------
 ;Include Modern UI
-
 !include "MUI2.nsh"
 
 ;--------------------------------
@@ -19,6 +18,14 @@ InstallDir "$PROGRAMFILES\${Name}"
 InstallDirRegKey HKLM "Software\${REGKEY}" "Install_Dir"
 
 Var StartMenuFolder
+
+; The commands inside this ifdef require NSIS 3.0a2 or greater so the ifdef can
+; be removed after we require NSIS 3.0a2 or greater.
+!ifdef NSIS_PACKEDVERSION
+  Unicode true
+  ManifestSupportedOS all
+  ManifestDPIAware true
+!endif
 
 Function LaunchFramework   
 ExecShell "" "$INSTDIR\Framework.exe"   

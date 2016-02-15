@@ -32,7 +32,7 @@ public:
     void setSeperator(const QString& seperator);
     bool exportTrace(const QString& filename, QString &errorMsg = QString());
     void setStartAtZero(bool startAtZero);
-    void enableHeader(bool enable) { mHeader = true; }
+    void enableHeader(bool enable) { Q_UNUSED(enable); mHeader = true; }
     void ignoreInvalids(bool ignore) { mOnlyValidLines = ignore; }
     void setMarkerRange(QString startMarker, QString endMarker);
     void clearElements();

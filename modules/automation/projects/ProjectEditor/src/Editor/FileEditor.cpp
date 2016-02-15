@@ -382,9 +382,9 @@ void FileEditor::setupEditor()
 
     // Completions
     setAutoCompletionSource(AcsAll);
-    setAutoCompletionUseSingle(AcusAlways);
+    setAutoCompletionUseSingle(AcusExplicit);
     setAutoCompletionCaseSensitivity(false);
-    setAutoCompletionThreshold(3);
+    setAutoCompletionThreshold(0);
 
     // Misc
     setBraceMatching(SloppyBraceMatch);

@@ -115,6 +115,7 @@ void MeasureOverlay::mouseMoveEvent(QMouseEvent *event, QList<QPoint> snapPoints
 
 void MeasureOverlay::setPortId(const PortId &portId, bool output)
 {
+    Q_UNUSED(output)
     Overlay::setPortId(portId, true);
     mIsOutput = false;
 }

@@ -9,7 +9,7 @@ class MeasureOverlay : public Overlay
 public:
     MeasureOverlay(const QString& name);
     ~MeasureOverlay();
-    virtual void setInitialPos(const QPoint&) {}
+    virtual void setInitialPos(const QPoint& p) {}
     virtual bool contains(const QPoint& p) { return false; }
     virtual void paint(QPainter& painter, bool showControls);
     virtual void mousePressEvent(QMouseEvent* event);

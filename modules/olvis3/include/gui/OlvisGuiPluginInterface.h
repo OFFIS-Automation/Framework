@@ -26,9 +26,26 @@ class OlvisGuiPluginInterface
 {
 public:
     virtual QString getName() const = 0;
-    virtual PortEditInterface* portEditFor(const PortInfo& info) { Q_UNUSED(info); return 0; }
-    virtual OverlayInterface* overlayFor(const QString& overlayName, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface) { return 0; }
-    virtual OverlayInterface* overlayFor(const PortInfo& info, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface) { return 0; }
+    virtual PortEditInterface* portEditFor(const PortInfo& info) {
+        Q_UNUSED(info)
+        return 0;
+    }
+    virtual OverlayInterface* overlayFor(const QString& overlayName, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface)
+    {
+        Q_UNUSED(overlayName)
+        Q_UNUSED(isOutput)
+        Q_UNUSED(isMasterOverlay)
+        Q_UNUSED(visionInterface)
+        return 0;
+    }
+    virtual OverlayInterface* overlayFor(const PortInfo& info, bool isOutput, bool isMasterOverlay, OlvisInterface* visionInterface)
+    {
+        Q_UNUSED(info)
+        Q_UNUSED(isOutput)
+        Q_UNUSED(isMasterOverlay)
+        Q_UNUSED(visionInterface)
+        return 0;
+    }
 };
 
 #define OlvisGuiPluginInterface_iid "com.offis.vision.GuiPluginInterface/1.1"

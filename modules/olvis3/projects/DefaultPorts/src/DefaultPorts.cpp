@@ -86,6 +86,8 @@ PortEditInterface* DefaultPorts::portEditFor(const PortInfo& info)
 
 OverlayInterface *DefaultPorts::overlayFor(const QString &name, bool output, bool isMasterOverlay, OlvisInterface *visionInterface)
 {
+    Q_UNUSED(output)
+
     Overlay* overlay = 0;
     if (name == "ImagePortOverlay")
         overlay = new ImagePortOverlay(name);

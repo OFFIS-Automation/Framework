@@ -41,7 +41,6 @@ unix:!macx:CONFIG += link_pkgconfig
 unix:!macx:PKGCONFIG += python-3.2
 unix:!macx:LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
 
-
 pylibs.path = $${DESTDIR}/hilec/python
 win32*: pylibs.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
 INSTALLS += pylibs
@@ -54,11 +53,11 @@ INSTALLS       += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python
 amirlibs.files  += $${PWD}/python/*
-INSTALLS       += amirlibs
+INSTALLS        += amirlibs
 
-rcUnitfiles.path    = $${DESTDIR}/hilec/include
-rcUnitfiles.files  += $${PWD}/../../include/rc/*
-INSTALLS       += rcUnitfiles
+rcUnitfiles.path     = $${DESTDIR}/hilec/include
+rcUnitfiles.files   += $${PWD}/../../include/rc/*
+INSTALLS            += rcUnitfiles
 
 tcfiles.path    = $${DESTDIR}/hilec/telecontrol
 tcfiles.files  += $${PWD}/../../include/telecontrol/*
@@ -66,7 +65,7 @@ INSTALLS       += tcfiles
 
 tcConfig.path    = $${targetDir}
 tcConfig.files  += $${PWD}/../../data/gamepads.ini
-INSTALLS       += tcConfig
+INSTALLS        += tcConfig
 
 
 HEADERS += \

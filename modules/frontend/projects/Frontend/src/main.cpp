@@ -109,6 +109,7 @@ int main(int argc, char *argv[])
     // Shows windows
     masterWindow->setAlternative(slaveWindow);
     masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
+    masterWindow->setMaximumSize(desktop->availableGeometry().size());
     masterWindow->showMaximized();
 
     if(multiScreen){

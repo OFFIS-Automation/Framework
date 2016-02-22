@@ -1,7 +1,7 @@
 Section ""
 	SetOutPath "$INSTDIR"
 	File "license.txt"
-	File "$%AmirDevDir%\tools\installer\vcredist_x86.exe"
+	File "$%OFFIS_DEVELOPMENT_ENVIRONMENT%\tools\installer\vcredist_x86.exe"
 	ExecWait "vcredist_x86.exe /q"
 	Delete "vcredist_x86.exe"
 SectionEnd

@@ -87,8 +87,9 @@ int main(int argc, char *argv[])
 
     // Set windowm titles
     if(multiScreen){
-        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(masterWindow->windowTitle()));
-        slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(masterWindow->windowTitle()));
+        QString title = masterWindow->windowTitle();
+        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(title));
+        slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(title));
     }
 
     // Signal / slot connections

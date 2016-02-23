@@ -149,7 +149,8 @@ Section ""
   
 	WriteUninstaller "uninstall.exe"
 	!addplugindir "."
-	AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
+	AccessControl::GrantOnFile "$INSTDIR" "(BU)" "FullAccess"
+	AccessControl::EnableFileInheritance "$INSTDIR"
 SectionEnd
 
 Section "Uninstall"
@@ -160,9 +161,12 @@ Section "Uninstall"
   Delete $INSTDIR\*.log
   Delete $INSTDIR\*.bin
   Delete $INSTDIR\*.txt
+  Delete $INSTDIR\*.ini
+  Delete $INSTDIR\*.dat
   RMDir /r "$INSTDIR\plugins"
   RMDir /r "$INSTDIR\debug"
   RMDir /r "$INSTDIR\driver"
+  RMDir /r "$INSTDIR\platforms"
   RMDir "$INSTDIR"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   SetShellVarContext all

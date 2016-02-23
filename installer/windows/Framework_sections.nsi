@@ -131,19 +131,18 @@ LangString DESC_SecDevFiles ${LANG_ENGLISH} "Development build of the OFFIS Auto
 
 ;--------------------------------
 
-
 Section ""
-
 	WriteRegStr HKLM "SOFTWARE\${REGKEY}" "Install_Dir" "$INSTDIR"
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
     ;Create shortcuts
 	SetShellVarContext all
-
-		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${Name}.lnk" "$INSTDIR\Framework.exe"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${Name}.lnk" "$INSTDIR\Uninstall.exe"
-    !insertmacro MUI_STARTMENU_WRITE_END
+	
+	CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" "$INSTDIR\Framework.exe"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${NAME}.lnk" "$INSTDIR\Uninstall.exe"
+    
+	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" "${REGKEY}" "$INSTDIR"
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
@@ -168,7 +167,7 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   SetShellVarContext all
   Delete "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" 
-  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall ${Name}.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall ${NAME}.lnk"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
 
   ; Remove registry keys  

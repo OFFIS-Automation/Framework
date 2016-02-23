@@ -19,11 +19,10 @@
 !define VERSION "nightly-build"
 !define REGKEY "OFFIS_Automation_Framework"
 !define NAME "OFFIS Automation Framework"
-Name "${NAME}"
 OutFile "OFFIS-Automation-Framework-Setup-${VERSION}.exe"
 
 ;Default installation folder
-InstallDir "$PROGRAMFILES\${Name}"
+InstallDir "$PROGRAMFILES\${NAME}"
 InstallDirRegKey HKLM "Software\${REGKEY}" "Install_Dir"
 
 Var StartMenuFolder
@@ -46,7 +45,7 @@ FunctionEnd
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM" 
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${REGKEY}" 
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "${Name}"  
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "${NAME}"  
 
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 !insertmacro MUI_PAGE_COMPONENTS

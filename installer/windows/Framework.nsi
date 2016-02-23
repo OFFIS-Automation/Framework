@@ -1,7 +1,5 @@
-;--------------------------------
-; The commands inside this ifdef require NSIS 3.0a2 or greater so the ifdef can
-; be removed after we require NSIS 3.0a2 or greater.
 ManifestDPIAware true
+ManifestSupportedOS all
 
 ;--------------------------------
 ;Include Modern UI
@@ -52,8 +50,10 @@ FunctionEnd
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchFramework"
 !insertmacro MUI_PAGE_FINISH
 
+!insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
   
 ;--------------------------------
 ;Languages

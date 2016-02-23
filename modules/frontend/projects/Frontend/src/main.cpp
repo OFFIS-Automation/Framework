@@ -103,9 +103,8 @@ int main(int argc, char *argv[])
     QDockWidget* logWindow = new LogWindow();
     perspectiveControl.addDockWidget(Qt::BottomDockWidgetArea, logWindow, "Default");
 
-    // Load all other widgets (depending on perspective), than start perspective
+    // Load all other widgets (depending on perspective)
     loader.configure(&splashScreen, &perspectiveControl, noload);
-    perspectiveControl.start();
 
     // Shows windows
     masterWindow->setAlternative(slaveWindow);
@@ -117,10 +116,11 @@ int main(int argc, char *argv[])
         slaveWindow->setAlternative(masterWindow);
         int screen = desktop->primaryScreen() == 0 ? 1 : 0;
         slaveWindow->move(desktop->availableGeometry(screen).topLeft());
+        slaveWindow->setMaximumSize(desktop->availableGeometry(screen).size());
         slaveWindow->showMaximized();
     }
     splashScreen.finish(masterWindow);
-
+    perspectiveControl.start();
 
     // Set notification reference
     Notifications::setMainWindow(masterWindow);

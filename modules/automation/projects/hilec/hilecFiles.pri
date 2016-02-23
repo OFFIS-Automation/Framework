@@ -35,20 +35,18 @@ LIBS += -L$${targetDir}/plugins -lRcUnits
 }
 
 # Python
-win32*: INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/include
-win32*: LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/libs
-unix:!macx:CONFIG += link_pkgconfig
-unix:!macx:PKGCONFIG += python-3.2
-unix:!macx:LIBS += `pkg-config python-3.2 --libs --cflags` # static library path
+INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Include
+INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PC
+LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32
 
 pylibs.path = $${DESTDIR}/hilec/python
-win32*: pylibs.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
+pylibs.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
 INSTALLS += pylibs
 
 pyDlls.path = $${DESTDIR}
-win32*: pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/pytho*.dll
-win32*: pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/pytho*.exe
-win32*: pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/pytho*.pdb
+pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.dll
+pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.exe
+pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.pdb
 INSTALLS       += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python

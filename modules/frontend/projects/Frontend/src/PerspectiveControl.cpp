@@ -179,13 +179,13 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     // Resize to not overlap the windows taskbar in any case
     // In any case: Ask Tobi why this was necessary, needs longer explaination
     // Master
-    /*QDesktopWidget* desktop = QApplication::desktop();
+    QDesktopWidget* desktop = QApplication::desktop();
     int screenNumber = desktop->screenNumber(mMaster);
 
     int titleBarHeight = mMaster->style()->pixelMetric(QStyle::PM_TitleBarHeight);
-    int currentHeight = mMaster->size().height();
     int availableHeight = desktop->availableGeometry(screenNumber).height();
     int allowedHeight = availableHeight-titleBarHeight;
+    int currentHeight = mMaster->size().height();
 
     if(currentHeight  > allowedHeight){
         mMaster->resize(mMaster->width(), availableHeight-titleBarHeight);
@@ -195,16 +195,16 @@ void PerspectiveControl::loadPerspective(const QString &name, bool saveCurrent)
     {
         screenNumber = desktop->screenNumber(mSlave);
 
-        currentHeight = mSlave->size().height();
         availableHeight = desktop->availableGeometry(screenNumber).height();
         allowedHeight = availableHeight-titleBarHeight;
+        currentHeight = mSlave->size().height();
 
         if(currentHeight  > allowedHeight){
             mSlave->resize(mSlave->width(), allowedHeight);
         }
-    }*/
-
+    }
 }
+
 void PerspectiveControl::resetPerspectives()
 {
     QString name = currentPerspective();

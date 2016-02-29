@@ -24,15 +24,9 @@ INCLUDEPATH += $$PWD/../../include
 INCLUDEPATH += $$PWD/../olvisCore/src
 INCLUDEPATH += $$PWD/../../../frontend/include
 
-
-opencvdll.path    = $${DESTDIR}
-opencvdll.files  += $${CVBINDIR}/*.dll
-INSTALLS       += opencvdll
-
-opencv_video.path    = $${DESTDIR}/../
-opencv_video.files  += $${CVBINDIR}/opencv_ffmpeg*.dll
-INSTALLS       += opencv_video
-
+opencvdlls.path    = $${DESTDIR}
+opencvdlls.files  += $${CVBINDIR}/*.dll
+INSTALLS       += opencvdlls
 
 HEADERS += \
     src/OlvisModelPlugin.h \

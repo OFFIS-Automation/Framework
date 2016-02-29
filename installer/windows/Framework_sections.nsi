@@ -154,19 +154,21 @@ SectionEnd
 
 Section "Uninstall"
 
-  ; Remove files and uninstaller
+  ; Remove files and uninstaller 
   Delete $INSTDIR\*.exe
+  Delete $INSTDIR\*.manifest
   Delete $INSTDIR\*.dll
+  Delete $INSTDIR\*.dat
   Delete $INSTDIR\*.log
   Delete $INSTDIR\*.bin
-  Delete $INSTDIR\*.txt
   Delete $INSTDIR\*.ini
-  Delete $INSTDIR\*.dat
+  Delete $INSTDIR\*.txt  
   RMDir /r "$INSTDIR\plugins"
   RMDir /r "$INSTDIR\debug"
   RMDir /r "$INSTDIR\driver"
   RMDir /r "$INSTDIR\platforms"
   RMDir "$INSTDIR"
+  
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   SetShellVarContext all
   Delete "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" 

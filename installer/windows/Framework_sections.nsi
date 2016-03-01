@@ -67,7 +67,6 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\Qt5*.dll"
 	File "..\..\bin\debug\icu*.dll"
 	File "..\..\bin\debug\gamepads.ini"
-	File "..\..\bin\debug\opencv*.dll"
 	
 	SetOutPath "$INSTDIR\debug\plugins"
 	File "..\..\bin\debug\plugins\olvis*.dll"

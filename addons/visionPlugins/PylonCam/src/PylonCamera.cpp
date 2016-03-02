@@ -128,7 +128,8 @@ void PylonCamera::execute()
             // The Release() method can be used to release any data.
             target.Release();
         }
-    } catch (GenICam::GenericException &e) {
+    }
+    catch (GenICam::GenericException &e) {
         throw std::runtime_error(e.GetDescription());
     }
     catch(const std::exception& e) {
@@ -138,22 +139,37 @@ void PylonCamera::execute()
 
 void PylonCamera::stop()
 {
-    if(mCam->IsGrabbing()) {
-        mCam->StopGrabbing();
+    try {
+        if(mCam->IsGrabbing()) {
+            mCam->StopGrabbing();
+        }
+        updateParams();
     }
-    updateParams();
+    catch (GenICam::GenericException &e) {
+        throw std::runtime_error(e.GetDescription());
+    }
+    catch(const std::exception& e) {
+        throw std::runtime_error(e.what());
+    }
 }
 
 void PylonCamera::deinitialize()
 {
-    if (mCam) {
+    try {
         // Destroy the Pylon Device representing the detached camera device.
         // It cannot be used anymore.
         // Calls closed automatically beforehand.
-        mCam->DestroyDevice();
-        delete mCam;
+        if(mCam){
+            mCam->DestroyDevice();
+        }
+        mCam = 0;
     }
-    mCam = 0;
+    catch (GenICam::GenericException &e) {
+        throw std::runtime_error(e.GetDescription());
+    }
+    catch(const std::exception& e) {
+        throw std::runtime_error(e.what());
+    }
 }
 
 void PylonCamera::updateParams()

@@ -55,6 +55,7 @@ INSTALLS       += includes
 opencv.path     = $${DESTDIR}/olvis/opencv
 opencv.files   += $$CVINCLUDEDIR
 opencv.files   += $$CVLIBDIR
+opencv.files   += $$CVBINDIR
 INSTALLS       += opencv
 
 

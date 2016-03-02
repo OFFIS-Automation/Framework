@@ -20,6 +20,7 @@ TEMPLATE = lib
 
 include(../../../properties/pathes.pro)
 include(../../../properties/opencv.pro)
+
 DESTDIR = $${targetDir}/plugins
 TARGET = olvisInterface
 LIBS += -L$${targetDir}/plugins -lolvisFilter -lolvisPorts -lolvisCore

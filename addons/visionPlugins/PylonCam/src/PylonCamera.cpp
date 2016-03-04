@@ -39,6 +39,7 @@ void PylonCamera::initialize()
 {
     try {
         // Create an instant camera object with given device information.
+        PylonInitialize();
         mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
         mCam->Open();
 
@@ -162,6 +163,7 @@ void PylonCamera::deinitialize()
         if(mCam){
             mCam->DestroyDevice();
         }
+        PylonTerminate();
         mCam = 0;
     }
     catch (GenICam::GenericException &e) {

@@ -49,7 +49,7 @@ public:
     QVariant call(const QByteArray &rcUnit, const QByteArray &method, const QList<QVariant> &params);
     QVariant getConstants(const QByteArray& rcUnit);
 
-    void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
+    void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
 
     void activateGamepad(const QString& unitName);
     void deactivateGamepad(const QString& unitName);
@@ -75,14 +75,14 @@ public:
 
 signals:
     void unitsUpdated();
-    void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);
-    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
-    void gamepadSensitivityChangeRequested(const QString& unitName, bool increase);
-    void gamepadSwitchRequested(const QString& unitName, bool down);
-    void hapticUpdated(bool hapticActive, const QString& controlledUnit);
+    void telecontrolAssignmentUpdated(const QString& deviceName, const QString& unitName);
+    void gamepadUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
+    void gamepadSensitivityChangeRequested(const QString& deviceName, const QString& unitName, bool increase);
+    void gamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down);
+    void hapticUpdated(const QString& deviceName, const QString& unitName, bool hapticActive);
 
 private slots:
-    void onGamepadButtonPressed(int buttonId, bool pressed, const QString& gamepadName);
+    void onGamepadButtonPressed(int buttonId, bool pressed, const QString& deviceName);
 
 protected:
     void loadTcMasters(const QString& configFile);

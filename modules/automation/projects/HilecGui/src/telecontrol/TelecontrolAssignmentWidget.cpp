@@ -35,8 +35,8 @@ TelecontrolAssignmentWidget::TelecontrolAssignmentWidget(QWidget *parent) :
 
     // Signal / Slot stuff
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateUnits(bool)));
-    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
-    connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(bool,QString)), SLOT(onTelecontrolUpdated(bool, QString)));
+    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(QString,QString,bool)), SLOT(onTelecontrolUpdated(QString,QString,bool)));
+    connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(QString,QString,bool)), SLOT(onTelecontrolUpdated(QString,QString,bool)));
 
     // Init view
     updateUnits(true);
@@ -103,10 +103,10 @@ void TelecontrolAssignmentWidget::switchToUnit(QString unit)
         ui->tabWidget->setCurrentIndex(id);
 }
 
-void TelecontrolAssignmentWidget::onTelecontrolUpdated(bool active, const QString &activeUnit)
+void TelecontrolAssignmentWidget::onTelecontrolUpdated(const QString &deviceName, const QString &unitName, bool active)
 {
     if(active){
-        int id = mUnitIndexes.key(activeUnit,0);
+        int id = mUnitIndexes.key(unitName,0);
         ui->tabWidget->setEnabled(true);
         ui->tabWidget->setCurrentIndex(id);
     }

@@ -36,7 +36,7 @@ public:
     ~TelecontrolWidget();
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
 signals:
-     void updateTelecontrolAssignment(const QString& unitName, const QString& telecontrolDeviceName);
+     void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
 
     void activateGamepad(const QString& unitName);
     void deactivateGamepadAll();
@@ -52,11 +52,10 @@ public slots:
     void editButtonAssignment(const QString& unit = QString());
     void openButtonAssignment(const QString& unit);
 
-
 private slots:
-    void onTelecontrolAssignmentUpdate(const QString& unitName, const QString& telecontrolDeviceName);
-    void onTelecontrolUpdated(bool active, const QString& unitName);
-    void onGamepadSwitchRequested(const QString& unitName, bool down);
+    void onTelecontrolAssignmentUpdate(const QString& deviceName, const QString& unitName);
+    void onTelecontrolUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
+    void onGamepadSwitchRequested(const QString &deviceName, const QString& unitName, bool down);
     void on_tabWidget_currentChanged(int index);
 
 private:

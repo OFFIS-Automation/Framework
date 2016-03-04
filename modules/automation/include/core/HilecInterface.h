@@ -74,7 +74,7 @@ public slots:
     virtual void stepInto() = 0;
     virtual void stepReturn() = 0;
 
-    virtual void updateTelecontrolAssignment(const QString &unitName, const QString& telecontrolDeviceName) = 0;
+    virtual void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName) = 0;
 
     virtual void activateGamepad(const QString& unitName) = 0;
     virtual void deactivateGamepad(const QString& unitName) = 0;
@@ -120,14 +120,13 @@ signals:
     void rcUnitsChanged(bool partialReload);
     void rcUnitFlagsUpdated(const QString& rcUnitName, QVariantList data);
 
-    void telecontrolAssignmentUpdated(const QString& unitName, const QString& telecontrolDeviceName);
+    void telecontrolAssignmentUpdated(const QString& deviceName, const QString& unitName);
 
-    void gamepadUpdated(bool gamepadActive, const QString& controlledUnit);
-    void gamepadChangeSensitivityRequested(const QString& unit, bool increase);
-    void gamepadSwitchRequested(const QString& unitName, bool down);
-    void gamepadSwitchRequested(int index);
+    void gamepadUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
+    void gamepadSensitivityChangeRequested(const QString& deviceName, const QString& unitName, bool increase);
+    void gamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down);
 
-    void hapticUpdated(bool hapticActive, const QString& controlledUnit);
+    void hapticUpdated(const QString& deviceName, const QString& unitName, bool hapticActive);
 
     void breakpointHit(QString file, int line);
     void scriptExecutionStarted();

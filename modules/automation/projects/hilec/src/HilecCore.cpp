@@ -41,10 +41,10 @@ HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
     connect(RcUnits::instance(), SIGNAL(unitListUpdated(bool)), SIGNAL(rcUnitsChanged(bool)));
 
     connect(RcUnits::instance(), SIGNAL(telecontrolAssignmentUpdated(QString,QString)), SIGNAL(telecontrolAssignmentUpdated(QString,QString)));
-    connect(RcUnits::instance(), SIGNAL(gamepadUpdated(bool, QString)), SIGNAL(gamepadUpdated(bool, QString)));
-    connect(RcUnits::instance(), SIGNAL(gamepadSensitivityChangeRequested(QString,bool)), SIGNAL(gamepadChangeSensitivityRequested(QString,bool)));
-    connect(RcUnits::instance(), SIGNAL(gamepadSwitchRequested(QString,bool)), SIGNAL(gamepadSwitchRequested(QString,bool)));
-    connect(RcUnits::instance(), SIGNAL(hapticUpdated(bool, QString)), SIGNAL(hapticUpdated(bool, QString)));
+    connect(RcUnits::instance(), SIGNAL(gamepadUpdated(QString, QString, bool)), SIGNAL(gamepadUpdated(QString, QString, bool)));
+    connect(RcUnits::instance(), SIGNAL(gamepadSensitivityChangeRequested(QString, QString, bool)), SIGNAL(gamepadSensitivityChangeRequested(QString, QString, bool)));
+    connect(RcUnits::instance(), SIGNAL(gamepadSwitchRequested(QString, QString, bool)), SIGNAL(gamepadSwitchRequested(QString, QString, bool)));
+    connect(RcUnits::instance(), SIGNAL(hapticUpdated(QString, QString, bool)), SIGNAL(hapticUpdated(QString, QString, bool)));
     connect(RcUnits::instance(), SIGNAL(flagsUpdated(QString,QVariantList)), SIGNAL(rcUnitFlagsUpdated(QString,QVariantList)));
 }
 
@@ -198,9 +198,9 @@ void HilecCore::setBaseDir(const QString &baseDir)
     mLint.setBasePath(mBaseDir);
 }
 
-void HilecCore::updateTelecontrolAssignment(const QString &unitName, const QString &telecontrolDeviceName)
+void HilecCore::updateTelecontrolAssignment(const QString& deviceName, const QString& unitName)
 {
-    RcUnits::instance()->updateTelecontrolAssignment(unitName, telecontrolDeviceName);
+    RcUnits::instance()->updateTelecontrolAssignment(deviceName, unitName);
 }
 
 void HilecCore::activateGamepad(const QString &unitName)

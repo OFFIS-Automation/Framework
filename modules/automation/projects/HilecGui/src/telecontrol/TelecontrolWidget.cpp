@@ -40,9 +40,9 @@ TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->tabWidget->setEnabled(false);
     connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateUnits(bool)));
-    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool,QString)));
-    connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(bool, QString)), SLOT(onTelecontrolUpdated(bool, QString)));
-    connect(HilecSingleton::hilec(), SIGNAL(gamepadSwitchRequested(QString,bool)), SLOT(onGamepadSwitchRequested(QString, bool)));
+    connect(HilecSingleton::hilec(), SIGNAL(gamepadUpdated(QString,QString,bool)), SLOT(onTelecontrolUpdated(QString,QString,bool)));
+    connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(QString,QString,bool)), SLOT(onTelecontrolUpdated(QString,QString,bool)));
+    connect(HilecSingleton::hilec(), SIGNAL(gamepadSwitchRequested(QString,QString,bool)), SLOT(onGamepadSwitchRequested(QString,QString,bool)));
     connect(this, SIGNAL(updateTelecontrolAssignment(QString,QString)), HilecSingleton::hilec(), SLOT(updateTelecontrolAssignment(QString,QString)), Qt::DirectConnection);
     connect(this, SIGNAL(activateGamepad(QString)), HilecSingleton::hilec(), SLOT(activateGamepad(QString)), Qt::QueuedConnection);
     connect(this, SIGNAL(deactivateGamepadAll()), HilecSingleton::hilec(), SLOT(deactivateGamepadAll()), Qt::QueuedConnection);
@@ -144,18 +144,18 @@ void TelecontrolWidget::on_tabWidget_currentChanged(int index)
     }
 }
 
-void TelecontrolWidget::onTelecontrolAssignmentUpdate(const QString& unitName, const QString& gamepadDeviceName)
+void TelecontrolWidget::onTelecontrolAssignmentUpdate(const QString& deviceName, const QString& unitName)
 {
     // Emit to inform core system, then update GUI
-    emit updateTelecontrolAssignment(unitName, gamepadDeviceName);
-    onTelecontrolUpdated(true, unitName);
+    emit updateTelecontrolAssignment(deviceName, unitName);
+    onTelecontrolUpdated(deviceName, unitName, true);
 }
 
-void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &unitName)
-{
+void TelecontrolWidget::onTelecontrolUpdated(const QString &deviceName, const QString &unitName, bool gamepadActive)
+{    
     mInUpdate = true;
 
-    if(active){
+    if(gamepadActive){
         int id = mUnitIndexes.key(unitName,0);
         ui->tabWidget->setCurrentIndex(id);
 
@@ -190,7 +190,7 @@ void TelecontrolWidget::onTelecontrolUpdated(bool active, const QString &unitNam
     mInUpdate = false;
 }
 
-void TelecontrolWidget::onGamepadSwitchRequested(const QString &unitName, bool down)
+void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down)
 {
     int currentIndex = mUnitIndexes.key(unitName, 0);
     int newIndex = down? currentIndex-1 : currentIndex+1;

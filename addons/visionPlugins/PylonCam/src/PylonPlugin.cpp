@@ -14,8 +14,9 @@ class PylonFactory : UserFilterFactoryI
         try {
             // Get the transport layer factory and query for
             // all instances of pylon devices
-            PylonAutoInitTerm autoInitTerm;
+            PylonInitialize();
             CTlFactory::GetInstance().EnumerateDevices(devices);
+            PylonTerminate();
         }
         catch (const GenericException &e) {
             throw std::runtime_error(e.GetDescription());
@@ -36,6 +37,7 @@ class PylonFactory : UserFilterFactoryI
     }
 
     DeviceInfoList_t devices;
+
 };
 
 PylonFactory __pylonFactory;

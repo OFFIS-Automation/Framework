@@ -35,7 +35,7 @@ public:
 protected:
     double mScale;
     QPixmap mPixmap;
-    cv::Mat converted;
+    cv::Mat mConverted;
 };
 
 #endif // IMAGEPORTOVERLAY_H

@@ -86,7 +86,7 @@ public slots:
     void stepInto();
     void stepReturn();
 
-    virtual void updateTelecontrolAssignment(const QString &unitName, const QString& telecontrolDeviceName);
+    virtual void updateTelecontrolAssignment(const QString& deviceName, const QString &unitName);
 
     virtual void activateGamepad(const QString& unitName);
     virtual void deactivateGamepad(const QString& unitName);

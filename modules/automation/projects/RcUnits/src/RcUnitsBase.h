@@ -51,16 +51,16 @@ public:
 
     void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
 
-    void activateGamepad(const QString& unitName);
-    void deactivateGamepad(const QString& unitName);
+    void activateGamepad(const QString &deviceName, const QString& unitName);
+    void deactivateGamepad(const QString& deviceName, const QString& unitName);
     void deactivateGamepadAll();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts);
 
     void remoteGamepadDataUpdated(const QMap<int, double>& data, const QString& gamepadName);
     void remoteGamepadButtonToggled(int buttonId, const bool& pressed, const QString& gamepadName);
 
-    void activateHaptic(const QString& unitName);
-    void deactivateHaptic(const QString& unitName);
+    void activateHaptic(const QString &deviceName, const QString& unitName);
+    void deactivateHaptic(const QString& deviceName, const QString& unitName);
     void deactivateHapticAll();
     void updateHapticParameters(const QString& unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool> &inverts);
 

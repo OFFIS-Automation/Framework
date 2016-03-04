@@ -44,10 +44,10 @@ TelecontrolWidget::TelecontrolWidget(QWidget *parent) :
     connect(HilecSingleton::hilec(), SIGNAL(hapticUpdated(QString,QString,bool)), SLOT(onTelecontrolUpdated(QString,QString,bool)));
     connect(HilecSingleton::hilec(), SIGNAL(gamepadSwitchRequested(QString,QString,bool)), SLOT(onGamepadSwitchRequested(QString,QString,bool)));
     connect(this, SIGNAL(updateTelecontrolAssignment(QString,QString)), HilecSingleton::hilec(), SLOT(updateTelecontrolAssignment(QString,QString)), Qt::DirectConnection);
-    connect(this, SIGNAL(activateGamepad(QString)), HilecSingleton::hilec(), SLOT(activateGamepad(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(activateGamepad(QString,QString)), HilecSingleton::hilec(), SLOT(activateGamepad(QString,QString)), Qt::QueuedConnection);
     connect(this, SIGNAL(deactivateGamepadAll()), HilecSingleton::hilec(), SLOT(deactivateGamepadAll()), Qt::QueuedConnection);
     connect(this, SIGNAL(updateGamepadParameters(QString,QString,double, QList<bool>)), HilecSingleton::hilec(), SLOT(updateGamepadParameters(QString,QString,double, QList<bool>)),Qt::QueuedConnection);
-    connect(this, SIGNAL(activateHaptic(QString)), HilecSingleton::hilec(), SLOT(activateHaptic(QString)), Qt::QueuedConnection);
+    connect(this, SIGNAL(activateHaptic(QString,QString)), HilecSingleton::hilec(), SLOT(activateHaptic(QString,QString)), Qt::QueuedConnection);
     connect(this, SIGNAL(deactivateHapticAll()), HilecSingleton::hilec(), SLOT(deactivateHapticAll()), Qt::QueuedConnection);
     connect(this, SIGNAL(updateHapticParameters(QString,QString,double,double,QList<bool>)), HilecSingleton::hilec(), SLOT(updateHapticParameters(QString,QString,double,double,QList<bool>)),Qt::QueuedConnection);
 
@@ -139,8 +139,9 @@ void TelecontrolWidget::on_tabWidget_currentChanged(int index)
     emit deactivateHapticAll();
     QString unit = mUnitIndexes.value(index);
     if(unit.length() > 0){
-        emit activateGamepad(unit);
-        emit activateHaptic(unit);
+        TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unit);
+        emit activateGamepad(help.tcDeviceName, unit);
+        emit activateHaptic(help.tcDeviceName, unit);
     }
 }
 
@@ -207,7 +208,7 @@ void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, cons
     ui->tabWidget->setCurrentIndex(newIndex);
 }
 
-void TelecontrolWidget::editButtonAssignment(const QString &unit)
+void TelecontrolWidget::editButtonAssignment(const QString &unitName)
 {
     /*
     EditGamepadAssignment edit(this);
@@ -221,12 +222,12 @@ void TelecontrolWidget::editButtonAssignment(const QString &unit)
     */
 }
 
-void TelecontrolWidget::openButtonAssignment(const QString &unit)
+void TelecontrolWidget::openButtonAssignment(const QString &unitName)
 {
     if(!mTelecontrolAssignmentWidget){
         mTelecontrolAssignmentWidget = new TelecontrolAssignmentWidget(this);
     }
-    mTelecontrolAssignmentWidget->switchToUnit(unit);
+    mTelecontrolAssignmentWidget->switchToUnit(unitName);
     mTelecontrolAssignmentWidget->show();
 
 }

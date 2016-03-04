@@ -26,7 +26,10 @@
 // Namespace for using pylon objects.
 using namespace Pylon;
 
-PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
+PylonCamera::PylonCamera(CDeviceInfo info, int *pylonInstances, QMutex *pylonInstancesMutex) :
+    mInfo(info),
+    mPylonInstances(pylonInstances),
+    mPylonInstancesMutex(pylonInstancesMutex)
 {
     setName(info.GetFriendlyName().c_str());
     setGroup(QString("input/pylon/") + info.GetDeviceClass().c_str());
@@ -38,8 +41,17 @@ PylonCamera::PylonCamera(CDeviceInfo info) : mInfo(info)
 void PylonCamera::initialize()
 {
     try {
+        {
+            // Workaround for "PylonAutoInitTerm()" not working
+            // We now count the number of pylon instances on our own
+            QMutexLocker locker(mPylonInstancesMutex);
+            if(*mPylonInstances == 0){
+                PylonInitialize();
+            }
+            *mPylonInstances = *mPylonInstances + 1;
+        }
+
         // Create an instant camera object with given device information.
-        PylonInitialize();
         mCam = new CInstantCamera(CTlFactory::GetInstance().CreateDevice(mInfo));
         mCam->Open();
 
@@ -163,8 +175,15 @@ void PylonCamera::deinitialize()
         if(mCam){
             mCam->DestroyDevice();
         }
-        PylonTerminate();
         mCam = 0;
+
+        {
+            QMutexLocker locker(mPylonInstancesMutex);
+            *mPylonInstances = *mPylonInstances - 1;
+            if(*mPylonInstances == 0){
+                PylonTerminate();
+            }
+        }
     }
     catch (GenICam::GenericException &e) {
         throw std::runtime_error(e.GetDescription());

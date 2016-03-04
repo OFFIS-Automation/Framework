@@ -76,16 +76,16 @@ public slots:
 
     virtual void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName) = 0;
 
-    virtual void activateGamepad(const QString& unitName) = 0;
-    virtual void deactivateGamepad(const QString& unitName) = 0;
+    virtual void activateGamepad(const QString& deviceName, const QString& unitName) = 0;
+    virtual void deactivateGamepad(const QString& deviceName, const QString& unitName) = 0;
     virtual void deactivateGamepadAll() = 0;
     virtual void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, const QList<bool>& inverts) = 0;
 
     virtual void remoteGamepadDataUpdated(const QMap<int, double>& data, const QString& gamepadName) = 0;
     virtual void remoteGamepadButtonToggled(int buttonId, const bool& pressed, const QString& gamepadName) = 0;
 
-    virtual void activateHaptic(const QString& unitName) = 0;
-    virtual void deactivateHaptic(const QString& unitName) = 0;
+    virtual void activateHaptic(const QString& deviceName, const QString& unitName) = 0;
+    virtual void deactivateHaptic(const QString& deviceName, const QString& unitName) = 0;
     virtual void deactivateHapticAll() = 0;
     virtual void updateHapticParameters(const QString &unitName, const QString &methodName, double sensitivity, double forceScaling, const QList<bool>& inverts) = 0;
 

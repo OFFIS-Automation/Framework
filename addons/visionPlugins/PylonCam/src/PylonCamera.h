@@ -34,7 +34,7 @@ public:
      * @brief creates an instance based on the camera info. Only the info is used, the camera is not opened
      * sets up name and description of the camera
      */
-    PylonCamera(Pylon::CDeviceInfo info);
+    PylonCamera(Pylon::CDeviceInfo info, int *pylonInstances, QMutex *pylonInstancesMutex);
 
     /**
      * @brief initialize is called when a camera is added to the image processing chain.
@@ -98,5 +98,12 @@ protected:
      * @brief mInfo contains the camera info
      */
     Pylon::CDeviceInfo mInfo;
+
+
+    /**
+     * @brief mPylonInitialized is a shared variable, which indicates if the Pylon system is initialized
+     */
+    int *mPylonInstances;
+    QMutex *mPylonInstancesMutex;
 };
 #endif // USER_PYLONCAMERA_H

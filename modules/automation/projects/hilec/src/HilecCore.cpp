@@ -203,14 +203,14 @@ void HilecCore::updateTelecontrolAssignment(const QString& deviceName, const QSt
     RcUnits::instance()->updateTelecontrolAssignment(deviceName, unitName);
 }
 
-void HilecCore::activateGamepad(const QString &unitName)
+void HilecCore::activateGamepad(const QString& deviceName, const QString &unitName)
 {
-    RcUnits::instance()->activateGamepad(unitName);
+    RcUnits::instance()->activateGamepad(deviceName, unitName);
 }
 
-void HilecCore::deactivateGamepad(const QString &unitName)
+void HilecCore::deactivateGamepad(const QString &deviceName, const QString &unitName)
 {
-    RcUnits::instance()->deactivateGamepad(unitName);
+    RcUnits::instance()->deactivateGamepad(deviceName, unitName);
 }
 
 void HilecCore::deactivateGamepadAll()
@@ -233,14 +233,14 @@ void HilecCore::remoteGamepadButtonToggled(int buttonId, const bool &pressed, co
     RcUnits::instance()->remoteGamepadButtonToggled(buttonId, pressed, gamepadName);
 }
 
-void HilecCore::activateHaptic(const QString &unitName)
+void HilecCore::activateHaptic(const QString& deviceName, const QString &unitName)
 {
-    RcUnits::instance()->activateHaptic(unitName);
+    RcUnits::instance()->activateHaptic(deviceName, unitName);
 }
 
-void HilecCore::deactivateHaptic(const QString &unitName)
+void HilecCore::deactivateHaptic(const QString& deviceName, const QString &unitName)
 {
-    RcUnits::instance()->deactivateHaptic(unitName);
+    RcUnits::instance()->deactivateHaptic(deviceName, unitName);
 }
 
 void HilecCore::deactivateHapticAll()

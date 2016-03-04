@@ -38,19 +38,19 @@ public:
 signals:
      void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
 
-    void activateGamepad(const QString& unitName);
+    void activateGamepad(const QString& deviceName, const QString& unitName);
     void deactivateGamepadAll();
     void updateGamepadParameters(const QString& unitName, const QString& methodName, double sensitivity, QList<bool> inverts);
 
-    void activateHaptic(const QString& unitName);
+    void activateHaptic(const QString& deviceName, const QString& unitName);
     void deactivateHapticAll();
     void updateHapticParameters(const QString& unitName, const QString& methodName, double sensitivity, double forceScaling, QList<bool> inverts);
 
 public slots:
     void clear();
     void updateUnits(bool partialReload);
-    void editButtonAssignment(const QString& unit = QString());
-    void openButtonAssignment(const QString& unit);
+    void editButtonAssignment(const QString& unitName = QString());
+    void openButtonAssignment(const QString& unitName);
 
 private slots:
     void onTelecontrolAssignmentUpdate(const QString& deviceName, const QString& unitName);

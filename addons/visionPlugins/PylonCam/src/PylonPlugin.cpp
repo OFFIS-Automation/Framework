@@ -1,8 +1,11 @@
 #include "PylonPlugin.h"
+#include "PylonCamera.h"
+
 #include <filter/PluginInterface.h>
 #include <pylon/PylonIncludes.h>
 #include <pylon/usb/BaslerUsbInstantCamera.h>
-#include "PylonCamera.h"
+
+#include <QMutexLocker>
 
 // Namespace for using pylon objects.
 using namespace Pylon;
@@ -11,10 +14,12 @@ class PylonFactory : UserFilterFactoryI
 {
     virtual void setup()
     {
+        pylonInstances = 0;
         try {
+            QMutexLocker locker(&pylonInstancesMutex);
+            PylonInitialize();
             // Get the transport layer factory and query for
             // all instances of pylon devices
-            PylonInitialize();
             CTlFactory::GetInstance().EnumerateDevices(devices);
             PylonTerminate();
         }
@@ -33,10 +38,12 @@ class PylonFactory : UserFilterFactoryI
 
     virtual UserFilter* instance(int number)
     {
-        return new PylonCamera(devices[number]);
+        return new PylonCamera(devices[number], &pylonInstances, &pylonInstancesMutex);
     }
 
     DeviceInfoList_t devices;
+    QMutex pylonInstancesMutex;
+    int pylonInstances;
 
 };
 

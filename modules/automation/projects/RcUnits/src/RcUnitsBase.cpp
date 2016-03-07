@@ -87,7 +87,7 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
 }
 
 
-QWidget* RcUnitsBase::rcUnitGui(const QString &name)
+QWidget* RcUnitsBase::settingsWidget(const QString &name)
 {
     if(!mUnits.contains(name))
         return 0;

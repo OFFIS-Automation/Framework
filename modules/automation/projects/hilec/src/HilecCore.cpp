@@ -116,7 +116,7 @@ void HilecCore::releaseConfig()
 
 QWidget* HilecCore::createRcUnitWidget(const QString &rcUnit)
 {
-    return RcUnits::instance()->rcUnitGui(rcUnit);
+    return RcUnits::instance()->settingsWidget(rcUnit);
 }
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)

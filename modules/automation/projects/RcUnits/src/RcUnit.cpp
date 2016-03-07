@@ -576,6 +576,7 @@ void RcUnit::disconnectGamepad(QObject *gamepad)
 {
     if(mTcInvoker){
         mTcInvoker->disconnectGamepad(gamepad);
+        stop();
     }
 }
 

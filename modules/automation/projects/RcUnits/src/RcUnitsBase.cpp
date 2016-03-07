@@ -86,14 +86,23 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
     return returnList;
 }
 
-
-QWidget* RcUnitsBase::rcUnitGui(const QString &name)
+QWidget* RcUnitsBase::rcUnitSettingWidget(const QString &unitName)
 {
-    if(!mUnits.contains(name))
+    if(!mUnits.contains(unitName))
         return 0;
-    RcUnitInterface *rcUnitInterface = loadPlugin(mTypes[name]);
+    RcUnitInterface *rcUnitInterface = loadPlugin(mTypes[unitName]);
     if(rcUnitInterface)
-        return rcUnitInterface->settingsWidgetForInstance(mUnits[name]->rcUnit());
+        return rcUnitInterface->settingsWidgetForInstance(mUnits[unitName]->rcUnit());
+    return 0;
+}
+
+QWidget* RcUnitsBase::rcUnitControlWidget(const QString &unitName)
+{
+    if(!mUnits.contains(unitName))
+        return 0;
+    RcUnitInterface *rcUnitInterface = loadPlugin(mTypes[unitName]);
+    if(rcUnitInterface)
+        return rcUnitInterface->controlWidgetForInstance(mUnits[unitName]->rcUnit());
     return 0;
 }
 

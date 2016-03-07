@@ -54,7 +54,7 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     connect(this, SIGNAL(release(QString)), HilecSingleton::hilec(), SLOT(callRcUnitRelease(QString)),Qt::QueuedConnection);
     connect(this, SIGNAL(stop(QString)), HilecSingleton::hilec(), SLOT(callRcUnitStop(QString)),Qt::QueuedConnection);
 
-    QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitWidget(help.unitName);
+    QWidget* settingsWidget = HilecSingleton::hilec()->createRcUnitSettingsWidget(help.unitName);
     if(settingsWidget){
         mDialog = new RcFlagWidgetSettingsDialog(this);
         connect(mDialog, SIGNAL(hidden()), this, SLOT(on_hideSettingsWidget()), Qt::QueuedConnection);

@@ -175,15 +175,26 @@ public:
     virtual UserRcUnit* instance(RcBase& rc, const QString& configFilePath, const QString& name) = 0;
 
     /**
-     * @brief can return a GUI for the rcUnit
-     * the gui should be small and compact and should privide mostly read-only information
+     * @brief can return a settings GUI for the rcUnit
+     * the gui should be small and compact and should privide elements such as buttons for control
      * this method is called in the main thread. A parent will be assinged to the gui, also the gui will be shown automatically
      * (dont call show or setVisible in this method);
      * @param instance this is the instance that was returned by the method @a instance
-     * @return The main widget of the gui or 0, if there is no gui for this RC-Unit
+     * @return The settings widget of the instance or 0, if there is no settings gui for this RC-Unit
      * The gui is automatically deleted by the automation main gui
      */
     virtual QWidget* settingsWidgetForInstance(UserRcUnit* instance) { Q_UNUSED(instance); return 0; }
+
+    /**
+     * @brief can return a control GUI for the rcUnit
+     * the gui should be small and compact and
+     * this method is called in the main thread. A parent will be assinged to the gui, also the gui will be shown automatically
+     * (dont call show or setVisible in this method);
+     * @param instance this is the instance that was returned by the method @a instance
+     * @return The control widget of the instance or 0, if there is no control gui for this RC-Unit
+     * The gui is automatically deleted by the automation main gui
+     */
+    virtual QWidget* controlWidgetForInstance(UserRcUnit* instance) { Q_UNUSED(instance); return 0; }
 
     /**
      * @brief deletes an instance created by the method instance

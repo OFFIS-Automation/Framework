@@ -1048,12 +1048,12 @@ void OlvisCoreInterface::setPortValueThrow(const PortId &port, const QVariant &v
             }
         }
         else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // downt return if optional ports is set to invalid
-		{
-			QString type1 = QMetaType::typeName(value.userType());
-			QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
+        {
+            QString type1 = QMetaType::typeName(value.userType());
+            QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
             QString errStr = tr("Value is of type %1, type %2 expected").arg(type1, type2);
-			throw std::runtime_error(errStr.toStdString());
-		}
+            throw std::runtime_error(errStr.toStdString());
+        }
     }
     filter->setInput(port.port, value);
     mChanged = true;

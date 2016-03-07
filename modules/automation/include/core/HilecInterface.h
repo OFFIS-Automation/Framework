@@ -41,13 +41,16 @@ class HilecInterface : public QObject
 {
     Q_OBJECT
 public:
-    virtual RcUnitHelp getUnitHelp(const QString& name) = 0;
+    virtual RcUnitHelp getUnitHelp(const QString& unitName) = 0;
     virtual QStringList getTelecontrolableUnits() = 0;
     virtual QMap<QString, Gamepad *> getGamepadDevices() = 0;
     virtual QMap<QString, HapticDevice *> getHapticDevices() = 0;
     virtual TelecontrolConfig getTelecontrolConfig(const QString& name) = 0;
     virtual QStringList rcUnits() = 0;
-    virtual QWidget* createRcUnitWidget(const QString& rcUnit) = 0;
+
+    virtual QWidget* createRcUnitSettingsWidget(const QString& unitName) = 0;
+    virtual QWidget* createRcUnitControlWidget(const QString& unitName) = 0;
+
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
     virtual QList<QPair<QString, int> > breakpoints() const = 0;

@@ -73,9 +73,9 @@ void HilecCore::compileFile(const QString &filename)
     mLint.compile(filename);
 }
 
-RcUnitHelp HilecCore::getUnitHelp(const QString &name)
+RcUnitHelp HilecCore::getUnitHelp(const QString &unitName)
 {
-    return RcUnits::instance()->getHelp(name);
+    return RcUnits::instance()->getHelp(unitName);
 }
 
 QStringList HilecCore::getTelecontrolableUnits()
@@ -103,6 +103,16 @@ QStringList HilecCore::rcUnits()
     return RcUnits::instance()->unitNames();
 }
 
+QWidget *HilecCore::createRcUnitSettingsWidget(const QString &unitName)
+{
+    return RcUnits::instance()->rcUnitSettingsWidget(unitName);
+}
+
+QWidget *HilecCore::createRcUnitControlWidget(const QString &unitName)
+{
+    return RcUnits::instance()->rcUnitControlWidget(unitName);
+}
+
 void HilecCore::loadFromFile(const QString &filename)
 {
     setBaseDir(QFileInfo(filename).absolutePath());
@@ -112,11 +122,6 @@ void HilecCore::loadFromFile(const QString &filename)
 void HilecCore::releaseConfig()
 {
     RcUnits::instance()->releaseConfig();
-}
-
-QWidget* HilecCore::createRcUnitWidget(const QString &rcUnit)
-{
-    return RcUnits::instance()->rcUnitGui(rcUnit);
 }
 
 void HilecCore::userInput(int uid, int buttonId, const QList<QVariant> &data)

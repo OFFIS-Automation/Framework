@@ -28,6 +28,13 @@ opencvdlls.path   = $${DESTDIR}
 opencvdlls.files += $${CVBINDIR}/*.dll
 INSTALLS         += opencvdlls
 
+# Without this line, the VideoInput filter will not run
+# inside a deployed app version. More information here:
+# http://answers.opencv.org/question/62156/python-videocapture-isopened-always-return-false/
+opencv_video.path    = $${DESTDIR}/../
+opencv_video.files  += $${CVBINDIR}/opencv_ffmpeg*.dll
+INSTALLS            += opencv_video
+
 HEADERS += \
     src/OlvisModelPlugin.h \
     ../../../frontend/include/interfaces/ModelPluginInterface.h

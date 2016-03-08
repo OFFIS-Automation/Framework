@@ -14,6 +14,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "..\..\bin\Qt5*.dll"
 	File "..\..\bin\icu*.dll"
 	File "..\..\bin\gamepads.ini"
+	File /x "opencv*d.dll" "..\..\bin\opencv*.dll"
 	
 	SetOutPath "$INSTDIR\plugins"
 	File "..\..\bin\plugins\olvis*.dll"
@@ -67,6 +68,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\Qt5*.dll"
 	File "..\..\bin\debug\icu*.dll"
 	File "..\..\bin\debug\gamepads.ini"
+	File "..\..\bin\debug\opencv*.dll"
 	
 	SetOutPath "$INSTDIR\debug\plugins"
 	File "..\..\bin\debug\plugins\olvis*.dll"

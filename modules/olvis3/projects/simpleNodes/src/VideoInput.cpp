@@ -98,8 +98,9 @@ void VideoInput::start()
 
 void VideoInput::stop()
 {
-    if(mCapture.isOpened())
+    if(mCapture.isOpened()){
         mCapture.release();
+    }
 }
 
 void VideoInput::execute()
@@ -107,11 +108,15 @@ void VideoInput::execute()
     QFileInfo path = mIn;
     if(mCurrentFile != path)
     {
-        if(mCapture.isOpened())
+        if(mCapture.isOpened()){
             mCapture.release();
-        mCapture.open(path.canonicalFilePath().toStdString());
-        if(!mCapture.isOpened())
-            throw std::runtime_error("Could not read video stream");
+        }
+        if(!mCapture.open(path.canonicalFilePath().toStdString())){
+            throw std::runtime_error("Could not open video stream 1");
+        }
+        if(!mCapture.isOpened()){
+            throw std::runtime_error("Could not open video stream 2");
+        }
 
         mCurrentFile = path;
         int framePos = qRound(mCapture.get(CV_CAP_PROP_FRAME_COUNT) * (double)mStart);
@@ -119,22 +124,24 @@ void VideoInput::execute()
 
     }
     double elapsedFrames = mCapture.get(CV_CAP_PROP_POS_FRAMES) / mCapture.get(CV_CAP_PROP_FRAME_COUNT);
-    if(!mCapture.grab() || elapsedFrames > (double) mEnd)
-    {
+    if(!mCapture.grab() || elapsedFrames > (double) mEnd){
         // Check if *.avi has finished
         if((bool)mRepeat){
             // Reset frame pos to start pos
             int framePos = qRound(mCapture.get(CV_CAP_PROP_FRAME_COUNT) * (double)mStart);
             mCapture.set(CV_CAP_PROP_POS_FRAMES, framePos);
-            if(!mCapture.grab())
+            if(!mCapture.grab()){
                 return;
+            }
         } else {
             return;
         }
     }
     double realFps = mCapture.get(CV_CAP_PROP_FPS);
     double factor = mSpeed;
-    if(factor == 0) factor = 0.001;
+    if(factor == 0){
+        factor = 0.001;
+    }
     double duration = 1000.0 / (realFps * factor);
     double elapsed = mTimer.elapsed();
     if(elapsed < duration && duration > 0){
@@ -146,8 +153,9 @@ void VideoInput::execute()
 
     // Send image
     cv::Mat img;
-    if(!mCapture.retrieve(img))
+    if(!mCapture.retrieve(img)){
         return;
+    }
 
     mFpsOut.send(realFps);
     mPositionOut.send(mCapture.get(CV_CAP_PROP_POS_FRAMES) / mCapture.get(CV_CAP_PROP_FRAME_COUNT));

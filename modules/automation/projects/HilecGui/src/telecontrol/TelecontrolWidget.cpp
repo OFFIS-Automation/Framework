@@ -160,9 +160,6 @@ void TelecontrolWidget::onTelecontrolUpdated(const QString &deviceName, const QS
         int id = mUnitIndexes.key(unitName,0);
         ui->tabWidget->setCurrentIndex(id);
 
-        QStringList hapticDevices = HilecSingleton::hilec()->getHapticDevices().keys();
-        TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unitName);
-
         // Remove mHapticWidget
         QWidget *tabWidget = ui->tabWidget->currentWidget();
         QBoxLayout *layout = (QBoxLayout *)tabWidget->layout();
@@ -180,7 +177,8 @@ void TelecontrolWidget::onTelecontrolUpdated(const QString &deviceName, const QS
             }
         }
 
-        if(hapticDevices.contains(help.tcDeviceName)){
+        QStringList hapticDevices = HilecSingleton::hilec()->getHapticDevices().keys();
+        if(hapticDevices.contains(deviceName)){
             QWidget *hapticWidget = HilecSingleton::hilec()->createHapticWidget(unitName);
             // Store refernce for later usage
             mHapticWidget = hapticWidget;
@@ -193,6 +191,8 @@ void TelecontrolWidget::onTelecontrolUpdated(const QString &deviceName, const QS
 
 void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down)
 {
+    Q_UNUSED(deviceName);
+
     int currentIndex = mUnitIndexes.key(unitName, 0);
     int newIndex = down? currentIndex-1 : currentIndex+1;
     int minIndex = 0; int maxIndex = ui->tabWidget->count() - 1;
@@ -210,6 +210,7 @@ void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, cons
 
 void TelecontrolWidget::editButtonAssignment(const QString &unitName)
 {
+    Q_UNUSED(unitName);
     /*
     EditGamepadAssignment edit(this);
     if(!unit.isEmpty())

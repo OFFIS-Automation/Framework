@@ -43,6 +43,7 @@ SensorSystemOverlay::~SensorSystemOverlay()
 
 void SensorSystemOverlay::setPortId(const PortId &id, bool output)
 {
+    Q_UNUSED(output);
     mIsOutput = true;
     setSensorId(id.port);
 }

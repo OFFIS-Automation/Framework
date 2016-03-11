@@ -17,7 +17,7 @@
 #ifndef RCUNITINTERFACE_H
 #define RCUNITINTERFACE_H
 
-
+#include <QMutex>
 #include <QObject>
 #include <QVariant>
 

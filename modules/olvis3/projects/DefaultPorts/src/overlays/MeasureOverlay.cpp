@@ -18,6 +18,8 @@ MeasureOverlay::~MeasureOverlay()
 
 void MeasureOverlay::paint(QPainter &p, bool showControls)
 {
+    Q_UNUSED(showControls);
+
     p.setViewTransformEnabled(true);
     mTransform = p.deviceTransform();
     if(!mTransformValid)

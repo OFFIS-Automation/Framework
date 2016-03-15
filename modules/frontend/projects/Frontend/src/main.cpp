@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
     a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
-    a.setStyle(QStyleFactory::create("Fusion"));
 
     // Initialize translator
     TranslationLoader translator;

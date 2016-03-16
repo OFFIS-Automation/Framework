@@ -96,36 +96,73 @@ TRANSLATIONS = $${translationDir}/de/frontend_de.ts \
 
 dlls.path  =  $${DESTDIR}
 dllA.path   += $${DESTDIR}/platforms
-dllB.path   += $${DESTDIR}/plugins/imageformats/
+dllB.path   += $${DESTDIR}/imageformats/
+dllC.path   += $${DESTDIR}/iconengines/
+
+dlls.files += $$[QT_INSTALL_BINS]/d3dcompiler_47.dll
+dlls.files += $$[QT_INSTALL_BINS]/opengl32sw.dll
 
 CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/icudt5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuuc5*.dll
+
+    dlls.files += $$[QT_INSTALL_BINS]/libGLESV2d.dll
+    dlls.files += $$[QT_INSTALL_BINS]/libEGLd.dll
+
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Cored.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Networkd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Guid.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Networkd.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimediad.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5OpenGld.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5PrintSupportd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5SerialPortd.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Svgd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimediad.dll
+
+    dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
+
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
+
+    dllC.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicond.dll
 } else {
     dlls.files += $$[QT_INSTALL_BINS]/icudt5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuuc5*.dll
+
+    dlls.files += $$[QT_INSTALL_BINS]/libGLESV2.dll
+    dlls.files += $$[QT_INSTALL_BINS]/libEGL.dll
+
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Core.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Network.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Gui.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Network.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimedia.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5OpenGl.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5PrintSupport.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5SerialPort.dll
+    dlls.files += $$[QT_INSTALL_BINS]/Qt5Svg.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
-    dlls.files += $$[QT_INSTALL_BINS]/Qt5Multimedia.dll
+
+    dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
+
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qdds.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgif.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicns.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qico.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpeg.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtga.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiff.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp.dll
+    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebp.dll
+
+    dllC.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicon.dll
 }
-dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
-dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qico.dll
-dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp.dll
-INSTALLS   += dlls dllA dllB
+INSTALLS   += dlls dllA dllB dllC

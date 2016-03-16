@@ -21,6 +21,7 @@
 #include <QSplashScreen>
 #include <QStyleFactory>
 #include <Notifications.h>
+#include <QSysInfo>
 
 #include "MasterWindow.h"
 #include "PluginLoader.h"
@@ -39,7 +40,9 @@ int main(int argc, char *argv[])
     a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
-    a.setStyle(QStyleFactory::create("Fusion"));
+    if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
+        a.setStyle(QStyleFactory::create("Fusion"));
+    }
 
     // Initialize translator
     TranslationLoader translator;

@@ -35,19 +35,21 @@ LIBS += -L$${targetDir}/plugins -lRcUnits
 }
 
 # Python
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Include
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PC
-LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32
+INCLUDEPATH += $$(AMIRDEVDIR)/python3/Include
+LIBS        += -L$$(AMIRDEVDIR)/python3/libs
 
-pylibs.path = $${DESTDIR}/hilec/python
-pylibs.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
-INSTALLS += pylibs
+pylibs.path      = $${DESTDIR}/hilec/python
+pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
+INSTALLS        += pylibs
 
-pyDlls.path = $${DESTDIR}
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.dll
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.exe
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.pdb
-INSTALLS       += pyDlls
+pyDlls.path   = $${DESTDIR}
+pyDlls.files += $$(AMIRDEVDIR)/python3/bin/python*.dll
+pyDlls.files += $$(AMIRDEVDIR)/python3/bin/python*.exe
+pyDlls.files += $$(AMIRDEVDIR)/python3/bin/python*.pdb
+#pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.dll
+#pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.exe
+#pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PCbuild/win32/python*.pdb
+INSTALLS     += pyDlls
 
 amirlibs.path    = $${DESTDIR}/hilec/python
 amirlibs.files  += $${PWD}/python/*

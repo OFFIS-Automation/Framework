@@ -57,11 +57,13 @@ void PythonInterpreter::run()
     mDebugger->step();
     QString last = QDir::currentPath();
     QDir::setCurrent(mBaseDir);
+
     wchar_t path[2048], pName[2048];
     memset(path, 0, sizeof(path));
     memset(pName, 0, sizeof(pName));
     wchar_t* pNamePtr = pName;
     mFilename.toWCharArray(pName);
+
     Py_SetProgramName(pName);
 
 #ifdef Q_OS_WIN
@@ -72,6 +74,7 @@ void PythonInterpreter::run()
 
     Py_SetPath(path);
     mDebugger->initialize();
+
     Py_Initialize();
     PySys_SetArgvEx(1,&pNamePtr, 0);
     PyEval_SetTrace(PythonDebugger_Trace, 0);
@@ -79,6 +82,7 @@ void PythonInterpreter::run()
     runFile(mFilename);
     UserRequestManager::instance()->abortAll();
     Py_Finalize();
+
     mDebugger->deinitialize();
     QDir::setCurrent(last);
     qDebug() << "Python: Execution finished" << mFilename;

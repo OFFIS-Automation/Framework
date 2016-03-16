@@ -60,9 +60,6 @@
         </property>
         <item>
          <widget class="ExtendedTextEdit" name="plainTextEdit">
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>

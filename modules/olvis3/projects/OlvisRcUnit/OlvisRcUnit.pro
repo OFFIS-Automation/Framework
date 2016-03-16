@@ -30,9 +30,9 @@ INCLUDEPATH += ../../../automation/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../olvisCore/src
 
-pythonFiles.path    = $${DESTDIR}/../hilec/python/rcunits
+pythonFiles.path     = $${DESTDIR}/../hilec/python/rcunits
 pythonFiles.files   += python/*
-INSTALLS     += pythonFiles
+INSTALLS            += pythonFiles
 
 
 HEADERS += \

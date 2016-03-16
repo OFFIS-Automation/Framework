@@ -47,7 +47,6 @@ LogWindow::LogWindow(QWidget *parent) :
     addLogType(QtDebugMsg, tr("Debug"), "DBG", Qt::blue);
     addLogType(TraceLogType, tr("Trace"), "TRC", Qt::darkCyan);
 
-
     sInstance = this;
     mPreviousHandler = qInstallMessageHandler(&LogWindow::logMessage);
     mTimer.setSingleShot(true);

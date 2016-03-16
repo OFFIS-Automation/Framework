@@ -349,7 +349,7 @@ void FileEditor::updateLexer()
 
         // For python we have an predefined API
         QsciAPIs *api = new QsciAPIs(lexer);
-        QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.3.api";
+        QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.4.api";
         api->load(filename);
         api->prepare();
     }

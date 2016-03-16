@@ -17,7 +17,7 @@
 #ifndef NOTIFICATIONS_H
 #define NOTIFICATIONS_H
 
-
+#include <QMutex>
 #include <QString>
 #include <QPixmap>
 #include <QtCore/qglobal.h>
@@ -27,7 +27,6 @@
 #else
 #  define NOTIFICATIONSSHARED_EXPORT Q_DECL_IMPORT
 #endif
-
 
 class QWidget;
 class NotificationMainWidget;

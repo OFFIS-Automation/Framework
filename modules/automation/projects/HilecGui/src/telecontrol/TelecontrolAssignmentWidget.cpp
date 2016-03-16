@@ -105,6 +105,7 @@ void TelecontrolAssignmentWidget::switchToUnit(QString unit)
 
 void TelecontrolAssignmentWidget::onTelecontrolUpdated(const QString &deviceName, const QString &unitName, bool active)
 {
+    Q_UNUSED(deviceName);
     if(active){
         int id = mUnitIndexes.key(unitName,0);
         ui->tabWidget->setEnabled(true);

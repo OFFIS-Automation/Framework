@@ -107,7 +107,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuuc5*.dll
 
-    dlls.files += $$[QT_INSTALL_BINS]/libGLESV2d.dll
+    dlls.files += $$[QT_INSTALL_BINS]/libGLESv2d.dll
     dlls.files += $$[QT_INSTALL_BINS]/libEGLd.dll
 
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Cored.dll
@@ -138,7 +138,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuuc5*.dll
 
-    dlls.files += $$[QT_INSTALL_BINS]/libGLESV2.dll
+    dlls.files += $$[QT_INSTALL_BINS]/libGLESv2.dll
     dlls.files += $$[QT_INSTALL_BINS]/libEGL.dll
 
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Core.dll

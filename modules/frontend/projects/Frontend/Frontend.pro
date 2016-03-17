@@ -81,7 +81,7 @@ HEADERS  += src/MainWindow.h \
     src/AboutScreen.h \
     src/version.h
 
-FORMS    += \
+FORMS   += \
     src/DockWidgetTitle.ui \
     src/MasterWindow.ui \
     src/StartScreen.ui \

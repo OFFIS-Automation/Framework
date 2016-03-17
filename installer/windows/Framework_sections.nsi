@@ -13,6 +13,10 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "..\..\bin\Notifications.dll"
 	File "..\..\bin\Qt5*.dll"
 	File "..\..\bin\icu*.dll"
+	File "..\..\bin\libGLESV2.dll"
+	File "..\..\bin\libEGL.dll"
+	File "..\..\bin\d3dcompiler_47.dll"
+	File "..\..\bin\opengl32sw.dll"
 	File "..\..\bin\gamepads.ini"
 	File /x "opencv*d.dll" "..\..\bin\opencv*.dll"
 	
@@ -59,6 +63,12 @@ Section "!OFFIS Automation Framework" SecToolbox
 	
 	SetOutPath "$INSTDIR\platforms"
 	File /r "..\..\bin\platforms\*"
+	
+	SetOutPath "$INSTDIR\imageformats"
+	File /r "..\..\bin\imageformats\*"
+	
+	SetOutPath "$INSTDIR\iconengines"
+	File /r "..\..\bin\iconengines\*"
 SectionEnd
 
 Section /o "Development version" SecDevFiles
@@ -67,6 +77,10 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\Notifications.dll"
 	File "..\..\bin\debug\Qt5*.dll"
 	File "..\..\bin\debug\icu*.dll"
+	File "..\..\bin\libGLESV2d.dll"
+	File "..\..\bin\libEGLd.dll"
+	File "..\..\bin\d3dcompiler_47.dll"
+	File "..\..\bin\opengl32sw.dll"
 	File "..\..\bin\debug\gamepads.ini"
 	File "..\..\bin\debug\opencv*.dll"
 	
@@ -113,6 +127,12 @@ Section /o "Development version" SecDevFiles
 	
 	SetOutPath "$INSTDIR\platforms"
 	File /r "..\..\bin\debug\platforms\*"
+	
+	SetOutPath "$INSTDIR\imageformats"
+	File /r "..\..\bin\imageformats\*"
+	
+	SetOutPath "$INSTDIR\iconengines"
+	File /r "..\..\bin\iconengines\*"
 SectionEnd
 
 ;--------------------------------
@@ -167,6 +187,8 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\debug"
   RMDir /r "$INSTDIR\driver"
   RMDir /r "$INSTDIR\platforms"
+  RMDir /r "$INSTDIR\iconengines"
+  RMDir /r "$INSTDIR\imageformats"
   RMDir "$INSTDIR"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder

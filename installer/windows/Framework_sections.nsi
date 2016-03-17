@@ -77,10 +77,10 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\Notifications.dll"
 	File "..\..\bin\debug\Qt5*.dll"
 	File "..\..\bin\debug\icu*.dll"
-	File "..\..\bin\libEGLd.dll"
-	File "..\..\bin\libGLESv2d.dll"
-	File "..\..\bin\d3dcompiler_47.dll"
-	File "..\..\bin\opengl32sw.dll"
+	File "..\..\bin\debug\libEGLd.dll"
+	File "..\..\bin\debug\libGLESv2d.dll"
+	File "..\..\bin\debug\d3dcompiler_47.dll"
+	File "..\..\bin\debug\opengl32sw.dll"
 	File "..\..\bin\debug\gamepads.ini"
 	File "..\..\bin\debug\opencv*.dll"
 	
@@ -129,10 +129,10 @@ Section /o "Development version" SecDevFiles
 	File /r "..\..\bin\debug\platforms\*"
 	
 	SetOutPath "$INSTDIR\imageformats"
-	File /r "..\..\bin\imageformats\*"
+	File /r "..\..\bin\debug\imageformats\*"
 	
 	SetOutPath "$INSTDIR\iconengines"
-	File /r "..\..\bin\iconengines\*"
+	File /r "..\..\bin\debug\iconengines\*"
 SectionEnd
 
 ;--------------------------------

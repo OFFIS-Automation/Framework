@@ -17,6 +17,8 @@
 #ifndef USER_PYLONCAMERA_H
 #define USER_PYLONCAMERA_H
 
+#include <QMutex>
+
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/BooleanPort.h>

@@ -112,7 +112,7 @@ void TelecontrolWidget::updateUnits(bool /*partialChange */)
                 TelecontrolGamepadWidget* gamepadWidget = new TelecontrolGamepadWidget(unit, method);
                 connect(gamepadWidget, SIGNAL(updateGamepadParameters(QString,QString,double,QList<bool>)), SIGNAL(updateGamepadParameters(QString,QString,double, QList<bool>)));
                 layout->addWidget(gamepadWidget);
-                connect(HilecSingleton::hilec(), SIGNAL(gamepadChangeSensitivityRequested(QString,bool)), gamepadWidget, SLOT(changeSlider(QString,bool)));
+                connect(HilecSingleton::hilec(), SIGNAL(gamepadSensitivityChangeRequested(QString,QString,bool)), gamepadWidget, SLOT(changeSlider(QString,QString,bool)));
             }
 
             // Add slider, gain, .. for each method

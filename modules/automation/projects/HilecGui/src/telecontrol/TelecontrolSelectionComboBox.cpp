@@ -32,5 +32,5 @@ void TelecontrolSelectionComboBox::on_availableDevices_currentIndexChanged(int i
     if(index > 0){
         deviceName =  mDeviceNames.at(index-1);
     }
-    emit telecontrolSelected(mUnitName, deviceName);
+    emit telecontrolSelected(deviceName, mUnitName);
 }

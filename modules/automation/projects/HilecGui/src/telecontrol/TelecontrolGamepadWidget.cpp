@@ -70,8 +70,9 @@ void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
     emit updateGamepadParameters(mUnit, mMethod, sensitivity, inverts);
 }
 
-void TelecontrolGamepadWidget::changeSlider(const QString &unit, bool increase)
+void TelecontrolGamepadWidget::changeSlider(const QString &deviceName, const QString &unit, bool increase)
 {
+    Q_UNUSED(deviceName)
     if(unit != mUnit)
         return;
     int current = ui->slider->value();

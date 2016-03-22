@@ -40,7 +40,7 @@ signals:
 private slots:
     void on_slider_sliderMoved(int position);
     void sendUpdate(int sliderPosition = -1);
-    void changeSlider(const QString& unit, bool increase);
+    void changeSlider(const QString &deviceName, const QString& unit, bool increase);
 
 private:
 

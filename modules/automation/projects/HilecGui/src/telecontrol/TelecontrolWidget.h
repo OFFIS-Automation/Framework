@@ -35,8 +35,9 @@ public:
     explicit TelecontrolWidget(QWidget *parent = 0);
     ~TelecontrolWidget();
     void setConfigFile(const QString& configFile) { mConfigFile = configFile; }
+
 signals:
-     void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
+    void updateTelecontrolAssignment(const QString& deviceName, const QString& unitName);
 
     void activateGamepad(const QString& deviceName, const QString& unitName);
     void deactivateGamepadAll();
@@ -48,20 +49,20 @@ signals:
 
 public slots:
     void clear();
-    void updateUnits(bool partialReload);
+    void onRcUnitsChanged(bool partialReload);
     void editButtonAssignment(const QString& unitName = QString());
     void openButtonAssignment(const QString& unitName);
 
 private slots:
     void onTelecontrolAssignmentUpdate(const QString& deviceName, const QString& unitName);
-    void onTelecontrolUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
     void onGamepadSwitchRequested(const QString &deviceName, const QString& unitName, bool down);
+
     void on_tabWidget_currentChanged(int index);
 
 private:
     Ui::TelecontrolWidget *ui;
+    QStringList mTelecontrolUnits;
     QMap<int, QString> mUnitIndexes;
-    bool mInUpdate;
     QWidget* mHapticWidget;
     TelecontrolAssignmentWidget *mTelecontrolAssignmentWidget;
     QString mConfigFile;

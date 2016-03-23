@@ -21,8 +21,8 @@ private slots:
     void on_availableDevices_currentIndexChanged(int index);
 
 private:
-    QStringList mDeviceNames;
     Ui::TelecontrolSelectionComboBox *ui;
+    QStringList mDeviceNames;
     QString mUnitName;
 };
 

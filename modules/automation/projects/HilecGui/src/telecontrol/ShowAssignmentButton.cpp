@@ -27,7 +27,8 @@ ShowAssignmentButton::ShowAssignmentButton(QString unitName) :
     ui->setupUi(this);
 
     TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(mUnitName);
-    changeButtons(help.tcDeviceName);
+    QStringList gamepadDevices = HilecSingleton::hilec()->getGamepadDevices().keys();
+    ui->show->setEnabled(gamepadDevices.contains(help.tcDeviceName));
 }
 
 ShowAssignmentButton::~ShowAssignmentButton()
@@ -35,10 +36,11 @@ ShowAssignmentButton::~ShowAssignmentButton()
     delete ui;
 }
 
-void ShowAssignmentButton::updateTelecontrolAssignment(const QString &unitName, const QString &telecontrolDeviceName)
+void ShowAssignmentButton::updateTelecontrolAssignment(const QString &deviceName, const QString &unitName)
 {
     if(unitName == mUnitName){
-        changeButtons(telecontrolDeviceName);
+        QStringList gamepadDevices = HilecSingleton::hilec()->getGamepadDevices().keys();
+        ui->show->setEnabled(gamepadDevices.contains(deviceName));
     }
 }
 
@@ -50,13 +52,4 @@ void ShowAssignmentButton::on_show_clicked()
 void ShowAssignmentButton::on_edit_clicked()
 {
     emit editButtonAssignment(mUnitName);
-}
-
-void ShowAssignmentButton::changeButtons(const QString &telecontrolDeviceName)
-{
-    QStringList gamepadDevices = HilecSingleton::hilec()->getGamepadDevices().keys();
-    bool isGamepad = gamepadDevices.contains(telecontrolDeviceName);
-    bool isFakeUnit = HilecSingleton::hilec()->getUnitHelp(mUnitName).unitName.isEmpty();
-    ui->show->setEnabled(isGamepad);
-    ui->edit->setEnabled(isGamepad && isFakeUnit);
 }

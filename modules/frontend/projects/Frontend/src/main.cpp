@@ -112,14 +112,12 @@ int main(int argc, char *argv[])
     // Shows windows
     masterWindow->setAlternative(slaveWindow);
     masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
-    masterWindow->setMaximumSize(desktop->availableGeometry().size());
     masterWindow->showMaximized();
 
     if(multiScreen){
         slaveWindow->setAlternative(masterWindow);
         int screen = desktop->primaryScreen() == 0 ? 1 : 0;
         slaveWindow->move(desktop->availableGeometry(screen).topLeft());
-        slaveWindow->setMaximumSize(desktop->availableGeometry(screen).size());
         slaveWindow->showMaximized();
     }
     splashScreen.finish(masterWindow);

@@ -138,6 +138,8 @@ void PythonInterpreter::quit()
 {
     UserRequestManager::instance()->abortAll();
     mDebugger->step(PythonDebugger::Quit);
+
+    PyErr_SetInterrupt();
 }
 
 QAbstractItemModel* PythonInterpreter::debugVars(int frameDepth)

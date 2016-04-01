@@ -97,7 +97,7 @@ Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug\plugins\olvis"
 	File /r "..\..\bin\debug\plugins\olvis\*"
 	
-	SetOutPath "$INSTDIR\plugins\rcUnits"
+	SetOutPath "$INSTDIR\debug\plugins\rcUnits"
 	File "..\..\bin\debug\plugins\rcUnits\VisionControlUnit.dll"
 	File "..\..\bin\debug\plugins\rcUnits\TutorialUnit.dll"
 	File "..\..\bin\debug\plugins\rcUnits\SensorSystem.dll"
@@ -125,13 +125,13 @@ Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug\plugins\hilec\python\rcunits"
 	File "..\..\bin\debug\plugins\hilec\python\rcunits\__init__.py"
 	
-	SetOutPath "$INSTDIR\platforms"
+	SetOutPath "$INSTDIR\debug\platforms"
 	File /r "..\..\bin\debug\platforms\*"
 	
-	SetOutPath "$INSTDIR\imageformats"
+	SetOutPath "$INSTDIR\debug\imageformats"
 	File /r "..\..\bin\debug\imageformats\*"
 	
-	SetOutPath "$INSTDIR\iconengines"
+	SetOutPath "$INSTDIR\debug\iconengines"
 	File /r "..\..\bin\debug\iconengines\*"
 SectionEnd
 

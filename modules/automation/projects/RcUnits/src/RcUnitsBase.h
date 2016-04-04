@@ -99,7 +99,7 @@ protected:
     QMap<QString, Gamepad *> mGamepadDevices;
     QMap<QString, QString> mGamepadMapping;
     QStringList mTelecontrolRcUnits;
-    QString mConfigFile;
+    QString mConfigFilePath;
 
     QMap<QString, HapticDevice *> mHapticDevices;
     QMap<QString, MasterTcInvoker*> mMasterTcInvokers;

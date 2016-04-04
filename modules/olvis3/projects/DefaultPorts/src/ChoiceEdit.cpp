@@ -19,8 +19,11 @@
 ChoiceEdit::ChoiceEdit(QWidget *parent) :
     AbstractPortEditWidget(parent)
 {
-    combo = new QComboBox(this);
-    ui->layout->insertWidget(0, combo);
+    mComboBox = new QComboBox(this);
+    ui->layout->insertWidget(0, mComboBox);
+
+    // Connect signal
+    connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(int)));
 }
 
 ChoiceEdit::~ChoiceEdit()
@@ -29,42 +32,51 @@ ChoiceEdit::~ChoiceEdit()
 
 void ChoiceEdit::setInfo(const PortInfo &info)
 {
-    combo->clear();
+    mComboBox->clear();
     mNames.clear();
     mValues.clear();
     AbstractPortEditWidget::setInfo(info);
     QList<QVariant> values = mInfo.constraints.value("choices").toList();
     QStringList names = mInfo.constraints.value("choiceNames").toStringList();
-    for(int i=0;i<values.size(); i++)
-    {
+    for(int i=0;i<values.size(); i++){
         const QVariant& value = values[i];
         QString name;
-        if(names.size() > i)
+        if(names.size() > i){
             name = names[i];
-        else
+        } else {
             name = value.toString();
+        }
         mValues.append(value);
         mNames.append(name);
-        combo->addItem(name, value);
+        mComboBox->addItem(name, value);
     }
 }
 
 QString ChoiceEdit::asString()
 {
     int index = mValues.indexOf(mValue);
-    if(index >= 0)
+    if(index >= 0){
         return mNames[index];
+    }
     return "";
 }
 
 void ChoiceEdit::onStartEdit()
 {
     // select the correct item
-    combo->setCurrentIndex(combo->findData(mValue));
-    combo->setFocus();
+    bool oldState = mComboBox->blockSignals(true);
+    mComboBox->setCurrentIndex(mComboBox->findData(mValue));
+    mComboBox->blockSignals(oldState);
 }
 
 QVariant ChoiceEdit::editValue(bool&)
 {
-    return combo->itemData(combo->currentIndex());
+    return mComboBox->itemData(mComboBox->currentIndex());
+}
+
+void ChoiceEdit::onCurrentIndexChanged(int index)
+{
+    if(mAutoSubmit){
+        editFinished(mComboBox->itemData(index));
+    }
 }

@@ -30,12 +30,14 @@ public:
     virtual void onStartEdit();
     virtual ~BoolEdit();
     virtual QVariant editValue(bool&) { return mValue; }
+
 private slots:
     void on_yes_clicked();
     void on_no_clicked();
+    void onButtonClicked(bool yesButton);
 
 protected:
-    QPushButton* yes, *no;
+    QPushButton* mYesButton, *mNoButton;
 };
 
 #endif // BOOLEDIT_H

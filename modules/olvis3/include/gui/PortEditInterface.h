@@ -30,12 +30,13 @@ class PortEditInterface
 public:
     class Callback {
     public:
-        virtual void editFinished(const QVariant& var) = 0;
-        virtual void editCanceled() = 0;
+        virtual void editFinished(const QVariant& var, const PortInfo& info) = 0;
+        virtual void editCanceled(const PortInfo& info) = 0;
     };
     virtual ~PortEditInterface(){}
     virtual void setInfo(const PortInfo& info) = 0;
     virtual void setValue(const QVariant& variant) = 0;
+    virtual void setAutoSubmit(bool autoSubmit) = 0;
     virtual QString asString() = 0;
     virtual QWidget* editWidget() = 0;
     virtual void startEdit(Callback& callback) = 0;

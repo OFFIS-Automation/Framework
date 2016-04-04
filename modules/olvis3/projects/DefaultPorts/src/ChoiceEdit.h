@@ -34,10 +34,14 @@ public:
     virtual QString asString();
     virtual void onStartEdit();
     virtual QVariant editValue(bool& ok);
+
+private slots:
+    void onCurrentIndexChanged(int index);
+
 private:
     QList<QVariant> mValues;
     QList<QString> mNames;
-    QComboBox* combo;
+    QComboBox* mComboBox;
 };
 
 #endif // CHOICEEDIT_H

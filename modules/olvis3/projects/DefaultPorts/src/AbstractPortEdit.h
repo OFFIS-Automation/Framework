@@ -26,15 +26,18 @@ public:
     AbstractPortEdit();
     virtual void setInfo(const PortInfo &info) { mInfo = info; }
     virtual void setValue(const QVariant &variant) { mValue = variant; }
+    virtual void setAutoSubmit(bool autoSubmit) = 0;
     virtual QWidget* editWidget() { return 0; }
     virtual void startEdit(Callback& callback);
     virtual void onStartEdit() = 0;
+
 protected:
     void editFinished(const QVariant& value);
     void editCanceled();
 
     PortInfo mInfo;
     QVariant mValue;
+    bool mAutoSubmit = false;
 
 private:
     Callback* mCallback;

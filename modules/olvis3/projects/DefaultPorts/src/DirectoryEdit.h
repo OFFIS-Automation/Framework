@@ -25,5 +25,8 @@ public:
     DirectoryEdit();
     virtual QString asString();
     virtual void onStartEdit();
+    // setAutoSubmit is here for virtual reasons,
+    // widget is autoSubmit by default
+    virtual void setAutoSubmit(bool autoSubmit) { Q_UNUSED(autoSubmit); }
 };
 #endif // DIRECTORYEDIT_H

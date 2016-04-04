@@ -57,7 +57,7 @@ RcUnits::~RcUnits()
 
 void RcUnits::loadConfig(const QString &filename)
 {
-    mConfigFile = filename;
+    mConfigFilePath = filename;
     RcUnitsBase::loadConfig(filename);
     foreach(QString key, mUnits.keys())
     {

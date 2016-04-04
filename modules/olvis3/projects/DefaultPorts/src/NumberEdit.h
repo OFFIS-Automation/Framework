@@ -31,11 +31,12 @@ public:
     virtual void onStartEdit();
     virtual QString asString();
     virtual QVariant editValue(bool& ok);
+
 private slots:
     void on_spinBox_editingFinished();
 
 private:
-    QSpinBox* spinBox;
+    QSpinBox* mSpinBox;
 };
 
 #endif // NUMBEREDIT_H

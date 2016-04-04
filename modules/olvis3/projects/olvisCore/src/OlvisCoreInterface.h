@@ -170,6 +170,7 @@ public slots:
 
 protected slots:
     void onProcessorFinished();
+
 protected:
     bool mChanged;
     Filter* createFilter(const QString &filterType);

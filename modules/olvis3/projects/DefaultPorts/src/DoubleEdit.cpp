@@ -16,17 +16,40 @@
 
 #include "DoubleEdit.h"
 
-DoubleEdit::DoubleEdit(QWidget *parent) : StringEdit(parent)
+DoubleEdit::DoubleEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
-    lineEdit->setValidator(new QDoubleValidator(this));
+    mSpinBox = new QDoubleSpinBox(this);
+    mSpinBox->setObjectName("spinBox");
+    ui->layout->insertWidget(0, mSpinBox);
+
+    QMetaObject::connectSlotsByName(this);
+}
+
+DoubleEdit::~DoubleEdit()
+{
+}
+
+void DoubleEdit::onStartEdit()
+{
+    double min = mInfo.constraints.value("min", QVariant(INT_MAX)).toDouble();
+    double max = mInfo.constraints.value("max", QVariant(INT_MAX)).toDouble();
+    mSpinBox->setRange(min, max);
+    mSpinBox->setValue(mValue.toDouble());
 }
 
 QString DoubleEdit::asString()
 {
-    return QString("%1").arg(mValue.toDouble());
+    return QString::number(mValue.toDouble());
 }
 
-QVariant DoubleEdit::editValue(bool& ok)
+QVariant DoubleEdit::editValue(bool&)
 {
-    return lineEdit->text().toDouble(&ok);
+    return mSpinBox->value();
+}
+
+void DoubleEdit::on_spinBox_editingFinished()
+{
+    if(mSpinBox->hasFocus()){ // enter was pressed
+        submit();
+    }
 }

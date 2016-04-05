@@ -106,8 +106,9 @@ void RectOverlay::paint(QPainter& p, bool showControls)
         p.drawRect(handle.translated(realRect.bottomRight()));
         // Draw cancel / delete button
         p.drawPixmap(realRect.topLeft() - QPoint(7, 7), QPixmap(":/olvisExecGui/cancel.png"));
-        if (showClear())
+        if (showClear()){
             p.drawPixmap(realRect.topLeft() + QPoint(9, -7), QPixmap(":/olvisExecGui/delete.png"));
+        }
     }
 
 }

@@ -75,8 +75,7 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
         WindowsGamepad* gamepad = new WindowsGamepad(name, guid);
         HRESULT hr = sDirectInput->CreateDevice(inst->guidInstance, &gamepad->mDevice, NULL);
         if(FAILED(hr) || !gamepad->initialize()){
-            delete gamepad;
-            sDirectInput->Release();
+            gamepad->deleteLater();
             throw std::runtime_error(qPrintable(tr("Error initializing gamepad: %1").arg(name)));
         } else {
             for(int i=1; i<=99; i++){
@@ -94,6 +93,10 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
     catch(const std::exception& e)
     {
         qWarning() << tr("Could not create device:") << " " << e.what();
+    }
+    catch(...)
+    {
+        qWarning() << tr("Could not create device");
     }
     return DIENUM_CONTINUE;
 }

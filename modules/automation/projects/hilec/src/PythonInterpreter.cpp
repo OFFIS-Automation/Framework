@@ -76,7 +76,7 @@ void PythonInterpreter::run()
     mDebugger->initialize();
 
     Py_Initialize();
-    PySys_SetArgvEx(1,&pNamePtr, 0);
+    PySys_SetArgvEx(1, &pNamePtr, 0);
     PyEval_SetTrace(PythonDebugger_Trace, 0);
     runFile(mConfigDir + "/python/offis/init.py");
     runFile(mFilename);
@@ -91,11 +91,11 @@ void PythonInterpreter::run()
 
 void PythonInterpreter::runFile(const QString &filename)
 {
-    FILE* file = fopen(qPrintable(filename), "r");
+    FILE* file = _Py_fopen(qPrintable(filename), "r");
     if(!file){
         return;
     }
-    PyRun_SimpleFile(file, qPrintable(filename));
+    int ret = PyRun_SimpleFile(file, qPrintable(filename));
     fclose(file);
 }
 
@@ -138,7 +138,6 @@ void PythonInterpreter::quit()
 {
     UserRequestManager::instance()->abortAll();
     mDebugger->step(PythonDebugger::Quit);
-
     PyErr_SetInterrupt();
 }
 

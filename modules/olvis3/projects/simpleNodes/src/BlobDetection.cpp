@@ -89,7 +89,7 @@ void BlobDetection::execute()
         {
             cv::Mat roi =source(r);
             cv::Mat contMat = cv::Mat::zeros(roi.size(), CV_8UC1);
-            cv::drawContours(contMat, contours, i, cv::Scalar(255, 255, 255),CV_FILLED,8, cv::noArray(), INT_MAX, cv::Point(-r.x, -r.y));
+            cv::drawContours(contMat, contours, i, cv::Scalar(255, 255, 255), CV_FILLED, 8, cv::noArray(), INT_MAX, cv::Point(-r.x, -r.y));
             cv::Mat temp;
             cv::bitwise_and(contMat, roi, temp);
             cv::Mat pcaData(temp.cols*temp.rows, 2, CV_32FC1);

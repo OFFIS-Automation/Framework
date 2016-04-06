@@ -49,7 +49,11 @@ void ScriptExceptionDialog::showException(const ScriptException &e)
 
     foreach(const ScriptException::Trace& trace, e.trace)
     {
-        QString lineText = QString(trace.file).remove(e.baseDir) + ": " + trace.method + ", " + tr("line", "as in filename:test(), line 12", trace.line) +" " + QString::number(trace.line);
+        QString file = QString(trace.file).remove(e.baseDir);
+        if(file.length() > 0 && file.at(0) == '/'){
+            file.remove(0,1);
+        }
+        QString lineText = file + ": " + trace.method + ", " + tr("line", "as in filename:test(), line 12", trace.line) +" " + QString::number(trace.line);
         QListWidgetItem* item = new QListWidgetItem(lineText);
         item->setData(Qt::UserRole, trace.file);
         item->setData(Qt::UserRole+1, trace.line);

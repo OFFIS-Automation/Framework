@@ -142,7 +142,7 @@
      <normaloff>:/olvisExecGui/images.png</normaloff>:/olvisExecGui/images.png</iconset>
    </property>
    <property name="text">
-    <string>Image Displays</string>
+    <string>Number of image displays</string>
    </property>
    <property name="toolTip">
     <string>Change the number of image displays</string>
@@ -181,7 +181,10 @@
      <normaloff>:/olvisExecGui/page.png</normaloff>:/olvisExecGui/page.png</iconset>
    </property>
    <property name="text">
-    <string>Enable Tracing</string>
+    <string>Enable vision time trace</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable vision time trace</string>
    </property>
   </action>
   <addaction name="actionRun"/>

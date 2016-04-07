@@ -18,9 +18,9 @@ class WhileBlock : public ControlFlowBlock
 		WhileBlock();
 
 		QRectF boundingRect() const;
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event) {}
+		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		void dropEvent(QGraphicsSceneDragDropEvent* event);
 
 		Block& clone();

@@ -24,7 +24,7 @@ class Widget : public QDockWidget
 		Widget(QWidget* parent = nullptr);
 
 	private slots:
-		void updateRcUnits(bool partial);
+		void updateRcUnits(bool);
 		void onDockLocationChanged(const Qt::DockWidgetArea& area);
 
 	private:

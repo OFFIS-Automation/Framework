@@ -33,7 +33,8 @@ class Block : public QGraphicsItem
 		int m_height;
 
 	protected:
-		void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		void mousePressEvent(QGraphicsSceneMouseEvent *) {}
+		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
 		void resizeBy(int dx, int dy);
 

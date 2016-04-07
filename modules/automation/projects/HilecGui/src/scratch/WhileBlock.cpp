@@ -30,7 +30,7 @@ QRectF WhileBlock::boundingRect() const
 		m_width, m_height + 2 * s_connectorActivationRange);
 }
 
-void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon polygon;
 
@@ -107,6 +107,23 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 		<< QPoint(0, m_height);
 
 	painter->drawPolygon(polygon);
+}
+
+void WhileBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
+{
+	if (event->pos().y() > - s_connectorActivationRange
+			&& event->pos().y() < s_connectorActivationRange
+		|| event->pos().y() > m_height - s_connectorActivationRange
+			 && event->pos().y() < m_height + s_connectorActivationRange
+		|| event->pos().y() > m_headerHeight - s_connectorActivationRange
+			 && event->pos().y() < m_headerHeight + s_connectorActivationRange)
+	{
+		event->accept();
+
+		return;
+	}
+
+	event->ignore();
 }
 
 void WhileBlock::dropEvent(QGraphicsSceneDragDropEvent* event)

@@ -30,11 +30,8 @@ Widget::Widget(QWidget *parent)
 	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
 }
 
-void Widget::updateRcUnits(bool partial)
+void Widget::updateRcUnits(bool)
 {
-	// Unused arguments
-	static_cast<void>(partial);
-
 	const auto& hilec = *HilecSingleton::hilec();
 
 	for (const auto& name : hilec.rcUnits())

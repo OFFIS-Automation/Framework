@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
+#include <QApplication>
 #include <QMimeData>
 #include <QByteArray>
 #include <QDrag>
@@ -48,8 +49,12 @@ void Block::updateSuccessorPositions(int dx, int dy)
 		currentBlock->moveBy(dx, dy);
 }
 
-void Block::mousePressEvent(QGraphicsSceneMouseEvent* event)
+void Block::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
+	if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton)).length()
+			< QApplication::startDragDistance())
+		return;
+
 	QMimeData* mimeData = new QMimeData;
 
 	Block* item = this;

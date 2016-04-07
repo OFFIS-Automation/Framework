@@ -3,10 +3,8 @@
 namespace Scratch
 {
 
-std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& other)
+std::ostream& operator<<(std::ostream& stream, const Scratch::Condition&)
 {
-	static_cast<void>(other);
-
 	stream << "True"; // TODO
 
 	return stream;

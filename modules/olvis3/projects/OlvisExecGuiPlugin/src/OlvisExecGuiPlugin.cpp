@@ -267,19 +267,22 @@ void OlvisExecGuiPlugin::closeProject()
 {
     mTimer.stop();
     mInterface->stop();
-    QProgressDialog dlg("Waiting for vision system to stop", "Continue", 0, 0);
+    QProgressDialog dlg(tr("Waiting for vision system to stop"), tr("Continue"), 0, 0);
     connect(mInterface,SIGNAL(executionFinished()), &dlg, SLOT(close()));
     while(!mInterface->waitForStop(1000))
     {
         dlg.exec();
     }
+
     if(graphFile.isEmpty())
         return;
+
     if(mInterface->testUpdateFlag())
     {
-        if(QMessageBox::question(0, tr("Save vision configuration?"), tr("Do you want to save the vision configuration?"),
-                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
-            save();
+        if(QMessageBox::question(0, tr("Save vision configuration?"),
+                                 tr("Do you want to save the vision configuration?"),
+                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes);
+        save();
     }
     graphFile = QString();
     QFile(autoSaveFile).remove();

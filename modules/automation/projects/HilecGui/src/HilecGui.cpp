@@ -138,7 +138,7 @@ void HilecGui::loadProject(const QString &projectFile)
 void HilecGui::closeProject()
 {
     hilec->quit();
-    QProgressDialog dlg("Waiting for automation script to close", "Continue", 0, 0);
+    QProgressDialog dlg(tr("Waiting for automation script to stop"), tr("Continue"), 0, 0);
     connect(hilec,SIGNAL(scriptExecutionFinished()), &dlg, SLOT(close()));
     while(!hilec->waitForStop(1000))
     {

@@ -22,27 +22,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="ScratchProgramTreeWidget" name="scratchProgramTreeWidget">
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <attribute name="headerVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string notr="true">Method</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>RC-Unit</string>
-          </property>
-         </column>
-        </widget>
+        <widget class="QGraphicsView" name="programView"/>
        </item>
       </layout>
      </widget>
@@ -56,31 +36,10 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QTreeWidget" name="treeWidget_2">
-           <property name="showDropIndicator" stdset="0">
+          <widget class="QGraphicsView" name="controlView">
+           <property name="acceptDrops">
             <bool>false</bool>
            </property>
-           <property name="dragEnabled">
-            <bool>true</bool>
-           </property>
-           <property name="dragDropMode">
-            <enum>QAbstractItemView::DragOnly</enum>
-           </property>
-           <column>
-            <property name="text">
-             <string>Method</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Parameter</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Description</string>
-            </property>
-           </column>
           </widget>
          </item>
         </layout>
@@ -126,31 +85,11 @@
         </layout>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>331</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </item>
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>ScratchProgramTreeWidget</class>
-   <extends>QTreeWidget</extends>
-   <header>src/scratch/ScratchProgramTreeWidget.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

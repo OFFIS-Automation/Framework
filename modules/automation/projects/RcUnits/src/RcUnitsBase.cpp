@@ -44,7 +44,7 @@ RcUnitsBase::~RcUnitsBase()
     qDeleteAll(mUnits);
 }
 
-RcUnitHelp RcUnitsBase::getHelp(const QString &unitName)
+RcUnitHelp RcUnitsBase::getHelp(const QString &unitName) const
 {
     if(!mUnits.contains(unitName))
         return RcUnitHelp();

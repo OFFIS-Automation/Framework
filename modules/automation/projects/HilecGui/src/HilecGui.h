@@ -23,6 +23,7 @@
 #include "HilecSingleton.h"
 #include "scriptInteraction/ScriptUi.h"
 #include "scriptInteraction/ScriptOutput.h"
+#include "scratch/Widget.h"
 #include "exception/ScriptExceptionDialog.h"
 #include "HilecGuiToolbar.h"
 #include "rcUnits/RcUnitWidget.h"
@@ -70,6 +71,7 @@ protected:
     ScriptUi* scriptUi;
     QDockWidget* scriptOutput;
     ScriptExceptionDialog* scriptException;
+	Scratch::Widget* scratch;
     RcUnitWidget* rcUnits;
     HilecHelpWidget* help;
     DebugVariables* debugVars;

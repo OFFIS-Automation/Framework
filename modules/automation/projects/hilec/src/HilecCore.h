@@ -38,12 +38,12 @@ public:
     virtual bool waitForStop(uint timeout = ULONG_MAX);
     QList<QPair<QString, int> > breakpoints() const;
     QList<int> breakpoints(const QString& filename) const;
-    RcUnitHelp getUnitHelp(const QString& unitName);
+	RcUnitHelp getUnitHelp(const QString& unitName) const;
     QStringList getTelecontrolableUnits();
     QMap<QString, Gamepad *> getGamepadDevices();
     QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
-    virtual QStringList rcUnits();
+	virtual QStringList rcUnits() const;
 
     virtual QWidget* createRcUnitSettingsWidget(const QString& unitName);
     virtual QWidget* createRcUnitControlWidget(const QString& unitName);

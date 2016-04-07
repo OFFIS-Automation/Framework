@@ -74,8 +74,13 @@ HEADERS += \
     src/telecontrol/TelecontrolSelectionComboBox.h \
     src/telecontrol/ConnexionAssignmentWidget.h \
     src/rcUnits/RcFlagWidgetSettingsDialog.h \
-    src/scratch/ScratchWidget.h \
-    src/scratch/ScratchProgramTreeWidget.h
+    src/scratch/ProgramScene.h \
+    src/scratch/Widget.h \
+    src/scratch/Block.h \
+    src/scratch/Condition.h \
+    src/scratch/ControlFlowBlock.h \
+    src/scratch/IfElseBlock.h \
+    src/scratch/WhileBlock.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -114,9 +119,12 @@ SOURCES += \
     src/telecontrol/TelecontrolSelectionComboBox.cpp \
     src/telecontrol/ConnexionAssignmentWidget.cpp \
     src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
-    src/scratch/ScratchWidget.cpp \
-    src/scratch/ScratchProgramTreeWidget.cpp
-
+    src/scratch/ProgramScene.cpp \
+    src/scratch/Widget.cpp \
+    src/scratch/Condition.cpp \
+    src/scratch/WhileBlock.cpp \
+    src/scratch/IfElseBlock.cpp \
+    src/scratch/Block.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

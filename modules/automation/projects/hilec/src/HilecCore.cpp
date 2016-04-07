@@ -73,7 +73,7 @@ void HilecCore::compileFile(const QString &filename)
     mLint.compile(filename);
 }
 
-RcUnitHelp HilecCore::getUnitHelp(const QString &unitName)
+RcUnitHelp HilecCore::getUnitHelp(const QString &unitName) const
 {
     return RcUnits::instance()->getHelp(unitName);
 }
@@ -98,7 +98,7 @@ TelecontrolConfig HilecCore::getTelecontrolConfig(const QString &name)
     return RcUnits::instance()->getTelecontrolConfig(name);
 }
 
-QStringList HilecCore::rcUnits()
+QStringList HilecCore::rcUnits() const
 {
     return RcUnits::instance()->unitNames();
 }

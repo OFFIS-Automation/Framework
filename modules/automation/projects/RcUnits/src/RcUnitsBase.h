@@ -38,10 +38,10 @@ public:
     explicit RcUnitsBase(const QString& rcUnitPluginDir);
     virtual ~RcUnitsBase();
 
-    RcUnitHelp getHelp(const QString &unitName);
+	RcUnitHelp getHelp(const QString &unitName) const;
     QMap<QString, HapticDevice *> getHapticDevices();
     TelecontrolConfig getTelecontrolConfig(const QString& name);
-    QList<QString> unitNames() { return mUnits.keys(); }
+	QList<QString> unitNames() const { return mUnits.keys(); }
     QList<QString> telecontrolableUnitNames();
 
     QWidget* rcUnitSettingsWidget(const QString &unitName);

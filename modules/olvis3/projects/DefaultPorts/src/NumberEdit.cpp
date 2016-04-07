@@ -16,12 +16,13 @@
 
 #include "NumberEdit.h"
 
-NumberEdit::NumberEdit(QWidget *parent) :
-    AbstractPortEditWidget(parent)
+NumberEdit::NumberEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
-    spinBox = new QSpinBox(this);
-    spinBox->setObjectName("spinBox");
-    ui->layout->insertWidget(0,spinBox);
+    mSpinBox = new QSpinBox(this);
+    mSpinBox->setObjectName("spinBox");
+    ui->layout->insertWidget(0, mSpinBox);
+
+    QMetaObject::connectSlotsByName(this);
 }
 
 NumberEdit::~NumberEdit()
@@ -32,11 +33,11 @@ void NumberEdit::onStartEdit()
 {
     int min = mInfo.constraints.value("min", QVariant(INT_MAX)).toInt();
     int max = mInfo.constraints.value("max", QVariant(INT_MAX)).toInt();
-    spinBox->setRange(min, max);
-    spinBox->setValue(mValue.toInt());
+    mSpinBox->setRange(min, max);
+    mSpinBox->setValue(mValue.toInt());
+
     int stepping = mInfo.constraints.value("div", QVariant(1)).toInt();
-    spinBox->setSingleStep(qMax(1, stepping));
-    spinBox->setFocus();
+    mSpinBox->setSingleStep(qMax(1, stepping));
 }
 
 QString NumberEdit::asString()
@@ -44,13 +45,14 @@ QString NumberEdit::asString()
     return QString::number(mValue.toInt());
 }
 
-void NumberEdit::on_spinBox_editingFinished()
-{
-    if(spinBox->hasFocus()) // enter was pressed
-        submit();
-}
-
 QVariant NumberEdit::editValue(bool&)
 {
-    return spinBox->value();
+    return mSpinBox->value();
+}
+
+void NumberEdit::on_spinBox_editingFinished()
+{
+    if(mSpinBox->hasFocus()){ // enter was pressed
+        submit();
+    }
 }

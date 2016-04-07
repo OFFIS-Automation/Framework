@@ -36,8 +36,8 @@ signals:
     void newPortValue(int filterId, const QString& portName, const QVariant& value);
 
 protected:
-    void editFinished(const QVariant &var);
-    void editCanceled();
+    void editFinished(const QVariant &var, const PortInfo &info);
+    void editCanceled(const PortInfo &info);
 
     virtual void mouseDoubleClickEvent(QMouseEvent*);
     PortEditInterface* mEdit;

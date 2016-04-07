@@ -205,7 +205,6 @@ void TelecontrolWidget::on_tabWidget_currentChanged(int index)
             }
         }
 
-
         // Activate the new unit, if not "disabled tab"
         TelecontrolConfig help = HilecSingleton::hilec()->getTelecontrolConfig(unitName);
         // Check if the tcDevice is a gamepad

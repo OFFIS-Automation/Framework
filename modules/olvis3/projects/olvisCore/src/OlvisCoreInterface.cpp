@@ -164,8 +164,6 @@ int OlvisCoreInterface::getFilterPosition(int filterId) const
     if(!proc)
         return -1;
     return proc->indexOf(filter);
-
-
 }
 
 PortInfo OlvisCoreInterface::getPortInfo(const PortId &portId) const
@@ -1539,9 +1537,7 @@ FilterGroup *OlvisCoreInterface::getGroup(int id) const
     if(!proc)
         proc = mMakroFilters.value(id, 0);
     return proc;
-
 }
-
 
 QString OlvisCoreInterface::currentConfig(const QString& targetFile) const
 {

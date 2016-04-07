@@ -15,13 +15,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "PythonPlugin.h"
+
 #include <QDebug>
 #include <QFileInfo>
 #include <QStringList>
+
 #include "HilecCore.h"
 #include "UserRequestManager.h"
 #include "RcUnitInvoker.h"
 #include "PythonTypeConverter.h"
+
 #include <core/ScriptException.h>
 
 extern "C"
@@ -133,23 +136,34 @@ extern "C"
         ScriptException err;
         QString baseDir = HilecCore::instance().baseDir();
         err.name = PythonTypeConverter::toString(name);
-        err.name.remove(baseDir);
         err.baseDir = baseDir;
+
         int size = PyList_Size(stack);
         for(int i=size-1; i>=0; i--)
         {
-
             PyObject* stackItem = PyList_GetItem(stack, i);
-            const char* file = "<unknown>";
-            const char* module = "<unknown>";
-            const char* method = "<unknown>";
-            long line = -1;
-            PyArg_ParseTuple(stackItem, "slss", &file, &line, &module, &method);
             ScriptException::Trace trace;
-            trace.file = file;
-            trace.line = line;
-            trace.module = module;
-            trace.method = method;
+
+            // As of python 3.5, the stack item is no longer a tuple
+            // We have to parse it as a FrameSummary Object
+            // https://docs.python.org/3/library/traceback.html#traceback.FrameSummary
+            // https://github.com/OFFIS-Automation/Framework/issues/32
+
+            PyObject* pFile = PyObject_GetAttrString(stackItem, "filename");
+            PyObject* pLineno = PyObject_GetAttrString(stackItem, "lineno");
+            PyObject* pName = PyObject_GetAttrString(stackItem, "name");
+
+            trace.file = PythonTypeConverter::toString(pFile);
+            trace.line = PythonTypeConverter::toVariant(pLineno).toInt();
+            trace.method = PythonTypeConverter::toString(pName);
+
+            if(PyObject_HasAttrString(stackItem, "locals")){
+                PyObject* pLocals = PyObject_GetAttrString(stackItem, "locals");
+                trace.module = PythonTypeConverter::toString(pLocals);
+            } else {
+                trace.module = "<unknown>";
+            }
+
             err.trace.append(trace);
         }
         HilecCore::instance().raiseException(err);
@@ -202,24 +216,24 @@ extern "C"
     }
 
     static PyMethodDef io_methods[] = {
-            {"log",apy_print, METH_VARARGS,""},
-            {"logErr",apy_printErr, METH_VARARGS,""},
-            {"userRequest",apy_userRequest, METH_VARARGS,""},
-            {"abortUserRequest",apy_abortUserRequest, METH_VARARGS,""},
-            {"createProgressBar",apy_createProgress, METH_VARARGS,""},
-            {"updateProgressBar",apy_updateProgress, METH_VARARGS,""},
-            {"removeProgressBar",apy_removeProgress, METH_VARARGS,""},
+            {"log", apy_print, METH_VARARGS, ""},
+            {"logErr", apy_printErr, METH_VARARGS, ""},
+            {"userRequest", apy_userRequest, METH_VARARGS, ""},
+            {"abortUserRequest", apy_abortUserRequest, METH_VARARGS, ""},
+            {"createProgressBar", apy_createProgress, METH_VARARGS, ""},
+            {"updateProgressBar", apy_updateProgress, METH_VARARGS, ""},
+            {"removeProgressBar", apy_removeProgress, METH_VARARGS, ""},
 
-            {"createInfoPanel",apy_createInfoPanel, METH_VARARGS,""},
-            {"updateInfoPanel",apy_updateInfoPanel, METH_VARARGS,""},
-            {"removeInfoPanel",apy_removeInfoPanel, METH_VARARGS,""},
-            {"clearInfo",apy_clearInfo, METH_VARARGS,""},
-            {"appendInfo",apy_appendInfo, METH_VARARGS,""},
-            {"exception",apy_exception, METH_VARARGS,""},
-            {"rcCall",apy_rcCall, METH_VARARGS,""},
-            {"rcGetConstants",apy_rcGetConstants, METH_VARARGS,""},
+            {"createInfoPanel", apy_createInfoPanel, METH_VARARGS, ""},
+            {"updateInfoPanel", apy_updateInfoPanel, METH_VARARGS, ""},
+            {"removeInfoPanel", apy_removeInfoPanel, METH_VARARGS, ""},
+            {"clearInfo", apy_clearInfo, METH_VARARGS, ""},
+            {"appendInfo", apy_appendInfo, METH_VARARGS, ""},
+            {"exception", apy_exception, METH_VARARGS, ""},
+            {"rcCall", apy_rcCall, METH_VARARGS, ""},
+            {"rcGetConstants", apy_rcGetConstants, METH_VARARGS, ""},
             {"startVideoCapture", apy_startVideoCapture, METH_VARARGS, ""},
-            {"endVideoCapture", apy_endVideoCapture, METH_VARARGS, ""},
+            {"endVideoCapture", apy_endVideoCapture, METH_VARARGS,  ""},
             {"saveScreenshot", apy_saveScreenshot, METH_VARARGS, ""},
             {NULL, NULL, 0, NULL}
     };

@@ -17,15 +17,25 @@
 #ifndef DOUBLEEDIT_H
 #define DOUBLEEDIT_H
 
-#include "StringEdit.h"
+#include "AbstractPortEditWidget.h"
 
+#include <QDoubleSpinBox>
 
-class DoubleEdit : public StringEdit
+class DoubleEdit : public AbstractPortEditWidget
 {
+    Q_OBJECT
 public:
     explicit DoubleEdit(QWidget *parent = 0);
+    virtual ~DoubleEdit();
+    virtual void onStartEdit();
     virtual QString asString();
     virtual QVariant editValue(bool& ok);
+
+private slots:
+    void on_spinBox_editingFinished();
+
+private:
+    QDoubleSpinBox* mSpinBox;
 };
 
 #endif // DOUBLEEDIT_H

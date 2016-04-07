@@ -46,9 +46,9 @@ void FileEdit::onStartEdit()
         filter = types.join(";;");
     }
     if(readMode)
-        file = QFileDialog::getOpenFileName(0, "select file to read from", current, filter);
+        file = QFileDialog::getOpenFileName(0, "Select file to read from", current, filter);
     else
-        file = QFileDialog::getSaveFileName(0, "select file to write to", current, filter);
+        file = QFileDialog::getSaveFileName(0, "Select file to write to", current, filter);
     if(file.isEmpty())
         editCanceled();
     else

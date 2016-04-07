@@ -57,14 +57,16 @@ void FilterInputPortWidget::mouseDoubleClickEvent(QMouseEvent *)
     mEdit->startEdit(*this);
 }
 
-void FilterInputPortWidget::editFinished(const QVariant &variant)
+void FilterInputPortWidget::editFinished(const QVariant &variant,const PortInfo &info)
 {
-    editCanceled();
+    editCanceled(info);
     emit newPortValue(filterId(), portName(), variant);
 }
 
-void FilterInputPortWidget::editCanceled()
+void FilterInputPortWidget::editCanceled(const PortInfo &info)
 {
+    Q_UNUSED(info);
+
     if(!mEdit)
         return;
     QWidget* w = mEdit->editWidget();

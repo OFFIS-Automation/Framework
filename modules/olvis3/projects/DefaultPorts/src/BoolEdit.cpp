@@ -18,13 +18,17 @@
 
 BoolEdit::BoolEdit(QWidget *parent):  AbstractPortEditWidget(parent)
 {
-    yes = new QPushButton(tr("Yes"), this);
-    yes->setObjectName("yes");
-    no = new QPushButton(tr("No"), this);
-    no->setObjectName("no");
-    ui->layout->insertWidget(0, yes);
-    ui->layout->insertWidget(1, no);
-    ui->submit->setVisible(false); // no submit needed for this
+    mYesButton = new QPushButton(tr("Yes"), this);
+    mYesButton->setObjectName("yes");
+    mYesButton->setCheckable(true);
+
+    mNoButton = new QPushButton(tr("No"), this);
+    mNoButton->setObjectName("no");
+    mNoButton->setCheckable(true);
+
+    ui->layout->insertWidget(0, mYesButton);
+    ui->layout->insertWidget(1, mNoButton);
+
     QMetaObject::connectSlotsByName(this);
 }
 
@@ -39,23 +43,31 @@ BoolEdit::~BoolEdit()
 
 void BoolEdit::onStartEdit()
 {
-    if(mValue.isValid())
-    {
-        if(mValue.toBool())
-            yes->setFocus();
-        else
-            no->setFocus();
+    if(mValue.isValid()){
+        mYesButton->setChecked(mValue.toBool());
+        mNoButton->setChecked(!mValue.toBool());
     }
-    else
-        ui->cancel->setFocus();
 }
 
 void BoolEdit::on_yes_clicked()
 {
-    editFinished(true);
+    onButtonClicked(true);
 }
 
 void BoolEdit::on_no_clicked()
 {
-    editFinished(false);
+    onButtonClicked(false);
+}
+
+void BoolEdit::onButtonClicked(bool yesButton)
+{
+    // Update GUI
+    mYesButton->setChecked(yesButton);
+    mNoButton->setChecked(!yesButton);
+
+    // Update value, submit if necessary
+    mValue = yesButton;
+    if(mAutoSubmit){
+        editFinished(yesButton);
+    }
 }

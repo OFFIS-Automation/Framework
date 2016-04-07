@@ -45,12 +45,12 @@ signals:
     void newValue(const QString& portId, const QVariant& variant);
 
 private:
-    void editFinished(const QVariant& variant);
-    void editCanceled();
+    void editFinished(const QVariant& variant, const PortInfo &info);
+    void editCanceled(const PortInfo &info);
     bool mInEditMode, mConnected;
     PortEditInterface* mEdit;
     Ui::FilterInfoPortEditWidget *ui;
-    QString mPortId;
+    QString mPortName;
 };
 
 #endif // FILTERINFOPORTEDITWIDGET_H

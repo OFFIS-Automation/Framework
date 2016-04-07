@@ -30,6 +30,13 @@ AbstractPortEditWidget::~AbstractPortEditWidget()
     delete ui;
 }
 
+void AbstractPortEditWidget::setAutoSubmit(bool autoSubmit)
+{
+    mAutoSubmit = autoSubmit;
+    ui->submit->setHidden(mAutoSubmit);
+    ui->cancel->setHidden(mAutoSubmit);
+}
+
 void AbstractPortEditWidget::on_cancel_clicked()
 {
     editCanceled();
@@ -39,7 +46,6 @@ void AbstractPortEditWidget::on_submit_clicked()
 {
     submit();
 }
-
 
 void AbstractPortEditWidget::submit()
 {

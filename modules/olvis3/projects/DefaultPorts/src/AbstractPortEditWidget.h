@@ -28,6 +28,7 @@ class AbstractPortEditWidget : public QWidget, public virtual AbstractPortEdit
 public:
     AbstractPortEditWidget(QWidget* parent = 0);
     virtual ~AbstractPortEditWidget();
+    virtual void setAutoSubmit(bool autoSubmit);
     virtual QWidget* editWidget() { return this; }
     virtual QVariant editValue(bool&){ return QVariant(); }
 

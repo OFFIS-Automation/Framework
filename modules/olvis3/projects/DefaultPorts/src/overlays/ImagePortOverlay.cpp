@@ -61,7 +61,7 @@ void ImagePortOverlay::paintContent(QPainter& p)
                 mat = dm.toImage();
         }
         if (mat.size().width != 0 && mat.size().height != 0) {
-            QImage::Format format = QImage::Format_RGB32;
+            QImage::Format format = QImage::Format_ARGB32;
             if (mat.type() == CV_8UC1) {
                 cv::cvtColor(mat, mConverted, CV_GRAY2BGRA, 4);
             } else if (mat.type() == CV_8UC3) {
@@ -91,7 +91,6 @@ void ImagePortOverlay::paintContent(QPainter& p)
     mMutex.unlock();
 
     QRect rect = (mRect.isEmpty() ? QRect(0, 0, 640, 480) : mRect);
-
     mPen.setColor(Qt::black);
     p.setPen(mPen);
     if (mPixmap.isNull()){

@@ -339,7 +339,7 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
         return;
     }
 
-    QSettings settings(mConfigFile, QSettings::IniFormat);
+    QSettings settings(mConfigFilePath, QSettings::IniFormat);
     settings.beginGroup(QString("telecontrol/%1").arg(unitName));
     settings.setValue("telecontrolDeviceName", deviceName);
 
@@ -430,7 +430,7 @@ void RcUnitsBase::updateGamepadParameters(const QString &unitName, const QString
     }
     unitToUpdate->updateGamepadParameters(methodName, sensitivity, inverts);
 
-    QSettings settings(mConfigFile, QSettings::IniFormat);
+    QSettings settings(mConfigFilePath, QSettings::IniFormat);
     settings.beginGroup(QString("gamepad/%1/%2").arg(unitName, methodName));
     settings.setValue("sensitivity", sensitivity);
     QStringList invertList;
@@ -599,7 +599,7 @@ void RcUnitsBase::updateHapticParameters(const QString &unitName, const QString 
     }
     unitToUpdate->updateHapticParameters(methodName, sensitivity, forceScaling, inverts);
 
-    QSettings settings(mConfigFile, QSettings::IniFormat);
+    QSettings settings(mConfigFilePath, QSettings::IniFormat);
     settings.beginGroup(QString("haptic/%1/%2").arg(unitName, methodName));
     settings.setValue("sensitivity", sensitivity);
     settings.setValue("forceScaling", forceScaling);

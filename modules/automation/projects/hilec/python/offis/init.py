@@ -17,6 +17,7 @@
 import sys;
 import offisio;
 import traceback;
+
 class myOut:
 	def __init__(self, isErr = False):
 		self.isErr = isErr
@@ -35,7 +36,6 @@ def _excepthook(errorType, value, tb):
 	stack = traceback.extract_tb(tb)
 	name = ("".join(traceback.format_exception_only(errorType, value))).strip()
 	offisio.exception(name, stack);
-
 
 def _exit(code = 0):
 	raise SystemError("sys.exit called with code "+ str(code));

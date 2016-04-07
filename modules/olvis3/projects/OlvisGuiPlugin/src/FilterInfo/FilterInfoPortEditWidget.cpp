@@ -27,7 +27,7 @@ FilterInfoPortEditWidget::FilterInfoPortEditWidget(const PortInfo& info, const Q
     ui->setupUi(this);
     mEdit = PluginContainer::getInstance().portEditFor(info);
     mInEditMode = false;
-    mPortId = info.name;
+    mPortName = info.name;
     ui->clear->setVisible(info.mode == OptionalPortMode);
     if(mEdit)
     {
@@ -103,14 +103,16 @@ void FilterInfoPortEditWidget::mouseDoubleClickEvent(QMouseEvent *)
     }
 }
 
-void FilterInfoPortEditWidget::editFinished(const QVariant &variant)
+void FilterInfoPortEditWidget::editFinished(const QVariant &variant, const PortInfo &info)
 {
-    editCanceled();
-    emit newValue(mPortId, variant);
+    editCanceled(info);
+    emit newValue(mPortName, variant);
 }
 
-void FilterInfoPortEditWidget::editCanceled()
+void FilterInfoPortEditWidget::editCanceled(const PortInfo &info)
 {
+    Q_UNUSED(info);
+
     if(!mInEditMode)
         return;
     mInEditMode = false;
@@ -122,5 +124,5 @@ void FilterInfoPortEditWidget::editCanceled()
 
 void FilterInfoPortEditWidget::on_clear_clicked()
 {
-    emit newValue(mPortId, QVariant());
+    emit newValue(mPortName, QVariant());
 }

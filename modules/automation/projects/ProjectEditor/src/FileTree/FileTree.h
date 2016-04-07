@@ -49,11 +49,10 @@ public slots:
 private slots:
     void on_treeView_doubleClicked(const QModelIndex &index);
     void on_treeView_customContextMenuRequested(const QPoint &pos);
-    void onFileRenamed(const QString & path, const QString &oldName, const QString &newName);
+    void on_model_fileRenamed(const QString & path, const QString &oldName, const QString &newName);
     void on_newFile_triggered();
     void on_deleteFile_triggered();
     void on_renameFile_triggered();
-
     void on_openExplorer_triggered();
 
 private:

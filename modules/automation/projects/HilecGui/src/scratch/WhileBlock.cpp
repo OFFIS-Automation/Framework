@@ -9,11 +9,15 @@
 
 #include <QMimeData>
 #include <QByteArray>
+#include <QCursor>
 
 #include "WhileBlock.h"
 
 namespace Scratch
 {
+
+const int WhileBlock::s_defaultWidth = 100;
+const int WhileBlock::s_defaultHeight = 100;
 
 WhileBlock::WhileBlock()
 {
@@ -111,37 +115,87 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 
 void WhileBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
+	auto byteArray = event->mimeData()->data("Block");
+	auto& block = **reinterpret_cast<Block**>(byteArray.data());
+
+	event->accept();
+
+	// Ignore self and ancestors
+	for (QGraphicsItem* ancestor = this; ancestor; ancestor = ancestor->parentItem())
+		if (ancestor == &block)
+		{
+			event->setDropAction(Qt::IgnoreAction);
+
+			return;
+		}
+
+	auto handleBlock = [&](auto& item)
+		{
+			if (item.scene() != this->scene())
+				event->setDropAction(Qt::CopyAction);
+			else
+				event->setDropAction(Qt::MoveAction);
+		};
+
 	if (event->pos().y() > - s_connectorActivationRange
-			&& event->pos().y() < s_connectorActivationRange
-		|| event->pos().y() > m_height - s_connectorActivationRange
-			 && event->pos().y() < m_height + s_connectorActivationRange
-		|| event->pos().y() > m_headerHeight - s_connectorActivationRange
-			 && event->pos().y() < m_headerHeight + s_connectorActivationRange)
-	{
-		event->accept();
-
-		return;
-	}
-
-	event->ignore();
+				&& event->pos().y() < s_connectorActivationRange
+			|| event->pos().y() > m_height - s_connectorActivationRange
+				 && event->pos().y() < m_height + s_connectorActivationRange
+			|| event->pos().y() > m_headerHeight - s_connectorActivationRange
+				 && event->pos().y() < m_headerHeight + s_connectorActivationRange)
+		handleBlock(block);
+	else
+		event->setDropAction(Qt::IgnoreAction);
 }
 
 void WhileBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
+	auto oldHeight = m_height;
+	auto oldHeaderHeight = m_headerHeight;
+
 	auto byteArray = event->mimeData()->data("Block");
-	auto& item = **reinterpret_cast<Block**>(byteArray.data());
+	auto& block = **reinterpret_cast<Block**>(byteArray.data());
 
-	auto &clone = item.clone();
+	event->accept();
 
+	// Ignore self and ancestors
+	for (QGraphicsItem* ancestor = this; ancestor; ancestor = ancestor->parentItem())
+		if (ancestor == &block)
+		{
+			event->setDropAction(Qt::IgnoreAction);
+
+			return;
+		}
+
+	auto handleBlock = [&](auto& item) -> auto&
+		{
+			if (item.scene() != this->scene())
+			{
+				event->setDropAction(Qt::CopyAction);
+
+				return item.clone();
+			}
+			else
+			{
+				event->setDropAction(Qt::MoveAction);
+				item.remove();
+
+				return item;
+			}
+		};
+
+	// Destination
 	if (event->pos().y() > - s_connectorActivationRange
 			&& event->pos().y() < s_connectorActivationRange)
-		addAbove(clone);
-	else if (event->pos().y() > m_height - s_connectorActivationRange
-			 && event->pos().y() < m_height + s_connectorActivationRange)
-		addBelow(clone);
-	else if (event->pos().y() > m_headerHeight - s_connectorActivationRange
-			 && event->pos().y() < m_headerHeight + s_connectorActivationRange)
-		addBody(clone);
+		addAbove(handleBlock(block));
+	else if (event->pos().y() > oldHeight - s_connectorActivationRange
+			 && event->pos().y() < oldHeight + s_connectorActivationRange)
+		addBelow(handleBlock(block));
+	else if (event->pos().y() > oldHeaderHeight - s_connectorActivationRange
+			 && event->pos().y() < oldHeaderHeight + s_connectorActivationRange)
+		addBody(handleBlock(block));
+	else
+		event->setDropAction(Qt::IgnoreAction);
 }
 
 Block& WhileBlock::clone()

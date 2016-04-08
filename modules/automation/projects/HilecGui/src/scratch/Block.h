@@ -13,6 +13,9 @@ namespace Scratch
 class Block : public QGraphicsItem
 {
 	public:
+		static const int s_defaultWidth;
+		static const int s_defaultHeight;
+
 		static const int s_connectorMargin = 10;
 		static const int s_connectorHeight = 5;
 		static const int s_connectorWidth = 20;
@@ -27,6 +30,7 @@ class Block : public QGraphicsItem
 		void setSuccessor(Block* successor);
 		void setParent(Block* parent);
 
+		void remove();
 		void updateSuccessorPositions(int dx, int dy);
 
 		int m_width;

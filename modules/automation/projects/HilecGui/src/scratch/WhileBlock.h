@@ -9,9 +9,6 @@ namespace Scratch
 class WhileBlock : public ControlFlowBlock
 {
 	private:
-		static const int s_defaultWidth = 100;
-		static const int s_defaultHeight = 100;
-
 		int m_headerHeight = s_shaftHeight;
 
 	public:
@@ -20,11 +17,12 @@ class WhileBlock : public ControlFlowBlock
 		QRectF boundingRect() const;
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
-
 		Block& clone();
 		void print(std::ostream& stream, unsigned indentationDepth);
+
+	protected:
+		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		void dropEvent(QGraphicsSceneDragDropEvent* event);
 
 	private:
 		void addBody(Block& block);

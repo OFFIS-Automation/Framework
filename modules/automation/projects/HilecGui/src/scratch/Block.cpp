@@ -34,13 +34,21 @@ void Block::setParent(Block* parent)
 
 void Block::resizeBy(int dx, int dy)
 {
-	m_width += dx;
-	m_height += dy;
+	const auto actualDx = std::max(m_width + dx, s_defaultWidth) - m_width;
+	const auto actualDy = std::max(m_height + dy, s_defaultHeight)- m_height;
 
-	updateSuccessorPositions(dx, dy);
+	if (!actualDx && !actualDy)
+		return;
+
+	m_width += actualDx;
+	m_height += actualDy;
+
+	update(boundingRect());
+
+	updateSuccessorPositions(actualDx, actualDy);
 
 	if (m_parent)
-		m_parent->resizeBy(dx, dy);
+		m_parent->resizeBy(actualDx, actualDy);
 }
 
 void Block::updateSuccessorPositions(int dx, int dy)
@@ -63,15 +71,13 @@ void Block::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 	QDrag* drag = new QDrag(event->widget());
 	drag->setMimeData(mimeData);
-	drag->exec(Qt::CopyAction, Qt::CopyAction);
+	drag->exec(Qt::CopyAction | Qt::MoveAction);
 }
 
 void Block::addBlock(Block& block)
 {
 	block.setParent(m_parent);
-
 	block.setPos(pos());
-	updateSuccessorPositions(0, block.m_height);
 
 	if (m_parent)
 		m_parent->resizeBy(0, block.m_height);
@@ -86,9 +92,11 @@ void Block::addAbove(Block& block)
 	block.setPredecessorsReference(m_predecessorsReference);
 	block.setSuccessor(this);
 
+	m_predecessorsReference = &block.m_successor;
+
 	addBlock(block);
 
-	moveBy(0, block.m_height);
+	block.updateSuccessorPositions(0, block.m_height);
 }
 
 void Block::addBelow(Block& block)
@@ -99,6 +107,25 @@ void Block::addBelow(Block& block)
 	m_successor = &block;
 
 	addBlock(block);
+
+	updateSuccessorPositions(0, m_height);
+}
+
+void Block::remove()
+{
+	scene()->removeItem(this);
+
+	updateSuccessorPositions(0, -m_height);
+
+	if (m_parent)
+		m_parent->resizeBy(0, -m_height);
+
+	if (m_successor)
+		m_successor->setPredecessorsReference(m_predecessorsReference);
+
+	*m_predecessorsReference = m_successor;
+
+	setParent(nullptr);
 }
 
 } // namespace Scratch

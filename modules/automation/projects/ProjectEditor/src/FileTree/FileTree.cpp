@@ -32,15 +32,24 @@ FileTree::FileTree(QWidget *parent) :
     ui(new Ui::FileTree)
 {
     ui->setupUi(this);
+
     mModel.setReadOnly(false);
+    mModel.setRootPath(QDir::rootPath());
+
     mFilteredModel.setDynamicSortFilter(true);
+    mFilteredModel.setSourceModel(&mModel);
+
+    ui->treeView->setModel(&mFilteredModel);
+    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(QDir::rootPath())));
+
     ui->treeView->setAnimated(false);
+    ui->treeView->hideColumn(2);
     ui->treeView->setIndentation(20);
     ui->treeView->setSortingEnabled(false);
-    ui->treeView->setWindowTitle(QObject::tr("Directory View"));
     ui->treeView->show();
-    // Connect to Model to get notified when a File is renamed
-    connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(onFileRenamed(QString,QString,QString)));
+
+    // Signal / Slots
+    connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(on_model_fileRenamed(QString,QString,QString)));
 }
 
 FileTree::~FileTree()
@@ -51,18 +60,12 @@ FileTree::~FileTree()
 void FileTree::updateTree(QString directoryName)
 {
     mBaseDir = directoryName;
-    mModel.setRootPath(directoryName);
-    mFilteredModel.setSourceModel(&mModel);
-    ui->treeView->setModel(&mFilteredModel);
-    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(directoryName)));
-    ui->treeView->hideColumn(1);
-    ui->treeView->hideColumn(2);
-    ui->treeView->hideColumn(3);
+    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
 }
 
 void FileTree::clear()
 {
-    ui->treeView->setModel(0);
+    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(QDir::rootPath())));
 }
 
 void FileTree::on_treeView_doubleClicked(const QModelIndex &index)
@@ -95,7 +98,7 @@ void FileTree::on_treeView_customContextMenuRequested(const QPoint &pos)
     menu.exec(mapToGlobal(pos));
 }
 
-void FileTree::onFileRenamed(const QString &path, const QString &oldName, const QString &newName)
+void FileTree::on_model_fileRenamed(const QString &path, const QString &oldName, const QString &newName)
 {
     QString newFullPath = QString("%1/%2").arg(path).arg(newName);
     QString oldFullPath = QString("%1/%2").arg(path).arg(oldName);

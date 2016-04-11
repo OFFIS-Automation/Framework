@@ -43,7 +43,6 @@ signals:
     void closeFileRequested(QString filename);
 
 public slots:
-    void clear();
     void updateTree(QString directoryName);
 
 private slots:

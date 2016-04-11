@@ -27,20 +27,22 @@
 #include <QInputDialog>
 #include <QProcess>
 
+
 FileTree::FileTree(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::FileTree)
 {
     ui->setupUi(this);
 
+    mBaseDir = QDir::rootPath();
     mModel.setReadOnly(false);
-    mModel.setRootPath(QDir::rootPath());
+    mModel.setRootPath(mBaseDir);
 
     mFilteredModel.setDynamicSortFilter(true);
     mFilteredModel.setSourceModel(&mModel);
 
     ui->treeView->setModel(&mFilteredModel);
-    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(QDir::rootPath())));
+    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
 
     ui->treeView->setAnimated(false);
     ui->treeView->hideColumn(2);
@@ -61,11 +63,6 @@ void FileTree::updateTree(QString directoryName)
 {
     mBaseDir = directoryName;
     ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
-}
-
-void FileTree::clear()
-{
-    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(QDir::rootPath())));
 }
 
 void FileTree::on_treeView_doubleClicked(const QModelIndex &index)

@@ -5,7 +5,6 @@
 
 #include <QDockWidget>
 
-#include "ProgramScene.h"
 #include "ControlScene.h"
 
 // Forward declarations
@@ -31,7 +30,7 @@ class Widget : public QDockWidget
 	private:
 		std::unique_ptr<Ui::ScratchWidget> m_ui;
 
-		std::unique_ptr<ProgramScene> m_programScene;
+		std::unique_ptr<QGraphicsScene> m_programScene;
 		std::unique_ptr<ControlScene> m_controlScene;
 
 };

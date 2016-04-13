@@ -4,6 +4,8 @@
 #include "../HilecSingleton.h"
 #include <core/RcUnitHelp.h>
 
+#include "FrameBlocks.h"
+
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
 
@@ -16,18 +18,25 @@ namespace Scratch
 Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchWidget>()),
-	m_programScene(std::make_unique<ProgramScene>(this)),
+	m_programScene(std::make_unique<QGraphicsScene>(this)),
 	m_controlScene(std::make_unique<ControlScene>(this))
 {
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
 	m_ui->controlView->setScene(m_controlScene.get());
 
-	// Add while block to control scene
+	// Program scene
+	auto startBlock = new StartBlock();
+	m_programScene->addItem(startBlock);
+
+	auto endBlock = new EndBlock();
+	startBlock->addBelow(*endBlock);
+	m_programScene->addItem(startBlock);
+
+	// Control scene
 	auto whileBlock = new WhileBlock();
 	m_controlScene->addItem(whileBlock);
 
-	// Add if-else block to control scene
 	auto ifElseBlock = new IfElseBlock();
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
 	m_controlScene->addItem(ifElseBlock);

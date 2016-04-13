@@ -94,7 +94,8 @@ void IfElseBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	if (!inConnectorActivationRange(position, 0)
 			&& !inConnectorActivationRange(position, m_height)
 			&& !inConnectorActivationRange(position, m_headerHeight)
-			&& !inConnectorActivationRange(position, m_headerHeight + m_trueBodyHeight + s_shaftHeight))
+			&& !inConnectorActivationRange(position,
+				m_headerHeight + m_trueBodyHeight + s_shaftHeight))
 		return;
 
 	if (block.scene() != this->scene())

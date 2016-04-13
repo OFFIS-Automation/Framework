@@ -12,7 +12,6 @@
 #include <QGraphicsSceneDragDropEvent>
 
 #include "Block.h"
-#include "ProgramScene.h"
 
 namespace Scratch
 {
@@ -40,8 +39,9 @@ Block::Block(const int defaultWidth, const int defaultHeight)
 QRectF Block::boundingRect() const
 {
 	return QRectF(
-		0, -s_connectorActivationRange,
-		m_width, m_height + 2 * s_connectorActivationRange);
+			0, -s_connectorActivationRange,
+			m_width, m_height + 2 * s_connectorActivationRange)
+		| childrenBoundingRect();
 }
 
 void Block::setPredecessorsReference(Block** reference)
@@ -63,17 +63,15 @@ void Block::setParent(Block* parent)
 
 void Block::addConnector(QPolygon& polygon, int x, int y, bool reverse) const
 {
-	const auto connectorWidthOffset = (s_connectorWidth - s_connectorMidsegmentWidth) / 2;
-
 	std::array<QPoint, 4> points{{
 		QPoint(
 			x + s_connectorMargin,
 			y),
 		QPoint(
-			x + s_connectorMargin + connectorWidthOffset,
+			x + s_connectorMargin + s_connectorMidsegmentOffset,
 			y + s_connectorHeight),
 		QPoint(
-			x + s_connectorMargin + s_connectorWidth - connectorWidthOffset,
+			x + s_connectorMargin + s_connectorWidth - s_connectorMidsegmentOffset,
 			y + s_connectorHeight),
 		QPoint(
 			x + s_connectorMargin + s_connectorWidth,
@@ -173,7 +171,8 @@ void Block::addBelow(Block& block)
 
 	addBlock(block);
 
-	updateSuccessorPositions(0, m_height);
+	block.moveBy(0, m_height);
+	block.updateSuccessorPositions(0, block.m_height);
 }
 
 void Block::remove()

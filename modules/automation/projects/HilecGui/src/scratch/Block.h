@@ -16,7 +16,7 @@ class Block : public QGraphicsItem
 		static const int s_connectorMargin = 10;
 		static const int s_connectorHeight = 5;
 		static const int s_connectorWidth = 20;
-		static const int s_connectorMidsegmentWidth = 10;
+		static const int s_connectorMidsegmentOffset = 5;
 
 		static const int s_connectorActivationRange = 10;
 
@@ -33,6 +33,9 @@ class Block : public QGraphicsItem
 		void setPredecessorsReference(Block** reference);
 		void setSuccessor(Block* successor);
 		void setParent(Block* parent);
+
+		void addAbove(Block& block);
+		void addBelow(Block& block);
 
 		void remove();
 		void updateSuccessorPositions(int dx, int dy) const;
@@ -53,8 +56,6 @@ class Block : public QGraphicsItem
 		virtual void resizeBy(int dx, int dy, const QPointF&);
 
 		void addBlock(Block& block);
-		void addAbove(Block& block);
-		void addBelow(Block& block);
 
 		bool isSelfOrAncestor(Block &block);
 

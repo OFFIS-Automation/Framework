@@ -80,7 +80,8 @@ HEADERS += \
     src/scratch/Condition.h \
     src/scratch/ControlFlowBlock.h \
     src/scratch/IfElseBlock.h \
-    src/scratch/WhileBlock.h
+    src/scratch/WhileBlock.h \
+    src/scratch/ControlScene.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -124,7 +125,9 @@ SOURCES += \
     src/scratch/Condition.cpp \
     src/scratch/WhileBlock.cpp \
     src/scratch/IfElseBlock.cpp \
-    src/scratch/Block.cpp
+    src/scratch/Block.cpp \
+    src/scratch/ControlFlowBlock.cpp \
+    src/scratch/ControlScene.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

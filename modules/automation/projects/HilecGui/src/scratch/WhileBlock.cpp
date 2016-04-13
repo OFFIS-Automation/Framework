@@ -1,209 +1,129 @@
 #include <stdexcept>
 #include <ostream>
-#include <array>
-#include <iostream>
 
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
-
-#include <QMimeData>
-#include <QByteArray>
-#include <QCursor>
 
 #include "WhileBlock.h"
 
 namespace Scratch
 {
 
-const int WhileBlock::s_defaultWidth = 100;
-const int WhileBlock::s_defaultHeight = 100;
-
 WhileBlock::WhileBlock()
+	: ControlFlowBlock(100, 100)
 {
-	m_width = s_defaultWidth;
-	m_height = s_defaultHeight;
 
 	setAcceptDrops(true);
 }
 
-QRectF WhileBlock::boundingRect() const
+int WhileBlock::defaultBodyHeight() const
 {
-	return QRectF(
-		0, -s_connectorActivationRange,
-		m_width, m_height + 2 * s_connectorActivationRange);
+	return m_defaultHeight - 2 * s_defaultHeaderHeight;
 }
 
 void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon polygon;
 
-	const auto connectorWidthOffset = (s_connectorWidth - s_connectorMidsegmentWidth) / 2;
+	polygon << QPoint(0, 0);
+
+	addConnector(polygon,
+		0,
+		0);
 
 	polygon
-		<< QPoint(0, 0)
-
-		// Upper conector
-		<< QPoint(
-			s_connectorMargin,
-			0)
-		<< QPoint(
-			s_connectorMargin + connectorWidthOffset,
-			s_connectorHeight)
-		<< QPoint(
-			s_connectorMargin + s_connectorWidth - connectorWidthOffset,
-			s_connectorHeight)
-		<< QPoint(
-			s_connectorMargin + s_connectorWidth,
-			0)
-
 		<< QPoint(m_width, 0)
-		<< QPoint(m_width, m_headerHeight)
+		<< QPoint(m_width, m_headerHeight);
 
-		// Upper body conector
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + s_connectorWidth,
-			m_headerHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + s_connectorWidth - connectorWidthOffset,
-			m_headerHeight + s_connectorHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + connectorWidthOffset,
-			m_headerHeight + s_connectorHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin,
-			m_headerHeight)
+	addConnector(polygon,
+		s_shaftHeight,
+		m_headerHeight,
+		true);
 
+	polygon
 		<< QPoint(s_shaftHeight, m_headerHeight)
-		<< QPoint(s_shaftHeight, m_height - s_shaftHeight)
+		<< QPoint(s_shaftHeight, m_height - s_defaultHeaderHeight);
 
-		// Lower body conector
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin,
-			m_height - s_shaftHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + connectorWidthOffset,
-			m_height - s_shaftHeight + s_connectorHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + s_connectorWidth - connectorWidthOffset,
-			m_height - s_shaftHeight + s_connectorHeight)
-		<< QPoint(
-			s_shaftHeight + s_connectorMargin + s_connectorWidth,
-			m_height - s_shaftHeight)
+	addConnector(polygon,
+		s_shaftHeight,
+		m_height - s_defaultHeaderHeight);
 
-		<< QPoint(m_width, m_height - s_shaftHeight)
-		<< QPoint(m_width, m_height)
+	polygon
+		<< QPoint(m_width, m_height - s_defaultHeaderHeight)
+		<< QPoint(m_width, m_height);
 
-		// Lower conector
-		<< QPoint(
-			s_connectorMargin + s_connectorWidth,
-			m_height)
-		<< QPoint(
-			s_connectorMargin + s_connectorWidth - connectorWidthOffset,
-			m_height + s_connectorHeight)
-		<< QPoint(
-			s_connectorMargin + connectorWidthOffset,
-			m_height + s_connectorHeight)
-		<< QPoint(
-			s_connectorMargin,
-			m_height)
+	addConnector(polygon,
+		0,
+		m_height,
+		true);
 
-		<< QPoint(0, m_height);
+	polygon	<< QPoint(0, m_height);
 
 	painter->drawPolygon(polygon);
 }
 
 void WhileBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
-	auto byteArray = event->mimeData()->data("Block");
-	auto& block = **reinterpret_cast<Block**>(byteArray.data());
+	const auto& position = event->pos();
+
+	auto& block = Block::unpackBlock(*event);
 
 	event->accept();
+	event->setDropAction(Qt::IgnoreAction);
 
-	// Ignore self and ancestors
-	for (QGraphicsItem* ancestor = this; ancestor; ancestor = ancestor->parentItem())
-		if (ancestor == &block)
-		{
-			event->setDropAction(Qt::IgnoreAction);
+	if (isSelfOrAncestor(block))
+		return;
 
-			return;
-		}
+	if (!inConnectorActivationRange(position, 0)
+			&& !inConnectorActivationRange(position, m_height)
+			&& !inConnectorActivationRange(position, m_headerHeight))
+		return;
 
-	auto handleBlock = [&](auto& item)
-		{
-			if (item.scene() != this->scene())
-				event->setDropAction(Qt::CopyAction);
-			else
-				event->setDropAction(Qt::MoveAction);
-		};
-
-	if (event->pos().y() > - s_connectorActivationRange
-				&& event->pos().y() < s_connectorActivationRange
-			|| event->pos().y() > m_height - s_connectorActivationRange
-				 && event->pos().y() < m_height + s_connectorActivationRange
-			|| event->pos().y() > m_headerHeight - s_connectorActivationRange
-				 && event->pos().y() < m_headerHeight + s_connectorActivationRange)
-		handleBlock(block);
+	if (block.scene() != this->scene())
+		event->setDropAction(Qt::CopyAction);
 	else
-		event->setDropAction(Qt::IgnoreAction);
+		event->setDropAction(Qt::MoveAction);
 }
 
 void WhileBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
+	const auto& position = event->pos();
+
 	auto oldHeight = m_height;
 	auto oldHeaderHeight = m_headerHeight;
 
-	auto byteArray = event->mimeData()->data("Block");
-	auto& block = **reinterpret_cast<Block**>(byteArray.data());
+	auto* block = &Block::unpackBlock(*event);
 
 	event->accept();
 
-	// Ignore self and ancestors
-	for (QGraphicsItem* ancestor = this; ancestor; ancestor = ancestor->parentItem())
-		if (ancestor == &block)
-		{
-			event->setDropAction(Qt::IgnoreAction);
+	if (block->scene() != this->scene())
+	{
+		event->setDropAction(Qt::CopyAction);
 
-			return;
-		}
-
-	auto handleBlock = [&](auto& item) -> auto&
-		{
-			if (item.scene() != this->scene())
-			{
-				event->setDropAction(Qt::CopyAction);
-
-				return item.clone();
-			}
-			else
-			{
-				event->setDropAction(Qt::MoveAction);
-				item.remove();
-
-				return item;
-			}
-		};
+		block = &block->clone();
+	}
+	else
+	{
+		event->setDropAction(Qt::MoveAction);
+		block->remove();
+	}
 
 	// Destination
-	if (event->pos().y() > - s_connectorActivationRange
-			&& event->pos().y() < s_connectorActivationRange)
-		addAbove(handleBlock(block));
-	else if (event->pos().y() > oldHeight - s_connectorActivationRange
-			 && event->pos().y() < oldHeight + s_connectorActivationRange)
-		addBelow(handleBlock(block));
-	else if (event->pos().y() > oldHeaderHeight - s_connectorActivationRange
-			 && event->pos().y() < oldHeaderHeight + s_connectorActivationRange)
-		addBody(handleBlock(block));
-	else
-		event->setDropAction(Qt::IgnoreAction);
+	if (inConnectorActivationRange(position, 0))
+		addAbove(*block);
+	else if (inConnectorActivationRange(position, oldHeight))
+		addBelow(*block);
+	else if (inConnectorActivationRange(position, oldHeaderHeight))
+		addBody(*block, m_body, QPoint(s_shaftHeight, m_headerHeight));
 }
 
-Block& WhileBlock::clone()
+Block& WhileBlock::clone() const
 {
 	return *(new WhileBlock());
 }
 
-void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0)
+void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 {
 	if (!m_condition)
 		throw std::invalid_argument("Not all conditions are defined.");
@@ -222,23 +142,6 @@ void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0)
 	// next
 	if (m_successor)
 		m_successor->print(stream, indentationDepth);
-}
-
-void WhileBlock::addBody(Block& block)
-{
-	const auto& dHeight = block.m_height
-		- !m_body * (s_defaultHeight - m_headerHeight - s_shaftHeight);
-
-	block.setPredecessorsReference(&m_body);
-	block.setSuccessor(m_body);
-	block.setParent(this);
-
-	m_body = &block;
-
-	block.setPos(s_shaftHeight, m_headerHeight);
-	resizeBy(0, dHeight);
-
-	scene()->addItem(&block);
 }
 
 } // namespace Scratch

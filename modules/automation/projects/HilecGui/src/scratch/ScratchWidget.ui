@@ -22,7 +22,14 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QGraphicsView" name="programView"/>
+        <widget class="QGraphicsView" name="programView">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -38,7 +45,7 @@
          <item>
           <widget class="QGraphicsView" name="controlView">
            <property name="acceptDrops">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
           </widget>
          </item>

@@ -9,11 +9,27 @@ namespace Scratch
 class IfElseBlock : public ControlFlowBlock
 {
 	public:
-		void print(std::ostream& stream, unsigned indentationDepth);
+		IfElseBlock();
+
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+
+		Block& clone() const;
+		void print(std::ostream& stream, unsigned indentationDepth) const;
+
+	protected:
+		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		void dropEvent(QGraphicsSceneDragDropEvent* event);
+
+		void resizeBy(int dx, int dy, const QPointF& triggerPosition);
 
 	private:
-		std::unique_ptr<Condition> m_condition;
-		std::unique_ptr<Block> m_ifBody, m_elseBody;
+		int defaultBodyHeight() const;
+
+		int m_headerHeight = s_defaultHeaderHeight;
+		int m_trueBodyHeight = defaultBodyHeight();
+
+		Block* m_trueBody{nullptr};
+		Block* m_falseBody{nullptr};
 };
 
 } // namespace Scratch

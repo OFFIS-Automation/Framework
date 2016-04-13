@@ -5,6 +5,7 @@
 #include <core/RcUnitHelp.h>
 
 #include "WhileBlock.h"
+#include "IfElseBlock.h"
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -16,14 +17,20 @@ Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchWidget>()),
 	m_programScene(std::make_unique<ProgramScene>(this)),
-	m_controlScene(std::make_unique<QGraphicsScene>(this))
+	m_controlScene(std::make_unique<ControlScene>(this))
 {
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
 	m_ui->controlView->setScene(m_controlScene.get());
 
-	auto item = new WhileBlock();
-	m_controlScene->addItem(item);
+	// Add while block to control scene
+	auto whileBlock = new WhileBlock();
+	m_controlScene->addItem(whileBlock);
+
+	// Add if-else block to control scene
+	auto ifElseBlock = new IfElseBlock();
+	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
+	m_controlScene->addItem(ifElseBlock);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));

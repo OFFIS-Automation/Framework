@@ -6,6 +6,7 @@
 #include <QDockWidget>
 
 #include "ProgramScene.h"
+#include "ControlScene.h"
 
 // Forward declarations
 namespace Ui
@@ -31,7 +32,8 @@ class Widget : public QDockWidget
 		std::unique_ptr<Ui::ScratchWidget> m_ui;
 
 		std::unique_ptr<ProgramScene> m_programScene;
-		std::unique_ptr<QGraphicsScene> m_controlScene;
+		std::unique_ptr<ControlScene> m_controlScene;
+
 };
 
 } // namespace Scratch

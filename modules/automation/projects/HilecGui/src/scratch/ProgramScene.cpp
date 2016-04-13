@@ -20,7 +20,12 @@ ProgramScene::ProgramScene(QObject* parent)
 void ProgramScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	if (!m_firstBlock)
+	{
+		event->setDropAction(Qt::CopyAction);
+		event->accept();
+
 		return;
+	}
 
 	QGraphicsScene::dragMoveEvent(event);
 }
@@ -34,10 +39,12 @@ void ProgramScene::dropEvent(QGraphicsSceneDragDropEvent* event)
 		return;
 	}
 
-	auto byteArray = event->mimeData()->data("Block");
-	auto* item = *reinterpret_cast<Block**>(byteArray.data());
+	event->setDropAction(Qt::CopyAction);
+	event->accept();
 
-	m_firstBlock = &item->clone();
+	auto& item = Block::unpackBlock(*event);
+
+	m_firstBlock = &item.clone();
 	m_firstBlock->setPredecessorsReference(&m_firstBlock);
 
 	addItem(m_firstBlock);

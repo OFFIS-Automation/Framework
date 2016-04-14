@@ -6,6 +6,7 @@
 #include <memory>
 
 #include <QGraphicsItem>
+#include <QPen>
 
 namespace Scratch
 {
@@ -58,6 +59,10 @@ class Block : public QGraphicsItem
 		void addBlock(Block& block);
 
 		bool isSelfOrAncestor(Block &block);
+
+		QPen m_outlineStyle;
+		QPen m_textStyle;
+		QColor m_fillStyle;
 
 		Block** m_predecessorsReference{nullptr};
 		Block* m_successor{nullptr};

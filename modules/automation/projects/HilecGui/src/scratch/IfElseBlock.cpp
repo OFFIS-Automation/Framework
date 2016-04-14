@@ -76,7 +76,15 @@ void IfElseBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWid
 
 	polygon	<< QPoint(0, m_height);
 
+	painter->setBrush(m_fillStyle);
+	painter->setPen(m_outlineStyle);
+	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
+
+	painter->setPen(m_textStyle);
+	painter->drawText(QRectF(10, 10, m_width - 20, s_shaftHeight), "if");
+	painter->drawText(QRectF(
+		10, m_headerHeight + m_trueBodyHeight + 10, m_width - 20, s_shaftHeight), "else");
 }
 
 void IfElseBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

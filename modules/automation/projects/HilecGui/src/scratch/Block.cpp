@@ -34,7 +34,12 @@ Block::Block(const int defaultWidth, const int defaultHeight)
 	  m_defaultHeight(defaultHeight),
 	  m_width(defaultWidth),
 	  m_height(defaultHeight)
-{}
+{
+	m_outlineStyle.setBrush(Qt::white);
+	m_outlineStyle.setWidth(4);
+	m_textStyle.setBrush(Qt::white);
+	m_fillStyle = Qt::lightGray;
+}
 
 QRectF Block::boundingRect() const
 {

@@ -60,7 +60,13 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 
 	polygon	<< QPoint(0, m_height);
 
+	painter->setBrush(m_fillStyle);
+	painter->setPen(m_outlineStyle);
+	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
+
+	painter->setPen(m_textStyle);
+	painter->drawText(QRectF(10, 10, m_width - 20, s_shaftHeight), "while");
 }
 
 void WhileBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

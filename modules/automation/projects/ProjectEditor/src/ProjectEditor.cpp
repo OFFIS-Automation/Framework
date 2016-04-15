@@ -85,6 +85,7 @@ void ProjectEditor::initialize(const QString&)
     connect(mToolbar, SIGNAL(cutRequested()), mEditArea, SLOT(cut()));
     connect(mToolbar, SIGNAL(pasteRequested()), mEditArea, SLOT(paste()));
 
+    connect(this, SIGNAL(updateFileTree(QString)), mFileTree, SLOT(updateTree(QString)));
     connect(mFileTree, SIGNAL(openFileRequested(QString)), mEditArea, SLOT(openFile(QString)));
     connect(mFileTree, SIGNAL(newFileRequested(QString)), mEditArea, SLOT(newFile(QString)));
     connect(mFileTree, SIGNAL(closeFileRequested(QString)), mEditArea, SLOT(closeFile(QString)));
@@ -155,8 +156,8 @@ void ProjectEditor::loadProject(const QString &projectName)
     mBaseDir = QFileInfo(projectName).absolutePath();
 
     mToolbar->setBaseDir(mBaseDir);
-    mFileTree->updateTree(mBaseDir);
     mEditArea->setBaseDir(mBaseDir);
+    emit updateFileTree(mBaseDir);
 
     mToolbar->setEnabled(true);
     mFileTree->setEnabled(true);
@@ -167,8 +168,8 @@ void ProjectEditor::closeProject()
 {
     mEditArea->saveAll();
     mEditArea->closeAll();
-    mFileTree->updateTree(QDir::rootPath());
     mToolbar->setBaseDir(QString());
+    emit updateFileTree(QDir::rootPath());
 
     mProjectName.clear();
     mBaseDir.clear();

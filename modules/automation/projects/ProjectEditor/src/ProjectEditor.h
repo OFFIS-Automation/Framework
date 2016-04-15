@@ -49,6 +49,7 @@ signals:
     void fileSaved(const QString& filename);
     void fileOpened(const QString& filename);
     void clickedProblem(const QString& string, int line);
+    void updateFileTree(const QString& path);
 
 protected:
     // add window objects here

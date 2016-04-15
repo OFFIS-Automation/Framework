@@ -27,7 +27,6 @@
 #include <QInputDialog>
 #include <QProcess>
 
-
 FileTree::FileTree(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::FileTree)

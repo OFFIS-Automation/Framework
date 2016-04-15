@@ -29,8 +29,8 @@
       <property name="editTriggers">
        <set>QAbstractItemView::EditKeyPressed</set>
       </property>
-      <property name="dragEnabled">
-       <bool>true</bool>
+      <property name="showDropIndicator" stdset="0">
+       <bool>false</bool>
       </property>
       <property name="dragDropMode">
        <enum>QAbstractItemView::DragDrop</enum>
@@ -92,8 +92,8 @@
   </action>
  </widget>
  <resources>
-  <include location="../../images/images.qrc"/>
   <include location="../../../../../frontend/projects/Frontend/images/images.qrc"/>
+  <include location="../../images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

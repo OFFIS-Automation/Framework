@@ -81,7 +81,10 @@ HEADERS += \
     src/scratch/IfElseBlock.h \
     src/scratch/WhileBlock.h \
     src/scratch/ControlScene.h \
-    src/scratch/FrameBlocks.h
+    src/scratch/FrameBlocks.h \
+    src/scratch/Item.h \
+    src/scratch/TrueCondition.h \
+    src/scratch/PassBlock.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -121,13 +124,16 @@ SOURCES += \
     src/telecontrol/ConnexionAssignmentWidget.cpp \
     src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
     src/scratch/Widget.cpp \
-    src/scratch/Condition.cpp \
     src/scratch/WhileBlock.cpp \
     src/scratch/IfElseBlock.cpp \
     src/scratch/Block.cpp \
     src/scratch/ControlFlowBlock.cpp \
     src/scratch/ControlScene.cpp \
-    src/scratch/FrameBlocks.cpp
+    src/scratch/FrameBlocks.cpp \
+    src/scratch/Item.cpp \
+    src/scratch/TrueCondition.cpp \
+    src/scratch/Condition.cpp \
+    src/scratch/PassBlock.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

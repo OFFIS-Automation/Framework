@@ -11,7 +11,7 @@ class WhileBlock : public ControlFlowBlock
 	public:
 		WhileBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*style, QWidget* widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
@@ -23,9 +23,7 @@ class WhileBlock : public ControlFlowBlock
 	private:
 		int defaultBodyHeight() const;
 
-		int m_headerHeight = s_defaultHeaderHeight;
-
-		Block* m_body{nullptr};
+		Block*& m_body;
 };
 
 } // namespace Scratch

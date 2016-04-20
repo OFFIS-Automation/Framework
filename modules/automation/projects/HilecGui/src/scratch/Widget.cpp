@@ -1,13 +1,19 @@
 #include "Widget.h"
-#include "ui_ScratchWidget.h"
 
+#include "ui_ScratchWidget.h"
 #include "../HilecSingleton.h"
+
+#include <iostream>
+
 #include <core/RcUnitHelp.h>
+#include <QKeyEvent>
 
 #include "FrameBlocks.h"
 
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
+#include "PassBlock.h"
+#include "TrueCondition.h"
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -26,12 +32,12 @@ Widget::Widget(QWidget *parent)
 	m_ui->controlView->setScene(m_controlScene.get());
 
 	// Program scene
-	auto startBlock = new StartBlock();
-	m_programScene->addItem(startBlock);
+	m_startBlock = new StartBlock();
+	m_programScene->addItem(m_startBlock);
 
 	auto endBlock = new EndBlock();
-	startBlock->addBelow(*endBlock);
-	m_programScene->addItem(startBlock);
+	m_startBlock->addBelow(*endBlock);
+	m_programScene->addItem(m_startBlock);
 
 	// Control scene
 	auto whileBlock = new WhileBlock();
@@ -41,10 +47,42 @@ Widget::Widget(QWidget *parent)
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
 	m_controlScene->addItem(ifElseBlock);
 
+	auto passBlock = new TrueCondition();
+	passBlock->setPos(ifElseBlock->pos().x() + ifElseBlock->m_width + 30, 0);
+	m_controlScene->addItem(passBlock);
+
+	auto trueCondiftion = new PassBlock();
+	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
+	m_controlScene->addItem(trueCondiftion);
+
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
 	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
 }
+
+void Widget::keyPressEvent(QKeyEvent *event)
+{
+	if(event->key() == Qt::Key_G)
+		event->accept();
+	else
+		event->ignore();
+}
+
+void Widget::keyReleaseEvent(QKeyEvent *event)
+{
+	if(event->key() != Qt::Key_G)
+	{
+		event->ignore();
+
+		return;
+	}
+
+	event->accept();
+
+	m_startBlock->print(std::cout);
+	std::cout.flush();
+}
+
 
 void Widget::updateRcUnits(bool)
 {
@@ -64,8 +102,8 @@ void Widget::updateRcUnits(bool)
 
 		for (const auto& method : help.methods)
 		{
-			if (method.hiddenForScratch)
-				continue;
+			//if (method.hiddenForScratch)
+			//	continue;
 
 			// Get Parameter names
 			QStringList parameterNames;

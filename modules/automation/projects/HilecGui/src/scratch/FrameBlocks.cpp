@@ -15,16 +15,6 @@ FrameBlock::FrameBlock()
 	setAcceptDrops(true);
 }
 
-void FrameBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
-{
-	event->ignore();
-}
-
-void FrameBlock::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
-{
-	event->ignore();
-}
-
 // Start block
 
 StartBlock::StartBlock()
@@ -64,10 +54,15 @@ void StartBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto& block = Block::unpackBlock(*event);
-
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
+
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() != Item::Type::Block)
+		return;
+
+	Block& block = *reinterpret_cast<Block*>(&item);
 
 	if (!inConnectorActivationRange(position, m_height))
 		return;
@@ -82,7 +77,7 @@ void StartBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto* block = &Block::unpackBlock(*event);
+	auto* block = reinterpret_cast<Block*>(&Item::unpackItem(*event));
 
 	event->accept();
 
@@ -90,7 +85,7 @@ void StartBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = &block->clone();
+		block = reinterpret_cast<Block*>(&block->clone());
 	}
 	else
 	{
@@ -107,7 +102,7 @@ Block& StartBlock::clone() const
 	return *(new StartBlock());
 }
 
-void StartBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
+void StartBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
 	if (m_successor)
 		m_successor->print(stream, indentationDepth);
@@ -152,10 +147,15 @@ void EndBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto& block = Block::unpackBlock(*event);
-
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
+
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() != Item::Type::Block)
+		return;
+
+	Block& block = *reinterpret_cast<Block*>(&item);
 
 	if (!inConnectorActivationRange(position, 0))
 		return;
@@ -170,7 +170,7 @@ void EndBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto* block = &Block::unpackBlock(*event);
+	auto* block = reinterpret_cast<Block*>(&Item::unpackItem(*event));
 
 	event->accept();
 
@@ -178,7 +178,7 @@ void EndBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = &block->clone();
+		block = reinterpret_cast<Block*>(&block->clone());
 	}
 	else
 	{
@@ -195,10 +195,7 @@ Block& EndBlock::clone() const
 	return *(new EndBlock());
 }
 
-void EndBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
-{
-	if (m_successor)
-		m_successor->print(stream, indentationDepth);
-}
+void EndBlock::print(std::ostream&, unsigned) const
+{}
 
 } // namespace Scratch

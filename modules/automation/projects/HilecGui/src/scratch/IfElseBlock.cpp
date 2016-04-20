@@ -11,7 +11,9 @@ namespace Scratch
 {
 
 IfElseBlock::IfElseBlock()
-	: ControlFlowBlock(100, 150)
+	: ControlFlowBlock(100, 150, 2),
+	  m_trueBody{m_bodies.at(0)},
+	  m_falseBody{m_bodies.at(1)}
 {
 	setAcceptDrops(true);
 }
@@ -91,22 +93,37 @@ void IfElseBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto& block = Block::unpackBlock(*event);
-
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
 
-	if (isSelfOrAncestor(block))
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() == Item::Type::Condition)
+	{
+		if (!inConditionArea(position))
+			return;
+
+		if (m_condition)
+			return;
+	}
+	else if (item.itemType() == Item::Type::Block)
+	{
+		Block& block = *reinterpret_cast<Block*>(&item);
+
+		if (isSelfOrAncestor(block))
+			return;
+
+		if (!inConnectorActivationRange(position, 0)
+				&& !inConnectorActivationRange(position, m_height)
+				&& !inConnectorActivationRange(position, m_headerHeight)
+				&& !inConnectorActivationRange(position,
+					m_headerHeight + m_trueBodyHeight + s_shaftHeight))
+			return;
+	}
+	else
 		return;
 
-	if (!inConnectorActivationRange(position, 0)
-			&& !inConnectorActivationRange(position, m_height)
-			&& !inConnectorActivationRange(position, m_headerHeight)
-			&& !inConnectorActivationRange(position,
-				m_headerHeight + m_trueBodyHeight + s_shaftHeight))
-		return;
-
-	if (block.scene() != this->scene())
+	if (item.scene() != this->scene())
 		event->setDropAction(Qt::CopyAction);
 	else
 		event->setDropAction(Qt::MoveAction);
@@ -120,34 +137,47 @@ void IfElseBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	auto oldHeaderHeight = m_headerHeight;
 	auto oldTrueBodyHeight = m_trueBodyHeight;
 
-	auto* block = &Block::unpackBlock(*event);
+	auto* item = &Item::unpackItem(*event);
 
 	event->accept();
 
-	if (block->scene() != this->scene())
+	// Copy
+	if (item->scene() != this->scene())
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = &block->clone();
+		item = &item->clone();
 	}
+	// Move
 	else
 	{
 		event->setDropAction(Qt::MoveAction);
-
-		block->remove();
+		item->remove();
 	}
 
-	// Destination
-	if (inConnectorActivationRange(position, 0))
-		addAbove(*block);
-	else if (inConnectorActivationRange(position, oldHeight))
-		addBelow(*block);
-	else if (inConnectorActivationRange(position, oldHeaderHeight))
-		addBody(*block, m_trueBody, QPoint(s_shaftHeight, m_headerHeight));
-	else if (inConnectorActivationRange(position,
-			oldHeaderHeight + oldTrueBodyHeight + s_shaftHeight))
-		addBody(*block, m_falseBody,
-			QPoint(s_shaftHeight, m_headerHeight + m_trueBodyHeight + s_shaftHeight));
+	// Condition
+	if (item->itemType() == Item::Type::Condition)
+	{
+		auto& condition = *reinterpret_cast<Condition*>(item);
+
+		addCondition(condition);
+	}
+	// Block
+	else
+	{
+		auto& block = *reinterpret_cast<Block*>(item);
+
+		if (inConnectorActivationRange(position, 0))
+			addAbove(block);
+		else if (inConnectorActivationRange(position, oldHeight))
+			addBelow(block);
+		else if (inConnectorActivationRange(position, oldHeaderHeight))
+			addBody(block, m_trueBody, QPoint(s_shaftHeight, m_headerHeight));
+		else if (inConnectorActivationRange(position,
+				oldHeaderHeight + oldTrueBodyHeight + s_shaftHeight))
+			addBody(block, m_falseBody,
+				QPoint(s_shaftHeight, m_headerHeight + m_trueBodyHeight + s_shaftHeight));
+	}
 }
 
 Block& IfElseBlock::clone() const
@@ -189,9 +219,10 @@ void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) con
 
 void IfElseBlock::resizeBy(int dx, int dy, const QPointF& triggerPosition)
 {
-	int actualDy;
+	int actualDy = dy;
 
-	if (triggerPosition.y() <= m_headerHeight + m_trueBodyHeight)
+	if (!inConditionArea(triggerPosition)
+		&& triggerPosition.y() <= m_headerHeight + m_trueBodyHeight)
 	{
 		actualDy = std::max(m_trueBodyHeight + dy, defaultBodyHeight()) - m_trueBodyHeight;
 

@@ -11,7 +11,7 @@ class IfElseBlock : public ControlFlowBlock
 	public:
 		IfElseBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget*widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
@@ -25,11 +25,10 @@ class IfElseBlock : public ControlFlowBlock
 	private:
 		int defaultBodyHeight() const;
 
-		int m_headerHeight = s_defaultHeaderHeight;
 		int m_trueBodyHeight = defaultBodyHeight();
 
-		Block* m_trueBody{nullptr};
-		Block* m_falseBody{nullptr};
+		Block*& m_trueBody;
+		Block*& m_falseBody;
 };
 
 } // namespace Scratch

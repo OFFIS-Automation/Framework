@@ -14,10 +14,6 @@ class FrameBlock : public Block
 
 	public:
 		FrameBlock();
-
-	protected:
-		void mousePressEvent(QGraphicsSceneMouseEvent* event);
-		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 };
 
 class StartBlock : public FrameBlock
@@ -28,7 +24,7 @@ class StartBlock : public FrameBlock
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Block& clone() const;
-		void print(std::ostream& stream, unsigned indentationDepth) const;
+		void print(std::ostream& stream, unsigned indentationDepth = 0) const;
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
@@ -43,7 +39,7 @@ class EndBlock : public FrameBlock
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Block& clone() const;
-		void print(std::ostream& stream, unsigned indentationDepth) const;
+		void print(std::ostream&, unsigned = 0) const;
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);

@@ -3,15 +3,26 @@
 
 #include <ostream>
 
+#include "Item.h"
+
 namespace Scratch
 {
 
-class Condition
+class Condition : public Item
 {
-	friend std::ostream& operator<<(std::ostream&, const Condition&);
+	public:
+		QRectF boundingRect() const final;
+
+		Type itemType() const final;
+
+		void remove();
+		virtual void print(std::ostream& stream) const = 0;
+
+	protected:
+		Condition(int width, int height);
 };
 
-std::ostream& operator<<(std::ostream&, const Scratch::Condition&);
+std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& condition);
 
 } // namespace Scratch
 

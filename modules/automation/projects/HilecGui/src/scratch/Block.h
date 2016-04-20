@@ -5,13 +5,14 @@
 #include <functional>
 #include <memory>
 
-#include <QGraphicsItem>
 #include <QPen>
+
+#include "Item.h"
 
 namespace Scratch
 {
 
-class Block : public QGraphicsItem
+class Block : public Item
 {
 	public:
 		static const int s_connectorMargin = 10;
@@ -23,17 +24,15 @@ class Block : public QGraphicsItem
 
 		static bool inConnectorActivationRange(const QPointF& position, const int& offset);
 
-		static Block& unpackBlock(const QGraphicsSceneDragDropEvent& event);
-
 	public:
-		QRectF boundingRect() const;
+		Type itemType() const final;
 
-		virtual Block& clone() const = 0;
+		QRectF boundingRect() const final;
+
 		virtual void print(std::ostream& stream, unsigned indentationDepth) const = 0;
 
 		void setPredecessorsReference(Block** reference);
 		void setSuccessor(Block* successor);
-		void setParent(Block* parent);
 
 		void addAbove(Block& block);
 		void addBelow(Block& block);
@@ -41,32 +40,16 @@ class Block : public QGraphicsItem
 		void remove();
 		void updateSuccessorPositions(int dx, int dy) const;
 
-		int m_width;
-		int m_height;
-
-	protected:
-		const int m_defaultWidth;
-		const int m_defaultHeight;
-
-		Block(const int defaultWidth, const int defaultHeight);
-
-		void mousePressEvent(QGraphicsSceneMouseEvent* event);
-		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-
-		void addConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
-		virtual void resizeBy(int dx, int dy, const QPointF&);
-
-		void addBlock(Block& block);
-
-		bool isSelfOrAncestor(Block &block);
-
-		QPen m_outlineStyle;
-		QPen m_textStyle;
-		QColor m_fillStyle;
-
 		Block** m_predecessorsReference{nullptr};
 		Block* m_successor{nullptr};
-		Block* m_parent{nullptr};
+
+	protected:
+		Block(const int width, const int height);
+
+		void addConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
+		void resizeBy(int dx, int dy, const QPointF&);
+
+		bool isSelfOrAncestor(Block &block);
 };
 
 } // namespace Scratch

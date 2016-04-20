@@ -11,9 +11,9 @@ namespace Scratch
 {
 
 WhileBlock::WhileBlock()
-	: ControlFlowBlock(100, 100)
+	: ControlFlowBlock(100, 100, 1),
+	  m_body{m_bodies.at(0)}
 {
-
 	setAcceptDrops(true);
 }
 
@@ -73,20 +73,35 @@ void WhileBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto& block = Block::unpackBlock(*event);
-
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
 
-	if (isSelfOrAncestor(block))
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() == Item::Type::Condition)
+	{
+		if (!inConditionArea(position))
+			return;
+
+		if (m_condition)
+			return;
+	}
+	else if (item.itemType() == Item::Type::Block)
+	{
+		Block& block = *reinterpret_cast<Block*>(&item);
+
+		if (isSelfOrAncestor(block))
+			return;
+
+		if (!inConnectorActivationRange(position, 0)
+				&& !inConnectorActivationRange(position, m_height)
+				&& !inConnectorActivationRange(position, m_headerHeight))
+			return;
+	}
+	else
 		return;
 
-	if (!inConnectorActivationRange(position, 0)
-			&& !inConnectorActivationRange(position, m_height)
-			&& !inConnectorActivationRange(position, m_headerHeight))
-		return;
-
-	if (block.scene() != this->scene())
+	if (item.scene() != this->scene())
 		event->setDropAction(Qt::CopyAction);
 	else
 		event->setDropAction(Qt::MoveAction);
@@ -99,29 +114,43 @@ void WhileBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	auto oldHeight = m_height;
 	auto oldHeaderHeight = m_headerHeight;
 
-	auto* block = &Block::unpackBlock(*event);
+	auto* item = &Item::unpackItem(*event);
 
 	event->accept();
 
-	if (block->scene() != this->scene())
+	// Copy
+	if (item->scene() != this->scene())
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = &block->clone();
+		item = &item->clone();
 	}
+	// Move
 	else
 	{
 		event->setDropAction(Qt::MoveAction);
-		block->remove();
+		item->remove();
 	}
 
-	// Destination
-	if (inConnectorActivationRange(position, 0))
-		addAbove(*block);
-	else if (inConnectorActivationRange(position, oldHeight))
-		addBelow(*block);
-	else if (inConnectorActivationRange(position, oldHeaderHeight))
-		addBody(*block, m_body, QPoint(s_shaftHeight, m_headerHeight));
+	// Condition
+	if (item->itemType() == Item::Type::Condition)
+	{
+		auto& condition = *reinterpret_cast<Condition*>(item);
+
+		addCondition(condition);
+	}
+	// Block
+	else
+	{
+		auto& block = *reinterpret_cast<Block*>(item);
+
+		if (inConnectorActivationRange(position, 0))
+			addAbove(block);
+		else if (inConnectorActivationRange(position, oldHeight))
+			addBelow(block);
+		else if (inConnectorActivationRange(position, oldHeaderHeight))
+			addBody(block, m_body, QPoint(s_shaftHeight, m_headerHeight));
+	}
 }
 
 Block& WhileBlock::clone() const

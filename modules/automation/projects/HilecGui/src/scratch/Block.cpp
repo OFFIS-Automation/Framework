@@ -3,25 +3,11 @@
 #include <array>
 
 #include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <QApplication>
-#include <QMimeData>
-#include <QByteArray>
-#include <QDrag>
-#include <QWidget>
-#include <QGraphicsSceneDragDropEvent>
 
 #include "Block.h"
 
 namespace Scratch
 {
-
-Block& Block::unpackBlock(const QGraphicsSceneDragDropEvent& event)
-{
-	auto& byteArray = event.mimeData()->data("Block");
-
-	return **reinterpret_cast<Block**>(byteArray.data());
-}
 
 bool Block::inConnectorActivationRange(const QPointF& position, const int& offset)
 {
@@ -29,16 +15,13 @@ bool Block::inConnectorActivationRange(const QPointF& position, const int& offse
 		&& position.y() < offset + s_connectorActivationRange;
 }
 
-Block::Block(const int defaultWidth, const int defaultHeight)
-	: m_defaultWidth(defaultWidth),
-	  m_defaultHeight(defaultHeight),
-	  m_width(defaultWidth),
-	  m_height(defaultHeight)
+Block::Block(const int width, const int height)
+	: Item(width, height)
+{}
+
+Item::Type Block::itemType() const
 {
-	m_outlineStyle.setBrush(Qt::white);
-	m_outlineStyle.setWidth(4);
-	m_textStyle.setBrush(Qt::white);
-	m_fillStyle = Qt::lightGray;
+	return Type::Block;
 }
 
 QRectF Block::boundingRect() const
@@ -57,13 +40,6 @@ void Block::setPredecessorsReference(Block** reference)
 void Block::setSuccessor(Block* successor)
 {
 	m_successor = successor;
-}
-
-void Block::setParent(Block* parent)
-{
-	m_parent = parent;
-
-	setParentItem(parent);
 }
 
 void Block::addConnector(QPolygon& polygon, int x, int y, bool reverse) const
@@ -101,56 +77,15 @@ void Block::resizeBy(int dx, int dy, const QPointF&)
 	if (!actualDx && !actualDy)
 		return;
 
-	prepareGeometryChange();
+	Item::resizeBy(actualDx, actualDy, pos());
 
-	m_width += actualDx;
-	m_height += actualDy;
-
-	updateSuccessorPositions(actualDx, actualDy);
-
-	if (m_parent)
-		m_parent->resizeBy(actualDx, actualDy, pos());
+	updateSuccessorPositions(0, actualDy);
 }
 
 void Block::updateSuccessorPositions(int dx, int dy) const
 {
 	for (Block* currentBlock = m_successor; currentBlock; currentBlock = currentBlock->m_successor)
 		currentBlock->moveBy(dx, dy);
-}
-
-void Block::mousePressEvent(QGraphicsSceneMouseEvent* event)
-{
-	event->accept();
-}
-
-void Block::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
-{
-	event->accept();
-
-	if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton)).length()
-			< QApplication::startDragDistance())
-		return;
-
-	QMimeData* mimeData = new QMimeData;
-
-	auto* block = this;
-	QByteArray byteArray(reinterpret_cast<char*>(&block), sizeof(Block*));
-	mimeData->setData("Block", byteArray);
-
-	QDrag* drag = new QDrag(event->widget());
-	drag->setMimeData(mimeData);
-	drag->exec(Qt::CopyAction | Qt::MoveAction);
-}
-
-void Block::addBlock(Block& block)
-{
-	block.setParent(m_parent);
-	block.setPos(pos());
-
-	if (m_parent)
-		m_parent->resizeBy(0, block.m_height, pos());
-
-	scene()->addItem(&block);
 }
 
 void Block::addAbove(Block& block)
@@ -162,7 +97,7 @@ void Block::addAbove(Block& block)
 
 	m_predecessorsReference = &block.m_successor;
 
-	addBlock(block);
+	addItem(block);
 
 	block.updateSuccessorPositions(0, block.m_height);
 }
@@ -174,7 +109,7 @@ void Block::addBelow(Block& block)
 
 	m_successor = &block;
 
-	addBlock(block);
+	addItem(block);
 
 	block.moveBy(0, m_height);
 	block.updateSuccessorPositions(0, block.m_height);
@@ -182,19 +117,17 @@ void Block::addBelow(Block& block)
 
 void Block::remove()
 {
-	scene()->removeItem(this);
-
-	updateSuccessorPositions(0, -m_height);
-
 	if (m_parent)
 		m_parent->resizeBy(0, -m_height, pos());
+
+	updateSuccessorPositions(0, -m_height);
 
 	if (m_successor)
 		m_successor->setPredecessorsReference(m_predecessorsReference);
 
 	*m_predecessorsReference = m_successor;
 
-	setParent(nullptr);
+	Item::remove();
 }
 
 bool Block::isSelfOrAncestor(Block &block)

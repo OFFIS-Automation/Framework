@@ -28,13 +28,15 @@ void AbstractPortEdit::startEdit(Callback &callback)
 
 void AbstractPortEdit::editFinished(const QVariant &value)
 {
-    if(mCallback)
+    if(mCallback){
         mCallback->editFinished(value, mInfo);
+    }
 }
 
 void AbstractPortEdit::editCanceled()
 {
-    if(mCallback)
+    if(mCallback){
         mCallback->editCanceled(mInfo);
+    }
 }
 

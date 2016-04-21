@@ -21,8 +21,6 @@ NumberEdit::NumberEdit(QWidget *parent) : AbstractPortEditWidget(parent)
     mSpinBox = new QSpinBox(this);
     mSpinBox->setObjectName("spinBox");
     ui->layout->insertWidget(0, mSpinBox);
-
-    QMetaObject::connectSlotsByName(this);
 }
 
 NumberEdit::~NumberEdit()
@@ -48,11 +46,4 @@ QString NumberEdit::asString()
 QVariant NumberEdit::editValue(bool&)
 {
     return mSpinBox->value();
-}
-
-void NumberEdit::on_spinBox_editingFinished()
-{
-    if(mSpinBox->hasFocus()){ // enter was pressed
-        submit();
-    }
 }

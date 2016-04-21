@@ -195,7 +195,7 @@ void PylonCamera::deinitialize()
 
 void PylonCamera::updateParams()
 {
-    // first, write all updates. Then, read all updates. Writing one parameter might effect values of others
+    // First, write all updates. Then, read all updates. Writing one parameter might effect values of others
     foreach (ParameterInterface *param, mParams) {
         param->update();
     }

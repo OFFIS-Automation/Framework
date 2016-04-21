@@ -16,24 +16,7 @@ PassBlock::PassBlock()
 void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon polygon;
-
-	polygon << QPoint(0, 0);
-
-	addConnector(polygon,
-		0,
-		0);
-
-	polygon
-		<< QPoint(m_width, 0)
-		<< QPoint(m_width, m_height);
-
-	addConnector(polygon,
-		0,
-		m_height,
-		true);
-
-	polygon
-		<< QPoint(0, m_height);
+	drawOutline(polygon);
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);

@@ -36,8 +36,8 @@ class Block : public Item
 
 		void addAbove(Block& block);
 		void addBelow(Block& block);
-
 		void remove();
+
 		void updateSuccessorPositions(int dx, int dy) const;
 
 		Block** m_predecessorsReference{nullptr};
@@ -46,7 +46,9 @@ class Block : public Item
 	protected:
 		Block(const int width, const int height);
 
-		void addConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
+		void drawConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
+		void drawOutline(QPolygon& polygon) const;
+
 		void resizeBy(int dx, int dy, const QPointF&);
 
 		bool isSelfOrAncestor(Block &block);

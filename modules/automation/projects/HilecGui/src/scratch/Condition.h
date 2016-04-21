@@ -20,6 +20,9 @@ class Condition : public Item
 
 	protected:
 		Condition(int width, int height);
+
+		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		void dropEvent(QGraphicsSceneDragDropEvent* event);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& condition);

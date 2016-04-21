@@ -34,7 +34,7 @@ void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 		<< QPoint(m_width, s_taperHeight)
 		<< QPoint(m_width, m_height);
 
-	addConnector(polygon,
+	drawConnector(polygon,
 		0,
 		m_height,
 		true);
@@ -123,7 +123,7 @@ void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget
 	polygon
 		<< QPoint(0, 0);
 
-	addConnector(polygon,
+	drawConnector(polygon,
 		0,
 		0);
 

@@ -6,29 +6,21 @@
 namespace Scratch
 {
 
-class IfElseBlock : public ControlFlowBlock
+class IfElseBlock : public ControlFlowBlock<2>
 {
 	public:
 		IfElseBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget*widget);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
 
-	protected:
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
-
-		void resizeBy(int dx, int dy, const QPointF& triggerPosition);
-
 	private:
-		int defaultBodyHeight() const;
-
 		int m_trueBodyHeight = defaultBodyHeight();
 
-		Block*& m_trueBody;
-		Block*& m_falseBody;
+		Body& m_trueBody;
+		Body& m_falseBody;
 };
 
 } // namespace Scratch

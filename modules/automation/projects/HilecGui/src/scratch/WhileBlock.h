@@ -6,24 +6,18 @@
 namespace Scratch
 {
 
-class WhileBlock : public ControlFlowBlock
+class WhileBlock : public ControlFlowBlock<1>
 {
 	public:
 		WhileBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*style, QWidget* widget);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
 
-	protected:
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
-
 	private:
-		int defaultBodyHeight() const;
-
-		Block*& m_body;
+		Body& m_body;
 };
 
 } // namespace Scratch

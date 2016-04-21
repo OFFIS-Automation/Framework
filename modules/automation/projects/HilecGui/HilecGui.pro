@@ -127,7 +127,6 @@ SOURCES += \
     src/scratch/WhileBlock.cpp \
     src/scratch/IfElseBlock.cpp \
     src/scratch/Block.cpp \
-    src/scratch/ControlFlowBlock.cpp \
     src/scratch/ControlScene.cpp \
     src/scratch/FrameBlocks.cpp \
     src/scratch/Item.cpp \

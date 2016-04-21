@@ -42,7 +42,7 @@ void Block::setSuccessor(Block* successor)
 	m_successor = successor;
 }
 
-void Block::addConnector(QPolygon& polygon, int x, int y, bool reverse) const
+void Block::drawConnector(QPolygon& polygon, int x, int y, bool reverse) const
 {
 	std::array<QPoint, 4> points{{
 		QPoint(
@@ -67,6 +67,17 @@ void Block::addConnector(QPolygon& polygon, int x, int y, bool reverse) const
 		std::for_each(points.cbegin(), points.cend(), addPoint);
 	else
 		std::for_each(points.crbegin(), points.crend(), addPoint);
+}
+
+void Block::drawOutline(QPolygon& polygon) const
+{
+	polygon << QPoint(m_width, m_height);
+	drawConnector(polygon, 0, m_height, true);
+	polygon	<< QPoint(0, m_height);
+
+	polygon	<< QPoint(0, 0);
+	drawConnector(polygon, 0, 0);
+	polygon << QPoint(m_width, 0);
 }
 
 void Block::resizeBy(int dx, int dy, const QPointF&)

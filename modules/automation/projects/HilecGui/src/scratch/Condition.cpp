@@ -1,5 +1,7 @@
 #include "Condition.h"
 
+#include <QGraphicsSceneEvent>
+
 namespace Scratch
 {
 
@@ -23,6 +25,17 @@ void Condition::remove()
 		m_parent->resizeBy(-m_width, -m_height, pos());
 
 	Item::remove();
+}
+
+void Condition::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
+{
+	event->accept();
+	event->setDropAction(Qt::IgnoreAction);
+}
+
+void Condition::dropEvent(QGraphicsSceneDragDropEvent* event)
+{
+	event->accept();
 }
 
 std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& condition)

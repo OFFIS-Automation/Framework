@@ -31,9 +31,6 @@ public:
     virtual QString asString();
     virtual QVariant editValue(bool& ok);
 
-private slots:
-    void on_spinBox_editingFinished();
-
 private:
     QDoubleSpinBox* mSpinBox;
 };

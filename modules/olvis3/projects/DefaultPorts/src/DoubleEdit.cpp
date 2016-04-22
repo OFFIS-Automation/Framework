@@ -21,8 +21,6 @@ DoubleEdit::DoubleEdit(QWidget *parent) : AbstractPortEditWidget(parent)
     mSpinBox = new QDoubleSpinBox(this);
     mSpinBox->setObjectName("spinBox");
     ui->layout->insertWidget(0, mSpinBox);
-
-    QMetaObject::connectSlotsByName(this);
 }
 
 DoubleEdit::~DoubleEdit()
@@ -45,11 +43,4 @@ QString DoubleEdit::asString()
 QVariant DoubleEdit::editValue(bool&)
 {
     return mSpinBox->value();
-}
-
-void DoubleEdit::on_spinBox_editingFinished()
-{
-    if(mSpinBox->hasFocus()){ // enter was pressed
-        submit();
-    }
 }

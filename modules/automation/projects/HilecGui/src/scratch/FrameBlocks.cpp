@@ -47,7 +47,7 @@ void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(m_width / 2 - 10, 10, m_width - 20, m_height - 20), "Start");
+	painter->drawText(boundingRect(), Qt::AlignCenter, "Start");
 }
 
 void StartBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -140,7 +140,7 @@ void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(m_width / 2 - 10, 10, m_width - 20, m_height - 20), "Stop");
+	painter->drawText(boundingRect(), Qt::AlignCenter, "Stop");
 }
 
 void EndBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

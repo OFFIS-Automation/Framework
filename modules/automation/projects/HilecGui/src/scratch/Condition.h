@@ -1,34 +1,25 @@
-#ifndef SCRATCHCONDITION_H
-#define SCRATCHCONDITION_H
+#ifndef CONDITION_H
+#define CONDITION_H
 
-#include <ostream>
-
-#include "Item.h"
+#include "Parameter.h"
 
 namespace Scratch
 {
 
-class Condition : public Item
+class Condition : public Parameter
 {
 	public:
-		QRectF boundingRect() const final;
+		static void drawOutline(QPolygon& poylgon, const int width,	const int height,
+			const QPoint& position = QPoint());
 
-		Type itemType() const final;
-
-		void remove();
-		virtual void print(std::ostream& stream) const = 0;
-
-	protected:
+	public:
 		Condition(int width, int height);
 
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
-};
+		Item::Type itemType() const final;
 
-std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& condition);
+		void drawOutline(QPolygon &poylgon);
+};
 
 } // namespace Scratch
 
-#endif // SCRATCHCONDITION_H
-
-
+#endif // CONDITION_H

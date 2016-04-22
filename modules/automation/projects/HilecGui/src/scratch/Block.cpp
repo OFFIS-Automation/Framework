@@ -3,6 +3,8 @@
 #include <array>
 
 #include <QGraphicsScene>
+#include <QPainter>
+#include <Qt>
 
 #include "Block.h"
 

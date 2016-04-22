@@ -24,7 +24,7 @@ void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidge
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(m_width / 2 - 10, 10, m_width - 20, m_height - 20), "pass");
+	painter->drawText(boundingRect(), Qt::AlignCenter, "Pass");
 }
 
 void PassBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

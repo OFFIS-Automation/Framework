@@ -76,7 +76,6 @@ HEADERS += \
     src/rcUnits/RcFlagWidgetSettingsDialog.h \
     src/scratch/Widget.h \
     src/scratch/Block.h \
-    src/scratch/Condition.h \
     src/scratch/ControlFlowBlock.h \
     src/scratch/IfElseBlock.h \
     src/scratch/WhileBlock.h \
@@ -84,7 +83,10 @@ HEADERS += \
     src/scratch/FrameBlocks.h \
     src/scratch/Item.h \
     src/scratch/TrueCondition.h \
-    src/scratch/PassBlock.h
+    src/scratch/PassBlock.h \
+    src/scratch/Parameter.h \
+    src/scratch/Condition.h \
+    src/scratch/ArgumentBlock.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -131,8 +133,10 @@ SOURCES += \
     src/scratch/FrameBlocks.cpp \
     src/scratch/Item.cpp \
     src/scratch/TrueCondition.cpp \
+    src/scratch/PassBlock.cpp \
+    src/scratch/Parameter.cpp \
     src/scratch/Condition.cpp \
-    src/scratch/PassBlock.cpp
+    src/scratch/ArgumentBlock.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

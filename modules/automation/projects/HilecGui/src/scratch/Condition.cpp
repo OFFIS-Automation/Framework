@@ -1,48 +1,33 @@
 #include "Condition.h"
 
-#include <QGraphicsSceneEvent>
-
 namespace Scratch
 {
 
 Condition::Condition(int width, int height)
-	: Item(width, height)
+	: Parameter(width, height)
 {}
-
-QRectF Condition::boundingRect() const
-{
-	return QRect(0, 0, m_width, m_height);
-}
 
 Item::Type Condition::itemType() const
 {
 	return Type::Condition;
 }
 
-void Condition::remove()
+void Condition::drawOutline(QPolygon &poylgon, const int width, const int height,
+	const QPoint& position)
 {
-	if (m_parent)
-		m_parent->resizeBy(-m_width, -m_height, pos());
+	const auto tipHeight = height / 2;
 
-	Item::remove();
+	poylgon	<< (position + QPoint(0, tipHeight))
+		<< (position + QPoint(tipHeight, 0))
+		<< (position + QPoint(width - tipHeight, 0))
+		<< (position + QPoint(width, tipHeight))
+		<< (position + QPoint(width - tipHeight, height))
+		<< (position + QPoint(tipHeight, height));
 }
 
-void Condition::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
+void Condition::drawOutline(QPolygon &poylgon)
 {
-	event->accept();
-	event->setDropAction(Qt::IgnoreAction);
-}
-
-void Condition::dropEvent(QGraphicsSceneDragDropEvent* event)
-{
-	event->accept();
-}
-
-std::ostream& operator<<(std::ostream& stream, const Scratch::Condition& condition)
-{
-	condition.print(stream);
-
-	return stream;
+	drawOutline(poylgon, m_width, m_height);
 }
 
 } // namespace Scratch

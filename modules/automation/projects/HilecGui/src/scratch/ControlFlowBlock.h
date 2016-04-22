@@ -103,6 +103,17 @@ void ControlFlowBlock<numberOfBodies>::paint(QPainter* painter, const QStyleOpti
 	painter->setPen(m_outlineStyle);
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
+
+	polygon.clear();
+
+	Condition::drawOutline(polygon, m_width - s_shaftHeight - 2 * s_conditionMargin,
+		m_headerHeight - 2 * s_conditionMargin,
+		QPoint(s_shaftHeight + s_connectorMargin, s_connectorMargin));
+
+	painter->setBrush(m_outlineStyle.color());
+	painter->setPen(m_outlineStyle);
+	painter->setRenderHint(QPainter::Antialiasing);
+	painter->drawPolygon(polygon);
 }
 
 template <size_t numberOfBodies>

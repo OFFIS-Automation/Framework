@@ -14,6 +14,8 @@
 #include "IfElseBlock.h"
 #include "PassBlock.h"
 #include "TrueCondition.h"
+#include "ArgumentBlock.h"
+
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -54,6 +56,10 @@ Widget::Widget(QWidget *parent)
 	auto trueCondiftion = new PassBlock();
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
 	m_controlScene->addItem(trueCondiftion);
+
+	auto argumentBlock = new ArgumentBlock();
+	argumentBlock->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
+	m_controlScene->addItem(argumentBlock);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
@@ -102,8 +108,8 @@ void Widget::updateRcUnits(bool)
 
 		for (const auto& method : help.methods)
 		{
-			//if (method.hiddenForScratch)
-			//	continue;
+			if (method.hiddenForScratch)
+				continue;
 
 			// Get Parameter names
 			QStringList parameterNames;

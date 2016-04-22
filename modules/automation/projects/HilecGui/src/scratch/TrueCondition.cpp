@@ -11,16 +11,9 @@ TrueCondition::TrueCondition()
 
 void TrueCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-	const auto tipHeight = m_height / 2;
-
 	QPolygon polygon;
 
-	polygon	<< QPoint(0, tipHeight)
-		<< QPoint(tipHeight, 0)
-		<< QPoint(m_width - tipHeight, 0)
-		<< QPoint(m_width, tipHeight)
-		<< QPoint(m_width - tipHeight, m_height)
-		<< QPoint(tipHeight, m_height);
+	drawOutline(polygon, m_width, m_height);
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
@@ -28,7 +21,7 @@ void TrueCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QW
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(m_width / 2 - 10, 10, m_width - 20, m_height - 20), "True");
+	painter->drawText(boundingRect(), Qt::AlignCenter, "True");
 }
 
 Item& TrueCondition::clone() const

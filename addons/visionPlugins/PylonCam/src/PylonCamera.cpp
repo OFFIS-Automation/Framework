@@ -29,7 +29,8 @@ using namespace Pylon;
 PylonCamera::PylonCamera(CDeviceInfo info, int *pylonInstances, QMutex *pylonInstancesMutex) :
     mInfo(info),
     mPylonInstances(pylonInstances),
-    mPylonInstancesMutex(pylonInstancesMutex)
+    mPylonInstancesMutex(pylonInstancesMutex),
+    mCam(0)
 {
     setName(info.GetFriendlyName().c_str());
     setGroup(QString("input/pylon/") + info.GetDeviceClass().c_str());

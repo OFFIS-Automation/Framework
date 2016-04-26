@@ -1,9 +1,10 @@
 #ifndef CUSTOMRCUNIT_H
 #define CUSTOMRCUNIT_H
 
-
+#include <QMutex>
 #include <QObject>
 #include <QPointF>
+
 #include <types/HwRcUnit.h>
 
 class CustomRcUnit : public HwRcUnit

@@ -22,6 +22,7 @@
 #include <QStyleFactory>
 #include <Notifications.h>
 #include <QSysInfo>
+#include <QThread>
 
 #include "MasterWindow.h"
 #include "PluginLoader.h"

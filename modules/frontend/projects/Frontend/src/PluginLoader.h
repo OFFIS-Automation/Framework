@@ -38,9 +38,11 @@ public:
     void deinitializeGuis();
     void deinitializeModels();
     void unload();
+
 public slots:
     void openProject(const QString& projectFile);
     void closeProject();
+
 protected:
     QString mPath;
     QMap<QString, ModelPluginInterface*> mModelPlugins;

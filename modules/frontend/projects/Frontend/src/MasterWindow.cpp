@@ -16,6 +16,7 @@
 
 #include "MasterWindow.h"
 #include "ui_MasterWindow.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
@@ -27,6 +28,8 @@
 #include <QMessageBox>
 #include <QUrl>
 #include <QDate>
+
+#include <winsparkle.h>
 
 #include "version.h"
 #include "newProjectWizard/CreateProjectDialog.h"
@@ -196,6 +199,12 @@ void MasterWindow::on_actionReload_project_triggered()
         QString projectPath = mRecentProjects.first();
         openProject(projectPath);
     }
+}
+
+
+void MasterWindow::on_actionSearch_for_updates_triggered()
+{
+    win_sparkle_check_update_with_ui();
 }
 
 void MasterWindow::on_actionAbout_OFFIS_Automation_Toolbox_triggered()

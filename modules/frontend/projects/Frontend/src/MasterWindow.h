@@ -33,12 +33,14 @@ public:
     explicit MasterWindow(QWidget *parent = 0);
     ~MasterWindow();
     QMenu* getMenu(QString name);
+
 signals:
     void openProject(const QString& projectPath);
     void closeProject();
     void showStartScreen();
     void showAboutScreen();
     void showHelpWidget();
+
 public slots:
     virtual void setVisible(bool visible);
 
@@ -48,6 +50,8 @@ private slots:
     void on_actionNew_project_triggered();
     void on_actionClose_project_triggered();
     void open(const QString &projectPath);
+
+    void on_actionSearch_for_updates_triggered();
 
     void on_actionAbout_OFFIS_Automation_Toolbox_triggered();
     void on_actionAbout_Qt_triggered();

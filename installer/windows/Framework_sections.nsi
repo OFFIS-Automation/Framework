@@ -17,6 +17,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "..\..\bin\libGLESv2.dll"
 	File "..\..\bin\d3dcompiler_47.dll"
 	File "..\..\bin\opengl32sw.dll"
+	File "..\..\bin\WinSparkle.dll"
 	File "..\..\bin\gamepads.ini"
 	File /x "opencv*d.dll" "..\..\bin\opencv*.dll"
 	
@@ -81,6 +82,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\libGLESv2d.dll"
 	File "..\..\bin\debug\d3dcompiler_47.dll"
 	File "..\..\bin\debug\opengl32sw.dll"
+	File "..\..\bin\debug\WinSparkle.dll"
 	File "..\..\bin\debug\gamepads.ini"
 	File "..\..\bin\debug\opencv*.dll"
 	

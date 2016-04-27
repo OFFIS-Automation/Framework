@@ -47,6 +47,8 @@
      <string>Help</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionSearch_for_updates"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout_OFFIS_Automation_Toolbox"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
@@ -162,12 +164,21 @@
     <string>Reload the current project</string>
    </property>
   </action>
+  <action name="actionSearch_for_updates">
+   <property name="icon">
+    <iconset resource="../images/images.qrc">
+     <normaloff>:/img/arrow_refresh.png</normaloff>:/img/arrow_refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search for updates</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
-  <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
-  <include location="../images/images.qrc"/>
   <include location="../../../../olvis3/projects/OlvisGuiPlugin/images/images.qrc"/>
+  <include location="../../../../automation/projects/HilecGui/images/images.qrc"/>
+  <include location="../../../../automation/projects/ProjectEditor/images/images.qrc"/>
+  <include location="../images/images.qrc"/>
  </resources>
  <connections>
   <connection>

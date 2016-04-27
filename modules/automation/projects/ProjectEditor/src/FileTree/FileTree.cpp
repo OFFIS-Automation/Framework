@@ -42,12 +42,7 @@ FileTree::FileTree(QWidget *parent) :
 
     ui->treeView->setModel(&mFilteredModel);
     ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
-
-    ui->treeView->setAnimated(false);
     ui->treeView->hideColumn(2);
-    ui->treeView->setIndentation(20);
-    ui->treeView->setSortingEnabled(false);
-    ui->treeView->show();
 
     // Signal / Slots
     connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(on_model_fileRenamed(QString,QString,QString)));
@@ -60,19 +55,19 @@ FileTree::~FileTree()
 
 void FileTree::updateTree(QString directoryName)
 {
-    mBaseDir = directoryName;
-    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
+    //mBaseDir = directoryName;
+    //ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
 }
 
 void FileTree::on_treeView_doubleClicked(const QModelIndex &index)
 {
-    QModelIndex realIndex = mFilteredModel.mapToSource(index);
-    if (mModel.fileInfo(realIndex).absoluteFilePath().isEmpty())
+    QModelIndex realCurrentIndex = mFilteredModel.mapToSource(index);
+    if (mModel.fileInfo(realCurrentIndex).absoluteFilePath().isEmpty())
         return;
-    if (mModel.fileInfo(realIndex).isDir())
+    if (mModel.fileInfo(realCurrentIndex).isDir())
         return;
 
-    emit openFileRequested(mModel.fileInfo(realIndex).absoluteFilePath());
+    emit openFileRequested(mModel.fileInfo(realCurrentIndex).absoluteFilePath());
 }
 
 void FileTree::keyPressEvent(QKeyEvent *e)

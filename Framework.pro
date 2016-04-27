@@ -18,7 +18,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 # Do all the other stuff
-SUBDIRS +=  subtree/qt-remote-signals/qtRemoteSignals \
+SUBDIRS += subtree/qt-remote-signals/qtRemoteSignals \
     modules/sensorSystem \
     modules/frontend/projects/LogWidget \
     modules/frontend/projects/Notifications \

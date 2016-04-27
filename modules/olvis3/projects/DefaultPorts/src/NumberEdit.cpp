@@ -16,6 +16,8 @@
 
 #include "NumberEdit.h"
 
+#include <QDebug>
+
 NumberEdit::NumberEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
     mSpinBox = new QSpinBox(this);

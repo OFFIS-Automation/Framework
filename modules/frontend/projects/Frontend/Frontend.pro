@@ -24,29 +24,34 @@ QT       += core gui widgets
 
 TARGET = Framework
 TEMPLATE = app
-INCLUDEPATH += $${PWD}
-
-INCLUDEPATH += ../../include
-INCLUDEPATH += ../Notifications/include
-INCLUDEPATH += ../../projects/LogWidget
 
 macx{
     ICON = images/icon.icns
 }
-
 win32-msvc*{
     RC_FILE = appIcon.rc
 }
 
+include(../../../properties/pathes.pro)
+
 DEFINES += MAJOR_VERSION=0
 DEFINES += MINOR_VERSION=3
-DEFINES += PATCH_VERSION=4
-
-include(../../../properties/pathes.pro)
+DEFINES += PATCH_VERSION=6
 
 DESTDIR = $${targetDir}
 
+INCLUDEPATH += $${PWD}
+INCLUDEPATH += $${PWD}/winSparkle/include
+INCLUDEPATH += ../Notifications/include
+INCLUDEPATH += ../../include
+INCLUDEPATH += ../../projects/LogWidget
+
 LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
+CONFIG(debug, debug|release) {
+    LIBS += -L$${PWD}/winSparkle/lib/debug -lWinSparkle
+} else {
+    LIBS += -L$${PWD}/winSparkle/lib/release -lWinSparkle
+}
 
 SOURCES += src/main.cpp\
     src/MainWindow.cpp \
@@ -95,9 +100,10 @@ TRANSLATIONS = $${translationDir}/de/frontend_de.ts \
     $${translationDir}/stub/frontend_stub.ts
 
 dlls.path  =  $${DESTDIR}
-dllA.path   += $${DESTDIR}/platforms
-dllB.path   += $${DESTDIR}/imageformats/
-dllC.path   += $${DESTDIR}/iconengines/
+dllPlatforms.path   += $${DESTDIR}/platforms
+dllImageformats.path+= $${DESTDIR}/imageformats/
+dllIconengines.path += $${DESTDIR}/iconengines/
+dllWinsparkle.path  += $${DESTDIR}/
 
 dlls.files += $$[QT_INSTALL_BINS]/d3dcompiler_47.dll
 dlls.files += $$[QT_INSTALL_BINS]/opengl32sw.dll
@@ -120,19 +126,21 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svgd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
 
-    dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
+    dlls.files    += $${PWD}/winSparkle/bin/debug/WinSparkle.dll
 
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
+    dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
 
-    dllC.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicond.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
+
+    dllIconengines.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicond.dll
 } else {
     dlls.files += $$[QT_INSTALL_BINS]/icudt5*.dll
     dlls.files += $$[QT_INSTALL_BINS]/icuin5*.dll
@@ -151,18 +159,20 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svg.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
 
-    dllA.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
+    dlls.files    += $${PWD}/winSparkle/bin/release/WinSparkle.dll
 
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qdds.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgif.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicns.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qico.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpeg.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtga.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiff.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp.dll
-    dllB.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebp.dll
+    dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
 
-    dllC.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicon.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qdds.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgif.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicns.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qico.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpeg.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtga.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiff.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp.dll
+    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebp.dll
+
+    dllIconengines.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicon.dll
 }
-INSTALLS   += dlls dllA dllB dllC
+INSTALLS   += dlls dllPlatforms dllImageformats dllIconengines

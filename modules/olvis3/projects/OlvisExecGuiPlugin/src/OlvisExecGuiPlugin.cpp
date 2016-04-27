@@ -281,8 +281,10 @@ void OlvisExecGuiPlugin::closeProject()
     {
         if(QMessageBox::question(0, tr("Save vision configuration?"),
                                  tr("Do you want to save the vision configuration?"),
-                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes);
-        save();
+                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+        {
+            save();
+        }
     }
     graphFile = QString();
     QFile(autoSaveFile).remove();

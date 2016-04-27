@@ -38,6 +38,9 @@
       <property name="defaultDropAction">
        <enum>Qt::MoveAction</enum>
       </property>
+      <property name="uniformRowHeights">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>

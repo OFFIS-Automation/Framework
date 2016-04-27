@@ -22,17 +22,21 @@
 #include <QStyleFactory>
 #include <Notifications.h>
 #include <QSysInfo>
+#include <QThread>
 
+#include "Application.h"
+#include "DockWidgetTitle.h"
 #include "MasterWindow.h"
 #include "PluginLoader.h"
-#include <interfaces/logging.h>
-#include "DockWidgetTitle.h"
-#include <LogWindow.h>
+
 #include "PerspectiveControl.h"
-#include "Application.h"
-#include "qglobal.h"
 #include "TranslationLoader.h"
 #include "version.h"
+#include "qglobal.h"
+
+#include <interfaces/logging.h>
+#include <LogWindow.h>
+#include <winsparkle.h>
 
 int main(int argc, char *argv[])
 {
@@ -40,9 +44,15 @@ int main(int argc, char *argv[])
     a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
     a.setOrganizationName("OFFIS");
     a.setApplicationName("Automation Framework");
+    a.setOrganizationDomain("http://www.uni-oldenburg.de/amir");
     if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
         a.setStyle(QStyleFactory::create("Fusion"));
     }
+
+    // Init winSparkle
+    win_sparkle_set_appcast_url("");
+    win_sparkle_set_app_details(L"OFFIS", L"Automation Framework", L"0.3.6");
+    win_sparkle_init();
 
     // Initialize translator
     TranslationLoader translator;

@@ -33,16 +33,14 @@ FileTree::FileTree(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mBaseDir = QDir::rootPath();
-    mModel.setReadOnly(false);
-    mModel.setRootPath(mBaseDir);
+	mBaseDir = QDir::rootPath();
+	mModel.setReadOnly(false);
+	mModel.setRootPath(mBaseDir);
 
     mFilteredModel.setDynamicSortFilter(true);
     mFilteredModel.setSourceModel(&mModel);
 
-    ui->treeView->setModel(&mFilteredModel);
-    ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
-    ui->treeView->hideColumn(2);
+	ui->treeView->hideColumn(2);
 
     // Signal / Slots
     connect(&mModel, SIGNAL(fileRenamed(QString, QString, QString)), this, SLOT(on_model_fileRenamed(QString,QString,QString)));
@@ -55,8 +53,17 @@ FileTree::~FileTree()
 
 void FileTree::updateTree(QString directoryName)
 {
-    //mBaseDir = directoryName;
-    //ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
+	mBaseDir = directoryName;
+
+	ui->treeView->setModel(&mFilteredModel);
+	ui->treeView->setRootIndex(mFilteredModel.mapFromSource(mModel.index(mBaseDir)));
+}
+
+void FileTree::close()
+{
+	mBaseDir = QDir::rootPath();
+
+	ui->treeView->setModel(nullptr);
 }
 
 void FileTree::on_treeView_doubleClicked(const QModelIndex &index)

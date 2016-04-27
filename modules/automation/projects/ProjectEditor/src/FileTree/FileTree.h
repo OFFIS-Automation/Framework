@@ -33,7 +33,7 @@ class FileTree : public QDockWidget
 
 public:
     explicit FileTree(QWidget *parent = 0);
-    ~FileTree();
+	~FileTree();
 
 signals:
     void openFileRequested(QString filename);
@@ -43,7 +43,8 @@ signals:
     void closeFileRequested(QString filename);
 
 public slots:
-    void updateTree(QString directoryName);
+	void updateTree(QString directoryName);
+	void close();
 
 private slots:
     void on_treeView_doubleClicked(const QModelIndex &index);

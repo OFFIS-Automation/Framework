@@ -112,13 +112,13 @@ int main(int argc, char *argv[])
     // Shows windows
     masterWindow->setAlternative(slaveWindow);
     masterWindow->move(desktop->availableGeometry(desktop->primaryScreen()).topLeft());
-    masterWindow->showMaximized();
+	masterWindow->showMaximized();
 
     if(multiScreen){
         slaveWindow->setAlternative(masterWindow);
         int screen = desktop->primaryScreen() == 0 ? 1 : 0;
         slaveWindow->move(desktop->availableGeometry(screen).topLeft());
-        slaveWindow->showMaximized();
+		slaveWindow->showMaximized();
     }
     splashScreen.finish(masterWindow);
     perspectiveControl.start();

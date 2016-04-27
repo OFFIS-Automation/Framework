@@ -8,7 +8,7 @@ namespace Scratch
 {
 
 PassBlock::PassBlock()
-	: Block(100, 40)
+	: Block(s_defaultWidth, s_defaultHeight)
 {
 	setAcceptDrops(true);
 }
@@ -20,10 +20,10 @@ void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidge
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
-	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
+	painter->setFont(m_font);
 	painter->drawText(boundingRect(), Qt::AlignCenter, "Pass");
 }
 

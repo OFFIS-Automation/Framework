@@ -1,19 +1,23 @@
 #include "ArgumentBlock.h"
 
-#include <QPainter>
+#include <algorithm>
 
-#include "TrueCondition.h"
+#include <QPainter>
+#include <QGraphicsSceneDragDropEvent>
+#include <QGraphicsScene>
+
+#include "Condition.h"
 
 namespace Scratch
 {
 
-ArgumentBlock::ArgumentBlock()
-	: Block(270, 50)
+ArgumentBlock::ArgumentBlock(const std::string& name)
+	: Block(s_defaultWidth, s_defaultHeight),
+	  m_name{name}
 {
-	m_name = "Foo";
-	m_arguments.push_back({"b", Item::Type::Condition, new TrueCondition()});
-	m_arguments.push_back({"a", Item::Type::Condition, new TrueCondition()});
-	m_arguments.push_back({"r", Item::Type::Condition, new TrueCondition()});
+	m_width = QFontMetrics(m_font).width(QString::fromStdString(name)) + 2 * s_margin;
+
+	setAcceptDrops(true);
 }
 
 void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
@@ -27,15 +31,16 @@ void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
 
-	QFontMetrics fontMetric(painter->font());
+	QFontMetrics fontMetric(m_font);
 
 	auto x = s_margin;
 
-	auto paintName = [&](auto& name)
+	auto paintName = [&](auto&& name)
 	{
 		auto position = QPointF(x, m_height / 2 + fontMetric.height() / 4);
 
 		painter->setPen(m_textStyle);
+		painter->setFont(m_font);
 		painter->drawText(position, name);
 
 		x += fontMetric.width(name);
@@ -44,91 +49,139 @@ void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 	paintName(QString::fromStdString(m_name));
 	x += s_margin;
 
-	std::for_each(m_arguments.cbegin(), m_arguments.cend(), [&](const Argument &argument)
+	for (const auto& argument : m_arguments)
+	{
+		paintName(QString::fromStdString(argument.name + ":"));
+		x += s_margin / 2;
+
+		if (argument.parameter)
 		{
-			if (argument.parameter->itemType() == Item::Type::Condition)
-			{
-				paintName(QString::fromStdString(argument.name + ":"));
-				x += s_margin / 2;
+			x += argument.parameter->m_width + s_margin;
 
-				polygon.clear();			
-				Condition::drawOutline(polygon, 40, m_height - 2 * s_margin, QPoint(x, s_margin));
+			continue;
+		}
 
-				painter->setBrush(m_outlineStyle.color());
-				painter->setPen(m_outlineStyle);
-				painter->setRenderHint(QPainter::Antialiasing);
-				painter->drawPolygon(polygon);
+		polygon.clear();
 
-				x += 40 + s_margin;
-			}
-		});
+		if (argument.type == Item::Type::Condition)
+			Condition::drawOutline(polygon,
+				QRect(x, s_margin, s_defaultParameterWidth, parameterHeight()));
+
+		painter->setBrush(m_outlineStyle.color());
+		painter->setPen(m_outlineStyle);
+		painter->setRenderHint(QPainter::Antialiasing);
+		painter->drawPolygon(polygon);
+
+		x += s_defaultParameterWidth + s_margin;
+	}
 }
 
 Item& ArgumentBlock::clone() const
 {
-	return *(new ArgumentBlock());
+	auto& argumentBlock =  *(new ArgumentBlock(m_name));
+
+	for (const auto& argument : m_arguments)
+		argumentBlock.addArgument(argument.name, argument.type);
+
+	return argumentBlock;
 }
 
 void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
+	for (unsigned i = 0; i < indentationDepth; ++i)
+		stream << "\t";
 
+	stream << "foo." << m_name << "(";
+
+	for (auto argument = m_arguments.cbegin(); argument != m_arguments.cend(); ++argument)
+	{
+		if (!argument->parameter)
+			throw std::invalid_argument("Not all parameters are defined.");
+
+		stream << *argument->parameter;
+
+		if (argument + 1 != m_arguments.cend())
+			stream << ", ";
+	}
+
+	stream << ")\n";
+
+	// next
+	if (m_successor)
+		m_successor->print(stream, indentationDepth);
+}
+
+void ArgumentBlock::addArgument(const std::string& name, const Item::Type& type)
+{
+	QFontMetrics fontMetric(m_font);
+
+	const auto appendageWidth =
+		s_margin + fontMetric.width(QString::fromStdString(name + ":")) + s_margin / 2;
+
+	const auto x = (m_arguments.empty()?
+			s_margin + fontMetric.width(QString::fromStdString(m_name)) :
+			m_arguments.back().x + (m_arguments.back().parameter?
+				m_arguments.back().parameter->m_width :
+				s_defaultParameterWidth))
+		 + appendageWidth;
+
+	m_arguments.push_back({name, type, x, nullptr});
+	m_width += appendageWidth + s_defaultParameterWidth;
 }
 
 void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
-	/*const auto& position = event->pos();
+	const auto& position = event->pos();
 
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
 
 	Item& item = Item::unpackItem(*event);
 
-	if (item.itemType() == Item::Type::Condition)
+	if (item.itemType() == Item::Type::Block)
 	{
-		if (!inConditionArea(position))
-			return;
-	}
-	else if (item.itemType() == Item::Type::Block)
-	{
-		Block& block = *reinterpret_cast<Block*>(&item);
-
-		if (isSelfOrAncestor(block))
-			return;
-
-		auto y = m_headerHeight;
-
-		const auto inBodyRange = m_bodies.cend()
-			!= std::find_if(m_bodies.cbegin(), m_bodies.cend(), [&](const Body& body)
-				{
-					const auto& isInRange = inConnectorActivationRange(position, y);
-
-					y += body.height + s_defaultHeaderHeight;
-
-					return isInRange;
-				});
-
 		if (!inConnectorActivationRange(position, 0)
-				&& !inConnectorActivationRange(position, m_height)
-				&& !inBodyRange)
+				&& !inConnectorActivationRange(position, m_height))
 			return;
 	}
 	else
-		return;
+	{
+		Parameter& parameter = *reinterpret_cast<Parameter*>(&item);
+
+		const auto inArgumentRange = m_arguments.cend()
+			!= std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const auto& argument)
+				{
+					if (argument.parameter)
+						return false;
+
+					if (parameter.itemType() != argument.type)
+						return false;
+
+					const auto& boundingRectangle = QRect(
+						argument.x, s_margin,
+						s_defaultParameterWidth, parameterHeight());
+
+					return boundingRectangle.contains(position.toPoint());
+				});
+
+		if (!inArgumentRange)
+			return;
+	}
 
 	if (item.scene() != this->scene())
 		event->setDropAction(Qt::CopyAction);
 	else
-		event->setDropAction(Qt::MoveAction);*/
+		event->setDropAction(Qt::MoveAction);
 }
 
 void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
-	/*const auto& position = event->pos();
+	event->accept();
 
-	auto oldHeight = m_height;
-	auto oldHeaderHeight = m_headerHeight;
+	const auto& position = event->pos();
 
-	auto oldBodies = m_bodies;
+	const auto oldHeight = m_height;
+	const auto oldArguments = m_arguments;
 
 	auto* item = &Item::unpackItem(*event);
 
@@ -148,15 +201,8 @@ void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 		item->remove();
 	}
 
-	// Condition
-	if (item->itemType() == Item::Type::Condition)
-	{
-		auto& condition = *reinterpret_cast<Parameter*>(item);
-
-		addCondition(condition);
-	}
 	// Block
-	else
+	if (item->itemType() == Item::Type::Block)
 	{
 		auto& block = *reinterpret_cast<Block*>(item);
 
@@ -164,82 +210,118 @@ void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 			addAbove(block);
 		else if (inConnectorActivationRange(position, oldHeight))
 			addBelow(block);
-		else
+	}
+	// Parameter
+	else
+	{
+		auto& parameter = *reinterpret_cast<Parameter*>(item);
+
+		auto oldArgument = oldArguments.cbegin();
+
+		for (auto &argument : m_arguments)
 		{
-			auto oldY = oldHeaderHeight;
-			auto oldBody = oldBodies.cbegin();
+			const auto& boundingRectangle =
+				QRect(oldArgument->x, s_margin, s_defaultParameterWidth, parameterHeight());
 
-			auto y = m_headerHeight;
-
-			for (auto &body : m_bodies)
+			if (boundingRectangle.contains(position.toPoint()))
 			{
-				if (inConnectorActivationRange(position, oldY))
-				{
-					addBody(block, body.block, QPoint(s_shaftHeight, y));
+				addParameter(parameter, argument.parameter, QPoint(argument.x, s_margin));
 
-					return;
-				}
-
-				oldY += oldBody->height + s_defaultHeaderHeight;
-				++oldBody;
-
-				y += body.height + s_defaultHeaderHeight;
+				return;
 			}
+
+			++oldArgument;
 		}
-	}*/
+	}
 }
 
-void ArgumentBlock::resizeBy(int dx, int dy, const QPointF& triggerPosition)
+void ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 {
-	/*int actualDx{dx};
-	int actualDy{dy};
+	auto actualDx = dx;
+	auto actualDy = dy;
 
-	auto moveBodies = [&](auto &start, auto& dy)
-		{
-			std::for_each(start, m_bodies.end(), [&](auto& body)
-			{
-				if (!body.block)
-					return;
-
-				body.block->moveBy(0, dy);
-				body.block->updateSuccessorPositions(0, dy);
-			});
-		};
-
-	if (inConditionArea(triggerPosition))
+	auto moveParameters = [&](auto&& start, auto&& dx)
 	{
-		actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
-		actualDy = std::max(m_headerHeight + dy, s_defaultHeaderHeight) - m_headerHeight;
+		std::for_each(start, m_arguments.end(), [&](auto& argument)
+		{
+			argument.x += dx;
+
+			if (argument.parameter)
+				argument.parameter->moveBy(dx, 0);
+		});
+	};
+
+	for (auto argument = m_arguments.begin(); argument != m_arguments.end(); ++argument)
+	{
+		const auto& boundingRectangle = argument->parameter?
+			argument->parameter->mapRectToParent(argument->parameter->boundingRect()).toRect() :
+			QRect(
+				argument->x, s_margin,
+				s_defaultParameterWidth, parameterHeight());
+
+		if (!boundingRectangle.contains(triggerPosition))
+			continue;
+
+		actualDx = std::max(boundingRectangle.width() + dx, s_defaultParameterWidth)
+			- boundingRectangle.width();
+
+		if (dy < 0)
+		{
+			const auto heighestArgument = std::max_element(m_arguments.cbegin(), m_arguments.cend(),
+				[&](const auto& lhs, const auto& rhs)
+				{
+					// Don't consider the trigger argument itself
+					if (&lhs == &*argument)
+						return true;
+
+					if (&rhs == &*argument)
+						return false;
+
+					// Only consider arguments with parameters
+					if (!lhs.parameter && !rhs.parameter)
+						return false;
+
+					if (!lhs.parameter)
+						return true;
+
+					if (!rhs.parameter)
+						return false;
+
+					return lhs.parameter->m_height < rhs.parameter->m_height;
+				});
+
+			if (heighestArgument != m_arguments.cend() && heighestArgument->parameter
+				&& heighestArgument->parameter->m_height + 2 * s_margin > m_height + dy)
+					actualDy = heighestArgument->parameter->m_height + 2 * s_margin - m_height;
+		}
 
 		if (!actualDx && !actualDy)
 			return;
 
-		m_headerHeight += actualDy;
-		update(boundingRect());
-		moveBodies(m_bodies.begin(), actualDy);
+		moveParameters(argument + 1, actualDx);
 
-		Block::resizeBy(actualDx, actualDy, triggerPosition);
-
-		return;
+		break;
 	}
 
-	Block::resizeBy(actualDx, actualDy, triggerPosition);*/
+	Block::resizeBy(actualDx, actualDy, triggerPosition);
 }
 
-void ArgumentBlock::addParameter(Parameter& parameter)
+void ArgumentBlock::addParameter(Parameter& parameter, Parameter*& argumentParameter,
+	const QPoint &offset)
 {
-	/*const auto dWidth = parameter.m_width - defaultConditionWidth();
-	const auto dHeight = parameter.m_height - defaultConditionHeight();
+	assert(!argumentParameter && "Parameter of the argument is already assigned");
 
-	const QPointF offset(s_shaftHeight + s_parameterMargin, s_parameternMargin);
+	const auto dx = parameter.m_width - s_defaultParameterWidth;
+	const auto dy = parameter.m_height - parameterHeight();
 
 	parameter.setParent(this);
+	parameter.m_parentReference = reinterpret_cast<Parameter**>(&argumentParameter);
 	parameter.setPos(offset);
 
-	m_parameter = &parameter;
-	resizeBy(dWidth, dHeight, offset);
+	resizeBy(dx, dy, offset);
 
-	scene()->addItem(&parameter);*/
+	argumentParameter = &parameter;
+	scene()->addItem(&parameter);
 }
 
 } // namespace Scratch

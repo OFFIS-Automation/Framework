@@ -10,7 +10,7 @@ namespace Scratch
 // Frame block
 
 FrameBlock::FrameBlock()
-	: Block(100, 40)
+	: Block(s_defaultWidth, s_defaultHeight)
 {
 	setAcceptDrops(true);
 }
@@ -43,10 +43,10 @@ void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
-	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
+	painter->setFont(m_font);
 	painter->drawText(boundingRect(), Qt::AlignCenter, "Start");
 }
 
@@ -140,6 +140,7 @@ void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
+	painter->setFont(m_font);
 	painter->drawText(boundingRect(), Qt::AlignCenter, "Stop");
 }
 

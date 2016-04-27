@@ -6,7 +6,7 @@
 namespace Scratch
 {
 
-class WhileBlock : public ControlFlowBlock<1>
+class WhileBlock : public ControlFlowBlock
 {
 	public:
 		WhileBlock();

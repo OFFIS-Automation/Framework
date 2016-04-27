@@ -10,7 +10,7 @@ namespace Scratch
 {
 
 WhileBlock::WhileBlock()
-	: ControlFlowBlock(100, 100),
+	: ControlFlowBlock(s_defaultWidth, s_defaultHeight + 2 * s_defaultHeaderHeight, 1),
 	  m_body{m_bodies.at(0)}
 {
 	setAcceptDrops(true);
@@ -18,10 +18,13 @@ WhileBlock::WhileBlock()
 
 void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget)
 {
-	ControlFlowBlock<1>::paint(painter, style, widget);
+	ControlFlowBlock::paint(painter, style, widget);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(10, 10, m_width - 20, s_shaftHeight), "while");
+	painter->setFont(m_font);
+	painter->drawText(QRectF(s_margin, s_margin,
+		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
+		Qt::AlignLeft | Qt::AlignVCenter, "while");
 }
 
 Block& WhileBlock::clone() const

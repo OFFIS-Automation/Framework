@@ -12,22 +12,21 @@ Item::Type Condition::itemType() const
 	return Type::Condition;
 }
 
-void Condition::drawOutline(QPolygon &poylgon, const int width, const int height,
-	const QPoint& position)
+void Condition::drawOutline(QPolygon &poylgon, const QRect& area)
 {
-	const auto tipHeight = height / 2;
+	const auto tipHeight = area.height() / 2;
 
-	poylgon	<< (position + QPoint(0, tipHeight))
-		<< (position + QPoint(tipHeight, 0))
-		<< (position + QPoint(width - tipHeight, 0))
-		<< (position + QPoint(width, tipHeight))
-		<< (position + QPoint(width - tipHeight, height))
-		<< (position + QPoint(tipHeight, height));
+	poylgon	<< (area.topLeft() + QPoint(0, tipHeight))
+		<< (area.topLeft() + QPoint(tipHeight, 0))
+		<< (area.topLeft() + QPoint(area.width() - tipHeight, 0))
+		<< (area.topLeft() + QPoint(area.width(), tipHeight))
+		<< (area.topLeft() + QPoint(area.width() - tipHeight, area.height()))
+		<< (area.topLeft() + QPoint(tipHeight, area.height()));
 }
 
 void Condition::drawOutline(QPolygon &poylgon)
 {
-	drawOutline(poylgon, m_width, m_height);
+	drawOutline(poylgon, QRect(0, 0, m_width, m_height));
 }
 
 } // namespace Scratch

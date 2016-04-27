@@ -30,7 +30,7 @@ class Widget : public QDockWidget
 
 	private slots:
 		void updateRcUnits(bool);
-		void onDockLocationChanged(const Qt::DockWidgetArea& area);
+		void onDockLocationChanged(const Qt::DockWidgetArea&);
 
 	private:
 		std::unique_ptr<Ui::ScratchWidget> m_ui;

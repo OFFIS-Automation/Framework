@@ -6,7 +6,7 @@
 namespace Scratch
 {
 
-class IfElseBlock : public ControlFlowBlock<2>
+class IfElseBlock : public ControlFlowBlock
 {
 	public:
 		IfElseBlock();
@@ -17,8 +17,6 @@ class IfElseBlock : public ControlFlowBlock<2>
 		void print(std::ostream& stream, unsigned indentationDepth) const;
 
 	private:
-		int m_trueBodyHeight = defaultBodyHeight();
-
 		Body& m_trueBody;
 		Body& m_falseBody;
 };

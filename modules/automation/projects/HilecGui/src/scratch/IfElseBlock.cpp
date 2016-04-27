@@ -10,7 +10,7 @@ namespace Scratch
 {
 
 IfElseBlock::IfElseBlock()
-	: ControlFlowBlock(100, 150),
+	: ControlFlowBlock(s_defaultWidth, 2 * s_defaultHeight + 3 * s_defaultHeaderHeight, 2),
 	  m_trueBody{m_bodies.at(0)},
 	  m_falseBody{m_bodies.at(1)}
 {
@@ -19,12 +19,16 @@ IfElseBlock::IfElseBlock()
 
 void IfElseBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget)
 {
-	ControlFlowBlock<2>::paint(painter, style, widget);
+	ControlFlowBlock::paint(painter, style, widget);
 
 	painter->setPen(m_textStyle);
-	painter->drawText(QRectF(10, 10, m_width - 20, s_shaftHeight), "if");
-	painter->drawText(QRectF(
-		10, m_headerHeight + m_trueBody.height + 10, m_width - 20, s_shaftHeight), "else");
+	painter->setFont(m_font);
+	painter->drawText(QRectF(s_margin, s_margin,
+		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
+		Qt::AlignLeft | Qt::AlignVCenter, "if");
+	painter->drawText(QRectF(s_margin, m_headerHeight + m_trueBody.height + s_margin,
+		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
+		Qt::AlignLeft | Qt::AlignVCenter, "else");
 }
 
 Block& IfElseBlock::clone() const

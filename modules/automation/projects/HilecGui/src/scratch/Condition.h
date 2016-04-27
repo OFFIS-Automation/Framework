@@ -9,8 +9,7 @@ namespace Scratch
 class Condition : public Parameter
 {
 	public:
-		static void drawOutline(QPolygon& poylgon, const int width,	const int height,
-			const QPoint& position = QPoint());
+		static void drawOutline(QPolygon& poylgon, const QRect& area);
 
 	public:
 		Condition(int width, int height);

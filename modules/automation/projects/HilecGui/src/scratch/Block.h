@@ -15,7 +15,9 @@ namespace Scratch
 class Block : public Item
 {
 	public:
-		static const int s_connectorMargin = 10;
+		static const int s_defaultWidth = 120;
+		static const int s_defaultHeight = 40;
+
 		static const int s_connectorHeight = 5;
 		static const int s_connectorWidth = 20;
 		static const int s_connectorMidsegmentOffset = 5;
@@ -38,6 +40,8 @@ class Block : public Item
 		void addBelow(Block& block);
 		void remove();
 
+		virtual void resizeBy(int dx, int dy, const QPoint&);
+
 		void updateSuccessorPositions(int dx, int dy) const;
 
 		Block** m_predecessorsReference{nullptr};
@@ -48,8 +52,6 @@ class Block : public Item
 
 		void drawConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
 		void drawOutline(QPolygon& polygon) const;
-
-		void resizeBy(int dx, int dy, const QPointF&);
 
 		bool isSelfOrAncestor(Block &block);
 };

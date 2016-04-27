@@ -1,12 +1,16 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <cassert>
+
 #include <ostream>
 #include <functional>
 #include <memory>
+#include <iostream>
 
 #include <QGraphicsItem>
 #include <QPen>
+#include <QFont>
 
 namespace Scratch
 {
@@ -14,9 +18,10 @@ namespace Scratch
 class Item : public QGraphicsItem
 {
 	public:
+		static const int s_margin = 15;
+
 		static Item& unpackItem(const QGraphicsSceneDragDropEvent& event);
 
-	protected:
 		enum class Type
 		{
 			Block,
@@ -30,7 +35,8 @@ class Item : public QGraphicsItem
 
 		void setParent(Item* parent);
 		virtual void remove();
-		virtual void resizeBy(int dx, int dy, const QPointF&);
+
+		virtual void resizeBy(int dx, int dy, const QPoint&);
 
 		int m_width;
 		int m_height;
@@ -43,6 +49,7 @@ class Item : public QGraphicsItem
 
 		void addItem(Item& item);
 
+		QFont m_font;
 		QPen m_outlineStyle;
 		QPen m_textStyle;
 		QColor m_fillStyle;

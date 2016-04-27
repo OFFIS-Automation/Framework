@@ -48,16 +48,16 @@ void Block::drawConnector(QPolygon& polygon, int x, int y, bool reverse) const
 {
 	std::array<QPoint, 4> points{{
 		QPoint(
-			x + s_connectorMargin,
+			x + s_margin,
 			y),
 		QPoint(
-			x + s_connectorMargin + s_connectorMidsegmentOffset,
+			x + s_margin + s_connectorMidsegmentOffset,
 			y + s_connectorHeight),
 		QPoint(
-			x + s_connectorMargin + s_connectorWidth - s_connectorMidsegmentOffset,
+			x + s_margin + s_connectorWidth - s_connectorMidsegmentOffset,
 			y + s_connectorHeight),
 		QPoint(
-			x + s_connectorMargin + s_connectorWidth,
+			x + s_margin + s_connectorWidth,
 			y)}};
 
 	auto addPoint = [&](const auto& point)
@@ -82,7 +82,7 @@ void Block::drawOutline(QPolygon& polygon) const
 	polygon << QPoint(m_width, 0);
 }
 
-void Block::resizeBy(int dx, int dy, const QPointF&)
+void Block::resizeBy(int dx, int dy, const QPoint&)
 {
 	const auto actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
 	const auto actualDy = std::max(m_height + dy, m_defaultHeight)- m_height;
@@ -90,7 +90,7 @@ void Block::resizeBy(int dx, int dy, const QPointF&)
 	if (!actualDx && !actualDy)
 		return;
 
-	Item::resizeBy(actualDx, actualDy, pos());
+	Item::resizeBy(actualDx, actualDy, pos().toPoint());
 
 	updateSuccessorPositions(0, actualDy);
 }
@@ -131,7 +131,7 @@ void Block::addBelow(Block& block)
 void Block::remove()
 {
 	if (m_parent)
-		m_parent->resizeBy(0, -m_height, pos());
+		m_parent->resizeBy(0, -m_height, pos().toPoint());
 
 	updateSuccessorPositions(0, -m_height);
 

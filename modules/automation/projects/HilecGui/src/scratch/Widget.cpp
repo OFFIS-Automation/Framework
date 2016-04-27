@@ -4,6 +4,7 @@
 #include "../HilecSingleton.h"
 
 #include <iostream>
+#include <sstream>
 
 #include <core/RcUnitHelp.h>
 #include <QKeyEvent>
@@ -15,7 +16,6 @@
 #include "PassBlock.h"
 #include "TrueCondition.h"
 #include "ArgumentBlock.h"
-
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -57,7 +57,10 @@ Widget::Widget(QWidget *parent)
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
 	m_controlScene->addItem(trueCondiftion);
 
-	auto argumentBlock = new ArgumentBlock();
+	auto argumentBlock = new ArgumentBlock("Foo");
+	argumentBlock->addArgument("b", Item::Type::Condition);
+	argumentBlock->addArgument("a", Item::Type::Condition);
+	argumentBlock->addArgument("r", Item::Type::Condition);
 	argumentBlock->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
 	m_controlScene->addItem(argumentBlock);
 
@@ -85,7 +88,10 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 	event->accept();
 
-	m_startBlock->print(std::cout);
+	std::stringstream generatedFile;
+	m_startBlock->print(generatedFile);
+
+	std::cout << generatedFile.str();
 	std::cout.flush();
 }
 
@@ -130,10 +136,7 @@ void Widget::updateRcUnits(bool)
 	m_ui->treeWidget->expandAll();
 }
 
-void Widget::onDockLocationChanged(const Qt::DockWidgetArea& area)
-{
-	// Unused arguments
-	static_cast<void>(area);
-}
+void Widget::onDockLocationChanged(const Qt::DockWidgetArea&)
+{}
 
 } // namespace Scratch

@@ -136,7 +136,8 @@ SOURCES += \
     src/scratch/PassBlock.cpp \
     src/scratch/Parameter.cpp \
     src/scratch/Condition.cpp \
-    src/scratch/ArgumentBlock.cpp
+    src/scratch/ArgumentBlock.cpp \
+    src/scratch/ControlFlowBlock.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

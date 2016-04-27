@@ -16,6 +16,8 @@ class Parameter : public Item
 		void remove();
 		virtual void print(std::ostream& stream) const = 0;
 
+		Parameter** m_parentReference{nullptr};
+
 	protected:
 		Parameter(int width, int height);
 

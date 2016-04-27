@@ -25,9 +25,12 @@ Item::Item(const int width, const int height)
 	  m_defaultWidth{width},
 	  m_defaultHeight{height}
 {
+	m_textStyle.setBrush(Qt::white);
+
 	m_outlineStyle.setBrush(Qt::white);
 	m_outlineStyle.setWidth(4);
-	m_textStyle.setBrush(Qt::white);
+
+
 	m_fillStyle = Qt::lightGray;
 }
 
@@ -75,12 +78,12 @@ void Item::addItem(Item& item)
 	item.setPos(pos());
 
 	if (m_parent)
-		m_parent->resizeBy(0, item.m_height, pos());
+		m_parent->resizeBy(0, item.m_height, pos().toPoint());
 
 	scene()->addItem(&item);
 }
 
-void Item::resizeBy(int dx, int dy, const QPointF&)
+void Item::resizeBy(int dx, int dy, const QPoint&)
 {
 	const auto actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
 	const auto actualDy = std::max(m_height + dy, m_defaultHeight)- m_height;
@@ -94,7 +97,7 @@ void Item::resizeBy(int dx, int dy, const QPointF&)
 	m_height += actualDy;
 
 	if (m_parent)
-		m_parent->resizeBy(0, actualDy, pos());
+		m_parent->resizeBy(0, actualDy, pos().toPoint());
 }
 
 } // namespace Scratch

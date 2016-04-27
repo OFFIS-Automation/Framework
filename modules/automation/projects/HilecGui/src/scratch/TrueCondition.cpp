@@ -6,21 +6,21 @@ namespace Scratch
 {
 
 TrueCondition::TrueCondition()
-	: Condition(100, 30)
+	: Condition(80, 30)
 {}
 
 void TrueCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon polygon;
 
-	drawOutline(polygon, m_width, m_height);
+	drawOutline(polygon);
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
-	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
 
 	painter->setPen(m_textStyle);
+	painter->setFont(m_font);
 	painter->drawText(boundingRect(), Qt::AlignCenter, "True");
 }
 

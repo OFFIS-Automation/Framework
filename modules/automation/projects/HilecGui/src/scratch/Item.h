@@ -25,7 +25,8 @@ class Item : public QGraphicsItem
 		enum class Type
 		{
 			Block,
-			Condition
+			Condition,
+			Number
 		};
 
 	public:

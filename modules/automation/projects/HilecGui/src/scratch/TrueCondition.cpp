@@ -11,13 +11,13 @@ TrueCondition::TrueCondition()
 
 void TrueCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-	QPolygon polygon;
+	QPolygon outline;
 
-	drawOutline(polygon);
+	drawOutline(outline);
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
-	painter->drawPolygon(polygon);
+	painter->drawPolygon(outline);
 
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);

@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 
 #include "Condition.h"
+#include "Number.h"
 
 namespace Scratch
 {
@@ -65,6 +66,9 @@ void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 
 		if (argument.type == Item::Type::Condition)
 			Condition::drawOutline(polygon,
+				QRect(x, s_margin, s_defaultParameterWidth, parameterHeight()));
+		else if (argument.type == Item::Type::Number)
+			Number::drawOutline(polygon,
 				QRect(x, s_margin, s_defaultParameterWidth, parameterHeight()));
 
 		painter->setBrush(m_outlineStyle.color());

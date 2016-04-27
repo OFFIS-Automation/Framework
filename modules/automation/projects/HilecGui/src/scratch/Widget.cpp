@@ -59,7 +59,7 @@ Widget::Widget(QWidget *parent)
 
 	auto argumentBlock = new ArgumentBlock("Foo");
 	argumentBlock->addArgument("b", Item::Type::Condition);
-	argumentBlock->addArgument("a", Item::Type::Condition);
+	argumentBlock->addArgument("a", Item::Type::Number);
 	argumentBlock->addArgument("r", Item::Type::Condition);
 	argumentBlock->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
 	m_controlScene->addItem(argumentBlock);

@@ -86,7 +86,8 @@ HEADERS += \
     src/scratch/PassBlock.h \
     src/scratch/Parameter.h \
     src/scratch/Condition.h \
-    src/scratch/ArgumentBlock.h
+    src/scratch/ArgumentBlock.h \
+    src/scratch/Number.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -137,7 +138,8 @@ SOURCES += \
     src/scratch/Parameter.cpp \
     src/scratch/Condition.cpp \
     src/scratch/ArgumentBlock.cpp \
-    src/scratch/ControlFlowBlock.cpp
+    src/scratch/ControlFlowBlock.cpp \
+    src/scratch/Number.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

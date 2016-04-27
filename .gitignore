@@ -14,4 +14,11 @@
 
 # OFFIS specific files
 *.exe
-modules/version/version.h
+
+# QT
+subtree/qt-remote-signals/bin/*
+!subtree/qt-remote-signals/bin/*.cpp
+!subtree/qt-remote-signals/bin/*.h
+
+/bin/*
+Framework.pro.user

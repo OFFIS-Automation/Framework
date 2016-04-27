@@ -59,34 +59,10 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QTreeWidget" name="treeWidget">
-           <property name="showDropIndicator" stdset="0">
-            <bool>false</bool>
-           </property>
-           <property name="dragEnabled">
+          <widget class="QGraphicsView" name="rcUnitView">
+           <property name="acceptDrops">
             <bool>true</bool>
            </property>
-           <property name="dragDropMode">
-            <enum>QAbstractItemView::DragOnly</enum>
-           </property>
-           <property name="expandsOnDoubleClick">
-            <bool>false</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string>Method</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Parameter</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Description</string>
-            </property>
-           </column>
           </widget>
          </item>
         </layout>

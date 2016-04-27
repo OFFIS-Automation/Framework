@@ -27,11 +27,13 @@ Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchWidget>()),
 	m_programScene(std::make_unique<QGraphicsScene>(this)),
-	m_controlScene(std::make_unique<ControlScene>(this))
+	m_controlScene(std::make_unique<ControlScene>(this)),
+	m_rcUnitScene(std::make_unique<ControlScene>(this))
 {
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
 	m_ui->controlView->setScene(m_controlScene.get());
+	m_ui->rcUnitView->setScene(m_rcUnitScene.get());
 
 	// Program scene
 	m_startBlock = new StartBlock();
@@ -56,13 +58,6 @@ Widget::Widget(QWidget *parent)
 	auto trueCondiftion = new PassBlock();
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
 	m_controlScene->addItem(trueCondiftion);
-
-	auto argumentBlock = new ArgumentBlock("Foo");
-	argumentBlock->addArgument("b", Item::Type::Condition);
-	argumentBlock->addArgument("a", Item::Type::Number);
-	argumentBlock->addArgument("r", Item::Type::Condition);
-	argumentBlock->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
-	m_controlScene->addItem(argumentBlock);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
@@ -95,7 +90,6 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 	std::cout.flush();
 }
 
-
 void Widget::updateRcUnits(bool)
 {
 	const auto& hilec = *HilecSingleton::hilec();
@@ -107,33 +101,27 @@ void Widget::updateRcUnits(bool)
 		if (help.methods.empty())
 			continue;
 
-		QTreeWidgetItem *treeItem = new QTreeWidgetItem(m_ui->treeWidget);
-
-		treeItem->setFlags(treeItem->flags() ^ Qt::ItemIsDragEnabled);
-		treeItem->setText(0, name);
+		int y = 0;
 
 		for (const auto& method : help.methods)
 		{
 			if (method.hiddenForScratch)
 				continue;
 
-			// Get Parameter names
-			QStringList parameterNames;
+			auto argumentBlock = new ArgumentBlock(method.name.toStdString());
 
 			for (auto parameter : method.parameters)
-				parameterNames << tr("%1 (%2)").arg(parameter.name).arg(QString(parameter.typeName));
+				if (parameter.typeName == "bool")
+					argumentBlock->addArgument(parameter.name.toStdString(), Item::Type::Condition);
+				else if (parameter.typeName == "double")
+					argumentBlock->addArgument(parameter.name.toStdString(), Item::Type::Number);
 
-			QTreeWidgetItem *childTreeItem = new QTreeWidgetItem(QTreeWidgetItem::UserType + CHILD_TYPE_OFFSET);
+			argumentBlock->setPos(0, y);
+			y += argumentBlock->m_height + 30;
 
-			childTreeItem->setText(0, method.name);
-			childTreeItem->setText(1, parameterNames.isEmpty() ? tr("None") : parameterNames.join(", "));
-			childTreeItem->setText(2, method.shortDesc);
-
-			treeItem->addChild(childTreeItem);
+			m_rcUnitScene->addItem(argumentBlock);
 		}
 	}
-
-	m_ui->treeWidget->expandAll();
 }
 
 void Widget::onDockLocationChanged(const Qt::DockWidgetArea&)

@@ -37,6 +37,7 @@ class Widget : public QDockWidget
 
 		std::unique_ptr<QGraphicsScene> m_programScene;
 		std::unique_ptr<ControlScene> m_controlScene;
+		std::unique_ptr<ControlScene> m_rcUnitScene;
 
 		StartBlock* m_startBlock{nullptr};
 

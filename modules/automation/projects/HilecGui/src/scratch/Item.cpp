@@ -74,13 +74,15 @@ void Item::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void Item::addItem(Item& item)
 {
-	item.setParent(m_parent);
 	item.setPos(pos());
 
 	if (m_parent)
+	{
+		item.setParent(m_parent);
 		m_parent->resizeBy(0, item.m_height, pos().toPoint());
-
-	scene()->addItem(&item);
+	}
+	else
+		scene()->addItem(&item);
 }
 
 void Item::resizeBy(int dx, int dy, const QPoint&)

@@ -65,7 +65,7 @@ void ControlFlowBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 
 	if (item.itemType() == Item::Type::Condition)
 	{
-		if (!conditionArea().contains(position))
+		if (m_condition || !conditionArea().contains(position))
 			return;
 	}
 	else if (item.itemType() == Item::Type::Block)

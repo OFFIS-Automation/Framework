@@ -148,8 +148,8 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	{
 		Parameter& parameter = *reinterpret_cast<Parameter*>(&item);
 
-		const auto inArgumentRange = m_arguments.cend()
-			!= std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const auto& argument)
+		const auto argument =
+			std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const auto& argument)
 				{
 					if (argument.parameter)
 						return false;
@@ -164,7 +164,7 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 					return boundingRectangle.contains(position.toPoint());
 				});
 
-		if (!inArgumentRange)
+		if (argument == m_arguments.cend())
 			return;
 	}
 
@@ -221,7 +221,7 @@ void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 		for (auto &argument : m_arguments)
 		{
 			const auto& boundingRectangle =
-				QRect(oldArgument->x, s_margin, s_defaultParameterWidth, parameterHeight());
+				QRect(oldArgument->x, s_margin, s_defaultParameterWidth, oldHeight - 2 * s_margin);
 
 			if (boundingRectangle.contains(position.toPoint()))
 			{

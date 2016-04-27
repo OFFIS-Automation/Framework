@@ -249,8 +249,6 @@ void ControlFlowBlock::addCondition(Condition& condition)
 
 	m_condition = &condition;
 	resizeBy(dWidth, dHeight, offset);
-
-	scene()->addItem(&condition);
 }
 
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)
@@ -265,7 +263,6 @@ void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &of
 	resizeBy(0, dy, offset);
 
 	bodyBlock = &block;
-	scene()->addItem(&block);
 }
 
 } // namespace Scratch

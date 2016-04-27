@@ -321,7 +321,6 @@ void ArgumentBlock::addParameter(Parameter& parameter, Parameter*& argumentParam
 	resizeBy(dx, dy, offset);
 
 	argumentParameter = &parameter;
-	scene()->addItem(&parameter);
 }
 
 } // namespace Scratch

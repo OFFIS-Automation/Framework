@@ -168,7 +168,7 @@ void ProjectEditor::closeProject()
     mEditArea->saveAll();
     mEditArea->closeAll();
     mToolbar->setBaseDir(QString());
-    mFileTree->updateTree(QDir::rootPath());
+	mFileTree->close();
 
     mProjectName.clear();
     mBaseDir.clear();

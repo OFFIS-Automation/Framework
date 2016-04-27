@@ -36,7 +36,7 @@
 
 #include <interfaces/logging.h>
 #include <LogWindow.h>
-#include <winsparkle.h>
+#include <winSparkle/include/winsparkle.h>
 
 int main(int argc, char *argv[])
 {

@@ -23,11 +23,13 @@ void IfElseBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style
 
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);
+
 	painter->drawText(QRectF(s_margin, s_margin,
 		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
 		Qt::AlignLeft | Qt::AlignVCenter, "if");
+
 	painter->drawText(QRectF(s_margin, m_headerHeight + m_trueBody.height + s_margin,
-		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
+		s_shaftExtent - s_margin / 2, s_defaultHeaderHeight - 2 * s_margin),
 		Qt::AlignLeft | Qt::AlignVCenter, "else");
 }
 

@@ -103,4 +103,3 @@ void Item::resizeBy(int dx, int dy, const QPoint&)
 }
 
 } // namespace Scratch
-

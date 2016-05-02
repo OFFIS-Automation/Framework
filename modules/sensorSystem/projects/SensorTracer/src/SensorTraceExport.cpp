@@ -159,6 +159,12 @@ bool SensorTraceExport::exportTrace(const QString &filename, QString& errorMsg)
     return true;
 }
 
+bool SensorTraceExport::exportTrace(const QString &filename)
+{
+	QString errorMessage;
+
+	return exportTrace(filename, errorMessage);
+}
 
 QString SensorTraceExport::convertToString(const QVariant &var, const QString& seperator)
 {

@@ -15,6 +15,7 @@
 #include "PassBlock.h"
 #include "TrueCondition.h"
 #include "ArgumentBlock.h"
+#include "InputNumber.h"
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -55,6 +56,10 @@ Widget::Widget(QWidget *parent)
 	auto trueCondiftion = new PassBlock();
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
 	m_controlScene->addItem(trueCondiftion);
+
+	auto inputNumber = new InputNumber();
+	inputNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
+	m_controlScene->addItem(inputNumber);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
@@ -98,7 +103,7 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 				if (method.hiddenForScratch)
 					continue;
 
-				generatedFile << help.unitName.toStdString() + "." + methodName + "\n";
+				generatedFile << help.unitName.toStdString() + "." + methodName + "()\n";
 
 				break;
 			}

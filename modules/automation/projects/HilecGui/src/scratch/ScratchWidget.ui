@@ -59,50 +59,10 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="Scratch::RCUnits" name="rcUnitsView">
+          <widget class="QTabWidget" name="rcUnitsView">
            <property name="tabBarAutoHide">
             <bool>true</bool>
            </property>
-           <widget class="QWidget" name="add">
-            <attribute name="title">
-             <string>+</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="addRCUnitButton">
-               <property name="text">
-                <string>Add RC-Unit</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
@@ -113,14 +73,6 @@
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Scratch::RCUnits</class>
-   <extends>QTabWidget</extends>
-   <header>src/scratch/RCUnits.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

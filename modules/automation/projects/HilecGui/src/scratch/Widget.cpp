@@ -10,7 +10,6 @@
 #include <QKeyEvent>
 
 #include "FrameBlocks.h"
-
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
 #include "PassBlock.h"
@@ -27,8 +26,7 @@ Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchWidget>()),
 	m_programScene(std::make_unique<QGraphicsScene>(this)),
-	m_controlScene(std::make_unique<ControlScene>(this)),
-	m_rcUnitScene(std::make_unique<ControlScene>(this))
+	m_controlScene(std::make_unique<ControlScene>(this))
 {
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
@@ -100,6 +98,12 @@ void Widget::updateRcUnits(bool)
 		if (help.methods.empty())
 			continue;
 
+		auto view = new QGraphicsView(this);
+		auto scene = new ControlScene(this);
+
+		view->setScene(scene);
+		m_ui->rcUnitsView->addTab(view, help.unitName);
+
 		int y = 0;
 
 		for (const auto& method : help.methods)
@@ -107,7 +111,8 @@ void Widget::updateRcUnits(bool)
 			if (method.hiddenForScratch)
 				continue;
 
-			auto argumentBlock = new ArgumentBlock(method.name.toStdString());
+			auto argumentBlock =
+				new ArgumentBlock((help.unitName + "." + method.name).toStdString());
 
 			for (auto parameter : method.parameters)
 				if (parameter.typeName == "bool")
@@ -118,7 +123,7 @@ void Widget::updateRcUnits(bool)
 			argumentBlock->setPos(0, y);
 			y += argumentBlock->m_height + 30;
 
-			m_rcUnitScene->addItem(argumentBlock);
+			scene->addItem(argumentBlock);
 		}
 	}
 }

@@ -81,7 +81,35 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 	event->accept();
 
 	std::stringstream generatedFile;
+
+	auto printMethodForAllRCUnits = [&](auto & methodName)
+	{
+		const auto& hilec = *HilecSingleton::hilec();
+
+		for (const auto& name : hilec.rcUnits())
+		{
+			auto help = hilec.getUnitHelp(name);
+
+			if (help.methods.empty())
+				continue;
+
+			for (const auto& method : help.methods)
+			{
+				if (method.hiddenForScratch)
+					continue;
+
+				generatedFile << help.unitName.toStdString() + "." + methodName + "\n";
+
+				break;
+			}
+
+			break;
+		}
+	};
+
+	printMethodForAllRCUnits("acquire");
 	m_startBlock->print(generatedFile);
+	printMethodForAllRCUnits("release");
 
 	std::cout << generatedFile.str();
 	std::cout.flush();

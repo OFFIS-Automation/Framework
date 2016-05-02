@@ -95,7 +95,7 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "foo." << m_name << "(";
+	stream << m_name << "(";
 
 	for (auto argument = m_arguments.cbegin(); argument != m_arguments.cend(); ++argument)
 	{

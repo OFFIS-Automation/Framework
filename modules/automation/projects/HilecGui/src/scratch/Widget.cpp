@@ -33,7 +33,6 @@ Widget::Widget(QWidget *parent)
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
 	m_ui->controlView->setScene(m_controlScene.get());
-	m_ui->rcUnitView->setScene(m_rcUnitScene.get());
 
 	// Program scene
 	m_startBlock = new StartBlock();

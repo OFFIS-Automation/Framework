@@ -87,7 +87,8 @@ HEADERS += \
     src/scratch/Parameter.h \
     src/scratch/Condition.h \
     src/scratch/ArgumentBlock.h \
-    src/scratch/Number.h
+    src/scratch/Number.h \
+    src/scratch/RCUnits.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -139,7 +140,8 @@ SOURCES += \
     src/scratch/Condition.cpp \
     src/scratch/ArgumentBlock.cpp \
     src/scratch/ControlFlowBlock.cpp \
-    src/scratch/Number.cpp
+    src/scratch/Number.cpp \
+    src/scratch/RCUnits.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

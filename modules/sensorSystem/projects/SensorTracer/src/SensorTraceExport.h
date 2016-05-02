@@ -30,7 +30,8 @@ public:
     SensorTraceExport();
     void addElement(const QString& id, bool addEntry);
     void setSeperator(const QString& seperator);
-    bool exportTrace(const QString& filename, QString &errorMsg = QString());
+	bool exportTrace(const QString& filename, QString &errorMsg);
+	bool exportTrace(const QString& filename);
     void setStartAtZero(bool startAtZero);
     void enableHeader(bool enable) { Q_UNUSED(enable); mHeader = true; }
     void ignoreInvalids(bool ignore) { mOnlyValidLines = ignore; }

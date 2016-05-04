@@ -29,6 +29,7 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 ## Authors
 ### Current Authors
 - [Tobias Tiemerding](https://github.com/honkmaster/)
+- [Marius Knaust](https://github.com/mariusknaust/)
 
 ### Former Authors
 - [Claas Diederichs](https://github.com/claasd/)

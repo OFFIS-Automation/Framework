@@ -7,7 +7,7 @@ namespace Version
     static const QString DATE = QString(__DATE__).simplified();
     static QString versionString()
     {
-        return QObject::tr("Version: %1 (%2)").arg(Version::BUILD_VERSION_NUMBER).arg(Version::DATE);
+        return QObject::tr("Build: %1 (%2)").arg(Version::BUILD_VERSION_NUMBER).arg(Version::DATE);
     }
 }
 

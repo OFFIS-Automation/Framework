@@ -120,7 +120,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\plugins\SensorSystem.dll"
 	File "..\..\bin\debug\plugins\SensorSystemGui.dll"
 	File "..\..\bin\debug\plugins\SensorTracer.dll"
-	File /r "..\..\bin\debug\plugins\sensorSystem\*"
+	File /r "..\..\bin\debug\plugins\sensorSystem"
 	
 	SetOutPath "$INSTDIR\debug\plugins\hilec"
 	File /r /x "..\..\bin\debug\plugins\hilec\python\rcunits" "..\..\bin\debug\plugins\hilec\*" 

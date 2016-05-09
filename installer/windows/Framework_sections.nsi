@@ -114,7 +114,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\plugins\ProjectEditor.dll"
 	File "..\..\bin\debug\plugins\qscintilla2.dll"
 	File "..\..\bin\debug\plugins\python35_d.dll"
-	File "..\..\bin\debug\plugins\python.exe"
+	File "..\..\bin\debug\plugins\python_d.exe"
 	File "..\..\bin\debug\plugins\TutorialUnitCore.dll"
 	File "..\..\bin\debug\plugins\SensorSystem.dll"
 	File "..\..\bin\debug\plugins\SensorSystemGui.dll"

@@ -34,9 +34,15 @@ win32-msvc*{
 
 include(../../../properties/pathes.pro)
 
-DEFINES += MAJOR_VERSION=0
-DEFINES += MINOR_VERSION=3
-DEFINES += PATCH_VERSION=6
+BUILD_NUMBER_EXISTS=$$(BUILD_NUMBER)
+isEmpty(BUILD_NUMBER_EXISTS){
+    DEFINES += BUILD_VERSION=0
+} else {
+    DEFINES += BUILD_VERSION=$$(BUILD_NUMBER)
+}
+
+message($$DEFINES)
+
 
 DESTDIR = $${targetDir}
 

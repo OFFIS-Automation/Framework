@@ -33,7 +33,11 @@ templates.files  += ../../data/template
 templates.files  += ../../data/doc
 templates.files  += ../../data/examples
 templates.files  += ../../data/pylint_config.txt
-templates.files  += ../../data/compile.bat
+CONFIG(debug, debug|release) {
+    templates.files  += ../../data/compile/debug/compile.bat
+} else {
+    templates.files  += ../../data/compile/release/compile.bat
+}
 INSTALLS       += templates
 
 

@@ -51,10 +51,11 @@ Section "!OFFIS Automation Framework" SecToolbox
 	File "..\..\bin\plugins\python35.dll"
 	File "..\..\bin\plugins\python.exe"
 	File "..\..\bin\plugins\TutorialUnitCore.dll"
+	
 	File "..\..\bin\plugins\SensorSystem.dll"
 	File "..\..\bin\plugins\SensorSystemGui.dll"
 	File "..\..\bin\plugins\SensorTracer.dll"
-	File /r "..\..\bin\plugins\sensorSystem\*"
+	File /r "..\..\bin\plugins\sensorSystem"
 	
 	SetOutPath "$INSTDIR\plugins\hilec"
 	File /r /x "..\..\bin\plugins\hilec\python\rcunits" "..\..\bin\plugins\hilec\*"
@@ -119,7 +120,7 @@ Section /o "Development version" SecDevFiles
 	File "..\..\bin\debug\plugins\SensorSystem.dll"
 	File "..\..\bin\debug\plugins\SensorSystemGui.dll"
 	File "..\..\bin\debug\plugins\SensorTracer.dll"
-	File /r "..\..\bin\debug\plugins\sensorSystem\*"
+	File /r "..\..\bin\debug\plugins\sensorSystem"
 	
 	SetOutPath "$INSTDIR\debug\plugins\hilec"
 	File /r /x "..\..\bin\debug\plugins\hilec\python\rcunits" "..\..\bin\debug\plugins\hilec\*" 

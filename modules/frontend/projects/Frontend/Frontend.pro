@@ -41,9 +41,6 @@ isEmpty(BUILD_NUMBER_EXISTS){
     DEFINES += BUILD_VERSION=$$(BUILD_NUMBER)
 }
 
-message($$DEFINES)
-
-
 DESTDIR = $${targetDir}
 
 INCLUDEPATH += $${PWD}

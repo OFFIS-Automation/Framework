@@ -92,7 +92,9 @@ HEADERS += \
     src/scratch/Condition.h \
     src/scratch/ArgumentBlock.h \
     src/scratch/Number.h \
-    src/scratch/InputNumber.h
+    src/scratch/DefaultNumber.h \
+    src/scratch/DefaultCondition.h \
+    src/scratch/PiNumber.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -145,7 +147,9 @@ SOURCES += \
     src/scratch/ArgumentBlock.cpp \
     src/scratch/ControlFlowBlock.cpp \
     src/scratch/Number.cpp \
-    src/scratch/InputNumber.cpp
+    src/scratch/DefaultNumber.cpp \
+    src/scratch/DefaultCondition.cpp \
+    src/scratch/PiNumber.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

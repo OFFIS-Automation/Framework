@@ -12,20 +12,12 @@ namespace Scratch
 class ArgumentBlock : public Block
 {
 	protected:
-		static const int s_defaultParameterWidth = 40;
-
-		constexpr int parameterHeight() const
-		{
-			return m_height - 2 * s_margin;
-		}
-
 		struct Argument
 		{
 			std::string name;
 			Item::Type type;
 
-			int x;
-
+			Parameter& defaultParameter;
 			Parameter* parameter;
 		};
 
@@ -37,7 +29,7 @@ class ArgumentBlock : public Block
 		Item& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
 
-		void addArgument(const std::string& name, const Item::Type& type);
+		void addArgument(const std::string& name, const Item::Type& type, const bool enable = false);
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
@@ -45,7 +37,7 @@ class ArgumentBlock : public Block
 
 		void resizeBy(int dx, int dy, const QPoint& triggerPosition);
 
-		void addParameter(Parameter& parameter, Parameter*& argumentParameter, const QPoint &offset);
+		void addParameter(Parameter& parameter, Argument& argument, const QPoint &offset);
 
 		std::string m_name;
 		std::vector<Argument> m_arguments;

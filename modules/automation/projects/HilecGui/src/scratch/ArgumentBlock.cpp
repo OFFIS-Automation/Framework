@@ -6,8 +6,8 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsScene>
 
-#include "Condition.h"
-#include "Number.h"
+#include "DefaultCondition.h"
+#include "DefaultNumber.h"
 
 namespace Scratch
 {
@@ -56,27 +56,9 @@ void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 		x += s_margin / 2;
 
 		if (argument.parameter)
-		{
 			x += argument.parameter->m_width + s_margin;
-
-			continue;
-		}
-
-		polygon.clear();
-
-		if (argument.type == Item::Type::Condition)
-			Condition::drawOutline(polygon,
-				QRect(x, s_margin, s_defaultParameterWidth, parameterHeight()));
-		else if (argument.type == Item::Type::Number)
-			Number::drawOutline(polygon,
-				QRect(x, s_margin, s_defaultParameterWidth, parameterHeight()));
-
-		painter->setBrush(m_outlineStyle.color());
-		painter->setPen(m_outlineStyle);
-		painter->setRenderHint(QPainter::Antialiasing);
-		painter->drawPolygon(polygon);
-
-		x += s_defaultParameterWidth + s_margin;
+		else
+			x += argument.defaultParameter.m_width + s_margin;
 	}
 }
 
@@ -85,7 +67,7 @@ Item& ArgumentBlock::clone() const
 	auto& argumentBlock =  *(new ArgumentBlock(m_name));
 
 	for (const auto& argument : m_arguments)
-		argumentBlock.addArgument(argument.name, argument.type);
+		argumentBlock.addArgument(argument.name, argument.type, true);
 
 	return argumentBlock;
 }
@@ -99,10 +81,10 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 
 	for (auto argument = m_arguments.cbegin(); argument != m_arguments.cend(); ++argument)
 	{
-		if (!argument->parameter)
-			throw std::invalid_argument("Not all parameters are defined.");
-
-		stream << *argument->parameter;
+		if (argument->parameter)
+			stream << *argument->parameter;
+		else
+			stream << argument->defaultParameter;
 
 		if (argument + 1 != m_arguments.cend())
 			stream << ", ";
@@ -115,7 +97,7 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 		m_successor->print(stream, indentationDepth);
 }
 
-void ArgumentBlock::addArgument(const std::string& name, const Item::Type& type)
+void ArgumentBlock::addArgument(const std::string& name, const Item::Type& type, const bool enable)
 {
 	QFontMetrics fontMetric(m_font);
 
@@ -124,13 +106,26 @@ void ArgumentBlock::addArgument(const std::string& name, const Item::Type& type)
 
 	const auto x = (m_arguments.empty()?
 			s_margin + fontMetric.width(QString::fromStdString(m_name)) :
-			m_arguments.back().x + (m_arguments.back().parameter?
+			m_arguments.back().defaultParameter.pos().x() + (m_arguments.back().parameter?
 				m_arguments.back().parameter->m_width :
-				s_defaultParameterWidth))
+				m_arguments.back().defaultParameter.m_width))
 		 + appendageWidth;
 
-	m_arguments.push_back({name, type, x, nullptr});
-	m_width += appendageWidth + s_defaultParameterWidth;
+	m_width += appendageWidth;
+
+	auto& defaultParameter = *(type == Item::Type::Number?
+		reinterpret_cast<Parameter*>(new DefaultNumber(enable))
+		: reinterpret_cast<Parameter*>(new DefaultCondition(enable)));
+
+	defaultParameter.setParent(this);
+	defaultParameter.setPos(x, s_margin);
+
+	m_width += defaultParameter.m_width;
+
+	auto height = defaultParameter.m_height + 2 * s_margin;
+	m_height = std::max(height, m_height);
+
+	m_arguments.push_back({name, type, defaultParameter, nullptr});
 }
 
 void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -144,6 +139,9 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 
 	if (item.itemType() == Item::Type::Block)
 	{
+		if (isSelfOrAncestor(*reinterpret_cast<Block*>(&item)))
+			return;
+
 		if (!inConnectorActivationRange(position, 0)
 				&& !inConnectorActivationRange(position, m_height))
 			return;
@@ -153,7 +151,7 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 		Parameter& parameter = *reinterpret_cast<Parameter*>(&item);
 
 		const auto argument =
-			std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const auto& argument)
+			std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const Argument& argument)
 				{
 					if (argument.parameter)
 						return false;
@@ -161,11 +159,10 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 					if (parameter.itemType() != argument.type)
 						return false;
 
-					const auto& boundingRectangle = QRect(
-						argument.x, s_margin,
-						s_defaultParameterWidth, parameterHeight());
+					const auto parameterPosition = argument.defaultParameter.mapFromParent(
+						position.toPoint());
 
-					return boundingRectangle.contains(position.toPoint());
+					return argument.defaultParameter.contains(parameterPosition);
 				});
 
 		if (argument == m_arguments.cend())
@@ -224,12 +221,14 @@ void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 
 		for (auto &argument : m_arguments)
 		{
-			const auto& boundingRectangle =
-				QRect(oldArgument->x, s_margin, s_defaultParameterWidth, oldHeight - 2 * s_margin);
+			const auto parameterPosition = argument.defaultParameter.mapFromParent(
+				position.toPoint());
 
-			if (boundingRectangle.contains(position.toPoint()))
+			if (oldArgument->defaultParameter.contains(parameterPosition))
 			{
-				addParameter(parameter, argument.parameter, QPoint(argument.x, s_margin));
+				const auto position = QPoint(argument.defaultParameter.x(), s_margin);
+
+				addParameter(parameter, argument, position);
 
 				return;
 			}
@@ -248,7 +247,7 @@ void ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 	{
 		std::for_each(start, m_arguments.end(), [&](auto& argument)
 		{
-			argument.x += dx;
+			argument.defaultParameter.moveBy(dx, 0);
 
 			if (argument.parameter)
 				argument.parameter->moveBy(dx, 0);
@@ -257,16 +256,16 @@ void ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 
 	for (auto argument = m_arguments.begin(); argument != m_arguments.end(); ++argument)
 	{
-		const auto& boundingRectangle = argument->parameter?
-			argument->parameter->mapRectToParent(argument->parameter->boundingRect()).toRect() :
-			QRect(
-				argument->x, s_margin,
-				s_defaultParameterWidth, parameterHeight());
+		const auto& boundingRectangle =
+			argument->parameter?
+				argument->parameter->boundingRect().toRect() :
+				argument->defaultParameter.boundingRect().toRect();
 
-		if (!boundingRectangle.contains(triggerPosition))
+		if (!boundingRectangle.contains(
+				argument->defaultParameter.mapFromParent(triggerPosition).toPoint()))
 			continue;
 
-		actualDx = std::max(boundingRectangle.width() + dx, s_defaultParameterWidth)
+		actualDx = std::max(boundingRectangle.width() + dx, argument->defaultParameter.m_width)
 			- boundingRectangle.width();
 
 		if (dy < 0)
@@ -294,9 +293,26 @@ void ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 					return lhs.parameter->m_height < rhs.parameter->m_height;
 				});
 
-			if (heighestArgument != m_arguments.cend() && heighestArgument->parameter
-				&& heighestArgument->parameter->m_height + 2 * s_margin > m_height + dy)
+			if (heighestArgument != m_arguments.cend() && heighestArgument->parameter)
+			{
+				if (heighestArgument->parameter->m_height + 2 * s_margin > m_height + dy)
 					actualDy = heighestArgument->parameter->m_height + 2 * s_margin - m_height;
+			}
+			else
+			{
+				const auto heighestDefaultArgument = std::max_element(
+					m_arguments.cbegin(), m_arguments.cend(),
+					[&](const auto& lhs, const auto& rhs)
+					{
+						return lhs.defaultParameter.m_height < rhs.defaultParameter.m_height;
+					});
+
+				if (heighestDefaultArgument != m_arguments.cend()
+						&& heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
+							> m_height + dy)
+					actualDy = heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
+						- m_height;
+			}
 		}
 
 		if (!actualDx && !actualDy)
@@ -310,21 +326,21 @@ void ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 	Block::resizeBy(actualDx, actualDy, triggerPosition);
 }
 
-void ArgumentBlock::addParameter(Parameter& parameter, Parameter*& argumentParameter,
+void ArgumentBlock::addParameter(Parameter& parameter, Argument& argument,
 	const QPoint &offset)
 {
-	assert(!argumentParameter && "Parameter of the argument is already assigned");
+	assert(!argument.parameter && "Parameter of the argument is already assigned");
 
-	const auto dx = parameter.m_width - s_defaultParameterWidth;
-	const auto dy = parameter.m_height - parameterHeight();
+	const auto dx = parameter.m_width - argument.defaultParameter.m_width;
+	const auto dy = parameter.m_height - argument.defaultParameter.m_height;
 
 	parameter.setParent(this);
-	parameter.m_parentReference = reinterpret_cast<Parameter**>(&argumentParameter);
+	parameter.m_parentReference = reinterpret_cast<Parameter**>(&argument.parameter);
 	parameter.setPos(offset);
 
 	resizeBy(dx, dy, offset);
 
-	argumentParameter = &parameter;
+	argument.parameter = &parameter;
 }
 
 } // namespace Scratch

@@ -13,9 +13,9 @@
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
 #include "PassBlock.h"
-#include "TrueCondition.h"
 #include "ArgumentBlock.h"
-#include "InputNumber.h"
+#include "TrueCondition.h"
+#include "PiNumber.h"
 
 #define ROOT_TYPE_OFFSET 1
 #define CHILD_TYPE_OFFSET 2
@@ -57,9 +57,9 @@ Widget::Widget(QWidget *parent)
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
 	m_controlScene->addItem(trueCondiftion);
 
-	auto inputNumber = new InputNumber();
-	inputNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
-	m_controlScene->addItem(inputNumber);
+	auto piNumber = new PiNumber();
+	piNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
+	m_controlScene->addItem(piNumber);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));

@@ -45,7 +45,7 @@ class Item : public QGraphicsItem
 	protected:
 		Item(const int width, const int height);
 
-		void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
 		void addItem(Item& item);

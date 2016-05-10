@@ -21,8 +21,8 @@ class Parameter : public Item
 	protected:
 		Parameter(int width, int height);
 
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
+		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Scratch::Parameter& parameter);

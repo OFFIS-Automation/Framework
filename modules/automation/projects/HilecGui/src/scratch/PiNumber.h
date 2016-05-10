@@ -1,27 +1,22 @@
-#ifndef INPUTNUMBER_H
-#define INPUTNUMBER_H
-
-#include <QGraphicsTextItem>
+#ifndef PINUMBER_H
+#define PINUMBER_H
 
 #include "Number.h"
 
 namespace Scratch
 {
 
-class InputNumber : public Number
+class PiNumber : public Number
 {
 	public:
-		InputNumber();
+		PiNumber();
 
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Item& clone() const;
 		void print(std::ostream& stream) const;
-
-	private:
-		QGraphicsTextItem m_text;
 };
 
 } // namespace Scratch
 
-#endif // INPUTNUMBER_H
+#endif // PINUMBER_H

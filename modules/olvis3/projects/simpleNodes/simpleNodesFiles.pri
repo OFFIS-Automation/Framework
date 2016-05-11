@@ -72,6 +72,7 @@ SOURCES += \
     src/VignetteCreator.cpp \
     src/VignettingCorrection.cpp \
     src/VignettingCorrectionRGB.cpp \
+    src/WhiteBalance.cpp \
     src/MultipleTemplateMatching.cpp \
     src/ColorPicker.cpp \
     src/Webcam.cpp
@@ -125,6 +126,7 @@ HEADERS += \
     src/VignetteCreator.h \
     src/VignettingCorrection.h \
     src/VignettingCorrectionRGB.h \
+    src/WhiteBalance.h \
     src/MultipleTemplateMatching.h \
     src/ColorPicker.h \
     src/Webcam.h

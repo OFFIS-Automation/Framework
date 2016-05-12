@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QPainter>
 #include <Qt>
+#include <QGraphicsSceneDragDropEvent>
 
 #include "Block.h"
 
@@ -16,10 +17,6 @@ bool Block::inConnectorActivationRange(const QPointF& position, const int& offse
 	return position.y() > offset - s_connectorActivationRange
 		&& position.y() < offset + s_connectorActivationRange;
 }
-
-Block::Block(const int width, const int height)
-	: Item(width, height)
-{}
 
 Item::Type Block::itemType() const
 {
@@ -82,17 +79,19 @@ void Block::drawOutline(QPolygon& polygon) const
 	polygon << QPoint(m_width, 0);
 }
 
-void Block::resizeBy(int dx, int dy, const QPoint&)
+QPoint Block::resizeBy(int dx, int dy, const QPoint&)
 {
 	const auto actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
 	const auto actualDy = std::max(m_height + dy, m_defaultHeight)- m_height;
 
 	if (!actualDx && !actualDy)
-		return;
+		return QPoint();
 
 	Item::resizeBy(actualDx, actualDy, pos().toPoint());
 
 	updateSuccessorPositions(0, actualDy);
+
+	return QPoint(actualDx, actualDy);
 }
 
 void Block::updateSuccessorPositions(int dx, int dy) const
@@ -150,6 +149,64 @@ bool Block::isSelfOrAncestor(Block &block)
 			return true;
 
 	return false;
+}
+
+void Block::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
+{
+	const auto& position = event->pos().toPoint();
+
+	event->accept();
+	event->setDropAction(Qt::IgnoreAction);
+
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() != Item::Type::Block)
+		return;
+
+	Block& block = *dynamic_cast<Block*>(&item);
+
+	if (isSelfOrAncestor(block))
+		return;
+
+	if (!inConnectorActivationRange(position, 0) && !inConnectorActivationRange(position, m_height))
+		return;
+
+	if (item.scene() != this->scene())
+		event->setDropAction(Qt::CopyAction);
+	else
+		event->setDropAction(Qt::MoveAction);
+}
+
+void Block::dropEvent(QGraphicsSceneDragDropEvent* event)
+{
+	const auto& position = event->pos();
+
+	const auto oldHeight = m_height;
+
+	auto* item = &Item::unpackItem(*event);
+
+	event->accept();
+
+	// Copy
+	if (item->scene() != this->scene())
+	{
+		event->setDropAction(Qt::CopyAction);
+
+		item = &item->clone();
+	}
+	// Move
+	else
+	{
+		event->setDropAction(Qt::MoveAction);
+		item->remove();
+	}
+
+	auto& block = *dynamic_cast<Block*>(item);
+
+	if (inConnectorActivationRange(position, 0))
+		addAbove(block);
+	else if (inConnectorActivationRange(position, oldHeight))
+		addBelow(block);
 }
 
 } // namespace Scratch

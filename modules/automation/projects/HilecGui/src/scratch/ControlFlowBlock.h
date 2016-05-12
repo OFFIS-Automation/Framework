@@ -18,12 +18,12 @@ class ControlFlowBlock : public Block
 		static const int s_shaftExtent = 40;
 		static const int s_defaultHeaderHeight = s_shaftExtent;
 
-		constexpr int defaultConditionWidth() const
+		int defaultConditionWidth() const
 		{
 			return m_defaultWidth - s_shaftExtent - 2 * s_margin;
 		}
 
-		constexpr int defaultConditionHeight() const
+		int defaultConditionHeight() const
 		{
 			return s_defaultHeaderHeight - 2 * s_margin;
 		}
@@ -43,10 +43,12 @@ class ControlFlowBlock : public Block
 	public:
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
-		void resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
 
 	protected:
-		ControlFlowBlock(const int width, const int height, const size_t& numberOfBodies);
+		ControlFlowBlock(const size_t& numberOfBodies);
+
+		bool inBodyRange(const QPoint& position);
 
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		void dropEvent(QGraphicsSceneDragDropEvent* event);

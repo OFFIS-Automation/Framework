@@ -10,7 +10,7 @@ namespace Scratch
 // Frame block
 
 FrameBlock::FrameBlock()
-	: Block(s_defaultWidth, s_defaultHeight)
+	: Item(s_defaultWidth, s_defaultHeight)
 {
 	setAcceptDrops(true);
 }
@@ -18,7 +18,8 @@ FrameBlock::FrameBlock()
 // Start block
 
 StartBlock::StartBlock()
-	: FrameBlock()
+	: Item(s_defaultWidth, s_defaultHeight),
+	  FrameBlock()
 {
 	setAcceptDrops(true);
 }
@@ -62,7 +63,7 @@ void StartBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	if (item.itemType() != Item::Type::Block)
 		return;
 
-	Block& block = *reinterpret_cast<Block*>(&item);
+	Block& block = *dynamic_cast<Block*>(&item);
 
 	if (!inConnectorActivationRange(position, m_height))
 		return;
@@ -77,7 +78,7 @@ void StartBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto* block = reinterpret_cast<Block*>(&Item::unpackItem(*event));
+	auto* block = dynamic_cast<Block*>(&Item::unpackItem(*event));
 
 	event->accept();
 
@@ -85,7 +86,7 @@ void StartBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = reinterpret_cast<Block*>(&block->clone());
+		block = dynamic_cast<Block*>(&block->clone());
 	}
 	else
 	{
@@ -111,7 +112,8 @@ void StartBlock::print(std::ostream& stream, unsigned indentationDepth) const
 // End block
 
 EndBlock::EndBlock()
-	: FrameBlock()
+	: Item(s_defaultWidth, s_defaultHeight),
+	  FrameBlock()
 {
 	setAcceptDrops(true);
 }
@@ -156,7 +158,7 @@ void EndBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	if (item.itemType() != Item::Type::Block)
 		return;
 
-	Block& block = *reinterpret_cast<Block*>(&item);
+	Block& block = *dynamic_cast<Block*>(&item);
 
 	if (!inConnectorActivationRange(position, 0))
 		return;
@@ -171,7 +173,7 @@ void EndBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto* block = reinterpret_cast<Block*>(&Item::unpackItem(*event));
+	auto* block = dynamic_cast<Block*>(&Item::unpackItem(*event));
 
 	event->accept();
 
@@ -179,7 +181,7 @@ void EndBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 	{
 		event->setDropAction(Qt::CopyAction);
 
-		block = reinterpret_cast<Block*>(&block->clone());
+		block = dynamic_cast<Block*>(&block->clone());
 	}
 	else
 	{

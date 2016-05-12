@@ -12,7 +12,7 @@
 namespace Scratch
 {
 
-class Block : public Item
+class Block : public virtual Item
 {
 	public:
 		static const int s_defaultWidth = 120;
@@ -40,7 +40,7 @@ class Block : public Item
 		void addBelow(Block& block);
 		void remove();
 
-		virtual void resizeBy(int dx, int dy, const QPoint&);
+		virtual QPoint resizeBy(int dx, int dy, const QPoint&);
 
 		void updateSuccessorPositions(int dx, int dy) const;
 
@@ -48,12 +48,13 @@ class Block : public Item
 		Block* m_successor{nullptr};
 
 	protected:
-		Block(const int width, const int height);
-
 		void drawConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
 		void drawOutline(QPolygon& polygon) const;
 
 		bool isSelfOrAncestor(Block &block);
+
+		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 };
 
 } // namespace Scratch

@@ -10,7 +10,8 @@ namespace Scratch
 {
 
 IfElseBlock::IfElseBlock()
-	: ControlFlowBlock(s_defaultWidth, 2 * s_defaultHeight + 3 * s_defaultHeaderHeight, 2),
+	: Item(s_defaultWidth, 2 * s_defaultHeight + 3 * s_defaultHeaderHeight),
+	  ControlFlowBlock(2),
 	  m_trueBody{m_bodies.at(0)},
 	  m_falseBody{m_bodies.at(1)}
 {

@@ -37,7 +37,7 @@ class Item : public QGraphicsItem
 		void setParent(Item* parent);
 		virtual void remove();
 
-		virtual void resizeBy(int dx, int dy, const QPoint&);
+		virtual QPoint resizeBy(int dx, int dy, const QPoint&);
 
 		int m_width;
 		int m_height;

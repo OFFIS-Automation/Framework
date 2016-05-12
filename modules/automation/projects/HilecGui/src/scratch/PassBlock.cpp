@@ -8,7 +8,7 @@ namespace Scratch
 {
 
 PassBlock::PassBlock()
-	: Block(s_defaultWidth, s_defaultHeight)
+	: Item(s_defaultWidth, s_defaultHeight)
 {
 	setAcceptDrops(true);
 }
@@ -25,65 +25,6 @@ void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidge
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);
 	painter->drawText(boundingRect(), Qt::AlignCenter, "Pass");
-}
-
-void PassBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
-{
-	const auto& position = event->pos();
-
-	event->accept();
-	event->setDropAction(Qt::IgnoreAction);
-
-	Item& item = Item::unpackItem(*event);
-
-	if (item.itemType() != Item::Type::Block)
-		return;
-
-	Block& block = *reinterpret_cast<Block*>(&item);
-
-	if (isSelfOrAncestor(block))
-		return;
-
-	if (!inConnectorActivationRange(position, 0)
-			&& !inConnectorActivationRange(position, m_height))
-		return;
-
-	if (item.scene() != this->scene())
-		event->setDropAction(Qt::CopyAction);
-	else
-		event->setDropAction(Qt::MoveAction);
-}
-
-void PassBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
-{
-	const auto& position = event->pos();
-
-	auto oldHeight = m_height;
-
-	auto* item = &Item::unpackItem(*event);
-
-	event->accept();
-
-	// Copy
-	if (item->scene() != this->scene())
-	{
-		event->setDropAction(Qt::CopyAction);
-
-		item = &item->clone();
-	}
-	// Move
-	else
-	{
-		event->setDropAction(Qt::MoveAction);
-		item->remove();
-	}
-
-	auto& block = *reinterpret_cast<Block*>(item);
-
-	if (inConnectorActivationRange(position, 0))
-		addAbove(block);
-	else if (inConnectorActivationRange(position, oldHeight))
-		addBelow(block);
 }
 
 Block& PassBlock::clone() const

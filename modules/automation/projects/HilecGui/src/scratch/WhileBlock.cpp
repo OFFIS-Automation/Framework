@@ -10,7 +10,8 @@ namespace Scratch
 {
 
 WhileBlock::WhileBlock()
-	: ControlFlowBlock(s_defaultWidth, s_defaultHeight + 2 * s_defaultHeaderHeight, 1),
+	: Item(s_defaultWidth, s_defaultHeight + 2 * s_defaultHeaderHeight),
+	  ControlFlowBlock(1),
 	  m_body{m_bodies.at(0)}
 {
 	setAcceptDrops(true);

@@ -15,10 +15,6 @@ class PassBlock : public Block
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;
-
-	protected:
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
 };
 
 } // namespace Scratch

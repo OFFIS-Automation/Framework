@@ -105,7 +105,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Welcome to the  OFFIS Automation Framework. What would you like to do?</string>
+      <string>Welcome to the OFFIS Automation Framework. What would you like to do?</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

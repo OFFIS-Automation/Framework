@@ -42,6 +42,7 @@ protected:
 
 private:
     Q_OBJECT
+    Q_INTERFACES(GamepadInterface)
 };
 
 #endif //GAMEPAD_H

@@ -27,6 +27,12 @@ RemoteGamepad::RemoteGamepad(const QString &name) :
 {
 }
 
+void RemoteGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &buttons)
+{
+    Q_UNUSED(joysticks)
+    Q_UNUSED(buttons)
+}
+
 RemoteGamepad::~RemoteGamepad()
 {
 }

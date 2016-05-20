@@ -14,27 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_GAMEPAD_HQT
-#define RCUNITTOOLS_GAMEPAD_HQT
+#ifndef GAMEPAD_H
+#define GAMEPAD_H
 
 #include <QThread>
 #include <QMap>
+#include <telecontrol/GamepadInterface.h>
 
-class Gamepad : public QThread
+class Gamepad : public QThread, public GamepadInterface
 {
 public:
-    enum GamepadType
-    {
-        Windows,
-        Linux,
-        Remote
-    };
-
     virtual QString getName() = 0;
-    virtual GamepadType getGamepadType() = 0;
+    virtual int getResolution() const = 0;
+    virtual GamepadType getGamepadType() const = 0;
+    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons) = 0;
+
     virtual ~Gamepad();
     void stop();
-
 
 signals:
     void dataUpdated(const QMap<int,double>& data, const QString& gamepadName = QString());
@@ -48,4 +44,4 @@ private:
     Q_OBJECT
 };
 
-#endif //RCUNITTOOLS_GAMEPAD_HQT
+#endif //GAMEPAD_H

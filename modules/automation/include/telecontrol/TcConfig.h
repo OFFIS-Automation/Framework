@@ -18,7 +18,6 @@
 
 #include <QList>
 
-
 namespace Tc
 {
     namespace Gamepad

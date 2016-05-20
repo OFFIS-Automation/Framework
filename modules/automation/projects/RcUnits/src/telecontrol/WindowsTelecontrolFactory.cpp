@@ -30,7 +30,7 @@ QStringList WindowsTelecontrolFactory::disallowedControllerNames = QStringList()
 
 WindowsTelecontrolFactory::WindowsTelecontrolFactory()
 {
-	sDirectInput = 0;
+    sDirectInput = 0;
     sGamepadDevices = QMap<QString, Gamepad *>();
     DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
 }

@@ -28,17 +28,21 @@ class WindowsTelecontrolFactory;
 class WindowsGamepad : public Gamepad
 {
 public:
-    virtual int getResolution() const;
     virtual ~WindowsGamepad();
+
 protected:
     WindowsGamepad(const QString& name, const QString& guid);
     virtual void run();
     virtual bool initialize();
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return Windows; }
+    int getResolution() const;
+    GamepadType getGamepadType() const { return Windows; }
+
     void createMapping();
-    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
+    void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
+    void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
+
     static BOOL CALLBACK enumObject(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext);
     void changeConnexionMode(int buttonId);
 
@@ -60,9 +64,6 @@ protected:
         TranslationMode,
         RotationMode
     } mConnexionMode;
-
-
-    void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
 #endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT

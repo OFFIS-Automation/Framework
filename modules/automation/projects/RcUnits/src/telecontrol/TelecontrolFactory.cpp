@@ -47,9 +47,8 @@ QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
     #ifdef Q_OS_WIN
         gamepadDevices = WindowsTelecontrolFactory::getGamepadDevices();
         // Add the remote gamepad for now, find a better location later
-        QString remoteGamepadname = tr("Remote gamepad");
-        RemoteGamepad* remoteGamepad = new RemoteGamepad(remoteGamepadname);
-        gamepadDevices.insert(remoteGamepadname, remoteGamepad);
+        RemoteGamepad* remoteGamepad = new RemoteGamepad(tr("Remote gamepad"));
+        gamepadDevices.insert(tr("Remote gamepad"), remoteGamepad);
     #elif defined(Q_OS_LINUX)
         #pragma warning(Fix me)
         //gamepad = LinuxTelecontrolFactory::createGamepad();

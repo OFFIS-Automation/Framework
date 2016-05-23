@@ -28,7 +28,7 @@ SOURCES += \
     src/BilateralFilter.cpp \
     src/BlobDetection.cpp \
     src/Blur.cpp \
-    src/cannyfilter.cpp \
+    src/Canny.cpp \
     src/ColorCorrection.cpp \
     src/CorrectPosition.cpp \
     src/Delay.cpp \
@@ -49,6 +49,7 @@ SOURCES += \
     src/MinimumFps.cpp \
     src/Morphology.cpp \
     src/NormalizeHistogramm.cpp \
+    src/Overlay.cpp \
     src/PathCreator.cpp \
     src/PointInput.cpp \
     src/RectInput.cpp \
@@ -81,7 +82,7 @@ HEADERS += \
     src/BilateralFilter.h \
     src/BlobDetection.h \
     src/Blur.h \
-    src/cannyfilter.h \
+    src/Canny.h \
     src/ColorCorrection.h \
     src/CorrectPosition.h \
     src/Delay.h \
@@ -103,6 +104,7 @@ HEADERS += \
     src/MinimumFps.h \
     src/Morphology.h \
     src/NormalizeHistogramm.h \
+    src/Overlay.h \
     src/PathCreator.h \
     src/PointInput.h \
     src/RectInput.h \

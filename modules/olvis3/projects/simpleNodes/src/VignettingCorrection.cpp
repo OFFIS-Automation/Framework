@@ -23,15 +23,17 @@ VignettingCorrection::VignettingCorrection()
     setName("VignettingCorrection");
     setDesc(QObject::tr("Corrects vignetting, a common lens effect, using a given vignette-mask"));
     setGroup("image/math");
-    mIn.setName("imageIn");
-    addInputPort(mIn);
 
-    mVignetteIn.setName("vignetteIn");
-    addInputPort(mVignetteIn);
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputPort(mIn);
 
     mOut.setName("imageOut");
     mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
+    mVignetteIn.setName("vignetteIn");
+    addInputPort(mVignetteIn);
 }
 
 void VignettingCorrection::execute()

@@ -14,29 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CANNYFILTER_H
-#define CANNYFILTER_H
+#ifndef OVERLAY_H
+#define OVERLAY_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/IntegerPort.h>
-#include <ports/RealPort.h>
 #include <ports/BooleanPort.h>
 
-class CannyFilter : public UserFilter
+class Overlay : public UserFilter
 {
 public:
-    CannyFilter();
-    virtual void execute();
+    Overlay();
+    void execute();
 
 protected:
-    in::GrayImage mIn;
-    out::GrayImage mOut;
-
-    in::Integer mThreshhold;
-    in::Real mRatio;
-    in::Boolean mUseL1Gradient;
-
+    in::Image mIn;
+    in::Image mOverlayIn;
+    in::Boolean mResizeOverlay;
+    out::Image mOut;
 };
 
-#endif // CANNYFILTER_H
+#endif // OVERLAY_H

@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "cannyfilter.h"
+#include "Canny.h"
 #include <opencv2/imgproc.hpp>
 
-REGISTER_FILTER(CannyFilter);
+REGISTER_FILTER(Canny);
 
-CannyFilter::CannyFilter()
+Canny::Canny()
 {
     setName("Canny");
     setDesc(QObject::tr("Canny edge filter"));
@@ -52,7 +52,7 @@ CannyFilter::CannyFilter()
     addInputPort(mUseL1Gradient);
 }
 
-void CannyFilter::execute()
+void Canny::execute()
 {
     int thresh = mThreshhold.getValue();
     int thresh2 = mRatio.getValue()*thresh;

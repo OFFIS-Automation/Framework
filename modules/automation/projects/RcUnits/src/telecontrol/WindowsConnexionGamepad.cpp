@@ -111,8 +111,7 @@ bool WindowsConnexionGamepad::initialize()
              throw std::runtime_error(qPrintable(tr("SiAppDll not initialized")));
         }
 
-        QString applicationName = QCoreApplication::organizationName() + " " + QCoreApplication::applicationName();
-        mDevHdl = SiOpen(qPrintable(applicationName), mDevID, SI_NO_MASK, SI_EVENT, &mOData);
+        mDevHdl = SiOpen(qPrintable(QCoreApplication::applicationName()), mDevID, SI_NO_MASK, SI_EVENT, &mOData);
         if(mDevHdl == SI_NO_HANDLE){
             throw std::runtime_error(qPrintable(tr("Could not open device")));
         }

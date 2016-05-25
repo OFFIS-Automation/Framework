@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 {
     Application a(argc, argv);
     a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
-    a.setOrganizationName("OFFIS – Institut für Informatik");
+    a.setOrganizationName("OFFIS - Institut fuer Informatik");
     a.setApplicationName("OFFIS Automation Framework");
     a.setOrganizationDomain("http://www.uni-oldenburg.de/amir");
     if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){

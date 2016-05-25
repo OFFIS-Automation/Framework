@@ -25,7 +25,7 @@
 
 bool LinuxGamepad::initialize()
 {
-    mDevice = Joystick(QString("/dev/input/js0").toLocal8Bit().data());
+    mDevice = Joystick(qPrintable("/dev/input/js0"));
 
     if(mDevice.connected == 1){
         setObjectName("Gamepad: " + QString(mDevice.getName()));

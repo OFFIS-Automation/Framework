@@ -29,7 +29,7 @@
 #include <QUrl>
 #include <QDate>
 
-#include <winSparkle/include/winsparkle.h>
+#include <winsparkle.h>
 
 #include "version.h"
 #include "newProjectWizard/CreateProjectDialog.h"

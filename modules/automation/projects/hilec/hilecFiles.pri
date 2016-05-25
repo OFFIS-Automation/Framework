@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
-TEMPLATE = lib
-
 VPATH += $$PWD
 
 QT += network
 
 win32*: DEFINES += _CRT_SECURE_NO_WARNINGS
+
+TEMPLATE = lib
 
 INCLUDEPATH += $${PWD}/../../../frontend/include
 INCLUDEPATH += $${PWD}/../../../olvis3/include
@@ -64,7 +64,6 @@ INSTALLS       += tcfiles
 tcConfig.path    = $${targetDir}
 tcConfig.files  += $${PWD}/../../data/gamepads.ini
 INSTALLS        += tcConfig
-
 
 HEADERS += \
     HilecPlugin.h \

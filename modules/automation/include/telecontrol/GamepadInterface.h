@@ -28,14 +28,13 @@ public:
 	enum GamepadType
     {
         Windows,
+        WindowsConnexion,
         Linux,
         Remote
     };
 
     virtual QString getName() = 0;
-    virtual int getResolution() const = 0;
 	virtual GamepadType getGamepadType() const = 0;
-    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons) = 0;
 };
 #define GamepadInterface_iid "com.amir.hilec.GamepadInterface/1.0"
 Q_DECLARE_INTERFACE(GamepadInterface, GamepadInterface_iid)

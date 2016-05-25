@@ -128,6 +128,7 @@ signals:
     void gamepadUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
     void gamepadSensitivityChangeRequested(const QString& deviceName, const QString& unitName, bool increase);
     void gamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down);
+    void gamepadButtonToggled(const QString& deviceName, int buttonId, bool pressed);
 
     void hapticUpdated(const QString& deviceName, const QString& unitName, bool hapticActive);
 

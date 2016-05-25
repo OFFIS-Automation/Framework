@@ -44,16 +44,16 @@ isEmpty(BUILD_NUMBER_EXISTS){
 DESTDIR = $${targetDir}
 
 INCLUDEPATH += $${PWD}
-INCLUDEPATH += $${PWD}/winSparkle/include
+INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/include
 INCLUDEPATH += ../Notifications/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 
 LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
 CONFIG(debug, debug|release) {
-    LIBS += -L$${PWD}/winSparkle/lib/debug -lWinSparkle
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/debug -lWinSparkle
 } else {
-    LIBS += -L$${PWD}/winSparkle/lib/release -lWinSparkle
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/release -lWinSparkle
 }
 
 SOURCES += src/main.cpp\
@@ -129,7 +129,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svgd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
 
-    dlls.files    += $${PWD}/winSparkle/bin/debug/WinSparkle.dll
+    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/debug/WinSparkle.dll
 
     dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
 
@@ -162,7 +162,7 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svg.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
 
-    dlls.files    += $${PWD}/winSparkle/bin/release/WinSparkle.dll
+    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/release/WinSparkle.dll
 
     dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
 

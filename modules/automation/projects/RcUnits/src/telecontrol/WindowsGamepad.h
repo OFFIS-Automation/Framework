@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_WINDOWSGAMEPAD_HQT
-#define RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#ifndef WINDOWSGAMEPAD_H
+#define WINDOWSGAMEPAD_H
 
 #include "Gamepad.h"
-
-#define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
 #include <QMap>
@@ -32,8 +30,8 @@ public:
 
 protected:
     WindowsGamepad(const QString& name, const QString& guid);
-    virtual void run();
-    virtual bool initialize();
+    void run();
+    bool initialize();
     QString getName() { return mName; }
     int getResolution() const;
     GamepadType getGamepadType() const { return Windows; }
@@ -51,19 +49,11 @@ protected:
     friend class WindowsTelecontrolFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
-    QMap<int, QList<double> > mLastConnexionValues;
     bool mSwitchZJoysticks;
     enum Type {
-        ConnexionJoystick,
         XBoxGamepad,
         DefaultGamepad
     } mGamepadType;
-    enum ConnexionMode
-    {
-        FreeMode,
-        TranslationMode,
-        RotationMode
-    } mConnexionMode;
 };
 
-#endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#endif //WINDOWSGAMEPAD_H

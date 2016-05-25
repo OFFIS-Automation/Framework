@@ -25,9 +25,7 @@ class Gamepad : public QThread, public GamepadInterface
 {
 public:
     virtual QString getName() = 0;
-    virtual int getResolution() const = 0;
     virtual GamepadType getGamepadType() const = 0;
-    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons) = 0;
 
     virtual ~Gamepad();
     void stop();

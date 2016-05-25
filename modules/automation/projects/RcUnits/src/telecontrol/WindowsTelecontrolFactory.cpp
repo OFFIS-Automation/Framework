@@ -15,29 +15,43 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "WindowsTelecontrolFactory.h"
+#include "WindowsGamepad.h"
+#include "WindowsConnexionGamepad.h"
+
+#include <telecontrol/GamepadInterface.h>
 
 #include <QDebug>
 #include <QStringList>
 #include <QDir>
+#include <QWidget>
+#include <QApplication>
 #include <QCoreApplication>
 #include <QPluginLoader>
-#include <telecontrol/GamepadInterface.h>
 #include <QUuid>
+#include <QMainWindow>
+
+// DirectX
+#include <dinput.h>
+// 3DxWare
+#include <spwmacro.h>
+#include <si.h>
+#include <siapp.h>
 
 QMap<QString, Gamepad *> WindowsTelecontrolFactory::sGamepadDevices;
 LPDIRECTINPUT8 WindowsTelecontrolFactory::sDirectInput;
-QStringList WindowsTelecontrolFactory::disallowedControllerNames = QStringList() << "3Dconnexion KMJ Emulator";
+QStringList WindowsTelecontrolFactory::disallowedControllerNames = QStringList() << "3Dconnexion" << "SpaceMouse" << "SpaceNavigator";
 
 WindowsTelecontrolFactory::WindowsTelecontrolFactory()
 {
     sDirectInput = 0;
     sGamepadDevices = QMap<QString, Gamepad *>();
-    DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
+    DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
 }
 
 WindowsTelecontrolFactory::~WindowsTelecontrolFactory()
 {
     try{
+        // Shutdown DirectX
         if(sDirectInput){
             sDirectInput->Release();
         }
@@ -53,10 +67,15 @@ WindowsTelecontrolFactory &WindowsTelecontrolFactory::instance()
 
 QMap<QString, Gamepad *> WindowsTelecontrolFactory::getGamepadDevices()
 {
-    // force constructor/destructor call to acquire/release sDirectInput
+    // Force constructor/destructor call to acquire/release sDirectInput
     instance();
     sGamepadDevices = QMap<QString, Gamepad *>();
+
+    // Search for DirectX supported devices
     sDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, WindowsTelecontrolFactory::enumDevices, 0, DIEDFL_ATTACHEDONLY);
+    // Search for 3Dconnexion devices
+    enumConnexionDevices();
+
     return sGamepadDevices;
 }
 
@@ -67,9 +86,10 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
         QString name = QString::fromWCharArray(inst->tszInstanceName).trimmed();
         QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
 
-        if(disallowedControllerNames.contains(name)){
-            qDebug() << tr("Device not supported:") << " " << name;
-            return DIENUM_CONTINUE;
+        foreach (QString disallowedControllerName, disallowedControllerNames) {
+            if(name.contains(disallowedControllerName)){
+                return DIENUM_CONTINUE;
+            }
         }
 
         WindowsGamepad* gamepad = new WindowsGamepad(name, guid);
@@ -99,4 +119,59 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
         qWarning() << tr("Could not create device");
     }
     return DIENUM_CONTINUE;
+}
+
+void WindowsTelecontrolFactory::enumConnexionDevices()
+{
+    try
+    {
+        // Get the window handle of the mainWindow
+        // This is required ad SiOpenWinInit needs it somehow...
+        WId winId;
+        foreach(QWidget *widget, QApplication::topLevelWidgets()) {
+            QString objectName = widget->objectName();
+            if(objectName == "MasterWindow" || objectName == "MainWindow"){
+                winId = widget->winId();
+                break;
+            }
+        }
+        if(winId > 0){
+            // Initialize the API
+            if (SiInitialize() == SPW_DLL_LOAD_ERROR){
+                throw std::runtime_error(qPrintable(tr("Could not load SiAppDll DLL files")));
+            }
+            SiOpenData oData;
+            SiOpenWinInit(&oData, (HWND)winId);
+
+            // Get all available devices, their devId and allocate them
+            int numDevices = SiGetNumDevices();
+            for(int devId=1; devId<=numDevices; devId++){
+                WindowsConnexionGamepad* connexionGamepad = new WindowsConnexionGamepad(devId, oData);
+                if(!connexionGamepad->initialize()){
+                    connexionGamepad->deleteLater();
+                    throw std::runtime_error(qPrintable(tr("Error initializing connexion gamepad")));
+                } else {
+                    for(int i=1; i<=99; i++){
+                        QString name = connexionGamepad->getName();
+                        if(i >= 2){
+                            name = name + " " + QString::number(i);
+                        }
+                        if(sGamepadDevices.contains(name)){
+                            continue;
+                        }
+                        sGamepadDevices[name] = connexionGamepad;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    catch(const std::exception& e)
+    {
+        qWarning() << tr("Could not create connexion device:") << " " << e.what();
+    }
+    catch(...)
+    {
+        qWarning() << tr("Could not create connexion device");
+    }
 }

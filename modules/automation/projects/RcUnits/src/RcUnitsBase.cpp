@@ -157,7 +157,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     mGamepadDevices = TelecontrolFactory::getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
         gamepad->disconnect(this);
-        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonToggled(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
     emit unitsUpdated();
@@ -503,13 +503,13 @@ void RcUnitsBase::stopAll()
 }
 
 
-void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &deviceName)
+void RcUnitsBase::onGamepadButtonToggled(int buttonId, bool pressed, const QString &deviceName)
 {
-    if(buttonId >= Tc::Connexion::MenuButton && buttonId <= Tc::Connexion::FitButton){
+    if(buttonId == Tc::Connexion::CtrlButton && buttonId <= Tc::Connexion::TabButton){
         mConnexionModifiersPressed[buttonId] = pressed;
-        return;
     }
 
+    // Handle press
     if(pressed){
         // Get the connected unit
         QString unitName = mGamepadMapping.value(deviceName, "");
@@ -521,8 +521,8 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             emit gamepadSwitchRequested(deviceName, unitName, buttonId == Tc::Gamepad::ButtonDown);
         }
 
-        // Connexion methods
-        if(mConnexionModifiersPressed[Tc::Connexion::MenuButton]){
+        // Connexion methods with modifier (sensitivity, switch)
+        if(mConnexionModifiersPressed[Tc::Connexion::SpaceButton]){
             if(buttonId == Tc::Connexion::ShiftButton || buttonId == Tc::Connexion::CtrlButton){
                 emit gamepadSensitivityChangeRequested(deviceName, unitName, buttonId == Tc::Connexion::CtrlButton);
             } else if(buttonId == Tc::Connexion::EscButton || buttonId == Tc::Connexion::AltButton){
@@ -530,6 +530,9 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             }
         }
     }
+
+    // Forward action to GUI (which is maybe interested)
+    emit gamepadButtonToggled(deviceName, buttonId, pressed);
 }
 
 

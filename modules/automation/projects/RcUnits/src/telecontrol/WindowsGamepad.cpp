@@ -37,22 +37,22 @@ bool WindowsGamepad::initialize()
         * passing a DIJOYSTATE structure to IDirectInputDevice::GetDeviceState().
         */
         if(FAILED(mDevice->SetDataFormat( &c_dfDIJoystick2 ))){
-            throw std::runtime_error(tr("Could not set data format to joystick.").toStdString());
+            throw std::runtime_error(qPrintable(tr("Could not set data format to joystick.")));
         }
 
         /* Enumerate the axes of the device to set the range of each axis and
          * make sure the axes are set to ABSOLUTE mode for 3DConnextion.
          * For 3DConnextion enumerate only axis.
          */
-        if(FAILED(mDevice->EnumObjects( WindowsGamepad::enumObject, this, mGamepadType == ConnexionJoystick ? DIDFT_AXIS : DIDFT_ALL))){
-            throw std::runtime_error(tr("Could not enumerate objects").toStdString());
+        if(FAILED(mDevice->EnumObjects( WindowsGamepad::enumObject, this, DIDFT_ALL))){
+            throw std::runtime_error(qPrintable(tr("Could not enumerate objects")));
         }
 
         /* Aquire the device. Afterwards it is possible to get state information
          * from the device using e.g. GetDeviceState.
          */
         if(FAILED(mDevice->Acquire())){
-            throw std::runtime_error(tr("Could not acquire device").toStdString());
+            throw std::runtime_error(qPrintable(tr("Could not acquire device")));
         }
 
         return true;
@@ -71,43 +71,19 @@ void WindowsGamepad::createMapping()
         settings.beginGroup(group);
         QStringList guids = settings.value("guids").toStringList();
         if(guids.contains(mGuid)){
-            if(settings.value("type").toString().toLower() == "connexion"){
-                // Type
-                mGamepadType = ConnexionJoystick;
-                mConnexionMode = FreeMode;
-                // Mapping
-                // TODO: move string names somewhere else?
-                mButtonMapping[Tc::Connexion::MenuButton]  = settings.value("MenuButton").toInt();
-                mButtonMapping[Tc::Connexion::FitButton]  = settings.value("FitButton").toInt();
-                // The following mappings are optional
-                // The corresponding buttons are only on the pro series of connexion
-                mButtonMapping[Tc::Connexion::TopButton]        = settings.value("TopButton").toInt();
-                mButtonMapping[Tc::Connexion::RightButton]      = settings.value("RightButton").toInt();
-                mButtonMapping[Tc::Connexion::FrontButton]      = settings.value("FrontButton").toInt();
-                mButtonMapping[Tc::Connexion::RotateButton]     = settings.value("RotateButton").toInt();
-                mButtonMapping[Tc::Connexion::OneButton]        = settings.value("OneButton").toInt();
-                mButtonMapping[Tc::Connexion::TwoButton]        = settings.value("TwoButton").toInt();
-                mButtonMapping[Tc::Connexion::ThreeButton]      = settings.value("ThreeButton").toInt();
-                mButtonMapping[Tc::Connexion::FourButton]       = settings.value("FourButton").toInt();
-                mButtonMapping[Tc::Connexion::EscButton]        = settings.value("EscButton").toInt();
-                mButtonMapping[Tc::Connexion::AltButton]        = settings.value("AltButton").toInt();
-                mButtonMapping[Tc::Connexion::ShiftButton]      = settings.value("ShiftButton").toInt();
-                mButtonMapping[Tc::Connexion::CtrlButton]       = settings.value("CtrlButton").toInt();
-                mButtonMapping[Tc::Connexion::ModeButton]       = settings.value("ModeButton").toInt();
-            } else {
-                // Type
-                mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
-                // Mapping
-                mButtonMapping[Tc::Gamepad::NorthButton] = settings.value("NorthButton").toInt();
-                mButtonMapping[Tc::Gamepad::WestButton]  = settings.value("WestButton").toInt();
-                mButtonMapping[Tc::Gamepad::EastButton]  = settings.value("EastButton").toInt();
-                mButtonMapping[Tc::Gamepad::SouthButton] = settings.value("SouthButton").toInt();
-                mButtonMapping[Tc::Gamepad::LeftShoulderUpperButton]  = settings.value("LeftShoulderUpperButton").toInt();
-                mButtonMapping[Tc::Gamepad::LeftShoulderLowerButton]  = settings.value("LeftShoulderLowerButton").toInt();
-                mButtonMapping[Tc::Gamepad::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
-                mButtonMapping[Tc::Gamepad::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
-                mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
-            }
+            // Type
+            mGamepadType = settings.value("type").toString().compare("xbox", Qt::CaseInsensitive) == 0 ? XBoxGamepad : DefaultGamepad;
+            // Mapping
+            mButtonMapping[Tc::Gamepad::NorthButton] = settings.value("NorthButton").toInt();
+            mButtonMapping[Tc::Gamepad::WestButton]  = settings.value("WestButton").toInt();
+            mButtonMapping[Tc::Gamepad::EastButton]  = settings.value("EastButton").toInt();
+            mButtonMapping[Tc::Gamepad::SouthButton] = settings.value("SouthButton").toInt();
+            mButtonMapping[Tc::Gamepad::LeftShoulderUpperButton]  = settings.value("LeftShoulderUpperButton").toInt();
+            mButtonMapping[Tc::Gamepad::LeftShoulderLowerButton]  = settings.value("LeftShoulderLowerButton").toInt();
+            mButtonMapping[Tc::Gamepad::RightShoulderUpperButton] = settings.value("RightShoulderUpperButton").toInt();
+            mButtonMapping[Tc::Gamepad::RightShoulderLowerButton] = settings.value("RightShoulderLowerButton").toInt();
+            mSwitchZJoysticks = settings.value("SwitchZJoysticks", false).toBool();
+
             return;
         }
         settings.endGroup();
@@ -119,7 +95,7 @@ void WindowsGamepad::createMapping()
 
 void WindowsGamepad::assignButton(QMap<int, bool>& buttons, BYTE* data, int buttonId)
 {
-    int readId = mButtonMapping.value(buttonId, 0) -1;
+    int readId = mButtonMapping.value(buttonId, 0) - 1;
     if(readId < 0){
         return;
     }
@@ -130,96 +106,53 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 {
     DIJOYSTATE2& status = mState;
 
-    if(mGamepadType == ConnexionJoystick){
-        // Axes
-        joysticks[Tc::Connexion::JoystickX] = correctedValue(float(status.lX));
-        joysticks[Tc::Connexion::JoystickY] = correctedValue(-float(status.lY));
-        joysticks[Tc::Connexion::JoystickZ] = correctedValue(-float(status.lZ));
-        joysticks[Tc::Connexion::JoystickYaw] = correctedValue(float(status.lRz)); // Yaw = Rotation around z axes
-        joysticks[Tc::Connexion::JoystickPitch] = correctedValue(-float(status.lRy)); // Pitch = Rotation around y axes
-        joysticks[Tc::Connexion::JoystickRoll] = correctedValue(-float(status.lRx)); // Roll = Rotation around x axes
-
-        // Median filtering (quick and dirty fix for outliers)
-        foreach(int key, joysticks.keys()){
-            if(mLastConnexionValues[key].count() >= 10){
-                 mLastConnexionValues[key].removeFirst();
-            }
-            mLastConnexionValues[key].append(joysticks[key]);
-
-            // Sort, then extract median
-            QList<double> valuesSorted = mLastConnexionValues[key];
-            qSort(valuesSorted);
-
-            int count = valuesSorted.count();
-            double median = (count % 2 == 0) ? (valuesSorted[count/2 - 1] + valuesSorted[count/2]) / 2 : valuesSorted[count/2];
-            joysticks[key] = median;
-        }
-
-        // Buttons
-        for(int i=Tc::Connexion::MenuButton; i<= Tc::Connexion::FourButton; i++){
-            assignButton(buttons, status.rgbButtons, i);
-        }
-        for(int i=Tc::Connexion::TopButton; i<= Tc::Connexion::ModeButton; i++){
-            assignButton(buttons, status.rgbButtons, i);
-        }
-        buttons[Tc::Connexion::ImplicitActivationButton] = false;
-        for(int i=Tc::Connexion::JoystickX; i<=Tc::Connexion::JoystickRoll; i++)
-        {
-            if(joysticks.value(i, 0.0) != 0.0)
-            {
-                buttons[Tc::Connexion::ImplicitActivationButton] = true;
-                break;
-            }
-        }
+    // Axes
+    joysticks[Tc::Gamepad::LeftJoystickX] = correctedValue(float(status.lX));
+    joysticks[Tc::Gamepad::LeftJoystickY] = correctedValue(-float(status.lY));
+    if(mGamepadType == XBoxGamepad){
+        joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lRx));
+        joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lRy));
+        joysticks[Tc::Gamepad::TriggerJoystick] = correctedValue(-float(status.lZ));
+    } else if(mSwitchZJoysticks){
+        joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lRz));
+        joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lZ));
     } else {
-        // Axes
-        joysticks[Tc::Gamepad::LeftJoystickX] = correctedValue(float(status.lX));
-        joysticks[Tc::Gamepad::LeftJoystickY] = correctedValue(-float(status.lY));
-        if(mGamepadType == XBoxGamepad){
-            joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lRx));
-            joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lRy));
-            joysticks[Tc::Gamepad::TriggerJoystick] = correctedValue(-float(status.lZ));
-        } else if(mSwitchZJoysticks){
-            joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lRz));
-            joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lZ));
-        } else {
-            joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lZ));
-            joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lRz));
-        }
+        joysticks[Tc::Gamepad::RightJoystickX] = correctedValue(float(status.lZ));
+        joysticks[Tc::Gamepad::RightJoystickY] = correctedValue(-float(status.lRz));
+    }
 
-        // Buttons
-        for(int i=Tc::Gamepad::NorthButton; i<= Tc::Gamepad::RightShoulderLowerButton; i++){
-            assignButton(buttons, status.rgbButtons, i);
-        }
-        if(mGamepadType == XBoxGamepad){
-            buttons[Tc::Gamepad::LeftShoulderLowerButton] = float(status.lZ) > 0.2;
-            buttons[Tc::Gamepad::RightShoulderLowerButton] = float(status.lZ) < -0.2;
-            buttons[Tc::Gamepad::TriggerButton] = buttons[Tc::Gamepad::LeftShoulderLowerButton] || buttons[Tc::Gamepad::RightShoulderLowerButton];
-        }
+    // Buttons
+    for(int i=Tc::Gamepad::NorthButton; i<= Tc::Gamepad::RightShoulderLowerButton; i++){
+        assignButton(buttons, status.rgbButtons, i);
+    }
+    if(mGamepadType == XBoxGamepad){
+        buttons[Tc::Gamepad::LeftShoulderLowerButton] = float(status.lZ) > 0.2;
+        buttons[Tc::Gamepad::RightShoulderLowerButton] = float(status.lZ) < -0.2;
+        buttons[Tc::Gamepad::TriggerButton] = buttons[Tc::Gamepad::LeftShoulderLowerButton] || buttons[Tc::Gamepad::RightShoulderLowerButton];
+    }
 
 
-        bool up = false, down = false, left = false, right = false;
-        switch(status.rgdwPOV[0]) {
-            // contour-clockwise from left direction
-            case 9000:  right = true; break;
-            case 4500:  right = true; up = true; break;
-            case 0:     up = true; break;
-            case 31500: left = true; up = true; break;
-            case 27000: left = true; break;
-            case 22500: left = true; down = true; break;
-            case 18000: down = true; break;
-            case 13500: right = true; down = true; break;
-        }
-        buttons[Tc::Gamepad::ButtonUp] = up;
-        buttons[Tc::Gamepad::ButtonDown] = down;
-        buttons[Tc::Gamepad::ButtonLeft] = left;
-        buttons[Tc::Gamepad::ButtonRight] = right;
-        buttons[Tc::Gamepad::ImplicitActivationButton] = false;
-        foreach(double value, joysticks.values()){
-            if(value != 0.0){
-                buttons[Tc::Gamepad::ImplicitActivationButton] = true;
-                break;
-            }
+    bool up = false, down = false, left = false, right = false;
+    switch(status.rgdwPOV[0]) {
+        // contour-clockwise from left direction
+        case 9000:  right = true; break;
+        case 4500:  right = true; up = true; break;
+        case 0:     up = true; break;
+        case 31500: left = true; up = true; break;
+        case 27000: left = true; break;
+        case 22500: left = true; down = true; break;
+        case 18000: down = true; break;
+        case 13500: right = true; down = true; break;
+    }
+    buttons[Tc::Gamepad::ButtonUp] = up;
+    buttons[Tc::Gamepad::ButtonDown] = down;
+    buttons[Tc::Gamepad::ButtonLeft] = left;
+    buttons[Tc::Gamepad::ButtonRight] = right;
+    buttons[Tc::Gamepad::ImplicitActivationButton] = false;
+    foreach(double value, joysticks.values()){
+        if(value != 0.0){
+            buttons[Tc::Gamepad::ImplicitActivationButton] = true;
+            break;
         }
     }
 }
@@ -227,38 +160,10 @@ void WindowsGamepad::update(QMap<int, double> &joysticks, QMap<int, bool> &butto
 float WindowsGamepad::correctedValue(float v)
 {
     v /= (float)getResolution();
-    if(mGamepadType == ConnexionJoystick){
-        v = qBound(-1.0f, v, 1.0f);
-    }
     if(v >-0.1 && v < 0.1){
         return 0.0;
     }
     return v;
-}
-
-void WindowsGamepad::changeConnexionMode(int buttonId)
-{
-    if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::FrontButton){
-        if(buttonId == Tc::Connexion::TopButton){
-            mConnexionMode = TranslationMode;
-        } else if(buttonId == Tc::Connexion::RightButton){
-            mConnexionMode = RotationMode;
-        } else {
-            mConnexionMode = FreeMode;
-        }
-
-        // Get string for mode and notify user
-        QString modeString;
-        if(mConnexionMode == TranslationMode){
-            modeString = "translation only";
-        } else if(mConnexionMode == RotationMode){
-            modeString = "rotation only";
-        } else {
-            modeString = "free";
-        }
-        QString info = QString("%1 operation mode changed to %2").arg(getName(), modeString);
-        notifyInfo(info);
-    }
 }
 
 WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
@@ -270,10 +175,7 @@ WindowsGamepad::WindowsGamepad(const QString &name, const QString &guid) :
 
 int WindowsGamepad::getResolution() const
 {
-    /* +/- 1400 matches the hardware 1:1 for 3DConnexion.
-     * +/- 64 is suitable for all common gamepads.
-     */
-    return mGamepadType == ConnexionJoystick ? 1400 : 64;
+    return 64;
 }
 
 WindowsGamepad::~WindowsGamepad()
@@ -316,21 +218,11 @@ void WindowsGamepad::run()
             bool value = iter.value();
 
             if(!lastButtons.contains(buttonId) || (lastButtons.contains(buttonId) && lastButtons[buttonId] != value)){
-                if(buttonId >= Tc::Connexion::TopButton && buttonId <= Tc::Connexion::RotateButton){
-                    if(value){
-                        changeConnexionMode(buttonId);
-                    }
-                    // If button is "Rotate" forward the press to allow for eucentric tilting
-                    if(buttonId == Tc::Connexion::RotateButton){
-                        emit buttonToggled(buttonId, value, getName());
-                    }
+                if(lastButtons.contains(buttonId)){
+                    emit buttonToggled(buttonId, value, getName());
                 } else {
-                    if(lastButtons.contains(buttonId)){
+                    if(value){
                         emit buttonToggled(buttonId, value, getName());
-                    } else {
-                        if(value){
-                            emit buttonToggled(buttonId, value, getName());
-                        }
                     }
                 }
             }
@@ -338,16 +230,9 @@ void WindowsGamepad::run()
         lastButtons = buttons;
 
         // Handle joysticks data
-        if(mGamepadType == ConnexionJoystick && mConnexionMode != FreeMode){
-            int from = mConnexionMode == TranslationMode ? Tc::Connexion::JoystickYaw : Tc::Connexion::JoystickX;
-            int to = mConnexionMode == TranslationMode ? Tc::Connexion::JoystickRoll : Tc::Connexion::JoystickZ;
-            for(int i = from; i <= to; i++){
-                joysticks[i] = 0;
-            }
-        }
         emit dataUpdated(joysticks, getName());
 
-        // Eventually sleep thread, limit update rate
+        // Eventually sleep thread, limit update rate (20Hz)
         int remaining = 50 - timer.elapsed();
         if(remaining > 0){
             msleep(remaining);
@@ -372,22 +257,6 @@ BOOL CALLBACK WindowsGamepad::enumObject(const DIDEVICEOBJECTINSTANCE* inst, VOI
         diprg.lMax              = +(gamepad->getResolution()-1);
 
         if(FAILED(gamepad->mDevice->SetProperty(DIPROP_RANGE, &diprg.diph))){
-            return DIENUM_STOP;
-        }
-    }
-
-    // see: DI8ExamplePoll.cpp
-    if(gamepad->mGamepadType == ConnexionJoystick){
-        // Set the working mode
-        DIPROPDWORD  dipdw;
-        dipdw.diph.dwSize       = sizeof(DIPROPDWORD);
-        dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
-        dipdw.diph.dwHow        = DIPH_DEVICE;
-        dipdw.diph.dwObj        = 0; // Set for whole device not an axis
-        dipdw.dwData            = DIPROPAXISMODE_REL;
-
-        // Set the range for the axis
-        if(FAILED(gamepad->mDevice->SetProperty(DIPROP_AXISMODE, &dipdw.diph))){
             return DIENUM_STOP;
         }
     }

@@ -93,8 +93,8 @@ UserRcUnit *TutorialUnitInterface::instance(RcBase &rc, const QString & /*config
     rc.registerGamepadMethod("moveGamepad", Tc::joysticks(Tc::Gamepad::LeftJoystickX, Tc::Gamepad::LeftJoystickY, Tc::Gamepad::RightJoystickX), Tc::Gamepad::LeftShoulderUpperButton);
     rc.registerConnexionMethod("moveGamepad3d", Tc::joysticks(Tc::Connexion::JoystickX, Tc::Connexion::JoystickY, Tc::Connexion::JoystickYaw), Tc::Connexion::ImplicitActivationButton);
 
-    rc.registerButtonMethod("openGripper", Tc::Connexion::WestButton);
-    rc.registerButtonMethod("closeGripper", Tc::Connexion::EastButton);
+    rc.registerButtonMethod("openGripper", Tc::Connexion::ShiftButton);
+    rc.registerButtonMethod("closeGripper", Tc::Connexion::CtrlButton);
 
     rc.registerButtonMethod("openGripper", Tc::Gamepad::LeftShoulderLowerButton);
     rc.registerButtonMethod("closeGripper", Tc::Gamepad::RightShoulderLowerButton);

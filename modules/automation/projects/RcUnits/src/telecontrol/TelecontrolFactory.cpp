@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "WindowsTelecontrolFactory.h"
 #include "TelecontrolFactory.h"
 #include "RemoteGamepad.h"
 
@@ -22,16 +23,13 @@
 #include <QDebug>
 #include <QPluginLoader>
 
-#ifdef Q_OS_WIN
-#include "WindowsTelecontrolFactory.h"
-#elif defined(Q_OS_LINUX)
-#include "LinuxTelecontrolFactory.h"
-#endif
+QMap<QString, Gamepad *> TelecontrolFactory::sGamepadDevices;
+QMap<QString, HapticDevice *> TelecontrolFactory::sHapticDevices;
 
-TelecontrolFactory::TelecontrolFactory(QObject *parent) :
-    QObject(parent)
+TelecontrolFactory::TelecontrolFactory()
 {
-    loadHapticDevices();
+    enumGamepadDevices();
+    enumHapticDevices();
 }
 
 TelecontrolFactory &TelecontrolFactory::instance()
@@ -42,28 +40,27 @@ TelecontrolFactory &TelecontrolFactory::instance()
 
 QMap<QString, Gamepad *> TelecontrolFactory::getGamepadDevices()
 {
-    QMap<QString, Gamepad *> gamepadDevices = QMap<QString, Gamepad *>();
-
-    #ifdef Q_OS_WIN
-        gamepadDevices = WindowsTelecontrolFactory::getGamepadDevices();
-        // Add the remote gamepad for now, find a better location later
-        RemoteGamepad* remoteGamepad = new RemoteGamepad(tr("Remote gamepad"));
-        gamepadDevices.insert(tr("Remote gamepad"), remoteGamepad);
-    #elif defined(Q_OS_LINUX)
-        #pragma warning(Fix me)
-        //gamepad = LinuxTelecontrolFactory::createGamepad();
-    #endif
-
-    return gamepadDevices;
+    return sGamepadDevices;
 }
 
 QMap<QString, HapticDevice *> TelecontrolFactory::getHapticDevices()
 {
-    return instance().mHapticDevices;
+    return sHapticDevices;
 }
 
 // Helper
-void TelecontrolFactory::loadHapticDevices()
+void TelecontrolFactory::enumGamepadDevices()
+{
+    QMap<QString, Gamepad *> gamepadDevices = WindowsTelecontrolFactory::instance().getGamepadDevices();
+
+    // Add the remote gamepad for now, find a better location later
+    RemoteGamepad* remoteGamepad = new RemoteGamepad(tr("Remote gamepad"));
+    gamepadDevices.insert(tr("Remote gamepad"), remoteGamepad);
+
+    sGamepadDevices = gamepadDevices;
+}
+
+void TelecontrolFactory::enumHapticDevices()
 {
     QMap<QString, HapticDevice *> hapticDevices = QMap<QString, HapticDevice *>();
     // Check telecontrol folder for haptic plugins (haptic plugins are not proviced by default)
@@ -91,6 +88,6 @@ void TelecontrolFactory::loadHapticDevices()
         }
     }
     QDir::setCurrent(last);
-    mHapticDevices = hapticDevices;
+    sHapticDevices = hapticDevices;
 }
 

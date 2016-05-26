@@ -87,12 +87,12 @@ QStringList HilecCore::getTelecontrolableUnits()
 
 QMap<QString, Gamepad *> HilecCore::getGamepadDevices()
 {
-    return TelecontrolFactory::getGamepadDevices();
+    return TelecontrolFactory::instance().getGamepadDevices();
 }
 
 QMap<QString, HapticDevice *> HilecCore::getHapticDevices()
 {
-    return TelecontrolFactory::getHapticDevices();
+    return TelecontrolFactory::instance().getHapticDevices();
 }
 
 TelecontrolConfig HilecCore::getTelecontrolConfig(const QString &name)

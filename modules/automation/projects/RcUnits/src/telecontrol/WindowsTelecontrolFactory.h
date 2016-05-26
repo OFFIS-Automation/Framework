@@ -23,11 +23,11 @@
 class WindowsTelecontrolFactory : public QObject
 {
 public:
-    static  QMap<QString, Gamepad *>  getGamepadDevices();
-    virtual ~WindowsTelecontrolFactory();
-private:
     static WindowsTelecontrolFactory& instance();
+    static QMap<QString, Gamepad *> getGamepadDevices();
+    ~WindowsTelecontrolFactory();
 
+private:
     WindowsTelecontrolFactory();
 
     static BOOL CALLBACK enumDevices(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext);

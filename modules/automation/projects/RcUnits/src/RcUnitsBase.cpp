@@ -154,7 +154,7 @@ void RcUnitsBase::loadConfig(const QString &filename)
     loadTcMasters(filename);
 
     // Connect buttons to allow for sensitivity update and unit switch
-    mGamepadDevices = TelecontrolFactory::getGamepadDevices();
+    mGamepadDevices = TelecontrolFactory::instance().getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
         gamepad->disconnect(this);
         connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonToggled(int,bool,QString)), Qt::DirectConnection);
@@ -361,7 +361,7 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
 void RcUnitsBase::activateGamepad(const QString& deviceName, const QString &unitName)
 {
     if(mGamepadDevices.empty()){
-        mGamepadDevices = TelecontrolFactory::getGamepadDevices();
+        mGamepadDevices = TelecontrolFactory::instance().getGamepadDevices();
         if(mGamepadDevices.empty()){
             qCritical() << tr("No gamepad found.");
             emit gamepadUpdated(QString(), QString(), false);
@@ -539,7 +539,7 @@ void RcUnitsBase::onGamepadButtonToggled(int buttonId, bool pressed, const QStri
 void RcUnitsBase::activateHaptic(const QString& deviceName, const QString &unitName)
 {
     if(mHapticDevices.empty()){
-        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        mHapticDevices = TelecontrolFactory::instance().getHapticDevices();
         if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             emit hapticUpdated(QString(), QString(), false);
@@ -616,7 +616,7 @@ void RcUnitsBase::updateHapticParameters(const QString &unitName, const QString 
 QWidget *RcUnitsBase::createHapticWidget(const QString &unitName)
 {
     if(mHapticDevices.empty()){
-        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        mHapticDevices = TelecontrolFactory::instance().getHapticDevices();
         if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             return 0;

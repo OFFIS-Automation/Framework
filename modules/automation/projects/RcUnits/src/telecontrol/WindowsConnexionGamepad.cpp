@@ -235,6 +235,9 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
         foreach(int key, mJoysticks.keys()){
             mJoysticks[key] = 0;
         }
+        // Reset implicit activation button
+        mButtons[Tc::Connexion::ImplicitActivationButton] = false;
+
         return true; 
     }
     case SI_MOTION_EVENT:
@@ -246,14 +249,19 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
             mJoysticks[Tc::Connexion::JoystickX] = data.mData[SI_TX] ;
             mJoysticks[Tc::Connexion::JoystickY] = data.mData[SI_TY];
             mJoysticks[Tc::Connexion::JoystickZ] = data.mData[SI_TZ];
-            mJoysticks[Tc::Connexion::JoystickYaw] = data.mData[SI_RZ];
+            mJoysticks[Tc::Connexion::JoystickYaw] = data.mData[SI_RX];
             mJoysticks[Tc::Connexion::JoystickPitch] = data.mData[SI_RY];
-            mJoysticks[Tc::Connexion::JoystickRoll] = data.mData[SI_RX];
+            mJoysticks[Tc::Connexion::JoystickRoll] = data.mData[SI_RZ];
         }
 
-        // Scale values to -1.0 to 1.0
         foreach(int key, mJoysticks.keys()){
+            // Scale values to -1.0 to 1.0
             mJoysticks[key] /= AXIS_MAXIMUM;
+
+            // Set implicit activation
+            if(mJoysticks[key] != 0){
+                mButtons[Tc::Connexion::ImplicitActivationButton] = true;
+            }
         }
 
         return true;

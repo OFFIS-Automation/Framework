@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
     Notifications::setMainWindow(masterWindow);
 
     // Run
-        int retVal = a.exec();
+    int retVal = a.exec();
 
     // Free notification reference
     Notifications::setMainWindow(0);

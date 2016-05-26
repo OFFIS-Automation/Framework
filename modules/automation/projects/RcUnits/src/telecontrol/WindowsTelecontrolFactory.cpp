@@ -45,7 +45,13 @@ WindowsTelecontrolFactory::WindowsTelecontrolFactory()
 {
     sDirectInput = 0;
     sGamepadDevices = QMap<QString, Gamepad *>();
+
+    // 1. Search for DirectX supported devices
     DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&sDirectInput, NULL );
+    sDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, WindowsTelecontrolFactory::enumDevices, 0, DIEDFL_ATTACHEDONLY);
+
+    // 2. Search for 3Dconnexion devices
+    enumConnexionDevices();
 }
 
 WindowsTelecontrolFactory::~WindowsTelecontrolFactory()
@@ -67,15 +73,6 @@ WindowsTelecontrolFactory &WindowsTelecontrolFactory::instance()
 
 QMap<QString, Gamepad *> WindowsTelecontrolFactory::getGamepadDevices()
 {
-    // Force constructor/destructor call to acquire/release sDirectInput
-    instance();
-    sGamepadDevices = QMap<QString, Gamepad *>();
-
-    // Search for DirectX supported devices
-    sDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, WindowsTelecontrolFactory::enumDevices, 0, DIEDFL_ATTACHEDONLY);
-    // Search for 3Dconnexion devices
-    enumConnexionDevices();
-
     return sGamepadDevices;
 }
 

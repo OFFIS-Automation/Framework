@@ -30,14 +30,18 @@ class ArgumentItem : virtual public Item
 
 		virtual void print(std::ostream& stream) const;
 
-		void addArgument(const std::string& name, const Item::Type& type, const bool enable = false);
+		virtual void addArgument(const std::string& name, const Item::Type& type,
+			const bool enable = false);
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		void dropEvent(QGraphicsSceneDragDropEvent* event);
 
 		virtual QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition, const int& referenceHeight);
 
+		void addArgument(const std::string& name, const Item::Type& type,
+			const int& referenceHeight, const bool enable);
 		void addParameter(Parameter& parameter, Argument& argument, const QPoint &offset);
 
 		std::string m_name;

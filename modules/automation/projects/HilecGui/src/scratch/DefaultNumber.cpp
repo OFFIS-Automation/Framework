@@ -43,7 +43,7 @@ void DefaultNumber::NumberTextItem::updatePosition()
 }
 
 DefaultNumber::DefaultNumber(const bool enable)
-	: Number(80, 30),
+	: Number(60, 20),
 	  m_text(*this)
 {
 	m_textStyle.setBrush(Qt::lightGray);

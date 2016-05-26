@@ -15,7 +15,7 @@ namespace Scratch
 class Block : public virtual Item
 {
 	public:
-		static const int s_defaultWidth = 120;
+		static const int s_defaultWidth = 100;
 		static const int s_defaultHeight = 40;
 
 		static const int s_connectorHeight = 5;
@@ -31,7 +31,7 @@ class Block : public virtual Item
 
 		QRectF boundingRect() const final;
 
-		virtual void print(std::ostream& stream, unsigned indentationDepth) const = 0;
+		virtual void print(std::ostream& stream, unsigned indentationDepth) const;
 
 		void setPredecessorsReference(Block** reference);
 		void setSuccessor(Block* successor);
@@ -48,6 +48,9 @@ class Block : public virtual Item
 		Block* m_successor{nullptr};
 
 	protected:
+		Block()
+		{}
+
 		void drawConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
 		void drawOutline(QPolygon& polygon) const;
 

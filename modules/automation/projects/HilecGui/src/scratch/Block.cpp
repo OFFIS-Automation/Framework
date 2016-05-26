@@ -209,4 +209,10 @@ void Block::dropEvent(QGraphicsSceneDragDropEvent* event)
 		addBelow(block);
 }
 
+void Block::print(std::ostream& stream, unsigned indentationDepth) const
+{
+	if (m_successor)
+		m_successor->print(stream, indentationDepth);
+}
+
 } // namespace Scratch

@@ -37,21 +37,33 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 		stream << "\t";
 
 	ArgumentItem::print(stream);
+
+	stream << "\n";
+
+	Block::print(stream, indentationDepth);
 }
 
 void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
-	Block::dragMoveEvent(event);
-
 	if (Item::unpackItem(*event).itemType() == Item::Type::Block)
+	{
+		Block::dragMoveEvent(event);
+
 		return;
+	}
 
 	ArgumentItem::dragMoveEvent(event);
 }
 
 void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
-	Block::dropEvent(event);
+	if (Item::unpackItem(*event).itemType() == Item::Type::Block)
+	{
+		Block::dropEvent(event);
+
+		return;
+	}
+
 	ArgumentItem::dropEvent(event);
 }
 

@@ -67,15 +67,21 @@ void ArgumentItem::print(std::ostream& stream) const
 			stream << ", ";
 	}
 
-	stream << ")\n";
+	stream << ")";
 }
 
 void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, const bool enable)
 {
+	addArgument(name, type, m_height, enable);
+}
+
+void ArgumentItem::addArgument(const std::string& name, const Item::Type& type,
+	const int& referenceHeight, const bool enable)
+{
 	QFontMetrics fontMetric(m_font);
 
-	const auto appendageWidth =
-		s_margin + fontMetric.width(QString::fromStdString(name + ":")) + s_margin / 2;
+	const auto appendageWidth = s_margin + (name != ""?
+		fontMetric.width(QString::fromStdString(name + ":")) + s_margin / 2 : 0);
 
 	const auto x = (m_arguments.empty()?
 			s_margin + fontMetric.width(QString::fromStdString(m_name)) :
@@ -84,8 +90,6 @@ void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, 
 				m_arguments.back().defaultParameter.m_width))
 		 + appendageWidth;
 
-	m_width += appendageWidth;
-
 	auto& defaultParameter = *(type == Item::Type::Number?
 		reinterpret_cast<Parameter*>(new DefaultNumber(enable))
 		: reinterpret_cast<Parameter*>(new DefaultCondition(enable)));
@@ -93,17 +97,17 @@ void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, 
 	defaultParameter.setParent(this);
 	defaultParameter.setPos(x, s_margin);
 
-	m_width += defaultParameter.m_width;
-
-	auto height = defaultParameter.m_height + 2 * s_margin;
-	m_height = std::max(height, m_height);
+	resizeBy(
+		appendageWidth + defaultParameter.m_width,
+		std::max(defaultParameter.m_height + 2 * s_margin - referenceHeight, 0),
+		QPoint(0, 0));
 
 	m_arguments.push_back({name, type, defaultParameter, nullptr});
 }
 
 void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
-	const auto& position = event->pos();
+	const auto& position = event->pos().toPoint();
 
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
@@ -124,8 +128,7 @@ void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 				if (parameter.itemType() != argument.type)
 					return false;
 
-				const auto parameterPosition = argument.defaultParameter.mapFromParent(
-					position.toPoint());
+				const auto parameterPosition = argument.defaultParameter.mapFromParent(position);
 
 				return argument.defaultParameter.contains(parameterPosition);
 			});
@@ -141,8 +144,6 @@ void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 
 void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
-	event->accept();
-
 	const auto& position = event->pos();
 
 	const auto oldHeight = m_height;
@@ -167,7 +168,6 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 	}
 
 	auto& parameter = *reinterpret_cast<Parameter*>(item);
-
 	auto oldArgument = oldArguments.cbegin();
 
 	for (auto &argument : m_arguments)
@@ -189,6 +189,12 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 }
 
 QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+{
+	return resizeBy(dx, dy, triggerPosition, m_height);
+}
+
+QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition,
+	const int& referenceHeight)
 {
 	auto actualDx = dx;
 	auto actualDy = dy;
@@ -215,12 +221,17 @@ QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 				argument->defaultParameter.mapFromParent(triggerPosition).toPoint()))
 			continue;
 
+		if (argument->parameter)
+			argument->defaultParameter.show();
+		else
+			argument->defaultParameter.hide();
+
 		actualDx = std::max(boundingRectangle.width() + dx, argument->defaultParameter.m_width)
 			- boundingRectangle.width();
 
 		if (dy < 0)
 		{
-			const auto heighestArgument = std::max_element(m_arguments.cbegin(), m_arguments.cend(),
+			auto heighestArgument = std::max_element(m_arguments.cbegin(), m_arguments.cend(),
 				[&](const auto& lhs, const auto& rhs)
 				{
 					// Don't consider the trigger argument itself
@@ -243,10 +254,14 @@ QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 					return lhs.parameter->m_height < rhs.parameter->m_height;
 				});
 
+			// Don't consider the trigger argument itself
+			if (m_arguments.size() == 1 && &m_arguments.at(0) == &*argument)
+				heighestArgument = m_arguments.cend();
+
 			if (heighestArgument != m_arguments.cend() && heighestArgument->parameter)
 			{
-				if (heighestArgument->parameter->m_height + 2 * s_margin > m_height + dy)
-					actualDy = heighestArgument->parameter->m_height + 2 * s_margin - m_height;
+				if (heighestArgument->parameter->m_height + 2 * s_margin > referenceHeight + dy)
+					actualDy = heighestArgument->parameter->m_height + 2 * s_margin - referenceHeight;
 			}
 			else
 			{
@@ -259,9 +274,9 @@ QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 
 				if (heighestDefaultArgument != m_arguments.cend()
 						&& heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
-							> m_height + dy)
+							> referenceHeight + dy)
 					actualDy = heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
-						- m_height;
+						- referenceHeight;
 			}
 		}
 

@@ -7,12 +7,12 @@
 #include <algorithm>
 
 #include "Block.h"
-#include "Condition.h"
+#include "ArgumentItem.h"
 
 namespace Scratch
 {
 
-class ControlFlowBlock : public Block
+class ControlFlowBlock : public Block, public ArgumentItem
 {
 	protected:
 		static const int s_shaftExtent = 40;
@@ -45,23 +45,20 @@ class ControlFlowBlock : public Block
 
 		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
 
+		void addArgument(const std::string& name, const Item::Type& type,
+			const bool enable = false);
+
 	protected:
-		ControlFlowBlock(const size_t& numberOfBodies);
+		ControlFlowBlock(const std::string& name, const size_t& numberOfBodies);
 
 		bool inBodyRange(const QPoint& position);
 
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		void dropEvent(QGraphicsSceneDragDropEvent* event);
 
-		QRect conditionArea();
-
-		void addCondition(Condition& condition);
 		void addBody(Block& block, Block*& bodyBlock, const QPoint &offset);
 
 		int m_headerHeight = s_defaultHeaderHeight;
-
-		Condition* m_condition{nullptr};
-
 		std::vector<Body> m_bodies{};
 };
 

@@ -7,7 +7,8 @@
 namespace Scratch
 {
 
-ControlFlowBlock::ControlFlowBlock(const size_t& numberOfBodies)
+ControlFlowBlock::ControlFlowBlock(const std::string& name, const size_t& numberOfBodies)
+	: ArgumentItem(name)
 {
 	m_bodies.resize(numberOfBodies);
 
@@ -42,14 +43,6 @@ void ControlFlowBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 	painter->setPen(m_outlineStyle);
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
-
-	polygon.clear();
-
-	Condition::drawOutline(polygon, conditionArea());
-
-	painter->setBrush(m_outlineStyle.color());
-	painter->setPen(m_outlineStyle);
-	painter->drawPolygon(polygon);
 }
 
 bool ControlFlowBlock::inBodyRange(const QPoint& position)
@@ -73,29 +66,28 @@ void ControlFlowBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos().toPoint();
 
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() != Item::Type::Block)
+	{
+		ArgumentItem::dragMoveEvent(event);
+
+		return;
+	}
+
+	if (!inBodyRange(position))
+	{
+		Block::dragMoveEvent(event);
+
+		return;
+	}
+
 	event->accept();
 	event->setDropAction(Qt::IgnoreAction);
 
-	Block::dragMoveEvent(event);
+	Block& block = *dynamic_cast<Block*>(&item);
 
-	Item& item = Item::unpackItem(*event);
-
-	if (item.itemType() == Item::Type::Condition)
-	{
-		if (m_condition || !conditionArea().contains(position))
-			return;
-	}
-	else if (item.itemType() == Item::Type::Block)
-	{
-		Block& block = *dynamic_cast<Block*>(&item);
-
-		if (isSelfOrAncestor(block))
-			return;
-
-		if (!inBodyRange(position))
-			return;
-	}
-	else
+	if (isSelfOrAncestor(block))
 		return;
 
 	if (item.scene() != this->scene())
@@ -114,10 +106,19 @@ void ControlFlowBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 
 	auto* item = &Item::unpackItem(*event);
 
-	Block::dropEvent(event);
+	if (item->itemType() != Item::Type::Block)
+	{
+		ArgumentItem::dropEvent(event);
+
+		return;
+	}
 
 	if (item->itemType() == Item::Type::Block && !inBodyRange(position))
+	{
+		Block::dropEvent(event);
+
 		return;
+	}
 
 	event->accept();
 
@@ -135,44 +136,27 @@ void ControlFlowBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 		item->remove();
 	}
 
-	// Condition
-	if (item->itemType() == Item::Type::Condition)
+	auto& block = *dynamic_cast<Block*>(item);
+
+	auto oldY = oldHeaderHeight;
+	auto oldBody = oldBodies.cbegin();
+
+	auto y = m_headerHeight;
+
+	for (auto &body : m_bodies)
 	{
-		auto& condition = *static_cast<Condition*>(item);
-
-		addCondition(condition);
-	}
-	// Block
-	else
-	{
-		auto& block = *dynamic_cast<Block*>(item);
-
-		auto oldY = oldHeaderHeight;
-		auto oldBody = oldBodies.cbegin();
-
-		auto y = m_headerHeight;
-
-		for (auto &body : m_bodies)
+		if (inConnectorActivationRange(position, oldY))
 		{
-			if (inConnectorActivationRange(position, oldY))
-			{
-				addBody(block, body.block, QPoint(s_shaftExtent, y));
+			addBody(block, body.block, QPoint(s_shaftExtent, y));
 
-				return;
-			}
-
-			oldY += oldBody->height + s_defaultHeaderHeight;
-			++oldBody;
-
-			y += body.height + s_defaultHeaderHeight;
+			return;
 		}
-	}
-}
 
-QRect ControlFlowBlock::conditionArea()
-{
-	return QRect(s_shaftExtent + s_margin, s_margin,
-		m_width - s_shaftExtent - 2 * s_margin, m_headerHeight - 2 * s_margin);
+		oldY += oldBody->height + s_defaultHeaderHeight;
+		++oldBody;
+
+		y += body.height + s_defaultHeaderHeight;
+	}
 }
 
 QPoint ControlFlowBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
@@ -192,10 +176,14 @@ QPoint ControlFlowBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 		});
 	};
 
-	if (conditionArea().contains(triggerPosition))
+	auto argumentArea = QRect(0, 0, m_width, m_headerHeight);
+
+	if (argumentArea.contains(triggerPosition))
 	{
-		actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
-		actualDy = std::max(m_headerHeight + dy, s_defaultHeaderHeight) - m_headerHeight;
+		auto actualD = ArgumentItem::resizeBy(dx, dy, triggerPosition, m_headerHeight);
+
+		actualDx = std::max(m_width + actualD.x(), m_defaultWidth) - m_width;
+		actualDy = std::max(m_headerHeight + actualD.y(), s_defaultHeaderHeight) - m_headerHeight;
 
 		if (!actualDx && !actualDy)
 			return QPoint();
@@ -238,19 +226,10 @@ QPoint ControlFlowBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
 	return QPoint(actualDx, actualDy);
 }
 
-void ControlFlowBlock::addCondition(Condition& condition)
+void ControlFlowBlock::addArgument(const std::string& name, const Item::Type& type,
+	const bool enable)
 {
-	const auto dWidth = condition.m_width - defaultConditionWidth();
-	const auto dHeight = condition.m_height - defaultConditionHeight();
-
-	const QPoint offset(s_shaftExtent + s_margin, s_margin);
-
-	condition.setParent(this);
-	condition.m_parentReference = reinterpret_cast<Parameter**>(&m_condition);
-	condition.setPos(offset);
-
-	m_condition = &condition;
-	resizeBy(dWidth, dHeight, offset);
+	ArgumentItem::addArgument(name, type, m_headerHeight, enable);
 }
 
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)

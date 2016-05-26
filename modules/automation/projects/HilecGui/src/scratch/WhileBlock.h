@@ -9,7 +9,7 @@ namespace Scratch
 class WhileBlock : public ControlFlowBlock
 {
 	public:
-		WhileBlock();
+		WhileBlock(bool enable = false);
 
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget);
 

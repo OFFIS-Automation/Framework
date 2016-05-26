@@ -9,7 +9,7 @@ namespace Scratch
 class IfElseBlock : public ControlFlowBlock
 {
 	public:
-		IfElseBlock();
+		IfElseBlock(bool enable = true);
 
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget);
 

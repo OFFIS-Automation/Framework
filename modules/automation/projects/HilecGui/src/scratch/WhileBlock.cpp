@@ -9,12 +9,12 @@
 namespace Scratch
 {
 
-WhileBlock::WhileBlock()
+WhileBlock::WhileBlock(bool enable)
 	: Item(s_defaultWidth, s_defaultHeight + 2 * s_defaultHeaderHeight),
-	  ControlFlowBlock(1),
+	  ControlFlowBlock("while", 1),
 	  m_body{m_bodies.at(0)}
 {
-	setAcceptDrops(true);
+	addArgument("", Item::Type::Condition, enable);
 }
 
 void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget)
@@ -30,14 +30,11 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style,
 
 Block& WhileBlock::clone() const
 {
-	return *(new WhileBlock());
+	return *(new WhileBlock(true));
 }
 
 void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 {
-	if (!m_condition)
-		throw std::invalid_argument("Not all conditions are defined.");
-
 	if (!m_body.block)
 		throw std::invalid_argument("Not all loop bodies are defined.");
 
@@ -45,13 +42,13 @@ void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0) cons
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "while " << *m_condition << ":\n";
+	ArgumentItem::print(stream);
+
+	stream << ":\n";
 
 	m_body.block->print(stream, indentationDepth + 1);
 
-	// next
-	if (m_successor)
-		m_successor->print(stream, indentationDepth);
+	Block::print(stream, indentationDepth);
 }
 
 } // namespace Scratch

@@ -9,13 +9,13 @@
 namespace Scratch
 {
 
-IfElseBlock::IfElseBlock()
+IfElseBlock::IfElseBlock(bool enable)
 	: Item(s_defaultWidth, 2 * s_defaultHeight + 3 * s_defaultHeaderHeight),
-	  ControlFlowBlock(2),
+	  ControlFlowBlock("if", 2),
 	  m_trueBody{m_bodies.at(0)},
 	  m_falseBody{m_bodies.at(1)}
 {
-	setAcceptDrops(true);
+	addArgument("", Item::Type::Condition, enable);
 }
 
 void IfElseBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style, QWidget* widget)
@@ -41,9 +41,6 @@ Block& IfElseBlock::clone() const
 
 void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 {
-	if (!m_condition)
-		throw std::invalid_argument("Not all conditions are defined.");
-
 	if (!m_trueBody.block || !m_falseBody.block)
 		throw std::invalid_argument("Not all if bodies are defined.");
 
@@ -52,7 +49,9 @@ void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) con
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "if " << *m_condition << ":\n";
+	ArgumentItem::print(stream);
+
+	stream << ":\n";
 
 	m_trueBody.block->print(stream, indentationDepth + 1);
 
@@ -67,8 +66,7 @@ void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) con
 
 	// next
 
-	if (m_successor)
-		m_successor->print(stream, indentationDepth);
+	Block::print(stream, indentationDepth);
 }
 
 } // namespace Scratch

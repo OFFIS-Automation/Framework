@@ -14,27 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
-#define LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#ifndef WINDOWSTELECONTROLFACTORY_H
+#define WINDOWSTELECONTROLFACTORY_H
 
-#include "WindowsGamepad.h"
+#include "Gamepad.h"
+#include <dinput.h>
 
 class WindowsTelecontrolFactory : public QObject
 {
 public:
-    static  QMap<QString, Gamepad *>  getGamepadDevices();
-    virtual ~WindowsTelecontrolFactory();
-private:
     static WindowsTelecontrolFactory& instance();
+    static QMap<QString, Gamepad *> getGamepadDevices();
+    ~WindowsTelecontrolFactory();
 
+private:
     WindowsTelecontrolFactory();
 
     static BOOL CALLBACK enumDevices(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext);
+    static void enumConnexionDevices();
 
     static LPDIRECTINPUT8 sDirectInput;
     static QMap<QString, Gamepad *> sGamepadDevices;
-    static QStringList specialControllerNames;
     static QStringList disallowedControllerNames;
 };
 
-#endif // LOLECTOOLS_WINDOWSTELECONTROLFACTORY_HQT
+#endif // WINDOWSTELECONTROLFACTORY_H

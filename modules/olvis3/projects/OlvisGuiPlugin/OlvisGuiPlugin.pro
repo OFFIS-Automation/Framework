@@ -90,8 +90,8 @@ SOURCES += \
     src/ProcessorConnect/ProcessorItem.cpp
 
 HEADERS += \
-       ../../include/gui/PortEditInterface.h \
-       ../../include/gui/OlvisGuiPluginInterface.h \
+    ../../include/gui/PortEditInterface.h \
+    ../../include/gui/OlvisGuiPluginInterface.h \
     src/PluginContainer.h \
     src/OlvisGuiPlugin.h \
     src/FilterConnect/FilterWidget.h \

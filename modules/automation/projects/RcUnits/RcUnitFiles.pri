@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
 VPATH += $${PWD}
+QT += core gui widgets
 
 INCLUDEPATH += $${PWD}/../../../frontend/include
 INCLUDEPATH += $${PWD}/../../include
@@ -61,20 +62,25 @@ HEADERS += src/RcUnit.h \
     src/telecontrol/RemoteGamepad.h
 
 win32*{
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/include
+
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/directx/lib/x86 -ldinput8 -ldxguid
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/lib -lsiapp -lspwmath -lspwmathMT
+
     HEADERS += src/telecontrol/WindowsGamepad.h \
+        src/telecontrol/WindowsConnexionGamepad.h \
         ../../include/telecontrol/GamepadInterface.h
 
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/directx_sdk/lib/x86 dinput8.lib dxguid.lib
-
-    SOURCES += src/telecontrol/WindowsGamepad.cpp
+    SOURCES += src/telecontrol/WindowsGamepad.cpp \
+        src/telecontrol/WindowsConnexionGamepad.cpp
 }
 
 unix:!macx{
     HEADERS += src/telecontrol/LinuxGamepad.h \
         src/telecontrol/LinuxTelecontrolFactory.h \
-        src/telecontrol/libjoystick/joystick.h \
+        $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/libjoystick/joystick.h \
 
     SOURCES += src/telecontrol/LinuxGamepad.cpp \
         src/telecontrol/LinuxTelecontrolFactory.cpp \
-        src/telecontrol/libjoystick/joystick.cpp \
+        $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/libjoystick/joystick.cpp \
 }

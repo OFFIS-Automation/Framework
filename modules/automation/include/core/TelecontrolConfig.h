@@ -62,7 +62,19 @@ inline bool isGamepadButton(int button)
 
 inline bool isConnexionButton(int button)
 {
-    return button >= Tc::Connexion::FirstButton && button <= Tc::Connexion::LastButton;
+    if(button >= Tc::Connexion::MenuButton && button <= Tc::Connexion::FitButton){
+        return true;
+    }
+    if(button >= Tc::Connexion::TopBottomButton && button <= Tc::Connexion::View3Button){
+        return true;
+    }
+    if(button >= Tc::Connexion::CtrlButton && button <= Tc::Connexion::TabButton){
+        return true;
+    }
+    if(button >= Tc::Connexion::OneButton && button <= Tc::Connexion::TwelveButton){
+        return true;
+    }
+    return false;
 }
 
 inline bool isVirtualButton(int button)

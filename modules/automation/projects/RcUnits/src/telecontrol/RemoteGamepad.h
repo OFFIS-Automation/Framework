@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_REMOTEGAMEPAD_HQT
-#define RCUNITTOOLS_REMOTEGAMEPAD_HQT
+#ifndef REMOTEGAMEPAD_H
+#define REMOTEGAMEPAD_H
 
 #include "Gamepad.h"
 
@@ -32,9 +32,13 @@ public slots:
 protected:
     RemoteGamepad(const QString& name);
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return Remote; }
+    int getResolution() const { return 0; }
+    GamepadType getGamepadType() const { return Remote; }
+
+    void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
+
     friend class TelecontrolFactory;
     QString mName;
 };
 
-#endif //RCUNITTOOLS_REMOTEGAMEPAD_HQT
+#endif //REMOTEGAMEPAD_H

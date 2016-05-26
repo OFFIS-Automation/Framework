@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCUNITTOOLS_WINDOWSGAMEPAD_HQT
-#define RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#ifndef WINDOWSGAMEPAD_H
+#define WINDOWSGAMEPAD_H
 
 #include "Gamepad.h"
-
-#define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
 #include <QMap>
@@ -28,17 +26,21 @@ class WindowsTelecontrolFactory;
 class WindowsGamepad : public Gamepad
 {
 public:
-    virtual int getResolution() const;
     virtual ~WindowsGamepad();
+
 protected:
     WindowsGamepad(const QString& name, const QString& guid);
-    virtual void run();
-    virtual bool initialize();
+    void run();
+    bool initialize();
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return Windows; }
+    int getResolution() const;
+    GamepadType getGamepadType() const { return Windows; }
+
     void createMapping();
-    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
+    void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
+    void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
+
     static BOOL CALLBACK enumObject(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext);
     void changeConnexionMode(int buttonId);
 
@@ -47,22 +49,11 @@ protected:
     friend class WindowsTelecontrolFactory;
     QString mName, mGuid;
     QMap<int, int> mButtonMapping;
-    QMap<int, QList<double> > mLastConnexionValues;
     bool mSwitchZJoysticks;
     enum Type {
-        ConnexionJoystick,
         XBoxGamepad,
         DefaultGamepad
     } mGamepadType;
-    enum ConnexionMode
-    {
-        FreeMode,
-        TranslationMode,
-        RotationMode
-    } mConnexionMode;
-
-
-    void assignButton(QMap<int, bool> &buttons, BYTE *data, int buttonId);
 };
 
-#endif //RCUNITTOOLS_WINDOWSGAMEPAD_HQT
+#endif //WINDOWSGAMEPAD_H

@@ -154,10 +154,10 @@ void RcUnitsBase::loadConfig(const QString &filename)
     loadTcMasters(filename);
 
     // Connect buttons to allow for sensitivity update and unit switch
-    mGamepadDevices = TelecontrolFactory::getGamepadDevices();
+    mGamepadDevices = TelecontrolFactory::instance().getGamepadDevices();
     foreach (Gamepad *gamepad, mGamepadDevices) {
         gamepad->disconnect(this);
-        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonPressed(int,bool,QString)), Qt::DirectConnection);
+        connect(gamepad, SIGNAL(buttonToggled(int,bool,QString)), SLOT(onGamepadButtonToggled(int,bool,QString)), Qt::DirectConnection);
         gamepad->start();
     }
     emit unitsUpdated();
@@ -361,7 +361,7 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
 void RcUnitsBase::activateGamepad(const QString& deviceName, const QString &unitName)
 {
     if(mGamepadDevices.empty()){
-        mGamepadDevices = TelecontrolFactory::getGamepadDevices();
+        mGamepadDevices = TelecontrolFactory::instance().getGamepadDevices();
         if(mGamepadDevices.empty()){
             qCritical() << tr("No gamepad found.");
             emit gamepadUpdated(QString(), QString(), false);
@@ -503,13 +503,13 @@ void RcUnitsBase::stopAll()
 }
 
 
-void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QString &deviceName)
+void RcUnitsBase::onGamepadButtonToggled(int buttonId, bool pressed, const QString &deviceName)
 {
-    if(buttonId >= Tc::Connexion::MenuButton && buttonId <= Tc::Connexion::FitButton){
+    if(buttonId == Tc::Connexion::CtrlButton && buttonId <= Tc::Connexion::TabButton){
         mConnexionModifiersPressed[buttonId] = pressed;
-        return;
     }
 
+    // Handle press
     if(pressed){
         // Get the connected unit
         QString unitName = mGamepadMapping.value(deviceName, "");
@@ -521,8 +521,8 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             emit gamepadSwitchRequested(deviceName, unitName, buttonId == Tc::Gamepad::ButtonDown);
         }
 
-        // Connexion methods
-        if(mConnexionModifiersPressed[Tc::Connexion::MenuButton]){
+        // Connexion methods with modifier (sensitivity, switch)
+        if(mConnexionModifiersPressed[Tc::Connexion::SpaceButton]){
             if(buttonId == Tc::Connexion::ShiftButton || buttonId == Tc::Connexion::CtrlButton){
                 emit gamepadSensitivityChangeRequested(deviceName, unitName, buttonId == Tc::Connexion::CtrlButton);
             } else if(buttonId == Tc::Connexion::EscButton || buttonId == Tc::Connexion::AltButton){
@@ -530,13 +530,16 @@ void RcUnitsBase::onGamepadButtonPressed(int buttonId, bool pressed, const QStri
             }
         }
     }
+
+    // Forward action to GUI (which is maybe interested)
+    emit gamepadButtonToggled(deviceName, buttonId, pressed);
 }
 
 
 void RcUnitsBase::activateHaptic(const QString& deviceName, const QString &unitName)
 {
     if(mHapticDevices.empty()){
-        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        mHapticDevices = TelecontrolFactory::instance().getHapticDevices();
         if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             emit hapticUpdated(QString(), QString(), false);
@@ -613,7 +616,7 @@ void RcUnitsBase::updateHapticParameters(const QString &unitName, const QString 
 QWidget *RcUnitsBase::createHapticWidget(const QString &unitName)
 {
     if(mHapticDevices.empty()){
-        mHapticDevices = TelecontrolFactory::getHapticDevices();
+        mHapticDevices = TelecontrolFactory::instance().getHapticDevices();
         if(mHapticDevices.empty()){
             qCritical() << tr("No haptic units found.");
             return 0;

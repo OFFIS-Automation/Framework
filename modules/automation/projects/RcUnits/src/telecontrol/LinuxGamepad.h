@@ -25,16 +25,17 @@ class LinuxTelecontrolFactory;
 class LinuxGamepad : public Gamepad
 {
 public:
-    virtual int getResolution() const;
     virtual ~LinuxGamepad();
+
 protected:
     LinuxGamepad();
     virtual void run();
     virtual bool initialize();
     QString getName() { return mName; }
-    GamepadType getGamepadType() { return GamepadType::Linux; }
+    int getResolution() { return 64; }
+    GamepadType getGamepadType() { return Linux; }
 
-    virtual void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
+    void update(QMap<int, double>& joysticks, QMap<int, bool>& buttons);
     float correctedValue(float v);
 
     Joystick mDevice;

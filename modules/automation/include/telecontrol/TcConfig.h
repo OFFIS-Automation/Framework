@@ -18,13 +18,12 @@
 
 #include <QList>
 
-
 namespace Tc
 {
     namespace Gamepad
     {
         enum WheelButtons {
-            ButtonUp = 1024,
+            ButtonUp = 256,
             ButtonDown,
             ButtonLeft,
             ButtonRight
@@ -56,33 +55,51 @@ namespace Tc
     }
     namespace Connexion
     {
-        enum ControlButtons
-        {
-            TopButton = 2048,
-            RightButton,
-            FrontButton,
-            RotateButton,
-            ModeButton
-        };
         enum Buttons
         {
-            // Connexion buttons start here
-            MenuButton = 64,
-            WestButton = MenuButton, // small connexion buttons
+            MenuButton = 512,
             FitButton,
-            EastButton = FitButton, // small connexion buttons
-            EscButton,
+            ImplicitActivationButton
+        };
+        enum QuickViewButtons
+        {
+            TopBottomButton = 1024,
+            RightLeftButton,
+            FrontBackButton,
+            CWCCWButton,
+            RotateButton,
+            ISO1ISO2Button,
+            View1Button, //
+            View2Button, //
+            View3Button //
+        };
+        enum ModifierButtons
+        {
+            CtrlButton = 2048,
             AltButton,
             ShiftButton,
-            CtrlButton,
-            OneButton,
+            EscButton,
+            EnterButton,
+            DeleteButton,
+            SpaceButton, //
+            TabButton
+        };
+        enum FunctionButtons
+        {
+            OneButton = 5096,
             TwoButton,
             ThreeButton,
             FourButton,
-            ImplicitActivationButton, // toggles when any of x,y,z, yaw, pitch, roll is above zero Use this for 6DOF joysticks if you don't wand a dead mans control
-            FirstButton = MenuButton,
-            LastButton = ImplicitActivationButton
+            FiveButton,
+            SixButton,
+            SevenButton,
+            EightButton,
+            NineButton,
+            TenButton,
+            ElevenButton,
+            TwelveButton
         };
+
         enum Joystick
         {
             JoystickX = 64,

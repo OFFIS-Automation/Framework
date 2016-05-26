@@ -100,7 +100,7 @@ void TcInvoker::handleGamepadData(const QMap<int, double> &data)
 
 void TcInvoker::handleGamepadButtonToggled(int buttonId, bool pressed)
 {
-    if(buttonId >= Tc::Connexion::MenuButton && buttonId <= Tc::Connexion::FitButton){
+    if(buttonId >= Tc::Connexion::CtrlButton && buttonId <= Tc::Connexion::TabButton){
         mConnexionModifiersPressed[buttonId] = pressed;
         return;
     }

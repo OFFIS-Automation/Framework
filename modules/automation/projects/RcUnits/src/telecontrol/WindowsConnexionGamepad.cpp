@@ -13,6 +13,8 @@
 #include <siapp.h>
 #include <Windows.h>
 
+#define AXIS_MAXIMUM 350
+
 // Unique instance of this WindowsConnexionGamepad
 static WindowsConnexionGamepad* sWindowsConnexionGamepadInstance = 0;
 
@@ -226,15 +228,14 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
         return false;
     }
 
-    qDebug() << event.type;
     switch (event.type) {
     case SI_ZERO_EVENT:
     {
         // Reset joystick values
         foreach(int key, mJoysticks.keys()){
-            mJoysticks[key] = 0.0;
+            mJoysticks[key] = 0;
         }
-        return true;
+        return true; 
     }
     case SI_MOTION_EVENT:
     {
@@ -242,13 +243,19 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
         if (data.mData[SI_TX] != 0 || data.mData[SI_TY] != 0 || data.mData[SI_TZ] != 0
                 || data.mData[SI_RX] != 0 || data.mData[SI_RY] != 0 || data.mData[SI_RZ] != 0)
         {
-            mJoysticks[Tc::Connexion::JoystickX] = data.mData[SI_TX];
+            mJoysticks[Tc::Connexion::JoystickX] = data.mData[SI_TX] ;
             mJoysticks[Tc::Connexion::JoystickY] = data.mData[SI_TY];
             mJoysticks[Tc::Connexion::JoystickZ] = data.mData[SI_TZ];
             mJoysticks[Tc::Connexion::JoystickYaw] = data.mData[SI_RZ];
             mJoysticks[Tc::Connexion::JoystickPitch] = data.mData[SI_RY];
             mJoysticks[Tc::Connexion::JoystickRoll] = data.mData[SI_RX];
         }
+
+        // Scale values to -1.0 to 1.0
+        foreach(int key, mJoysticks.keys()){
+            mJoysticks[key] /= AXIS_MAXIMUM;
+        }
+
         return true;
     }
     case SI_BUTTON_EVENT:

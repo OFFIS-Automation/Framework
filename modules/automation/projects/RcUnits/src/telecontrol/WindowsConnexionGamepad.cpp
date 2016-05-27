@@ -247,10 +247,10 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
                 || data.mData[SI_RX] != 0 || data.mData[SI_RY] != 0 || data.mData[SI_RZ] != 0)
         {
             mJoysticks[Tc::Connexion::JoystickX] = data.mData[SI_TX] ;
-            mJoysticks[Tc::Connexion::JoystickY] = data.mData[SI_TY];
-            mJoysticks[Tc::Connexion::JoystickZ] = data.mData[SI_TZ];
-            mJoysticks[Tc::Connexion::JoystickYaw] = data.mData[SI_RX];
-            mJoysticks[Tc::Connexion::JoystickPitch] = data.mData[SI_RY];
+            mJoysticks[Tc::Connexion::JoystickY] = data.mData[SI_TZ];
+            mJoysticks[Tc::Connexion::JoystickZ] = data.mData[SI_TY];
+            mJoysticks[Tc::Connexion::JoystickYaw] = data.mData[SI_RY];
+            mJoysticks[Tc::Connexion::JoystickPitch] = data.mData[SI_RX];
             mJoysticks[Tc::Connexion::JoystickRoll] = data.mData[SI_RZ];
         }
 
@@ -264,6 +264,15 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
             }
         }
 
+        return true;
+    }
+    case SI_APP_EVENT:
+    {
+        size_t len = strnlen_s(event.u.appCommandData.id.appCmdID, SI_MAXAPPCMDID);
+        if (len == 0 || len == SI_MAXAPPCMDID){
+            break;
+        }
+        buttonEvent(atoi(event.u.appCommandData.id.appCmdID), event.u.appCommandData.pressed);
         return true;
     }
     case SI_BUTTON_EVENT:

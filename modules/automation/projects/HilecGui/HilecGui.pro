@@ -95,7 +95,9 @@ HEADERS += \
     src/scratch/DefaultCondition.h \
     src/scratch/PiNumber.h \
     src/scratch/ArgumentItem.h \
-    src/scratch/ArgumentBlock.h
+    src/scratch/ArgumentBlock.h \
+    src/scratch/ArgumentNumber.h \
+    src/scratch/ArgumentCondition.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -151,7 +153,9 @@ SOURCES += \
     src/scratch/DefaultCondition.cpp \
     src/scratch/PiNumber.cpp \
     src/scratch/ArgumentItem.cpp \
-    src/scratch/ArgumentBlock.cpp
+    src/scratch/ArgumentBlock.cpp \
+    src/scratch/ArgumentNumber.cpp \
+    src/scratch/ArgumentCondition.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

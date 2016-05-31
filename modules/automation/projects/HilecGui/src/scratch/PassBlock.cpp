@@ -13,14 +13,9 @@ PassBlock::PassBlock()
 	setAcceptDrops(true);
 }
 
-void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
+void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
-	QPolygon polygon;
-	drawOutline(polygon);
-
-	painter->setBrush(m_fillStyle);
-	painter->setPen(m_outlineStyle);
-	painter->drawPolygon(polygon);
+	Block::paint(painter, item, widget);
 
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);

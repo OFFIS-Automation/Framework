@@ -11,7 +11,7 @@ class PassBlock : public Block
 	public:
 		PassBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*item, QWidget*widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth) const;

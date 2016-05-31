@@ -8,19 +8,20 @@
 namespace Scratch
 {
 
-class Parameter : public Item
+class Parameter : virtual public Item
 {
 	public:
 		QRectF boundingRect() const final;
 
 		void remove();
+
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		virtual void drawOutline(QPolygon &polygon) const = 0;
 		virtual void print(std::ostream& stream) const = 0;
 
 		Parameter** m_parentReference{nullptr};
 
 	protected:
-		Parameter(int width, int height);
-
 		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 };

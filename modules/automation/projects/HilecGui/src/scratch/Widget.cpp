@@ -14,6 +14,8 @@
 #include "IfElseBlock.h"
 #include "PassBlock.h"
 #include "ArgumentBlock.h"
+#include "ArgumentCondition.h"
+#include "ArgumentNumber.h"
 #include "TrueCondition.h"
 #include "PiNumber.h"
 
@@ -144,19 +146,37 @@ void Widget::updateRcUnits(bool)
 			if (method.hiddenForScratch)
 				continue;
 
+			auto initilizeArgumentItem = [&](auto &argumentItem, auto&& position)
+			{
+				for (auto parameter : method.parameters)
+					if (parameter.typeName == "bool")
+						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Condition);
+					else if (parameter.typeName == "double")
+						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Number);
+
+				argumentItem->setPos(position);
+
+				scene->addItem(argumentItem);
+			};
+
 			auto argumentBlock =
 				new ArgumentBlock((help.unitName + "." + method.name).toStdString());
 
-			for (auto parameter : method.parameters)
-				if (parameter.typeName == "bool")
-					argumentBlock->addArgument(parameter.name.toStdString(), Item::Type::Condition);
-				else if (parameter.typeName == "double")
-					argumentBlock->addArgument(parameter.name.toStdString(), Item::Type::Number);
+			initilizeArgumentItem(argumentBlock, QPoint(0, y));
 
-			argumentBlock->setPos(0, y);
+			//if (!method.hasReturn)
+			//{
+				ArgumentItem* argumentItem;
+
+				//if (method.returnParameter.typeName == "bool")
+					argumentItem = new ArgumentCondition((help.unitName + "." + method.name).toStdString());
+				//else if (method.returnParameter.typeName == "double")
+				//	argumentItem = new ArgumentNumber((help.unitName + "." + method.name).toStdString());
+
+				initilizeArgumentItem(argumentItem, QPoint(argumentBlock->m_width + 30, y));
+			//}
+
 			y += argumentBlock->m_height + 30;
-
-			scene->addItem(argumentBlock);
 		}
 	}
 }

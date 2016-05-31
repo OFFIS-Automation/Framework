@@ -3,10 +3,6 @@
 namespace Scratch
 {
 
-Condition::Condition(int width, int height)
-	: Parameter(width, height)
-{}
-
 Item::Type Condition::itemType() const
 {
 	return Type::Condition;
@@ -24,7 +20,7 @@ void Condition::drawOutline(QPolygon &poylgon, const QRect& area)
 		<< (area.topLeft() + QPoint(tipHeight, area.height()));
 }
 
-void Condition::drawOutline(QPolygon &poylgon)
+void Condition::drawOutline(QPolygon &poylgon) const
 {
 	drawOutline(poylgon, QRect(0, 0, m_width, m_height));
 }

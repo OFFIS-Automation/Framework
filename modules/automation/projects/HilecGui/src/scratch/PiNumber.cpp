@@ -6,7 +6,7 @@ namespace Scratch
 {
 
 PiNumber::PiNumber()
-	: Number(80, 30)
+	: Item(80, 30)
 {}
 
 void PiNumber::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)

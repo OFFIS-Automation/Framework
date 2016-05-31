@@ -20,14 +20,7 @@ Item& ArgumentBlock::clone() const
 
 void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
-	QPolygon polygon;
-	drawOutline(polygon);
-
-	painter->setBrush(m_fillStyle);
-	painter->setPen(m_outlineStyle);
-	painter->setRenderHint(QPainter::Antialiasing);
-	painter->drawPolygon(polygon);
-
+	Block::paint(painter, item, widget);
 	ArgumentItem::paint(painter, item, widget);
 }
 

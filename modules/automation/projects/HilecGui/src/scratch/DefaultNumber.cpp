@@ -1,6 +1,5 @@
 #include "DefaultNumber.h"
 
-#include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QString>
 #include <QKeyEvent>
@@ -43,7 +42,7 @@ void DefaultNumber::NumberTextItem::updatePosition()
 }
 
 DefaultNumber::DefaultNumber(const bool enable)
-	: Number(60, 20),
+	: Item(60, 20),
 	  m_text(*this)
 {
 	m_textStyle.setBrush(Qt::lightGray);
@@ -57,20 +56,6 @@ DefaultNumber::DefaultNumber(const bool enable)
 		m_text.setTextInteractionFlags(Qt::TextEditable);
 
 	m_text.updatePosition();
-}
-
-void DefaultNumber::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
-{
-	QPolygon outline;
-
-	drawOutline(outline);
-
-	painter->setBrush(m_fillStyle);
-	painter->setPen(m_outlineStyle);
-	painter->drawPolygon(outline);
-
-	painter->setPen(m_textStyle);
-	painter->setFont(m_font);
 }
 
 Item& DefaultNumber::clone() const

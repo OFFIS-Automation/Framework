@@ -1,13 +1,10 @@
 #include "Parameter.h"
 
 #include <QGraphicsSceneEvent>
+#include <QPainter>
 
 namespace Scratch
 {
-
-Parameter::Parameter(const int width, const int height)
-	: Item(width, height)
-{}
 
 QRectF Parameter::boundingRect() const
 {
@@ -23,6 +20,17 @@ void Parameter::remove()
 	}
 
 	Item::remove();
+}
+
+void Parameter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
+{
+	QPolygon outline;
+
+	drawOutline(outline);
+
+	painter->setBrush(m_fillStyle);
+	painter->setPen(m_outlineStyle);
+	painter->drawPolygon(outline);
 }
 
 void Parameter::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

@@ -51,6 +51,8 @@ class Block : public virtual Item
 		Block()
 		{}
 
+		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+
 		void drawConnector(QPolygon& polygon, int x, int y, bool reverse = false) const;
 		void drawOutline(QPolygon& polygon) const;
 

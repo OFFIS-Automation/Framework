@@ -34,8 +34,8 @@ class ArgumentItem : virtual public Item
 			const bool enable = false);
 
 	protected:
-		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
-		void dropEvent(QGraphicsSceneDragDropEvent* event);
+		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 
 		virtual QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
 		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition, const int& referenceHeight);

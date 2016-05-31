@@ -12,11 +12,12 @@ class Condition : public Parameter
 		static void drawOutline(QPolygon& poylgon, const QRect& area);
 
 	public:
-		Condition(int width, int height);
-
 		Item::Type itemType() const final;
 
-		void drawOutline(QPolygon &poylgon);
+		void drawOutline(QPolygon &poylgon) const;
+
+	protected:
+		Condition(){};
 };
 
 } // namespace Scratch

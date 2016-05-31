@@ -117,7 +117,7 @@ void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	if (item.itemType() == Item::Type::Block)
 		return;
 
-	Parameter& parameter = *reinterpret_cast<Parameter*>(&item);
+	Parameter& parameter = *dynamic_cast<Parameter*>(&item);
 
 	const auto argument =
 		std::find_if(m_arguments.cbegin(), m_arguments.cend(), [&](const Argument& argument)
@@ -167,7 +167,7 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 		item->remove();
 	}
 
-	auto& parameter = *reinterpret_cast<Parameter*>(item);
+	auto& parameter = *dynamic_cast<Parameter*>(item);
 	auto oldArgument = oldArguments.cbegin();
 
 	for (auto &argument : m_arguments)

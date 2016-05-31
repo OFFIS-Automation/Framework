@@ -30,7 +30,7 @@ void DefaultCondition::ConditionTextItem::updatePosition()
 }
 
 DefaultCondition::DefaultCondition(const bool enable)
-	: Condition(60, 20),
+	: Item(60, 20),
 	  m_text(*this)
 {
 	m_textStyle.setBrush(Qt::lightGray);

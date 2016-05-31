@@ -41,6 +41,17 @@ void Block::setSuccessor(Block* successor)
 	m_successor = successor;
 }
 
+void Block::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
+{
+	QPolygon outline;
+
+	drawOutline(outline);
+
+	painter->setBrush(m_fillStyle);
+	painter->setPen(m_outlineStyle);
+	painter->drawPolygon(outline);
+}
+
 void Block::drawConnector(QPolygon& polygon, int x, int y, bool reverse) const
 {
 	std::array<QPoint, 4> points{{

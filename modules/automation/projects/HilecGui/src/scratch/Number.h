@@ -12,11 +12,10 @@ class Number : public Parameter
 		static void drawOutline(QPolygon& polygon, const QRect& area);
 
 	public:
-		Number(int width, int height);
-
+		Number() {};
 		Item::Type itemType() const final;
 
-		void drawOutline(QPolygon &polygon);
+		void drawOutline(QPolygon &polygon) const;
 };
 
 } // namespace Scratch

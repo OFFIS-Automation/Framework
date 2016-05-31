@@ -30,8 +30,6 @@ class DefaultNumber : public Number
 	public:
 		DefaultNumber(const bool enable = false);
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
-
 		Item& clone() const;
 		void print(std::ostream& stream) const;
 

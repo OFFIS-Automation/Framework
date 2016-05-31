@@ -40,7 +40,6 @@ public:
  * The haptic interface should return at least one instace of this claas
  */
 class HapticDevice : public QThread {
-    Q_OBJECT
 public:
     /**
      * @brief Name for the haptic device

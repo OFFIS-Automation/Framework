@@ -18,8 +18,9 @@
 #include <QCheckBox>
 #include <QDialog>
 #include <QDebug>
-#include "RcFlagWidgetSettingsDialog.h"
+#include <QLabel>
 
+#include "RcFlagWidgetSettingsDialog.h"
 #include "RcUnitFlagWidget.h"
 #include "ui_RcUnitFlagWidget.h"
 
@@ -42,14 +43,20 @@ RcUnitFlagWidget::RcUnitFlagWidget(const RcUnitHelp &help) :
     } else {
         ui->connectButton->setChecked(help.hwConnected);
     }
-    foreach(const RcFlagDefinition& def, help.flags){
-        QLineEdit* edit = new QLineEdit();
-        edit->setMinimumWidth(70);
-        edit->setAlignment(Qt::AlignRight);
-        edit->setReadOnly(true);
-        ui->formLayout->addRow(def.name, edit);
-        mLineEdits << edit;
+    if(!help.flags.empty()){
+        foreach(const RcFlagDefinition& def, help.flags){
+            QLineEdit* edit = new QLineEdit();
+            edit->setMinimumWidth(70);
+            edit->setAlignment(Qt::AlignRight);
+            edit->setReadOnly(true);
+            ui->formLayout->addRow(def.name, edit);
+            mLineEdits << edit;
+        }
+    } else {
+        QLabel *label = new QLabel(tr("No flags available"));
+        ui->formLayout->addWidget(label);
     }
+
     connect(this, SIGNAL(acquire(QString)), HilecSingleton::hilec(), SLOT(callRcUnitAcquire(QString)),Qt::QueuedConnection);
     connect(this, SIGNAL(release(QString)), HilecSingleton::hilec(), SLOT(callRcUnitRelease(QString)),Qt::QueuedConnection);
     connect(this, SIGNAL(stop(QString)), HilecSingleton::hilec(), SLOT(callRcUnitStop(QString)),Qt::QueuedConnection);

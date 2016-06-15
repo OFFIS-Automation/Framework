@@ -18,7 +18,7 @@
 
 PointEdit::PointEdit(QWidget *parent) : StringEdit(parent)
 {
-    QRegExp exp("\\d*,\\d*");
+    QRegExp exp("-?\\d*,-?\\d*");
     lineEdit->setValidator(new QRegExpValidator(exp, this));
 }
 

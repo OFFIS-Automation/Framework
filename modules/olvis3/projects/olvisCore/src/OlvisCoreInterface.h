@@ -162,8 +162,8 @@ public slots:
     void resumeProcessor(int processor);
 
     virtual void clear();
-    virtual void loadFromData(const QString& str);
-    virtual void loadFromFile(const QString& filename);
+    virtual bool loadFromData(const QString& str);
+    virtual bool loadFromFile(const QString& filename);
 
     virtual int createMakroFilter(const QString& name, bool definedInProject = true);
     virtual void deleteMakroFilter(int id);

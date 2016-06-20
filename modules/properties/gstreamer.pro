@@ -14,21 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
-#-------------------------------------------------
-#
-# Project created by QtCreator 2010-12-17T14:40:48
-#
-#-------------------------------------------------
 
-include(../../../properties/pathes.pro)
-include(../../../properties/opencv.pro)
-include(../../../properties/gstreamer.pro)
+win32-msvc*{
+	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/include/gstreamer-1.0
+	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/include/glib-2.0
+	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/glib-2.0/include
+	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/gstreamer-1.0/include
 
-INCLUDEPATH += ../../../sensorSystem/include
-LIBS += -L$${targetDir}/plugins/ -lSensorSystem
-
-DESTDIR = $${targetDir}/plugins/olvisPlugins
-TARGET = SimpleNodes
-LIBS += -L$${PWD}/lib -L$${targetDir}/plugins -lolvisFilter -lolvisPorts  -lolvisPlugin
-
-include(simpleNodesFiles.pri)
+	LIBS += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/gstreamer-1.0.lib
+	LIBS += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/*.lib
+}

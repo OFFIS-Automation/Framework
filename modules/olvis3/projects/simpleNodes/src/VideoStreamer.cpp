@@ -29,7 +29,7 @@ VideoStreamer::VideoStreamer()
 	setGroup("output");
 
 	m_ip.setName("Destination Address");
-	m_ip.setDefault("127.0.0.1");
+	m_ip.setDefault("134.106.47.255");
 	addInputPort(m_ip);
 
 	m_port.setName("Destination Port");
@@ -64,7 +64,9 @@ VideoStreamer::VideoStreamer()
 
 	auto converter = gst_element_factory_make ("videoconvert", "converter");
 	m_encoder = gst_element_factory_make("x264enc", "encoder");
+
 	auto payloader = gst_element_factory_make("rtph264pay", "payloader");
+	g_object_set(G_OBJECT(payloader), "config-interval", 1, nullptr);
 
 	m_sink = gst_element_factory_make("udpsink", "videosink");
 

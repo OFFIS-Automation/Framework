@@ -22,6 +22,7 @@
 #include <filter/PluginInterface.h>
 
 #include <ports/ImagePort.h>
+#include <ports/StringPort.h>
 #include <ports/IntegerPort.h>
 
 class VideoReceiver : public UserFilter
@@ -35,6 +36,7 @@ class VideoReceiver : public UserFilter
 
 	private:
 		// Ports
+		in::String m_ip;
 		in::Integer m_port;
 
 		out::Image m_frameOut;

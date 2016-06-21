@@ -31,6 +31,10 @@ VideoReceiver::VideoReceiver()
 	setDesc(QObject::tr("Receives data from the network"));
 	setGroup("input");
 
+	m_ip.setName("Source Address");
+	m_ip.setDefault("0.0.0.0");
+	addInputPort(m_ip);
+
 	m_port.setName("Source Port");
 	m_port.setDefault(12000);
 	addInputPort(m_port);
@@ -75,7 +79,10 @@ VideoReceiver::VideoReceiver()
 
 void VideoReceiver::start()
 {
-	g_object_set(G_OBJECT(m_source), "port", m_port.getValue(), nullptr);
+	g_object_set(G_OBJECT(m_source),
+		"address", m_ip.getValue().toStdString().c_str(),
+		"port", m_port.getValue(),
+		nullptr);
 
 	gst_element_set_state(m_pipeline, GST_STATE_PLAYING);
 

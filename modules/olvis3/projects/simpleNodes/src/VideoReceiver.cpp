@@ -27,23 +27,29 @@ REGISTER_FILTER(VideoReceiver);
 
 VideoReceiver::VideoReceiver()
 {
-	setName("VideoReceiver");
+	// Ports
+
+	setName(QObject::tr("Video Receiver"));
 	setDesc(QObject::tr("Receives data from the network"));
 	setGroup("input");
 
-	m_ip.setName("Source Address");
+	m_ip.setName(QObject::tr("Source Address"));
 	m_ip.setDefault("0.0.0.0");
+	m_ip.setVisibility(AdvancedPortVisibility);
 	addInputPort(m_ip);
 
-	m_port.setName("Source Port");
+	m_port.setName(QObject::tr("Source Port"));
 	m_port.setDefault(12000);
+	m_port.setVisibility(AdvancedPortVisibility);
 	addInputPort(m_port);
 
-	m_frameOut.setName("imageOut");
+	m_frameOut.setName(QObject::tr("Image Out"));
 	m_frameOut.setDesc(QObject::tr("Image output"));
 	addOutputPort(m_frameOut);
 
 	// Gstreamer
+
+	gst_init(nullptr, nullptr);
 
 	m_loop = g_main_loop_new(nullptr, false);
 	m_source = gst_element_factory_make("udpsrc", "videosource");
@@ -53,17 +59,15 @@ VideoReceiver::VideoReceiver()
 		nullptr);
 
 	m_pipeline = gst_pipeline_new("pipeline");
-
 	auto depayloader = gst_element_factory_make("rtph264depay", "depayloader");
 	auto decoder = gst_element_factory_make("avdec_h264", "decoder");
 	auto converter = gst_element_factory_make ("videoconvert", "converter");
-
 	m_sink = gst_element_factory_make("appsink", "cvsink");
 
 	g_object_set(G_OBJECT(m_sink),
 		"emit-signals", true,
-		//"max-buffers", 2,
-		//"drop", true,
+		"max-buffers", 2,
+		"drop", true,
 		"caps", gst_caps_new_simple ("video/x-raw",
 			 "format", G_TYPE_STRING, "BGR",
 			 nullptr),
@@ -73,7 +77,8 @@ VideoReceiver::VideoReceiver()
 		G_CALLBACK(static_cast<GstFlowReturn(*)(GstElement *, decltype(this))>(
 			[](GstElement *, auto* receiver){return receiver->onNewFrame();})), this);
 
-	gst_bin_add_many(GST_BIN(m_pipeline), m_source, depayloader, decoder, converter, m_sink, nullptr);
+	gst_bin_add_many(GST_BIN(m_pipeline), m_source, depayloader, decoder, converter, m_sink,
+		nullptr);
 	gst_element_link_many(m_source, depayloader, decoder, converter, m_sink, nullptr);
 }
 
@@ -115,10 +120,10 @@ GstFlowReturn VideoReceiver::onNewFrame()
 	GstMapInfo info;
 
 	gst_buffer_map(buffer, &info, GST_MAP_READ);
-	auto img = cv::Mat(cv::Size(width, height), CV_8UC3, info.data);
+	const auto frame = cv::Mat(cv::Size(width, height), CV_8UC3, info.data);
 	gst_buffer_unmap(buffer, &info);
 
-	m_frameOut.send(img.clone());
+	m_frameOut.send(frame);
 
 	gst_sample_unref(sample);
 

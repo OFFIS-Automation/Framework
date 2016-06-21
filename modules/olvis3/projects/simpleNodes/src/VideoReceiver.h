@@ -32,6 +32,8 @@ class VideoReceiver : public UserFilter
 
 		void start();
 		void stop();
+		// FIXME: Empty execute, not firing the output port, causes the Processor to think it is
+		// finished. Works only with a "stop behavior" of "never stop".
 		void execute() {};
 
 	private:
@@ -39,7 +41,7 @@ class VideoReceiver : public UserFilter
 		in::String m_ip;
 		in::Integer m_port;
 
-		out::Image m_frameOut;
+		out::RgbImage m_frameOut;
 
 		// Member
 		GstFlowReturn onNewFrame();

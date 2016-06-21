@@ -24,29 +24,34 @@ REGISTER_FILTER(VideoStreamer);
 
 VideoStreamer::VideoStreamer()
 {
-	setName("VideoStreamer");
+	setName(QObject::tr("Video Streamer"));
 	setDesc(QObject::tr("Streams incoming data to the network"));
 	setGroup("output");
 
-	m_ip.setName("Destination Address");
+	m_ip.setName(QObject::tr("Destination Address"));
 	m_ip.setDefault("134.106.47.255");
+	m_ip.setVisibility(AdvancedPortVisibility);
 	addInputPort(m_ip);
 
-	m_port.setName("Destination Port");
+	m_port.setName(QObject::tr("Destination Port"));
 	m_port.setDefault(12000);
+	m_port.setVisibility(AdvancedPortVisibility);
 	addInputPort(m_port);
 
-	m_tune.setName("H264 Tune");
+	m_tune.setName(QObject::tr("H264 Tune"));
 	m_tune.setDefault("zerolatency");
 	m_tune.setDesc("stillimage, fastdecode, zerolatency");
+	m_tune.setVisibility(ExpertPortVisibility);
 	addInputPort(m_tune);
 
-	m_speed_preset.setName("H264 Speed-Preset");
+	m_speed_preset.setName(QObject::tr("H264 Speed-Preset"));
 	m_speed_preset.setDefault("superfast");
-	m_speed_preset.setDesc("None, ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, placebo");
+	m_speed_preset.setDesc("None, ultrafast, superfast, veryfast, faster, fast, medium, slow, "
+		"slower, veryslow, placebo");
+	m_speed_preset.setVisibility(ExpertPortVisibility);
 	addInputPort(m_speed_preset);
 
-	m_frameIn.setName("imageIn");
+	m_frameIn.setName(QObject::tr("Image In"));
 	m_frameIn.setDesc(QObject::tr("Image input"));
 	addInputPort(m_frameIn);
 
@@ -57,29 +62,36 @@ VideoStreamer::VideoStreamer()
 	m_loop = g_main_loop_new(nullptr, false);
 	m_source = gst_element_factory_make("appsrc", "cvsource");
 
-	gst_util_set_object_arg(G_OBJECT(m_source), "stream-type", "stream");
-	gst_util_set_object_arg(G_OBJECT(m_source), "format", "time");
+	g_object_set(G_OBJECT(m_source),
+		"stream-type", GST_APP_STREAM_TYPE_STREAM,
+		"format", GST_FORMAT_TIME,
+		nullptr);
 
 	m_pipeline = gst_pipeline_new("pipeline");
-
 	auto converter = gst_element_factory_make ("videoconvert", "converter");
 	m_encoder = gst_element_factory_make("x264enc", "encoder");
-
 	auto payloader = gst_element_factory_make("rtph264pay", "payloader");
-	g_object_set(G_OBJECT(payloader), "config-interval", 1, nullptr);
+
+	g_object_set(G_OBJECT(payloader),
+		"config-interval", 1,
+		nullptr);
 
 	m_sink = gst_element_factory_make("udpsink", "videosink");
 
-	g_object_set(G_OBJECT(m_sink), "sync", false, nullptr);
+	g_object_set(G_OBJECT(m_sink),
+		"sync", false,
+		nullptr);
 
-	gst_bin_add_many(GST_BIN(m_pipeline), m_source, converter, m_encoder, payloader, m_sink, nullptr);
+	gst_bin_add_many(GST_BIN(m_pipeline), m_source, converter, m_encoder, payloader, m_sink,
+		nullptr);
 	gst_element_link_many(m_source, converter, m_encoder, payloader, m_sink, nullptr);
 }
 
 void VideoStreamer::start()
 {
 	gst_util_set_object_arg(G_OBJECT(m_encoder), "tune", m_tune.getValue().toStdString().c_str());
-	gst_util_set_object_arg(G_OBJECT(m_encoder), "speed-preset", m_speed_preset.getValue().toStdString().c_str());
+	gst_util_set_object_arg(G_OBJECT(m_encoder), "speed-preset",
+		m_speed_preset.getValue().toStdString().c_str());
 
 	g_object_set(G_OBJECT(m_sink),
 		"host", m_ip.getValue().toStdString().c_str(),
@@ -120,7 +132,8 @@ void VideoStreamer::execute()
 				 "width", G_TYPE_INT, width,
 				 "height", G_TYPE_INT, height,
 				 "framerate", GST_TYPE_FRACTION, 0, 1,
-				 nullptr), nullptr);
+				 nullptr),
+			nullptr);
 
 		m_initialized = true;
 	}

@@ -256,7 +256,8 @@ bool WindowsConnexionGamepad::onSiEvent(void *eventData)
 
         foreach(int key, mJoysticks.keys()){
             // Scale values to -1.0 to 1.0
-            mJoysticks[key] /= AXIS_MAXIMUM;
+            mJoysticks[key] = qBound<double>(-1.0, mJoysticks[key]/AXIS_MAXIMUM, 1.0);
+
 
             // Set implicit activation
             if(mJoysticks[key] != 0){

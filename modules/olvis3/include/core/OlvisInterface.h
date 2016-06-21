@@ -406,8 +406,8 @@ public slots:
     virtual void step(bool singleStep) = 0;
 
     virtual void clear() = 0;
-    virtual void loadFromData(const QString& str) = 0;
-    virtual void loadFromFile(const QString& filename) = 0;
+    virtual bool loadFromData(const QString& str) = 0;
+    virtual bool loadFromFile(const QString& filename) = 0;
 
     virtual int createMakroFilter(const QString& name, bool definedInProject = true) = 0;
     virtual void deleteMakroFilter(int id) = 0;

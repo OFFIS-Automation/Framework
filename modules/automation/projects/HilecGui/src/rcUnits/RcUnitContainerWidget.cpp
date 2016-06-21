@@ -75,7 +75,7 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
         HilecInterface* hilec = HilecSingleton::hilec();
         foreach(const QString& name, hilec->rcUnits()){
             RcUnitHelp help = hilec->getUnitHelp(name);
-            if(!help.flags.empty()){
+            if(help.type != BaseRcUnitType){
                 RcUnitFlagWidget* w = new RcUnitFlagWidget(help);
                 mFlagWidgets[name] = w;
                 splitter->addWidget(w);
@@ -88,6 +88,7 @@ void RcUnitContainerWidget::updateRcUnits(bool partial)
 void RcUnitContainerWidget::unitFlagsUpdated(const QString &unitName, const QVariantList &flags)
 {
     RcUnitFlagWidget* flagWidget = mFlagWidgets.value(unitName, 0);
-    if(flagWidget)
+    if(flagWidget){
         flagWidget->updateFlags(flags);
+    }
 }

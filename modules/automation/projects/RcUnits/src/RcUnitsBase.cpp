@@ -73,11 +73,12 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
         if(mUnitsHiddenforTc.contains(name)){
             continue;
         }
+        if(!mUnits.contains(name)){
+            continue;
+        }
 
-        TelecontrolConfig config = getTelecontrolConfig(name);
-
-        bool hasGamepadControl = !(config.tcButtonMethods.empty() && config.tcGamepadMoves.empty());
-        bool hasHapticControl = config.tcHapticMoves.empty();
+        bool hasGamepadControl = mUnits[name]->hasGamepadControl();
+        bool hasHapticControl = mUnits[name]->hasHapticControl();
         if(hasGamepadControl || hasHapticControl){
             returnList << name;
         }

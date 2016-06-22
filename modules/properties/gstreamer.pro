@@ -16,11 +16,11 @@
 
 
 win32-msvc*{
-	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/include/gstreamer-1.0
-	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/include/glib-2.0
-	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/glib-2.0/include
-	INCLUDEPATH += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/gstreamer-1.0/include
+        INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/include/gstreamer-1.0
+        INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/include/glib-2.0
+        INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/glib-2.0/include
+        INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0/include
 
-	LIBS += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/gstreamer-1.0.lib
-	LIBS += $${OFFIS_DEVELOPMENT_ENVIRONMENT}/gstreamer/1.0/x86/lib/*.lib
+        LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0.lib
+        LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/*.lib
 }

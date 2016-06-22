@@ -44,10 +44,9 @@ void ExtendedTextEdit::saveContent(bool html)
                 return;
         QTextStream stream(&f);
         if(html)
-                stream << document()->toHtml();
+            stream << document()->toHtml();
         else
-                stream << toPlainText();
-
+            stream << toPlainText();
 }
 
 bool ExtendedTextEdit::atScrollEnd()

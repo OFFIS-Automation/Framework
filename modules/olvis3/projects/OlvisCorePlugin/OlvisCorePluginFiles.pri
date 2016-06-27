@@ -35,6 +35,18 @@ opencv_video.path    = $${DESTDIR}/../
 opencv_video.files  += $${CVBINDIR}/opencv_ffmpeg*.dll
 INSTALLS            += opencv_video
 
+gstreamerdlls.path  += $${DESTDIR}
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libffi-6.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libglib-2.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libgmodule-2.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libgobject-2.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libgstapp-1.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libgstbase-1.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libgstreamer-1.0-0.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libintl-8.dll
+gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/libwinpthread-1.dll
+INSTALLS            += gstreamerdlls
+
 HEADERS += \
     src/OlvisModelPlugin.h \
     ../../../frontend/include/interfaces/ModelPluginInterface.h

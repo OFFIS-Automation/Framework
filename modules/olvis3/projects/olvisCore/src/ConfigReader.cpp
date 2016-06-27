@@ -54,7 +54,8 @@ bool ConfigReader::createConfig()
                 createBuffer();
             else if(name() == "join")
                 createJoin();
-            else if(name() == "filter"){
+            else if(name() == "filter")
+            {
                 createFilter();
                 // Filter could not be created, cancel loading
                 if(mCurrentFilter == -1){

@@ -44,6 +44,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	
 	SetOutPath "$INSTDIR\plugins"
 	File "..\..\bin\plugins\Hilec*.dll"
+	File "..\..\bin\plugins\lib*.dll"
 	File "..\..\bin\plugins\RcUnit*.dll"
 	File "..\..\bin\plugins\Remote*.dll"
 	File "..\..\bin\plugins\ProjectEditor.dll"
@@ -110,6 +111,7 @@ Section /o "Development version" SecDevFiles
 
 	SetOutPath "$INSTDIR\debug\plugins"
 	File "..\..\bin\debug\plugins\Hilec*.dll"
+	File "..\..\bin\debug\plugins\lib*.dll"
 	File "..\..\bin\debug\plugins\RcUnit*.dll"
 	File "..\..\bin\debug\plugins\Remote*.dll"
 	File "..\..\bin\debug\plugins\ProjectEditor.dll"

@@ -59,6 +59,7 @@ SOURCES += \
 	src/RotateImage.cpp \
 	src/ScaleImage.cpp \
 	src/SetRoiFilter.cpp \
+        src/Sharp.cpp \
 	src/SimpleCameraInput.cpp \
 	src/SimpleNodes.cpp \
 	src/SobelFilter.cpp \
@@ -115,6 +116,7 @@ HEADERS += \
 	src/RotateImage.h \
 	src/ScaleImage.h \
 	src/SetRoiFilter.h \
+        src/Sharp.h \
 	src/SimpleCameraInput.h \
 	src/SimpleNodes.h \
 	src/SobelFilter.h \

@@ -32,7 +32,6 @@ NotificationMainWidget::NotificationMainWidget(QWidget *parent, bool useAnimatio
 
 NotificationMainWidget::~NotificationMainWidget()
 {
-
 }
 
 void NotificationMainWidget::setAnimationsEnabled(bool enabled)

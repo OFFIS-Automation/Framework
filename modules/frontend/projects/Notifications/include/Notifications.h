@@ -28,6 +28,8 @@
 #  define NOTIFICATIONSSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
+#define DEFAULT_ANIMATION_DURATION 4000
+
 class QWidget;
 class NotificationMainWidget;
 
@@ -48,34 +50,34 @@ private:
     QMutex mMutex;
 };
 
-inline void notifyInfo(const QString& text, uint durationMs = 3000, const QPixmap& pixmap = QPixmap())
+inline void notifyInfo(const QString& text, uint durationMs = DEFAULT_ANIMATION_DURATION, const QPixmap& pixmap = QPixmap())
 {
     Notifications::newInfo(text, durationMs, pixmap);
 }
 
 inline void notifyInfo(const QString& text, const QPixmap& pixmap)
 {
-    Notifications::newInfo(text, 3000, pixmap);
+    Notifications::newInfo(text, DEFAULT_ANIMATION_DURATION, pixmap);
 }
 
-inline void notifyWarning(const QString& text, uint durationMs = 3000, const QPixmap& pixmap = QPixmap())
+inline void notifyWarning(const QString& text, uint durationMs = DEFAULT_ANIMATION_DURATION, const QPixmap& pixmap = QPixmap())
 {
     Notifications::newWarning(text, durationMs, pixmap);
 }
 
 inline void notifyWarning(const QString& text, const QPixmap& pixmap)
 {
-    Notifications::newWarning(text, 3000, pixmap);
+    Notifications::newWarning(text, DEFAULT_ANIMATION_DURATION, pixmap);
 }
 
-inline void notifyError(const QString& text, uint durationMs = 3000, const QPixmap& pixmap = QPixmap())
+inline void notifyError(const QString& text, uint durationMs = DEFAULT_ANIMATION_DURATION, const QPixmap& pixmap = QPixmap())
 {
     Notifications::newError(text, durationMs, pixmap);
 }
 
 inline void notifyError(const QString& text, const QPixmap& pixmap)
 {
-    Notifications::newError(text, 3000, pixmap);
+    Notifications::newError(text, DEFAULT_ANIMATION_DURATION, pixmap);
 }
 
 

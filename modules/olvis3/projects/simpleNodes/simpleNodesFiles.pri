@@ -31,6 +31,7 @@ SOURCES += \
 	src/Canny.cpp \
 	src/ColorCorrection.cpp \
 	src/CorrectPosition.cpp \
+        src/Clahe.cpp \
 	src/Delay.cpp \
 	src/Denoising.cpp \
 	src/DirectoryIterator.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
 	src/Canny.h \
 	src/ColorCorrection.h \
 	src/CorrectPosition.h \
+        src/Clahe.h \
 	src/Delay.h \
 	src/Denoising.h \
 	src/DirectoryIterator.h \

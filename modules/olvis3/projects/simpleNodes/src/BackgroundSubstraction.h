@@ -42,6 +42,7 @@ protected:
 private:
     cv::Ptr<cv::BackgroundSubtractorKNN> mKNN;
     cv::Ptr<cv::BackgroundSubtractorMOG2> mMog2;
+    cv::Mat mForegroundMask;
 };
 
 #endif // BACKGROUNDSUBSTRACTION_H

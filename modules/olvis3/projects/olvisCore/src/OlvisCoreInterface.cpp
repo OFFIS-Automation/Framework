@@ -1043,7 +1043,7 @@ void OlvisCoreInterface::setPortValueThrow(const PortId &port, const QVariant &v
 				}
             }
         }
-        else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // downt return if optional ports is set to invalid
+        else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // dont return if optional ports is set to invalid
         {
             QString type1 = QMetaType::typeName(value.userType());
             QString type2 = QMetaType::typeName(typeInfo.portType(port.port));

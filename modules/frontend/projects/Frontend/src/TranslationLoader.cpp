@@ -37,28 +37,25 @@ bool TranslationLoader::installSystemTranslator()
 {
     QStringList availableLanguages = scanLanguages();
     QStringList strippedLangs;
-    foreach(QString lang, QLocale::system().uiLanguages())
-    {
-        if(availableLanguages.contains(lang))
-        {
+    foreach(QString lang, QLocale::system().uiLanguages()){
+        if(availableLanguages.contains(lang)){
             if(installTranslator(lang))
                 return true;
         }
         lang = lang.replace("-", "_");
-        if(availableLanguages.contains(lang))
-        {
+        if(availableLanguages.contains(lang)){
             if(installTranslator(lang))
                 return true;
         }
-        if(lang.contains("_"))
+        if(lang.contains("_")){
             strippedLangs << lang.left(lang.indexOf("_"));
+        }
     }
-    foreach(QString lang, strippedLangs)
-    {
-        if(availableLanguages.contains(lang))
-        {
-            if(installTranslator(lang))
+    foreach(QString lang, strippedLangs){
+        if(availableLanguages.contains(lang)){
+            if(installTranslator(lang)){
                 return true;
+            }
         }
     }
     return true;
@@ -69,8 +66,7 @@ bool TranslationLoader::installTranslator(QString language)
 {
     bool found = false;
     QDir dir(QCoreApplication::applicationDirPath() + "/lang/" + language);
-    foreach(QString file, dir.entryList(QDir::Files, QDir::Name | QDir::IgnoreCase))
-    {
+    foreach(QString file, dir.entryList(QDir::Files, QDir::Name | QDir::IgnoreCase)){
         found = true;
         QTranslator* translator = new QTranslator(this);
         translator->load(file, dir.absolutePath());

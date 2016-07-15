@@ -2,7 +2,7 @@ VPATH += $$PWD
 
 PYLON_DEV_DIR = $$(PYLON_DEV_DIR)
 isEmpty(PYLON_DEV_DIR) {
-    error("Error: PYLON_DEV_DIR  not found. Please install Pylon SDK")
+    error("Error: PYLON_DEV_DIR not found. Please install Pylon SDK")
 } else {
     message("Pylon SDK found at $${PYLON_DEV_DIR}");
 }

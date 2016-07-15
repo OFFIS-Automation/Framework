@@ -342,6 +342,7 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
 
     QSettings settings(mConfigFilePath, QSettings::IniFormat);
     settings.beginGroup(QString("telecontrol/%1").arg(unitName));
+    QString previousDeviceName = settings.value("telecontrolDeviceName").toString();
     settings.setValue("telecontrolDeviceName", deviceName);
 
     if(deviceName.length() > 0){
@@ -350,8 +351,10 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
             activateHaptic(deviceName, unitName);
         }
     } else {
-        deactivateGamepad(deviceName, unitName);
-        deactivateHaptic(deviceName, unitName);
+        if(previousDeviceName.length() > 0){
+            deactivateGamepad(previousDeviceName, unitName);
+            deactivateHaptic(previousDeviceName, unitName);
+        }
     }
 
     // Connet this unit

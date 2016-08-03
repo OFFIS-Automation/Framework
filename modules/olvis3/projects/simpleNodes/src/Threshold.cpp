@@ -48,7 +48,9 @@ Threshold::Threshold()
     mMode.addChoice(cv::THRESH_TOZERO_INV, tr("To zero inverted (value = value > threshold ? 0 : value)"));
     mMode.addChoice(cv::THRESH_TRUNC, tr("Truncate (value = value > threshold ? threshold : value)"));
     mMode.addChoice(cv::THRESH_OTSU, tr("Otsu’s Algorithm (threshold automatically determined)"));
+    mMode.addChoice(cv::THRESH_OTSU+1, tr("Otsu’s Algorithm inverted (threshold automatically determined)"));
     mMode.addChoice(cv::THRESH_TRIANGLE, tr("Triangle algorithm (threshold automatically determined)"));
+    mMode.addChoice(cv::THRESH_TRIANGLE+1, tr("Triangle algorithm inverted (threshold automatically determined)"));
     mMode.setDefault(cv::THRESH_BINARY);
     addInputPort(mMode);
 }
@@ -60,6 +62,10 @@ void Threshold::execute()
     GrayImage dest;
     if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
         cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY + mMode);
+    } else if(mMode == cv::THRESH_OTSU+1){
+        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
+    }else if(mMode == cv::THRESH_TRIANGLE+1){
+        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
     } else {
         cv::threshold(src, dest, threshold, 255, mMode);
     }

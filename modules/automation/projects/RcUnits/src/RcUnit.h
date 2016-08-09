@@ -67,6 +67,7 @@ public:
     void setDesc(const QString &desc) { mDesc = desc; }
     virtual void addConstant(const QString name, const QVariant& constant);
     bool acquired() { return mHwConnected; }
+
     void setParameterNames(const QString &methodName, const QStringList &names);
     void setUserInfo(const QString& key, const QVariant& value);
     bool initialize(RcUnitInterface* plugin);

@@ -58,7 +58,6 @@ FunctionEnd
   
 ;--------------------------------
 ;Languages
-
 !insertmacro MUI_LANGUAGE "English"
  
 ;--------------------------------

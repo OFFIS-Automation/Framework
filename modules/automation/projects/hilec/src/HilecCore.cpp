@@ -18,6 +18,7 @@
 #include "RcUnits.h"
 #include "telecontrol/TelecontrolFactory.h"
 
+#include <QThread>
 #include <QList>
 #include <QDebug>
 #include <QStringList>
@@ -172,6 +173,7 @@ void HilecCore::quit()
 {
     RcUnits::instance()->stopAll();
     mPython.quit();
+    QThread::msleep(1);
 }
 
 void HilecCore::stepOver()

@@ -25,7 +25,7 @@ class ConfigReader : QXmlStreamReader
 public:
     ConfigReader(OlvisInterface& control, const QString& data);
     ConfigReader(OlvisInterface& control, QIODevice* device);
-    void createConfig();
+    bool createConfig();
 protected:
     void createMakroFilter(bool local = true);
     void createMakroInput();

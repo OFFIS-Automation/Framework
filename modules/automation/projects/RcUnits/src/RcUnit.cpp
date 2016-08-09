@@ -348,14 +348,20 @@ RcUnitHelp::Parameter RcUnit::createParamInfo(QByteArray origType, QByteArray na
     QByteArray type = origType;
     type.replace("RcRepeatable", "QList");
 
-    if(type.contains("QList"))
+    if(type.contains("QList") || type.contains("QVariantList"))
     {
         p.type = RcUnitHelp::Parameter::List;
         p.min = 0;
         p.max = -1;
-        int start = type.indexOf('<') + 1;
-        int end = type.indexOf('>');
-        type = type.mid(start, end-start);
+
+        if(type.contains("QList")){
+            int start = type.indexOf('<') + 1;
+            int end = type.indexOf('>');
+            type = type.mid(start, end-start);
+        } else {
+            type = "QVariant";
+        }
+
         QStringList parts = QString(type).split(',', QString::SkipEmptyParts);
         type = parts[0].toLocal8Bit();
         if(parts.size() > 1)

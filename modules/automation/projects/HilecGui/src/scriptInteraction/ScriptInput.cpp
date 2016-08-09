@@ -98,7 +98,7 @@ ScriptInput::ScriptInput(const UserRequest &input, QWidget *parent) :
     ui(new Ui::ScriptInput)
 {
     ui->setupUi(this);
-    ui->title->setText(input.title);
+    ui->groupBox->setTitle(input.title);
     mUid = input.uid;
     foreach(const UserRequestItem& item, input.items)
     {

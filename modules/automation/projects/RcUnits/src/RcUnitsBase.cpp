@@ -73,11 +73,12 @@ QList<QString> RcUnitsBase::telecontrolableUnitNames()
         if(mUnitsHiddenforTc.contains(name)){
             continue;
         }
+        if(!mUnits.contains(name)){
+            continue;
+        }
 
-        TelecontrolConfig config = getTelecontrolConfig(name);
-
-        bool hasGamepadControl = !(config.tcButtonMethods.empty() && config.tcGamepadMoves.empty());
-        bool hasHapticControl = config.tcHapticMoves.empty();
+        bool hasGamepadControl = mUnits[name]->hasGamepadControl();
+        bool hasHapticControl = mUnits[name]->hasHapticControl();
         if(hasGamepadControl || hasHapticControl){
             returnList << name;
         }
@@ -341,6 +342,7 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
 
     QSettings settings(mConfigFilePath, QSettings::IniFormat);
     settings.beginGroup(QString("telecontrol/%1").arg(unitName));
+    QString previousDeviceName = settings.value("telecontrolDeviceName").toString();
     settings.setValue("telecontrolDeviceName", deviceName);
 
     if(deviceName.length() > 0){
@@ -349,8 +351,10 @@ void RcUnitsBase::updateTelecontrolAssignment(const QString& deviceName, const Q
             activateHaptic(deviceName, unitName);
         }
     } else {
-        deactivateGamepad(deviceName, unitName);
-        deactivateHaptic(deviceName, unitName);
+        if(previousDeviceName.length() > 0){
+            deactivateGamepad(previousDeviceName, unitName);
+            deactivateHaptic(previousDeviceName, unitName);
+        }
     }
 
     // Connet this unit

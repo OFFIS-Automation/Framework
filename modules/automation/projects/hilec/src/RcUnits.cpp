@@ -35,9 +35,6 @@
 
 #include "FlagCollectorRunnable.h"
 
-
-
-
 RcUnits* RcUnits::mInstance = 0;
 
 RcUnits::RcUnits(const QString &rcUnitDir) : RcUnitsBase(rcUnitDir)

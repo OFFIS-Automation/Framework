@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -100,7 +100,6 @@ protected:
      * @brief mInfo contains the camera info
      */
     Pylon::CDeviceInfo mInfo;
-
 
     /**
      * @brief mPylonInitialized is a shared variable, which indicates if the Pylon system is initialized

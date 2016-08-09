@@ -82,9 +82,9 @@ QMenu *MasterWindow::getMenu(QString name)
 void MasterWindow::on_actionOpen_project_triggered()
 {
     QString defaultOpen = QDir::homePath();
-    if(!mRecentProjects.empty())
+    if(!mRecentProjects.empty()){
         defaultOpen = mRecentProjects.first();
-
+    }
     QString filter = "OFFIS automation projects (*.oap);;Old projects (*.pro *.ogr)";
     QString filename = QFileDialog::getOpenFileName(this, tr("Open project"), defaultOpen, filter);
 
@@ -200,7 +200,6 @@ void MasterWindow::on_actionReload_project_triggered()
         openProject(projectPath);
     }
 }
-
 
 void MasterWindow::on_actionSearch_for_updates_triggered()
 {

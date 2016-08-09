@@ -605,8 +605,6 @@ void OlvisCoreInterface::disconnectProcessor(int source, int targetId)
     ProcessingElement* target= mProcessors.value(targetId, 0);
     if(!target)
         target = mJoins.value(targetId, 0);
-//    if(!target)
-//        target = mBuffers.value(targetId, 0);
     if(!target)
         return;
     Processor* sourceProc = mProcessors.value(source, 0);
@@ -1045,7 +1043,7 @@ void OlvisCoreInterface::setPortValueThrow(const PortId &port, const QVariant &v
 				}
             }
         }
-        else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // downt return if optional ports is set to invalid
+        else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // dont return if optional ports is set to invalid
         {
             QString type1 = QMetaType::typeName(value.userType());
             QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
@@ -1608,28 +1606,39 @@ void OlvisCoreInterface::clear()
     emit cleared();
 }
 
-void OlvisCoreInterface::loadFromData(const QString &str)
+bool OlvisCoreInterface::loadFromData(const QString &str)
 {
-    if(isRunning())
-        return;
+    if(isRunning()){
+        return false;
+    }
+
     ConfigReader reader(*this, str);
-    reader.createConfig();
+    bool success = reader.createConfig();
+
     mChanged = true;
+    return success;
 }
 
-void OlvisCoreInterface::loadFromFile(const QString &filename)
+bool OlvisCoreInterface::loadFromFile(const QString &filename)
 {
-    if(isRunning()) return;
+    if(isRunning()){
+        return false;
+    }
+
     QFile file(filename);
     file.open(QFile::ReadOnly);
+
     ConfigReader reader(*this, &file);
-    reader.createConfig();
+    bool success = reader.createConfig();
+
     mChanged = true;
+    return success;
 }
 
 int OlvisCoreInterface::createMakroFilter(const QString &proposedName, bool definedInProject)
 {
-    if(isRunning()) return -1;
+    if(isRunning())
+        return -1;
     MakroFilter* filter = new MakroFilter();
 
     QString startName = proposedName;
@@ -1662,7 +1671,8 @@ int OlvisCoreInterface::createMakroFilter(const QString &proposedName, bool defi
 
 void OlvisCoreInterface::deleteMakroFilter(int id)
 {
-    if(isRunning()) return;
+    if(isRunning())
+        return;
     MakroFilter* makro = mMakroFilters.value(id, 0);
     if(!makro)
         return;

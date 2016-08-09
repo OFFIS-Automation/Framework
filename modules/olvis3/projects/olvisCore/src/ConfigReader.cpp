@@ -28,13 +28,13 @@ ConfigReader::ConfigReader(OlvisInterface& control, QIODevice* device) : QXmlStr
 {
 }
 
-void ConfigReader::createConfig()
+bool ConfigReader::createConfig()
 {
     bool inProcessingMode = false;
     while(!atEnd())
     {
         TokenType token = readNext();
-        // first, check if processing is possible
+        // First, check if processing is possible
         if(token == StartElement && name() == "olvisConfig")
         {
             inProcessingMode = true;
@@ -55,7 +55,13 @@ void ConfigReader::createConfig()
             else if(name() == "join")
                 createJoin();
             else if(name() == "filter")
+            {
                 createFilter();
+                // Filter could not be created, cancel loading
+                if(mCurrentFilter == -1){
+                    return false;
+                }
+            }
             else if(name() == "port")
                 setPort();
             else if(name() == "makroInput")
@@ -91,6 +97,9 @@ void ConfigReader::createConfig()
             break;
         }
     }
+
+    // Default: Return true, as config was loaded
+    return true;
 }
 
 void ConfigReader::createMakroFilter(bool local)
@@ -115,7 +124,7 @@ void ConfigReader::createProcessor()
         bool stopOnNoOutput = stopStr.toInt() != 0;
         mInterface.setProcessorStopBehavior(mCurrentProcessor, stopOnNoOutput);
     }
-    mProcessingElementIds[name] =  mCurrentProcessor;
+    mProcessingElementIds[name] = mCurrentProcessor;
 }
 
 void ConfigReader::createBuffer()

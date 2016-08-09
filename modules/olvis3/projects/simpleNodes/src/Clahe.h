@@ -14,37 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "PointEdit.h"
+#ifndef CLAHE_H
+#define CLAHE_H
 
-PointEdit::PointEdit(QWidget *parent) : StringEdit(parent)
-{
-    QRegExp exp("-?\\d*,-?\\d*");
-    lineEdit->setValidator(new QRegExpValidator(exp, this));
-}
+#include <filter/PluginInterface.h>
+#include <ports/ImagePort.h>
+#include <ports/IntegerPort.h>
 
-QString PointEdit::asString()
+class Clahe : public UserFilter
 {
-    return PointToString(mValue.toPoint());
-}
+public:
+    Clahe();
+    virtual void execute();
+protected:
+    in::RgbImage mIn;
+    out::RgbImage mOut;
+    in::Integer mClipLimit;
+};
 
-QVariant PointEdit::editValue(bool& ok)
-{
-    return stringToPoint(lineEdit->text(), ok);
-}
 
-QString PointEdit::PointToString(const QPoint &p)
-{
-    return QString("%1,%2").arg(p.x()).arg(p.y());
-}
-
-QPointF PointEdit::stringToPoint(const QString &s, bool &ok)
-{
-    ok = true;
-    QStringList parts = s.split(",");
-    if(parts.size() != 2)
-    {
-        ok = false;
-        return QPoint();
-    }
-    return QPointF(parts[0].toInt(), parts[1].toInt());
-}
+#endif // CLAHE_H

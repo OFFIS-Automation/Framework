@@ -38,8 +38,6 @@ public:
         QProcess process;
         QString dir = QCoreApplication::applicationDirPath() + "/plugins/hilec";
         process.setWorkingDirectory(dir);
-        qDebug() << QFileInfo(mFile).canonicalFilePath();
-        qDebug() << mBase;
         process.start(dir + "/compile.bat", QStringList(QFileInfo(mFile).canonicalFilePath()) << mBase);
         if(!process.waitForFinished(5000))
         {
@@ -50,7 +48,6 @@ public:
         }
 
         QString str = process.readAllStandardOutput();
-        //qDebug() << str;
         QStringList errors = str.split("\n", QString::SkipEmptyParts);
         ScriptCompileInfo info;
         info.file = mFile;

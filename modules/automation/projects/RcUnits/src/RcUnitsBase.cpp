@@ -553,12 +553,12 @@ void RcUnitsBase::activateHaptic(const QString& deviceName, const QString &unitN
 
     if(mHapticDevices.keys().contains(deviceName)){
         HapticDevice *hapticDevice = mHapticDevices[deviceName];
-        hapticDevice->disable();
+        /*hapticDevice->disable();
 
         // Disconnect old haptic interface instances
         foreach(HapticEndpoint* hapticEndpoint, mUnits.values()){
             hapticEndpoint->disconnectHapticDevice(hapticDevice);
-        }
+        }*/
 
         // Get the linked RC-Unit
         RcUnitBase* unitToActivate = mUnits.value(unitName, 0);

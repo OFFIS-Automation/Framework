@@ -40,9 +40,9 @@ class Block : public virtual Item
 		void addBelow(Block& block);
 		void remove();
 
-		virtual QPoint resizeBy(int dx, int dy, const QPoint&);
+		virtual bool updateItem();
 
-		void updateSuccessorPositions(int dx, int dy) const;
+		void updateSuccessorPositions(int dy) const;
 
 		Block** m_predecessorsReference{nullptr};
 		Block* m_successor{nullptr};

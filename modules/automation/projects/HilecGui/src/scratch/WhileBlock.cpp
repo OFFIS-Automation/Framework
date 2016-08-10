@@ -23,7 +23,7 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style,
 
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);
-	painter->drawText(QRectF(s_margin, s_margin,
+	painter->drawText(QRectF(m_horizontalMargin, s_margin,
 		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
 		Qt::AlignLeft | Qt::AlignVCenter, "while");
 }

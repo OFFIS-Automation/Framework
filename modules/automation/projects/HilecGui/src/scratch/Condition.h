@@ -17,7 +17,9 @@ class Condition : public Parameter
 		void drawOutline(QPolygon &poylgon) const;
 
 	protected:
-		Condition(){};
+		Condition();
+
+		virtual bool updateItem();
 };
 
 } // namespace Scratch

@@ -15,8 +15,8 @@ void Parameter::remove()
 {
 	if (m_parent)
 	{
-		m_parent->resizeBy(-m_width, -m_height, pos().toPoint());
 		*m_parentReference = nullptr;
+		m_parent->updateItem();
 	}
 
 	Item::remove();

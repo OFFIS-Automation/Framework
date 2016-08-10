@@ -21,7 +21,7 @@ class ArgumentNumber : public ArgumentItem, public Number
 		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 
-		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		bool updateItem();
 };
 
 } // namespace Scratch

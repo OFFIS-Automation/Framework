@@ -37,7 +37,7 @@ class Item : public QGraphicsItem
 		void setParent(Item* parent);
 		virtual void remove();
 
-		virtual QPoint resizeBy(int dx, int dy, const QPoint&);
+		virtual bool updateItem();
 
 		int m_width;
 		int m_height;
@@ -45,18 +45,17 @@ class Item : public QGraphicsItem
 	protected:
 		Item(const int width, const int height);
 
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		void mousePressEvent(QGraphicsSceneMouseEvent* event);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
 		void addItem(Item& item);
+
+		int m_horizontalMargin = s_margin;
 
 		QFont m_font;
 		QPen m_outlineStyle;
 		QPen m_textStyle;
 		QColor m_fillStyle;
-
-		const int m_defaultWidth;
-		const int m_defaultHeight;
 
 		Item* m_parent{nullptr};
 };

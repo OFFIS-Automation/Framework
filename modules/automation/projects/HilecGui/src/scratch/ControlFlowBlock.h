@@ -18,16 +18,6 @@ class ControlFlowBlock : public Block, public ArgumentItem
 		static const int s_shaftExtent = 40;
 		static const int s_defaultHeaderHeight = s_shaftExtent;
 
-		int defaultConditionWidth() const
-		{
-			return m_defaultWidth - s_shaftExtent - 2 * s_margin;
-		}
-
-		int defaultConditionHeight() const
-		{
-			return s_defaultHeaderHeight - 2 * s_margin;
-		}
-
 		int defaultBodyHeight() const
 		{
 			return (m_defaultHeight - (m_bodies.size() + 1) * s_defaultHeaderHeight)
@@ -43,7 +33,7 @@ class ControlFlowBlock : public Block, public ArgumentItem
 	public:
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
-		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		bool updateItem();
 
 		void addArgument(const std::string& name, const Item::Type& type,
 			const bool enable = false);
@@ -60,6 +50,8 @@ class ControlFlowBlock : public Block, public ArgumentItem
 
 		int m_headerHeight = s_defaultHeaderHeight;
 		std::vector<Body> m_bodies{};
+
+		int m_defaultHeight;
 };
 
 } // namespace Scratch

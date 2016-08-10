@@ -14,6 +14,10 @@ class FrameBlock : public Block
 
 	public:
 		FrameBlock();
+
+	protected:
+		void mousePressEvent(QGraphicsSceneMouseEvent*) {};
+		void mouseMoveEvent(QGraphicsSceneMouseEvent*) {};
 };
 
 class StartBlock : public FrameBlock

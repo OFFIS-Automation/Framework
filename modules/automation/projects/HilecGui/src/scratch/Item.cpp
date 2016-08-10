@@ -21,9 +21,7 @@ Item& Item::unpackItem(const QGraphicsSceneDragDropEvent& event)
 
 Item::Item(const int width, const int height)
 	: m_width(width),
-	  m_height(height),
-	  m_defaultWidth{width},
-	  m_defaultHeight{height}
+	  m_height(height)
 {
 	m_textStyle.setBrush(Qt::white);
 
@@ -73,34 +71,18 @@ void Item::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void Item::addItem(Item& item)
 {
-	item.setPos(pos());
-
 	if (m_parent)
 	{
 		item.setParent(m_parent);
-		m_parent->resizeBy(0, item.m_height, pos().toPoint());
+		m_parent->updateItem();
 	}
 	else
 		scene()->addItem(&item);
 }
 
-QPoint Item::resizeBy(int dx, int dy, const QPoint&)
+bool Item::updateItem()
 {
-	const auto actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
-	const auto actualDy = std::max(m_height + dy, m_defaultHeight)- m_height;
-
-	if (!actualDx && !actualDy)
-		return QPoint();
-
-	prepareGeometryChange();
-
-	m_width += actualDx;
-	m_height += actualDy;
-
-	if (m_parent)
-		m_parent->resizeBy(0, actualDy, pos().toPoint());
-
-	return QPoint(actualDx, actualDy);
+	return false;
 }
 
 } // namespace Scratch

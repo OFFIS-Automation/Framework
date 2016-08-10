@@ -21,7 +21,7 @@ class ArgumentCondition : public ArgumentItem, public Condition
 		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 
-		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		virtual bool updateItem();
 };
 
 } // namespace Scratch

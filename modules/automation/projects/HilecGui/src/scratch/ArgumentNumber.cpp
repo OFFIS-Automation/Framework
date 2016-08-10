@@ -39,12 +39,12 @@ void ArgumentNumber::dropEvent(QGraphicsSceneDragDropEvent* event)
 	ArgumentItem::dropEvent(event);
 }
 
-QPoint ArgumentNumber::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+bool ArgumentNumber::updateItem()
 {
-	auto actualD = ArgumentItem::resizeBy(dx, dy, triggerPosition);
-	actualD = Number::resizeBy(actualD.x(), actualD.y(), triggerPosition);
+	auto updated = ArgumentItem::updateItem();
+	updated |= Number::updateItem();
 
-	return actualD;
+	return updated;
 }
 
 } // namespace Scratch

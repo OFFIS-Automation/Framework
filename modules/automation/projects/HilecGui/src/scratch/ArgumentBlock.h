@@ -21,7 +21,7 @@ class ArgumentBlock : public Block, public ArgumentItem
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		void dropEvent(QGraphicsSceneDragDropEvent* event);
 
-		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
+		bool updateItem();
 };
 
 } // namespace Scratch

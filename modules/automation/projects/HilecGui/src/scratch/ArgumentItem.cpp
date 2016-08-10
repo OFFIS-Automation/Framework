@@ -13,9 +13,10 @@ namespace Scratch
 {
 
 ArgumentItem::ArgumentItem(const std::string& name)
-	: m_name{name}
+:	m_name{name}
 {
-	m_width = QFontMetrics(m_font).width(QString::fromStdString(name)) + 2 * s_margin;
+	m_width = QFontMetrics(m_font).width(QString::fromStdString(name)) + 2 * m_horizontalMargin;
+	m_defaultHeight = QFontMetrics(m_font).height();
 
 	setAcceptDrops(true);
 }
@@ -24,7 +25,7 @@ void ArgumentItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWi
 {
 	QFontMetrics fontMetric(m_font);
 
-	auto x = s_margin;
+	auto x = m_horizontalMargin;
 
 	auto paintName = [&](auto&& name)
 	{
@@ -46,9 +47,11 @@ void ArgumentItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWi
 		x += s_margin / 2;
 
 		if (argument.parameter)
-			x += argument.parameter->m_width + s_margin;
+			x += argument.parameter->m_width;
 		else
-			x += argument.defaultParameter.m_width + s_margin;
+			x += argument.defaultParameter.m_width;
+
+		x += s_margin;
 	}
 }
 
@@ -72,37 +75,15 @@ void ArgumentItem::print(std::ostream& stream) const
 
 void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, const bool enable)
 {
-	addArgument(name, type, m_height, enable);
-}
-
-void ArgumentItem::addArgument(const std::string& name, const Item::Type& type,
-	const int& referenceHeight, const bool enable)
-{
-	QFontMetrics fontMetric(m_font);
-
-	const auto appendageWidth = s_margin + (name != ""?
-		fontMetric.width(QString::fromStdString(name + ":")) + s_margin / 2 : 0);
-
-	const auto x = (m_arguments.empty()?
-			s_margin + fontMetric.width(QString::fromStdString(m_name)) :
-			m_arguments.back().defaultParameter.pos().x() + (m_arguments.back().parameter?
-				m_arguments.back().parameter->m_width :
-				m_arguments.back().defaultParameter.m_width))
-		 + appendageWidth;
-
 	auto& defaultParameter = *(type == Item::Type::Number?
 		reinterpret_cast<Parameter*>(new DefaultNumber(enable))
 		: reinterpret_cast<Parameter*>(new DefaultCondition(enable)));
 
 	defaultParameter.setParent(this);
-	defaultParameter.setPos(x, s_margin);
-
-	resizeBy(
-		appendageWidth + defaultParameter.m_width,
-		std::max(defaultParameter.m_height + 2 * s_margin - referenceHeight, 0),
-		QPoint(0, 0));
 
 	m_arguments.push_back({name, type, defaultParameter, nullptr});
+
+	updateItem();
 }
 
 void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -146,166 +127,108 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	const auto oldHeight = m_height;
-	const auto oldArguments = m_arguments;
-
 	auto* item = &Item::unpackItem(*event);
 
-	event->accept();
-
-	// Copy
-	if (item->scene() != this->scene())
+	auto handleEvent = [&]()
 	{
-		event->setDropAction(Qt::CopyAction);
+		event->accept();
 
-		item = &item->clone();
-	}
-	// Move
-	else
-	{
-		event->setDropAction(Qt::MoveAction);
-		item->remove();
-	}
+		// Copy
+		if (item->scene() != this->scene())
+		{
+			event->setDropAction(Qt::CopyAction);
 
-	auto& parameter = *dynamic_cast<Parameter*>(item);
-	auto oldArgument = oldArguments.cbegin();
+			item = &item->clone();
+		}
+		// Move
+		else
+		{
+			event->setDropAction(Qt::MoveAction);
+			item->remove();
+		}
+	};
 
 	for (auto &argument : m_arguments)
 	{
 		const auto parameterPosition = argument.defaultParameter.mapFromParent(
 			position.toPoint());
 
-		if (oldArgument->defaultParameter.contains(parameterPosition))
+		if (argument.defaultParameter.contains(parameterPosition))
 		{
-			const auto position = QPoint(argument.defaultParameter.x(), s_margin);
+			handleEvent();
 
-			addParameter(parameter, argument, position);
+			auto& parameter = *dynamic_cast<Parameter*>(item);
+
+			addParameter(parameter, argument);
 
 			return;
 		}
-
-		++oldArgument;
 	}
 }
 
-QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+bool ArgumentItem::updateItem()
 {
-	return resizeBy(dx, dy, triggerPosition, m_height);
-}
+	QFontMetrics fontMetric(m_font);
 
-QPoint ArgumentItem::resizeBy(int dx, int dy, const QPoint& triggerPosition,
-	const int& referenceHeight)
-{
-	auto actualDx = dx;
-	auto actualDy = dy;
+	// Find highest argument
 
-	auto moveParameters = [&](auto&& start, auto&& dx)
+	auto highestArgument = m_defaultHeight;
+
+	for (auto& argument : m_arguments)
 	{
-		std::for_each(start, m_arguments.end(), [&](auto& argument)
-		{
-			argument.defaultParameter.moveBy(dx, 0);
+		const auto& paramter = argument.parameter? *argument.parameter : argument.defaultParameter;
 
-			if (argument.parameter)
-				argument.parameter->moveBy(dx, 0);
-		});
-	};
-
-	for (auto argument = m_arguments.begin(); argument != m_arguments.end(); ++argument)
-	{
-		const auto& boundingRectangle =
-			argument->parameter?
-				argument->parameter->boundingRect().toRect() :
-				argument->defaultParameter.boundingRect().toRect();
-
-		if (!boundingRectangle.contains(
-				argument->defaultParameter.mapFromParent(triggerPosition).toPoint()))
-			continue;
-
-		if (argument->parameter)
-			argument->defaultParameter.show();
-		else
-			argument->defaultParameter.hide();
-
-		actualDx = std::max(boundingRectangle.width() + dx, argument->defaultParameter.m_width)
-			- boundingRectangle.width();
-
-		if (dy < 0)
-		{
-			auto heighestArgument = std::max_element(m_arguments.cbegin(), m_arguments.cend(),
-				[&](const auto& lhs, const auto& rhs)
-				{
-					// Don't consider the trigger argument itself
-					if (&lhs == &*argument)
-						return true;
-
-					if (&rhs == &*argument)
-						return false;
-
-					// Only consider arguments with parameters
-					if (!lhs.parameter && !rhs.parameter)
-						return false;
-
-					if (!lhs.parameter)
-						return true;
-
-					if (!rhs.parameter)
-						return false;
-
-					return lhs.parameter->m_height < rhs.parameter->m_height;
-				});
-
-			// Don't consider the trigger argument itself
-			if (m_arguments.size() == 1 && &m_arguments.at(0) == &*argument)
-				heighestArgument = m_arguments.cend();
-
-			if (heighestArgument != m_arguments.cend() && heighestArgument->parameter)
-			{
-				if (heighestArgument->parameter->m_height + 2 * s_margin > referenceHeight + dy)
-					actualDy = heighestArgument->parameter->m_height + 2 * s_margin - referenceHeight;
-			}
-			else
-			{
-				const auto heighestDefaultArgument = std::max_element(
-					m_arguments.cbegin(), m_arguments.cend(),
-					[&](const auto& lhs, const auto& rhs)
-					{
-						return lhs.defaultParameter.m_height < rhs.defaultParameter.m_height;
-					});
-
-				if (heighestDefaultArgument != m_arguments.cend()
-						&& heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
-							> referenceHeight + dy)
-					actualDy = heighestDefaultArgument->defaultParameter.m_height + 2 * s_margin
-						- referenceHeight;
-			}
-		}
-
-		if (!actualDx && !actualDy)
-			return QPoint();
-
-		moveParameters(argument + 1, actualDx);
-
-		break;
+		if (highestArgument < paramter.m_height)
+			highestArgument = paramter.m_height;
 	}
 
-	return QPoint(actualDx, actualDy);
+	// Position arguments
+
+	auto position = m_horizontalMargin + fontMetric.width(QString::fromStdString(m_name));
+
+	for (auto& argument : m_arguments)
+	{
+		argument.defaultParameter.setVisible(!argument.parameter);
+
+		auto& paramter = argument.parameter? *argument.parameter : argument.defaultParameter;
+
+		const auto appendageWidth = s_margin + (argument.name != ""?
+			fontMetric.width(QString::fromStdString(argument.name + ":")) + s_margin / 2 : 0);
+
+		position += appendageWidth;
+
+		paramter.setPos(position, s_margin + (highestArgument - paramter.m_height) / 2);
+
+		position += paramter.m_width;
+	}
+
+	// Set extends
+
+	const auto newWidth = position + m_horizontalMargin;
+	const auto newHeight = 2 * s_margin + highestArgument;
+
+	if (newWidth == m_width && newHeight == m_height)
+		return false;
+
+	m_width = newWidth;
+	m_height = newHeight;
+
+	if (m_parent)
+		m_parent->updateItem();
+
+	return true;
 }
 
-void ArgumentItem::addParameter(Parameter& parameter, Argument& argument,
-	const QPoint &offset)
+void ArgumentItem::addParameter(Parameter& parameter, Argument& argument)
 {
 	assert(!argument.parameter && "Parameter of the argument is already assigned");
 
-	auto dx = parameter.m_width - argument.defaultParameter.m_width;
-	auto dy = parameter.m_height - argument.defaultParameter.m_height;
-
 	parameter.setParent(this);
 	parameter.m_parentReference = reinterpret_cast<Parameter**>(&argument.parameter);
-	parameter.setPos(offset);
-
-	resizeBy(dx, dy, offset);
 
 	argument.parameter = &parameter;
+
+	updateItem();
 }
 
 } // namespace Scratch

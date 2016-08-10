@@ -37,15 +37,14 @@ class ArgumentItem : virtual public Item
 		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
 		virtual void dropEvent(QGraphicsSceneDragDropEvent* event);
 
-		virtual QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition);
-		QPoint resizeBy(int dx, int dy, const QPoint& triggerPosition, const int& referenceHeight);
+		virtual bool updateItem();
 
-		void addArgument(const std::string& name, const Item::Type& type,
-			const int& referenceHeight, const bool enable);
-		void addParameter(Parameter& parameter, Argument& argument, const QPoint &offset);
+		void addParameter(Parameter& parameter, Argument& argument);
 
 		std::string m_name;
 		std::vector<Argument> m_arguments;
+
+		int m_defaultHeight;
 };
 
 } // namespace Scratch

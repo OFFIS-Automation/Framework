@@ -4,9 +4,11 @@ namespace Scratch
 {
 
 ArgumentCondition::ArgumentCondition(const std::string& name)
-	: ArgumentItem(name),
-	  Item(120, 40)
-{}
+:	Item(120, 40),
+	ArgumentItem(name)
+{
+	updateItem();
+}
 
 Item& ArgumentCondition::clone() const
 {
@@ -39,12 +41,13 @@ void ArgumentCondition::dropEvent(QGraphicsSceneDragDropEvent* event)
 	ArgumentItem::dropEvent(event);
 }
 
-QPoint ArgumentCondition::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+bool ArgumentCondition::updateItem()
 {
-	auto actualD = ArgumentItem::resizeBy(dx, dy, triggerPosition);
-	actualD = Condition::resizeBy(actualD.x(), actualD.y(), triggerPosition);
+	auto updated = ArgumentItem::updateItem(); // -> Height
+	updated |= Condition::updateItem(); // -> Margin
+	updated |= ArgumentItem::updateItem(); // -> Width
 
-	return actualD;
+	return updated;
 }
 
 } // namespace Scratch

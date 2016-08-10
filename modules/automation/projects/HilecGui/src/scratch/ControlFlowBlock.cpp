@@ -8,7 +8,8 @@ namespace Scratch
 {
 
 ControlFlowBlock::ControlFlowBlock(const std::string& name, const size_t& numberOfBodies)
-	: ArgumentItem(name)
+	: ArgumentItem(name),
+	  m_defaultHeight{m_height}
 {
 	m_bodies.resize(numberOfBodies);
 
@@ -100,10 +101,6 @@ void ControlFlowBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos().toPoint();
 
-	const auto oldHeight = m_height;
-	const auto oldHeaderHeight = m_headerHeight;
-	const auto oldBodies = m_bodies;
-
 	auto* item = &Item::unpackItem(*event);
 
 	if (item->itemType() != Item::Type::Block)
@@ -120,116 +117,100 @@ void ControlFlowBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 		return;
 	}
 
-	event->accept();
-
-	// Copy
-	if (item->scene() != this->scene())
+	auto handleEvent = [&]()
 	{
-		event->setDropAction(Qt::CopyAction);
+		event->accept();
 
-		item = &item->clone();
-	}
-	// Move
-	else
-	{
-		event->setDropAction(Qt::MoveAction);
-		item->remove();
-	}
+		// Copy
+		if (item->scene() != this->scene())
+		{
+			event->setDropAction(Qt::CopyAction);
 
-	auto& block = *dynamic_cast<Block*>(item);
-
-	auto oldY = oldHeaderHeight;
-	auto oldBody = oldBodies.cbegin();
+			item = &item->clone();
+		}
+		// Move
+		else
+		{
+			event->setDropAction(Qt::MoveAction);
+			item->remove();
+		}
+	};
 
 	auto y = m_headerHeight;
 
 	for (auto &body : m_bodies)
 	{
-		if (inConnectorActivationRange(position, oldY))
+		if (inConnectorActivationRange(position, y))
 		{
+			handleEvent();
+
+			auto& block = *dynamic_cast<Block*>(item);
+
 			addBody(block, body.block, QPoint(s_shaftExtent, y));
 
 			return;
 		}
 
-		oldY += oldBody->height + s_defaultHeaderHeight;
-		++oldBody;
-
 		y += body.height + s_defaultHeaderHeight;
 	}
 }
 
-QPoint ControlFlowBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+bool ControlFlowBlock::updateItem()
 {
-	auto actualDx = dx;
-	auto actualDy = dy;
+	prepareGeometryChange();
 
-	auto moveBodies = [&](auto&& start, auto&& dy)
+	const auto oldWidth = m_width;
+
+	ArgumentItem::updateItem();
+
+	m_headerHeight = m_height;
+	size_t position = m_headerHeight;
+
+	for (auto& body : m_bodies)
 	{
-		std::for_each(start, m_bodies.end(), [&](auto& body)
+		if (!body.block)
 		{
-			if (body.block)
-			{
-				body.block->moveBy(0, dy);
-				body.block->updateSuccessorPositions(0, dy);
-			}
-		});
-	};
-
-	auto argumentArea = QRect(0, 0, m_width, m_headerHeight);
-
-	if (argumentArea.contains(triggerPosition))
-	{
-		auto actualD = ArgumentItem::resizeBy(dx, dy, triggerPosition, m_headerHeight);
-
-		actualDx = std::max(m_width + actualD.x(), m_defaultWidth) - m_width;
-		actualDy = std::max(m_headerHeight + actualD.y(), s_defaultHeaderHeight) - m_headerHeight;
-
-		if (!actualDx && !actualDy)
-			return QPoint();
-
-		m_headerHeight += actualDy;
-		update(boundingRect());
-		moveBodies(m_bodies.begin(), actualDy);
-
-		Block::resizeBy(actualDx, actualDy, triggerPosition);
-
-		return QPoint(actualDx, actualDy);
-	}
-
-	auto y = m_headerHeight;
-
-	for (auto body = m_bodies.begin(); body != m_bodies.end(); ++body)
-	{
-		y += body->height;
-
-		if (triggerPosition.y() > y)
-		{
-			y += s_defaultHeaderHeight;
+			body.height = defaultBodyHeight();
+			position += body.height + s_shaftExtent;
 
 			continue;
 		}
 
-		actualDy = std::max(body->height + dy, defaultBodyHeight()) - body->height;
+		const auto oldPosition = body.block->pos();
 
-		if (!actualDy)
-			return QPoint();
+		body.block->setPos(s_shaftExtent, position);
 
-		body->height += actualDy;
-		moveBodies(body + 1, actualDy);
+		if (body.block->pos() != oldPosition)
+			body.block->updateItem();
 
-		break;
+		body.height = 0;
+
+		for (Block* currentBlock = body.block; currentBlock;
+				currentBlock = currentBlock->m_successor)
+			body.height += currentBlock->m_height;
+
+		position += body.height + s_shaftExtent;
 	}
 
-	Block::resizeBy(actualDx, actualDy, triggerPosition);
+	const auto newHeight = position;
 
-	return QPoint(actualDx, actualDy);
+	if (m_width == oldWidth && newHeight == m_height)
+		return false;
+
+	m_height = newHeight;
+
+	Block::updateItem();
+
+	if (m_parent)
+		m_parent->updateItem();
+
+	return true;
 }
 
 void ControlFlowBlock::addArgument(const std::string& name, const Item::Type& type,
 	const bool enable)
 {
-	ArgumentItem::addArgument(name, type, m_headerHeight, enable);
+	ArgumentItem::addArgument(name, type, enable);
 }
 
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)
@@ -241,9 +222,9 @@ void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &of
 	block.setParent(this);
 	block.setPos(offset);
 
-	resizeBy(0, dy, offset);
-
 	bodyBlock = &block;
+
+	updateItem();
 }
 
 } // namespace Scratch

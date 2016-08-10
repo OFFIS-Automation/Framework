@@ -4,8 +4,8 @@ namespace Scratch
 {
 
 ArgumentBlock::ArgumentBlock(const std::string& name)
-	: Item(s_defaultWidth, s_defaultHeight),
-	  ArgumentItem(name)
+:	Item(s_defaultWidth, s_defaultHeight),
+	ArgumentItem(name)
 {}
 
 Item& ArgumentBlock::clone() const
@@ -51,21 +51,17 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	if (Item::unpackItem(*event).itemType() == Item::Type::Block)
-	{
 		Block::dropEvent(event);
-
-		return;
-	}
-
-	ArgumentItem::dropEvent(event);
+	else
+		ArgumentItem::dropEvent(event);
 }
 
-QPoint ArgumentBlock::resizeBy(int dx, int dy, const QPoint& triggerPosition)
+bool ArgumentBlock::updateItem()
 {
-	auto actualD = ArgumentItem::resizeBy(dx, dy, triggerPosition);
-	actualD = Block::resizeBy(actualD.x(), actualD.y(), triggerPosition);
+	auto updated = ArgumentItem::updateItem();
+	updated |= Block::updateItem();
 
-	return actualD;
+	return updated;
 }
 
 } // namespace Scratch

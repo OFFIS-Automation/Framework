@@ -90,25 +90,29 @@ void Block::drawOutline(QPolygon& polygon) const
 	polygon << QPoint(m_width, 0);
 }
 
-QPoint Block::resizeBy(int dx, int dy, const QPoint&)
+bool Block::updateItem()
 {
-	const auto actualDx = std::max(m_width + dx, m_defaultWidth) - m_width;
-	const auto actualDy = std::max(m_height + dy, m_defaultHeight)- m_height;
+	if (!m_successor)
+		return false;
 
-	if (!actualDx && !actualDy)
-		return QPoint();
+	const auto dy = pos().y() + m_height - m_successor->pos().y();
 
-	Item::resizeBy(actualDx, actualDy, pos().toPoint());
+	updateSuccessorPositions(dy);
 
-	updateSuccessorPositions(0, actualDy);
-
-	return QPoint(actualDx, actualDy);
+	return false;
 }
 
-void Block::updateSuccessorPositions(int dx, int dy) const
+void Block::updateSuccessorPositions(int dy) const
 {
-	for (Block* currentBlock = m_successor; currentBlock; currentBlock = currentBlock->m_successor)
-		currentBlock->moveBy(dx, dy);
+	if (!m_successor)
+		return;
+
+	const auto oldPosition = m_successor->pos();
+
+	m_successor->setPos(m_successor->pos() + QPointF(0, dy));
+
+	if (m_successor->pos() != oldPosition)
+		m_successor->updateSuccessorPositions(dy);
 }
 
 void Block::addAbove(Block& block)
@@ -120,9 +124,10 @@ void Block::addAbove(Block& block)
 
 	m_predecessorsReference = &block.m_successor;
 
-	addItem(block);
+	block.setPos(pos());
+	block.updateSuccessorPositions(block.m_height);
 
-	block.updateSuccessorPositions(0, block.m_height);
+	addItem(block);
 }
 
 void Block::addBelow(Block& block)
@@ -132,23 +137,23 @@ void Block::addBelow(Block& block)
 
 	m_successor = &block;
 
-	addItem(block);
+	block.setPos(pos() + QPointF(0, m_height));
+	block.updateSuccessorPositions(block.m_height);
 
-	block.moveBy(0, m_height);
-	block.updateSuccessorPositions(0, block.m_height);
+	addItem(block);
 }
 
 void Block::remove()
 {
-	if (m_parent)
-		m_parent->resizeBy(0, -m_height, pos().toPoint());
-
-	updateSuccessorPositions(0, -m_height);
+	updateSuccessorPositions(-m_height);
 
 	if (m_successor)
 		m_successor->setPredecessorsReference(m_predecessorsReference);
 
 	*m_predecessorsReference = m_successor;
+
+	if (m_parent)
+		m_parent->updateItem();
 
 	Item::remove();
 }

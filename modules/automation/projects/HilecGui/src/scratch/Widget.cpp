@@ -29,11 +29,13 @@ Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchWidget>()),
 	m_programScene(std::make_unique<QGraphicsScene>(this)),
-	m_controlScene(std::make_unique<ControlScene>(this))
+	m_controlFlowScene(std::make_unique<ControlScene>(this)),
+	m_utilityScene(std::make_unique<ControlScene>(this))
 {
 	m_ui->setupUi(this);
 	m_ui->programView->setScene(m_programScene.get());
-	m_ui->controlView->setScene(m_controlScene.get());
+	m_ui->controlFlowView->setScene(m_controlFlowScene.get());
+	m_ui->utilityView->setScene(m_utilityScene.get());
 
 	// Program scene
 	m_startBlock = new StartBlock();
@@ -45,23 +47,23 @@ Widget::Widget(QWidget *parent)
 
 	// Control scene
 	auto whileBlock = new WhileBlock();
-	m_controlScene->addItem(whileBlock);
+	m_controlFlowScene->addItem(whileBlock);
 
 	auto ifElseBlock = new IfElseBlock();
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
-	m_controlScene->addItem(ifElseBlock);
+	m_controlFlowScene->addItem(ifElseBlock);
 
 	auto passBlock = new TrueCondition();
 	passBlock->setPos(ifElseBlock->pos().x() + ifElseBlock->m_width + 30, 0);
-	m_controlScene->addItem(passBlock);
+	m_utilityScene->addItem(passBlock);
 
 	auto trueCondiftion = new PassBlock();
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
-	m_controlScene->addItem(trueCondiftion);
+	m_utilityScene->addItem(trueCondiftion);
 
 	auto piNumber = new PiNumber();
 	piNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
-	m_controlScene->addItem(piNumber);
+	m_utilityScene->addItem(piNumber);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
@@ -125,6 +127,8 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 void Widget::updateRcUnits(bool)
 {
 	const auto& hilec = *HilecSingleton::hilec();
+
+	m_ui->rcUnitsView->clear();
 
 	for (const auto& name : hilec.rcUnits())
 	{

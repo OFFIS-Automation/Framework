@@ -2,6 +2,8 @@
 
 #include <QGraphicsSceneEvent>
 
+#include "Item.h"
+
 namespace Scratch
 {
 
@@ -13,12 +15,36 @@ void ControlScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	QGraphicsScene::dragMoveEvent(event);
 
-	event->ignore();
+	auto* item = &Item::unpackItem(*event);
+
+	if (dynamic_cast<ControlScene*>(item->scene()))
+	{
+		event->accept();
+		event->setDropAction(Qt::IgnoreAction);
+
+		return;
+	}
+
+	event->accept();
+	event->setDropAction(Qt::MoveAction);
 }
 
 void ControlScene::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
-	event->ignore();
+	auto* item = &Item::unpackItem(*event);
+
+	if (dynamic_cast<ControlScene*>(item->scene()))
+	{
+		event->accept();
+		event->setDropAction(Qt::IgnoreAction);
+
+		return;
+	}
+
+	event->accept();
+	event->setDropAction(Qt::MoveAction);
+
+	item->remove();
 }
 
 } // namespace Scratch

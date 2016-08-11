@@ -152,6 +152,8 @@ void Widget::updateRcUnits(bool)
 
 			auto initilizeArgumentItem = [&](auto &argumentItem, auto&& position)
 			{
+				argumentItem->setToolTip(method.longDesc);
+
 				for (auto parameter : method.parameters)
 					if (parameter.typeName == "bool")
 						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Condition);

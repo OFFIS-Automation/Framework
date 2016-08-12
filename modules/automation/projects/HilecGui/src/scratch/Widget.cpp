@@ -80,6 +80,15 @@ void Widget::keyPressEvent(QKeyEvent *event)
 
 void Widget::keyReleaseEvent(QKeyEvent *event)
 {
+	const auto filename = "generated.py";
+
+	auto& hilec = *HilecSingleton::hilec();
+
+	QFile outputFile(filename);
+	outputFile.remove(filename);
+	outputFile.open(QFile::ReadWrite);
+	QTextStream outputStream(&outputFile);
+
 	if(event->key() != Qt::Key_G)
 	{
 		event->ignore();
@@ -93,42 +102,45 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 	auto printMethodForAllRCUnits = [&](auto & methodName)
 	{
-		const auto& hilec = *HilecSingleton::hilec();
-
 		for (const auto& name : hilec.rcUnits())
 		{
 			auto help = hilec.getUnitHelp(name);
 
-			if (help.methods.empty())
-				continue;
-
-			for (const auto& method : help.methods)
-			{
-				if (method.hiddenForScratch)
-					continue;
-
-				generatedFile << help.unitName.toStdString() + "." + methodName + "()\n";
-
-				break;
-			}
-
-			break;
+			generatedFile << help.unitName.toStdString() + "." + methodName + "()" << std::endl;
 		}
 	};
 
+	generatedFile << "from offis import *" << std::endl;
+	generatedFile << std::endl;
+
+	for (const auto& name : hilec.rcUnits())
+	{
+		auto help = hilec.getUnitHelp(name);
+
+		generatedFile << help.unitName.toStdString() + " = rc.getUnit(\"" + help.unitName.toStdString() + "\")" << std::endl;
+	}
+
+	generatedFile << std::endl;
+
 	printMethodForAllRCUnits("acquire");
+	generatedFile << std::endl;
 	m_startBlock->print(generatedFile);
+	generatedFile << std::endl;
 	printMethodForAllRCUnits("release");
 
-	std::cout << generatedFile.str();
-	std::cout.flush();
+	outputStream << generatedFile.str().c_str();
+	outputStream.flush();
+
+	hilec.runFile(filename);
+	outputFile.remove();
 }
 
 void Widget::updateRcUnits(bool)
 {
 	const auto& hilec = *HilecSingleton::hilec();
 
-	m_ui->rcUnitsView->clear();
+	for (size_t i = 2; i < m_ui->controlWidget->count(); ++i)
+		m_ui->controlWidget->removeTab(i);
 
 	for (const auto& name : hilec.rcUnits())
 	{
@@ -141,7 +153,7 @@ void Widget::updateRcUnits(bool)
 		auto scene = new ControlScene(this);
 
 		view->setScene(scene);
-		m_ui->rcUnitsView->addTab(view, help.unitName);
+		m_ui->controlWidget->addTab(view, help.unitName);
 
 		int y = 0;
 
@@ -170,17 +182,17 @@ void Widget::updateRcUnits(bool)
 
 			initilizeArgumentItem(argumentBlock, QPoint(0, y));
 
-			//if (!method.hasReturn)
-			//{
+			if (!method.hasReturn)
+			{
 				ArgumentItem* argumentItem;
 
-				//if (method.returnParameter.typeName == "bool")
+				if (method.returnParameter.typeName == "bool")
 					argumentItem = new ArgumentCondition((help.unitName + "." + method.name).toStdString());
-				//else if (method.returnParameter.typeName == "double")
-				//	argumentItem = new ArgumentNumber((help.unitName + "." + method.name).toStdString());
+				else if (method.returnParameter.typeName == "double")
+					argumentItem = new ArgumentNumber((help.unitName + "." + method.name).toStdString());
 
 				initilizeArgumentItem(argumentItem, QPoint(argumentBlock->m_width + 30, y));
-			//}
+			}
 
 			y += argumentBlock->m_height + 30;
 		}

@@ -51,7 +51,7 @@ void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) con
 
 	ArgumentItem::print(stream);
 
-	stream << ":\n";
+	stream << ":" << std::endl;
 
 	m_trueBody.block->print(stream, indentationDepth + 1);
 
@@ -60,7 +60,7 @@ void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) con
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "else:\n";
+	stream << "else:" << std::endl;
 
 	m_falseBody.block->print(stream, indentationDepth + 1);
 

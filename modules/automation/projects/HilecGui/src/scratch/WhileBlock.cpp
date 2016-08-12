@@ -44,7 +44,7 @@ void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0) cons
 
 	ArgumentItem::print(stream);
 
-	stream << ":\n";
+	stream << ":" << std::endl;
 
 	m_body.block->print(stream, indentationDepth + 1);
 

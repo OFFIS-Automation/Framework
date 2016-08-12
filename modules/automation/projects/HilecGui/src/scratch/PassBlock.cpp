@@ -32,7 +32,7 @@ void PassBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "pass\n";
+	stream << "pass" << std::endl;
 
 	if (m_successor)
 		m_successor->print(stream, indentationDepth);

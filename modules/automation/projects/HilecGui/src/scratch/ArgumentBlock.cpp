@@ -31,7 +31,7 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 
 	ArgumentItem::print(stream);
 
-	stream << "\n";
+	stream << std::endl;
 
 	Block::print(stream, indentationDepth);
 }

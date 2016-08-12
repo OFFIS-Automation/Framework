@@ -21,6 +21,28 @@ class Widget : public QDockWidget
 {
     Q_OBJECT
 
+	private:
+		enum class DataTypes
+		{
+			Number,
+			Bool
+		};
+
+		struct Variable
+		{
+			DataTypes type;
+			std::string name;
+		};
+
+		struct Function
+		{
+			std::string name;
+			DataTypes returnValue;
+			std::vector<Variable> parameters;
+
+			std::vector<Variable> variables;
+		};
+
 	public:
 		Widget(QWidget* parent = nullptr);
 
@@ -41,6 +63,7 @@ class Widget : public QDockWidget
 
 		StartBlock* m_startBlock{nullptr};
 
+		std::vector<Function> m_functions;
 };
 
 } // namespace Scratch

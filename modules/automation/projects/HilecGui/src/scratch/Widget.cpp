@@ -92,11 +92,15 @@ void Widget::updateRcUnits(bool)
 		if (help.methods.empty())
 			continue;
 
-		auto view = new QGraphicsView(this);
+		auto tab = new QWidget();
+		auto gridLayout = new QGridLayout(tab);
+		auto view = new QGraphicsView(tab);
 		auto scene = new ControlScene(this);
 
 		view->setScene(scene);
-		m_ui->controlWidget->addTab(view, help.unitName);
+
+		gridLayout->addWidget(view, 0, 0, 1, 1);
+		m_ui->controlWidget->addTab(tab, help.unitName);
 
 		int y = 0;
 

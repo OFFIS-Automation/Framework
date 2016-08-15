@@ -8,13 +8,14 @@ namespace Scratch
 {
 
 ControlFlowBlock::ControlFlowBlock(const std::string& name, const size_t& numberOfBodies)
-	: ArgumentItem(name),
-	  m_defaultHeight{m_height}
+	: ArgumentItem(name)
 {
 	m_bodies.resize(numberOfBodies);
 
-	for (auto &body : m_bodies)
-		body.height = defaultBodyHeight();
+	for (auto& body : m_bodies)
+		body.height = defaultHeight();
+
+	updateItem();
 }
 
 void ControlFlowBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
@@ -28,16 +29,16 @@ void ControlFlowBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 	std::for_each(m_bodies.cbegin(), m_bodies.cend(), [&](const auto& body)
 		{
 			polygon << QPoint(m_width, y);
-			drawConnector(polygon, s_shaftExtent, y, true);
-			polygon << QPoint(s_shaftExtent, y);
+			drawConnector(polygon, defaultHeight(), y, true);
+			polygon << QPoint(defaultHeight(), y);
 
 			y += body.height;
 
-			polygon << QPoint(s_shaftExtent, y);
-			drawConnector(polygon, s_shaftExtent, y);
+			polygon << QPoint(defaultHeight(), y);
+			drawConnector(polygon, defaultHeight(), y);
 			polygon << QPoint(m_width, y);
 
-			y += s_defaultHeaderHeight;
+			y += defaultHeight();
 		});
 
 	painter->setBrush(m_fillStyle);
@@ -55,7 +56,7 @@ bool ControlFlowBlock::inBodyRange(const QPoint& position)
 				const auto& isInRange =
 					inConnectorActivationRange(position, y);
 
-				y += body.height + s_defaultHeaderHeight;
+				y += body.height + defaultHeight();
 
 				return isInRange;
 			});
@@ -146,12 +147,12 @@ void ControlFlowBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 
 			auto& block = *dynamic_cast<Block*>(item);
 
-			addBody(block, body.block, QPoint(s_shaftExtent, y));
+			addBody(block, body.block, QPoint(defaultHeight(), y));
 
 			return;
 		}
 
-		y += body.height + s_defaultHeaderHeight;
+		y += body.height + defaultHeight();
 	}
 }
 
@@ -170,15 +171,15 @@ bool ControlFlowBlock::updateItem()
 	{
 		if (!body.block)
 		{
-			body.height = defaultBodyHeight();
-			position += body.height + s_shaftExtent;
+			body.height = defaultHeight();
+			position += body.height + defaultHeight();
 
 			continue;
 		}
 
 		const auto oldPosition = body.block->pos();
 
-		body.block->setPos(s_shaftExtent, position);
+		body.block->setPos(defaultHeight(), position);
 
 		if (body.block->pos() != oldPosition)
 			body.block->updateItem();
@@ -189,7 +190,7 @@ bool ControlFlowBlock::updateItem()
 				currentBlock = currentBlock->m_successor)
 			body.height += currentBlock->m_height;
 
-		position += body.height + s_shaftExtent;
+		position += body.height + defaultHeight();
 	}
 
 	const auto newHeight = position;
@@ -215,7 +216,7 @@ void ControlFlowBlock::addArgument(const std::string& name, const Item::Type& ty
 
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)
 {
-	const auto dy = block.m_height - !bodyBlock * defaultBodyHeight();
+	const auto dy = block.m_height - !bodyBlock * defaultHeight();
 
 	block.setPredecessorsReference(&bodyBlock);
 	block.setSuccessor(bodyBlock);

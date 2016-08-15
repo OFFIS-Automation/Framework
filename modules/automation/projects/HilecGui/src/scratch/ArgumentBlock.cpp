@@ -4,9 +4,10 @@ namespace Scratch
 {
 
 ArgumentBlock::ArgumentBlock(const std::string& name)
-:	Item(s_defaultWidth, s_defaultHeight),
-	ArgumentItem(name)
-{}
+:	ArgumentItem(name)
+{
+	updateItem();
+}
 
 Item& ArgumentBlock::clone() const
 {

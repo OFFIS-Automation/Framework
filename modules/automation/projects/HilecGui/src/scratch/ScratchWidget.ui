@@ -14,21 +14,24 @@
    <string>Scratch</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
     <item>
-     <widget class="QGroupBox" name="groupBox_3">
+     <widget class="QGroupBox" name="groupBox">
       <property name="title">
-       <string>Program</string>
+       <string>Functions</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QGraphicsView" name="programView">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QTabWidget" name="functions">
+         <property name="currentIndex">
+          <number>0</number>
          </property>
+         <widget class="QWidget" name="main">
+          <attribute name="title">
+           <string>Main</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_5"/>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -45,8 +48,8 @@
       <property name="title">
        <string>Blocks</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
         <widget class="QTabWidget" name="controlWidget">
          <property name="currentIndex">
           <number>1</number>
@@ -55,7 +58,7 @@
           <attribute name="title">
            <string>Control flow</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="gridLayout_3">
            <item row="0" column="0">
             <widget class="QGraphicsView" name="controlFlowView"/>
            </item>
@@ -65,7 +68,7 @@
           <attribute name="title">
            <string>Utility</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_2">
+          <layout class="QGridLayout" name="gridLayout_4">
            <item row="0" column="0">
             <widget class="QGraphicsView" name="utilityView">
              <property name="sizePolicy">

@@ -7,22 +7,7 @@
 namespace Scratch
 {
 
-// Frame block
-
-FrameBlock::FrameBlock()
-	: Item(s_defaultWidth, s_defaultHeight)
-{
-	setAcceptDrops(true);
-}
-
 // Start block
-
-StartBlock::StartBlock()
-	: Item(s_defaultWidth, s_defaultHeight),
-	  FrameBlock()
-{
-	setAcceptDrops(true);
-}
 
 void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
@@ -110,13 +95,6 @@ void StartBlock::print(std::ostream& stream, unsigned indentationDepth) const
 }
 
 // End block
-
-EndBlock::EndBlock()
-	: Item(s_defaultWidth, s_defaultHeight),
-	  FrameBlock()
-{
-	setAcceptDrops(true);
-}
 
 void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {

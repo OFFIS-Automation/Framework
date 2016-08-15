@@ -4,8 +4,7 @@ namespace Scratch
 {
 
 ArgumentNumber::ArgumentNumber(const std::string& name)
-	: ArgumentItem(name),
-	  Item(120, 40)
+:	ArgumentItem(name)
 {}
 
 Item& ArgumentNumber::clone() const
@@ -41,8 +40,9 @@ void ArgumentNumber::dropEvent(QGraphicsSceneDragDropEvent* event)
 
 bool ArgumentNumber::updateItem()
 {
-	auto updated = ArgumentItem::updateItem();
-	updated |= Number::updateItem();
+	auto updated = ArgumentItem::updateItem(); // -> Height
+	updated |= Number::updateItem(); // -> Margin
+	updated |= ArgumentItem::updateItem(); // -> Width
 
 	return updated;
 }

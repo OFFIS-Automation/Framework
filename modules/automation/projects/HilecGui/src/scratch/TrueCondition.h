@@ -9,8 +9,6 @@ namespace Scratch
 class TrueCondition : public Condition
 {
 	public:
-		TrueCondition();
-
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Item& clone() const;

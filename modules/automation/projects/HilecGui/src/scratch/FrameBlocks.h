@@ -12,9 +12,6 @@ class FrameBlock : public Block
 		int s_midsegmentOffset = 30;
 		int s_taperHeight = 20;
 
-	public:
-		FrameBlock();
-
 	protected:
 		void mousePressEvent(QGraphicsSceneMouseEvent*) {};
 		void mouseMoveEvent(QGraphicsSceneMouseEvent*) {};
@@ -23,8 +20,6 @@ class FrameBlock : public Block
 class StartBlock : public FrameBlock
 {
 	public:
-		StartBlock();
-
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Block& clone() const;
@@ -38,8 +33,6 @@ class StartBlock : public FrameBlock
 class EndBlock : public FrameBlock
 {
 	public:
-		EndBlock();
-
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Block& clone() const;

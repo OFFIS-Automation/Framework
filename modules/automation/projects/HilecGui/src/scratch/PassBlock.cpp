@@ -7,12 +7,6 @@
 namespace Scratch
 {
 
-PassBlock::PassBlock()
-	: Item(s_defaultWidth, s_defaultHeight)
-{
-	setAcceptDrops(true);
-}
-
 void PassBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
 	Block::paint(painter, item, widget);

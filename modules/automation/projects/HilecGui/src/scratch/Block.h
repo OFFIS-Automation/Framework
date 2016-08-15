@@ -15,14 +15,11 @@ namespace Scratch
 class Block : public virtual Item
 {
 	public:
-		static const int s_defaultWidth = 100;
-		static const int s_defaultHeight = 40;
-
 		static const int s_connectorHeight = 5;
-		static const int s_connectorWidth = 20;
-		static const int s_connectorMidsegmentOffset = 5;
+		static const int s_connectorWidth = 4 * s_connectorHeight;
+		static const int s_connectorMidsegmentOffset = s_connectorHeight;
 
-		static const int s_connectorActivationRange = 10;
+		static const int s_connectorActivationRange = 2 * s_connectorHeight;
 
 		static bool inConnectorActivationRange(const QPointF& position, const int& offset);
 
@@ -40,6 +37,7 @@ class Block : public virtual Item
 		void addBelow(Block& block);
 		void remove();
 
+		virtual int defaultHeight();
 		virtual bool updateItem();
 
 		void updateSuccessorPositions(int dy) const;
@@ -48,8 +46,7 @@ class Block : public virtual Item
 		Block* m_successor{nullptr};
 
 	protected:
-		Block()
-		{}
+		Block();
 
 		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 

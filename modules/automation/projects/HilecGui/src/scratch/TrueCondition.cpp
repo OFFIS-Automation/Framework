@@ -5,10 +5,6 @@
 namespace Scratch
 {
 
-TrueCondition::TrueCondition()
-	: Item(80, 30)
-{}
-
 void TrueCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon outline;

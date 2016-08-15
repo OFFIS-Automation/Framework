@@ -3,11 +3,6 @@
 namespace Scratch
 {
 
-Condition::Condition()
-{
-	updateItem();
-}
-
 Item::Type Condition::itemType() const
 {
 	return Type::Condition;

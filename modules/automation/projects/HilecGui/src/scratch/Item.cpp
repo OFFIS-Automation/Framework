@@ -19,16 +19,18 @@ Item& Item::unpackItem(const QGraphicsSceneDragDropEvent& event)
 	return **reinterpret_cast<Item**>(byteArray.data());
 }
 
-Item::Item(const int width, const int height)
-	: m_width(width),
-	  m_height(height)
+Item::Item()
 {
+	setAcceptDrops(true);
+
 	m_textStyle.setBrush(Qt::white);
 
 	m_outlineStyle.setBrush(Qt::white);
 	m_outlineStyle.setWidth(4);
 
 	m_fillStyle = Qt::lightGray;
+
+	updateItem();
 }
 
 void Item::setParent(Item* parent)
@@ -80,9 +82,20 @@ void Item::addItem(Item& item)
 		scene()->addItem(&item);
 }
 
+int Item::defaultHeight()
+{
+	return 2 * s_margin + QFontMetrics(m_font).height();
+}
+
 bool Item::updateItem()
 {
-	return false;
+	auto oldWidth = m_width;
+	auto oldHeight = m_height;
+
+	m_width = 2 * defaultHeight();
+	m_height = defaultHeight();
+
+	return oldWidth != m_width || oldHeight != m_height;
 }
 
 } // namespace Scratch

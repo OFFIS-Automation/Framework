@@ -35,13 +35,12 @@ void Parameter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidge
 
 void Parameter::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
-	event->accept();
-	event->setDropAction(Qt::IgnoreAction);
+	event->ignore();
 }
 
 void Parameter::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
-	event->accept();
+	event->ignore();
 }
 
 std::ostream& operator<<(std::ostream& stream, const Scratch::Parameter& parameter)

@@ -43,8 +43,6 @@ class ArgumentItem : virtual public Item
 
 		std::string m_name;
 		std::vector<Argument> m_arguments;
-
-		int m_defaultHeight;
 };
 
 } // namespace Scratch

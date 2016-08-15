@@ -15,15 +15,6 @@ namespace Scratch
 class ControlFlowBlock : public Block, public ArgumentItem
 {
 	protected:
-		static const int s_shaftExtent = 40;
-		static const int s_defaultHeaderHeight = s_shaftExtent;
-
-		int defaultBodyHeight() const
-		{
-			return (m_defaultHeight - (m_bodies.size() + 1) * s_defaultHeaderHeight)
-				/ m_bodies.size();
-		}
-
 		struct Body
 		{
 			int height;
@@ -48,10 +39,8 @@ class ControlFlowBlock : public Block, public ArgumentItem
 
 		void addBody(Block& block, Block*& bodyBlock, const QPoint &offset);
 
-		int m_headerHeight = s_defaultHeaderHeight;
+		int m_headerHeight;
 		std::vector<Body> m_bodies{};
-
-		int m_defaultHeight;
 };
 
 } // namespace Scratch

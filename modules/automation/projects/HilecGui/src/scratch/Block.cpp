@@ -12,6 +12,11 @@
 namespace Scratch
 {
 
+Block::Block()
+{
+	Item::updateItem();
+}
+
 bool Block::inConnectorActivationRange(const QPointF& position, const int& offset)
 {
 	return position.y() > offset - s_connectorActivationRange
@@ -88,6 +93,11 @@ void Block::drawOutline(QPolygon& polygon) const
 	polygon	<< QPoint(0, 0);
 	drawConnector(polygon, 0, 0);
 	polygon << QPoint(m_width, 0);
+}
+
+int Block::defaultHeight()
+{
+	return Item::defaultHeight() + 2 * s_connectorHeight;
 }
 
 bool Block::updateItem()

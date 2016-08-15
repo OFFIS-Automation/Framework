@@ -42,8 +42,7 @@ void DefaultNumber::NumberTextItem::updatePosition()
 }
 
 DefaultNumber::DefaultNumber(const bool enable)
-	: Item(60, 20),
-	  m_text(*this)
+	: m_text(*this)
 {
 	m_textStyle.setBrush(Qt::lightGray);
 	m_fillStyle = Qt::white;
@@ -56,6 +55,8 @@ DefaultNumber::DefaultNumber(const bool enable)
 		m_text.setTextInteractionFlags(Qt::TextEditable);
 
 	m_text.updatePosition();
+
+	setAcceptDrops(false);
 }
 
 Item& DefaultNumber::clone() const

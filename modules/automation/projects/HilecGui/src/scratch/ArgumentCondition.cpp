@@ -4,11 +4,8 @@ namespace Scratch
 {
 
 ArgumentCondition::ArgumentCondition(const std::string& name)
-:	Item(120, 40),
-	ArgumentItem(name)
-{
-	updateItem();
-}
+:	ArgumentItem(name)
+{}
 
 Item& ArgumentCondition::clone() const
 {

@@ -97,7 +97,10 @@ HEADERS += \
     src/scratch/ArgumentItem.h \
     src/scratch/ArgumentBlock.h \
     src/scratch/ArgumentNumber.h \
-    src/scratch/ArgumentCondition.h
+    src/scratch/ArgumentCondition.h \
+    src/scratch/FunctionView.h \
+    src/scratch/NewVariableDialog.h \
+    src/scratch/VariableItems.h
 
 SOURCES += \
     src/HilecGui.cpp \
@@ -155,7 +158,10 @@ SOURCES += \
     src/scratch/ArgumentItem.cpp \
     src/scratch/ArgumentBlock.cpp \
     src/scratch/ArgumentNumber.cpp \
-    src/scratch/ArgumentCondition.cpp
+    src/scratch/ArgumentCondition.cpp \
+    src/scratch/FunctionView.cpp \
+    src/scratch/NewVariableDialog.cpp \
+    src/scratch/VariableItems.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -187,7 +193,9 @@ FORMS += \
     src/telecontrol/TelecontrolGamepadWidget.ui \
     src/telecontrol/TelecontrolSelectionComboBox.ui \
     src/telecontrol/ConnexionAssignmentWidget.ui \
-    src/scratch/ScratchWidget.ui
+    src/scratch/ScratchWidget.ui \
+    src/scratch/ScratchFunctionView.ui \
+    src/scratch/ScratchNewVariableDialog.ui
 
 
 RESOURCES += \

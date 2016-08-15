@@ -30,8 +30,7 @@ void DefaultCondition::ConditionTextItem::updatePosition()
 }
 
 DefaultCondition::DefaultCondition(const bool enable)
-	: Item(60, 20),
-	  m_text(*this)
+	: m_text(*this)
 {
 	m_textStyle.setBrush(Qt::lightGray);
 	m_fillStyle = Qt::white;
@@ -56,6 +55,8 @@ void DefaultCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);
+
+	setAcceptDrops(false);
 }
 
 Item& DefaultCondition::clone() const

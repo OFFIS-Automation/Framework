@@ -15,7 +15,7 @@ class ArgumentBlock : public Block, public ArgumentItem
 		Item& clone() const;
 
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget);
-		void print(std::ostream& stream, unsigned indentationDepth) const;
+		virtual void print(std::ostream& stream, unsigned indentationDepth) const;
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);

@@ -9,8 +9,6 @@ namespace Scratch
 class PiNumber : public Number
 {
 	public:
-		PiNumber();
-
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Item& clone() const;

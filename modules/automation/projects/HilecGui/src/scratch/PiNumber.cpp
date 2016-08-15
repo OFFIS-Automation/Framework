@@ -5,10 +5,6 @@
 namespace Scratch
 {
 
-PiNumber::PiNumber()
-	: Item(80, 30)
-{}
-
 void PiNumber::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	QPolygon outline;

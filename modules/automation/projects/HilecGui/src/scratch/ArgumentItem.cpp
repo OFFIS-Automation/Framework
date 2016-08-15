@@ -16,9 +16,8 @@ ArgumentItem::ArgumentItem(const std::string& name)
 :	m_name{name}
 {
 	m_width = QFontMetrics(m_font).width(QString::fromStdString(name)) + 2 * m_horizontalMargin;
-	m_defaultHeight = QFontMetrics(m_font).height();
 
-	setAcceptDrops(true);
+	updateItem();
 }
 
 void ArgumentItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -172,7 +171,7 @@ bool ArgumentItem::updateItem()
 
 	// Find highest argument
 
-	auto highestArgument = m_defaultHeight;
+	auto highestArgument = defaultHeight() - 2 * s_margin;
 
 	for (auto& argument : m_arguments)
 	{

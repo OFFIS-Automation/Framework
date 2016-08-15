@@ -10,8 +10,7 @@ namespace Scratch
 {
 
 WhileBlock::WhileBlock(bool enable)
-	: Item(s_defaultWidth, s_defaultHeight + 2 * s_defaultHeaderHeight),
-	  ControlFlowBlock("while", 1),
+	: ControlFlowBlock("while", 1),
 	  m_body{m_bodies.at(0)}
 {
 	addArgument("", Item::Type::Condition, enable);
@@ -24,7 +23,7 @@ void WhileBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style,
 	painter->setPen(m_textStyle);
 	painter->setFont(m_font);
 	painter->drawText(QRectF(m_horizontalMargin, s_margin,
-		s_shaftExtent - s_margin / 2, m_headerHeight - 2 * s_margin),
+		defaultHeight() - s_margin / 2, m_headerHeight - 2 * s_margin),
 		Qt::AlignLeft | Qt::AlignVCenter, "while");
 }
 

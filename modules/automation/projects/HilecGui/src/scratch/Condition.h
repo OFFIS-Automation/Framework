@@ -17,8 +17,6 @@ class Condition : public Parameter
 		void drawOutline(QPolygon &poylgon) const;
 
 	protected:
-		Condition();
-
 		virtual bool updateItem();
 };
 

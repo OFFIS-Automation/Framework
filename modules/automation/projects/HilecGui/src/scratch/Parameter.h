@@ -11,6 +11,9 @@ namespace Scratch
 class Parameter : virtual public Item
 {
 	public:
+		static const int s_defaultWidth = 80;
+
+	public:
 		QRectF boundingRect() const final;
 
 		void remove();

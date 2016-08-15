@@ -37,13 +37,14 @@ class Item : public QGraphicsItem
 		void setParent(Item* parent);
 		virtual void remove();
 
+		virtual int defaultHeight();
 		virtual bool updateItem();
 
 		int m_width;
 		int m_height;
 
 	protected:
-		Item(const int width, const int height);
+		Item();
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* event);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);

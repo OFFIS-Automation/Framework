@@ -15,33 +15,9 @@ class ScratchWidget;
 namespace Scratch
 {
 
-class StartBlock;
-
 class Widget : public QDockWidget
 {
     Q_OBJECT
-
-	private:
-		enum class DataTypes
-		{
-			Number,
-			Bool
-		};
-
-		struct Variable
-		{
-			DataTypes type;
-			std::string name;
-		};
-
-		struct Function
-		{
-			std::string name;
-			DataTypes returnValue;
-			std::vector<Variable> parameters;
-
-			std::vector<Variable> variables;
-		};
 
 	public:
 		Widget(QWidget* parent = nullptr);
@@ -57,13 +33,8 @@ class Widget : public QDockWidget
 	private:
 		std::unique_ptr<Ui::ScratchWidget> m_ui;
 
-		std::unique_ptr<QGraphicsScene> m_programScene;
-		std::unique_ptr<ControlScene> m_controlFlowScene;
-		std::unique_ptr<ControlScene> m_utilityScene;
-
-		StartBlock* m_startBlock{nullptr};
-
-		std::vector<Function> m_functions;
+		ControlScene m_controlFlowScene;
+		ControlScene m_utilityScene;
 };
 
 } // namespace Scratch

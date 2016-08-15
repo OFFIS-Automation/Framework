@@ -12,7 +12,6 @@ class Number : public Parameter
 		static void drawOutline(QPolygon& polygon, const QRect& area);
 
 	public:
-		Number() {};
 		Item::Type itemType() const final;
 
 		void drawOutline(QPolygon &polygon) const;

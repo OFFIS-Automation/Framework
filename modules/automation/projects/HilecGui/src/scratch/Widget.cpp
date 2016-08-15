@@ -3,13 +3,13 @@
 #include "ui_ScratchWidget.h"
 #include "../HilecSingleton.h"
 
-#include <iostream>
-#include <sstream>
+#include "core/RcUnitHelp.h"
 
-#include <core/RcUnitHelp.h>
 #include <QKeyEvent>
 
-#include "FrameBlocks.h"
+#include "FunctionView.h"
+#include "NewVariableDialog.h"
+
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
 #include "PassBlock.h"
@@ -19,51 +19,39 @@
 #include "TrueCondition.h"
 #include "PiNumber.h"
 
-#define ROOT_TYPE_OFFSET 1
-#define CHILD_TYPE_OFFSET 2
-
 namespace Scratch
 {
 
 Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
-	m_ui(std::make_unique<Ui::ScratchWidget>()),
-	m_programScene(std::make_unique<QGraphicsScene>(this)),
-	m_controlFlowScene(std::make_unique<ControlScene>(this)),
-	m_utilityScene(std::make_unique<ControlScene>(this))
+	m_ui(std::make_unique<Ui::ScratchWidget>())
 {
 	m_ui->setupUi(this);
-	m_ui->programView->setScene(m_programScene.get());
-	m_ui->controlFlowView->setScene(m_controlFlowScene.get());
-	m_ui->utilityView->setScene(m_utilityScene.get());
 
-	// Program scene
-	m_startBlock = new StartBlock();
-	m_programScene->addItem(m_startBlock);
+	m_ui->controlFlowView->setScene(&m_controlFlowScene);
+	m_ui->utilityView->setScene(&m_utilityScene);
 
-	auto endBlock = new EndBlock();
-	m_startBlock->addBelow(*endBlock);
-	m_programScene->addItem(m_startBlock);
+	auto functionView = new FunctionView(m_ui->main);
+	m_ui->gridLayout_5->addWidget(functionView);
 
-	// Control scene
 	auto whileBlock = new WhileBlock();
-	m_controlFlowScene->addItem(whileBlock);
+	m_controlFlowScene.addItem(whileBlock);
 
 	auto ifElseBlock = new IfElseBlock();
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
-	m_controlFlowScene->addItem(ifElseBlock);
+	m_controlFlowScene.addItem(ifElseBlock);
 
 	auto passBlock = new TrueCondition();
 	passBlock->setPos(ifElseBlock->pos().x() + ifElseBlock->m_width + 30, 0);
-	m_utilityScene->addItem(passBlock);
+	m_utilityScene.addItem(passBlock);
 
 	auto trueCondiftion = new PassBlock();
 	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
-	m_utilityScene->addItem(trueCondiftion);
+	m_utilityScene.addItem(trueCondiftion);
 
 	auto piNumber = new PiNumber();
 	piNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
-	m_utilityScene->addItem(piNumber);
+	m_utilityScene.addItem(piNumber);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
@@ -80,59 +68,14 @@ void Widget::keyPressEvent(QKeyEvent *event)
 
 void Widget::keyReleaseEvent(QKeyEvent *event)
 {
-	const auto filename = "generated.py";
-
-	auto& hilec = *HilecSingleton::hilec();
-
-	QFile outputFile(filename);
-	outputFile.remove(filename);
-	outputFile.open(QFile::ReadWrite);
-	QTextStream outputStream(&outputFile);
-
-	if(event->key() != Qt::Key_G)
+	if(event->key() == Qt::Key_G)
 	{
-		event->ignore();
+		event->accept();
 
-		return;
+		// TODO
 	}
 
-	event->accept();
-
-	std::stringstream generatedFile;
-
-	auto printMethodForAllRCUnits = [&](auto & methodName)
-	{
-		for (const auto& name : hilec.rcUnits())
-		{
-			auto help = hilec.getUnitHelp(name);
-
-			generatedFile << help.unitName.toStdString() + "." + methodName + "()" << std::endl;
-		}
-	};
-
-	generatedFile << "from offis import *" << std::endl;
-	generatedFile << std::endl;
-
-	for (const auto& name : hilec.rcUnits())
-	{
-		auto help = hilec.getUnitHelp(name);
-
-		generatedFile << help.unitName.toStdString() + " = rc.getUnit(\"" + help.unitName.toStdString() + "\")" << std::endl;
-	}
-
-	generatedFile << std::endl;
-
-	printMethodForAllRCUnits("acquire");
-	generatedFile << std::endl;
-	m_startBlock->print(generatedFile);
-	generatedFile << std::endl;
-	printMethodForAllRCUnits("release");
-
-	outputStream << generatedFile.str().c_str();
-	outputStream.flush();
-
-	hilec.runFile(filename);
-	outputFile.remove();
+	event->ignore();
 }
 
 void Widget::updateRcUnits(bool)
@@ -171,16 +114,25 @@ void Widget::updateRcUnits(bool)
 						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Condition);
 					else if (parameter.typeName == "double")
 						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Number);
+					else
+						return false;
 
 				argumentItem->setPos(position);
 
 				scene->addItem(argumentItem);
+
+				return true;
 			};
 
 			auto argumentBlock =
 				new ArgumentBlock((help.unitName + "." + method.name).toStdString());
 
-			initilizeArgumentItem(argumentBlock, QPoint(0, y));
+			if (!initilizeArgumentItem(argumentBlock, QPoint(0, y)))
+			{
+				delete argumentBlock;
+
+				continue;
+			}
 
 			if (!method.hasReturn)
 			{

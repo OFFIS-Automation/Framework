@@ -5,15 +5,15 @@
 namespace Scratch
 {
 
-SetVariableBlock::SetVariableBlock(const std::string& name, Item::Type type)
+SetVariableBlock::SetVariableBlock(const std::string& name, Item::Type type, bool enable)
 :	ArgumentBlock("set")
 {
-	addArgument(name, type);
+	addArgument(name, type, enable);
 }
 
 Item& SetVariableBlock::clone() const
 {
-	return *(new SetVariableBlock(m_arguments.at(0).name, m_arguments.at(0).type));
+	return *(new SetVariableBlock(m_arguments.at(0).name, m_arguments.at(0).type, true));
 }
 
 void SetVariableBlock::print(std::ostream& stream, unsigned indentationDepth) const

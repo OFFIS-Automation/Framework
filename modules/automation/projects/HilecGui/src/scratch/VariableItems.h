@@ -11,7 +11,7 @@ namespace Scratch
 class SetVariableBlock : public ArgumentBlock
 {
 	public:
-		SetVariableBlock(const std::string& name, Item::Type type);
+		SetVariableBlock(const std::string& name, Item::Type type, bool enable = false);
 
 		Item& clone() const;
 

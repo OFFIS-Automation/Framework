@@ -7,6 +7,7 @@
 #include <functional>
 #include <memory>
 #include <iostream>
+#include <unordered_map>
 
 #include <QGraphicsItem>
 #include <QPen>
@@ -28,6 +29,8 @@ class Item : public QGraphicsItem
 			Condition,
 			Number
 		};
+
+		static const std::unordered_map<std::string, Item::Type> nameToItemType;
 
 	public:
 		virtual Type itemType() const = 0;

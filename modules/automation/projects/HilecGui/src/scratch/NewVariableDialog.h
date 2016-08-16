@@ -3,7 +3,6 @@
 
 #include <tuple>
 #include <string>
-#include <unordered_map>
 
 #include <QDialog>
 
@@ -19,9 +18,6 @@ namespace Scratch
 class NewVariableDialog : public QDialog
 {
 		Q_OBJECT
-
-	private:
-		static const std::unordered_map<std::string, Item::Type> nameToItemType;
 
 	public:
 		explicit NewVariableDialog(QWidget *parent = 0);

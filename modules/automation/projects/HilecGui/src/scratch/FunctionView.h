@@ -4,8 +4,12 @@
 #include <memory>
 
 #include <QWidget>
+#include <QTableWidget>
+#include <QPushButton>
+#include <QGridLayout>
 
 #include "ControlScene.h"
+#include "Item.h"
 
 namespace Ui {
 class ScratchFunctionView;
@@ -14,19 +18,35 @@ class ScratchFunctionView;
 namespace Scratch
 {
 
+class FunctionTabWidget: public QTabWidget
+{
+	Q_OBJECT
+
+	public:
+		FunctionTabWidget(QWidget* parent);
+
+		int addTab(QWidget* widget, const QString &label);
+		int addTab(QWidget* widget, const QIcon& icon, const QString &label);
+
+	private:
+		void addFunction(int index);
+};
+
 class StartBlock;
 
 class FunctionView : public QWidget
 {
-		Q_OBJECT
+	Q_OBJECT
+
+	friend FunctionTabWidget;
 
 	public:
 		explicit FunctionView(QWidget *parent = 0);
 
 		void generateFile();
 
-	private slots:
-		void newVariable();
+	private:
+		void addVariable(std::string name, Item::Type type);
 
 	private:
 		std::unique_ptr<Ui::ScratchFunctionView> m_ui;

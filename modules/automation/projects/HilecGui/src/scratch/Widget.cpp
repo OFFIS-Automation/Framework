@@ -30,9 +30,7 @@ Widget::Widget(QWidget *parent)
 
 	m_ui->controlFlowView->setScene(&m_controlFlowScene);
 	m_ui->utilityView->setScene(&m_utilityScene);
-
-	auto functionView = new FunctionView(m_ui->main);
-	m_ui->gridLayout_5->addWidget(functionView);
+	m_ui->controlWidget->setTabEnabled(2, false);
 
 	auto whileBlock = new WhileBlock();
 	m_controlFlowScene.addItem(whileBlock);

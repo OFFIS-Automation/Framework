@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <type_traits>
 
 #include <QFile>
 
@@ -10,12 +11,76 @@
 #include "ui_ScratchFunctionView.h"
 
 #include "NewVariableDialog.h"
+#include "NewFunctionDialog.h"
 
 #include "FrameBlocks.h"
 #include "VariableItems.h"
 
 namespace Scratch
 {
+
+FunctionTabWidget::FunctionTabWidget(QWidget *parent)
+:	QTabWidget(parent)
+{
+	setTabsClosable(true);
+
+	addTab(new QWidget(), "+");
+	addTab(new FunctionView(), "main");
+	setCurrentIndex(0);
+
+	tabBar()->tabButton(0, QTabBar::ButtonPosition::RightSide)->resize(0, 0);
+	tabBar()->tabButton(1, QTabBar::ButtonPosition::RightSide)->resize(0, 0);
+
+	connect(this, &FunctionTabWidget::tabBarClicked, this, &FunctionTabWidget::addFunction);
+}
+
+int FunctionTabWidget::addTab(QWidget* widget, const QString &label)
+{
+	return insertTab(count() - 1, widget, label);
+}
+
+int FunctionTabWidget::addTab(QWidget *widget, const QIcon& icon, const QString &label)
+{
+	return insertTab(count() - 1, widget, icon, label);
+}
+
+void FunctionTabWidget::addFunction(int index)
+{
+	if (index != count() - 1)
+		return;
+
+	NewFunctionDialog newFunctionDialog(this);
+
+	if (!newFunctionDialog.exec())
+	{
+		auto currentChangedhandler = [&, oldIndex = currentIndex()](int index)
+		{
+			disconnect(this, &FunctionTabWidget::currentChanged, this, nullptr);
+
+			setCurrentIndex(oldIndex);
+		};
+
+		connect(this, &FunctionTabWidget::currentChanged, this, currentChangedhandler);
+
+		return;
+	}
+
+	std::string name;
+	Item::Type returnType;
+	std::vector<std::pair<std::string, Item::Type>> parameters;
+
+	auto function = newFunctionDialog.get();
+
+	std::tie(name, returnType, parameters) = function;
+
+	auto functionView = new FunctionView(this);
+
+	addTab(functionView, name.c_str());
+	setCurrentIndex(index);
+
+	for (auto const& parameter : parameters)
+		functionView->addVariable(parameter.first, parameter.second);
+}
 
 FunctionView::FunctionView(QWidget *parent) :
 	QWidget(parent),
@@ -36,19 +101,25 @@ FunctionView::FunctionView(QWidget *parent) :
 	m_startBlock->addBelow(*endBlock);
 	m_programScene.addItem(m_startBlock);
 
-	connect(m_ui->pushButton, SIGNAL(clicked()), SLOT(newVariable()));
-}
+	connect(m_ui->pushButton, &QPushButton::clicked, this,
+		[&]()
+		{
+			NewVariableDialog newVariableDialog(this);
 
-void FunctionView::newVariable()
+			if (!newVariableDialog.exec())
+				return;
+
+			std::string name;
+			Item::Type type;
+
+			std::tie(name, type) = newVariableDialog.get();
+
+			addVariable(std::move(name), std::move(type));
+		});
+	}
+
+void FunctionView::addVariable(std::string name, Item::Type type)
 {
-	NewVariableDialog newVariableDialog(this);
-	newVariableDialog.exec();
-
-	std::string name;
-	Item::Type type;
-
-	std::tie(name, type) = newVariableDialog.get();
-
 	auto setBlock = new SetVariableBlock(name, type);
 	setBlock->setPos(0, variableY);
 

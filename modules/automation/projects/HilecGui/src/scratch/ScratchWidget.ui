@@ -14,7 +14,7 @@
    <string>Scratch</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
@@ -22,16 +22,10 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <widget class="QTabWidget" name="functions">
+        <widget class="Scratch::FunctionTabWidget" name="functions">
          <property name="currentIndex">
-          <number>0</number>
+          <number>-1</number>
          </property>
-         <widget class="QWidget" name="main">
-          <attribute name="title">
-           <string>Main</string>
-          </attribute>
-          <layout class="QGridLayout" name="gridLayout_5"/>
-         </widget>
         </widget>
        </item>
       </layout>
@@ -52,7 +46,7 @@
        <item row="0" column="0">
         <widget class="QTabWidget" name="controlWidget">
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -81,6 +75,11 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Functions</string>
+          </attribute>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -89,6 +88,14 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Scratch::FunctionTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>src/scratch/FunctionView.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

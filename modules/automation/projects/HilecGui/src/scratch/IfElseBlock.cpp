@@ -35,7 +35,7 @@ void IfElseBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* style
 
 Block& IfElseBlock::clone() const
 {
-	return *(new IfElseBlock());
+	return *(new IfElseBlock(true));
 }
 
 void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const

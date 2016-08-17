@@ -18,8 +18,6 @@
 #include "ArgumentBlock.h"
 #include "ArgumentCondition.h"
 #include "ArgumentNumber.h"
-#include "TrueCondition.h"
-#include "PiNumber.h"
 
 namespace Scratch
 {
@@ -43,17 +41,9 @@ Widget::Widget(QWidget *parent)
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
 	m_controlFlowScene.addItem(ifElseBlock);
 
-	auto passBlock = new TrueCondition();
+	auto passBlock = new PassBlock();
 	passBlock->setPos(ifElseBlock->pos().x() + ifElseBlock->m_width + 30, 0);
 	m_utilityScene.addItem(passBlock);
-
-	auto trueCondiftion = new PassBlock();
-	trueCondiftion->setPos(passBlock->pos().x() + passBlock->m_width + 30, 0);
-	m_utilityScene.addItem(trueCondiftion);
-
-	auto piNumber = new PiNumber();
-	piNumber->setPos(trueCondiftion->pos().x() + trueCondiftion->m_width + 30, 0);
-	m_utilityScene.addItem(piNumber);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));

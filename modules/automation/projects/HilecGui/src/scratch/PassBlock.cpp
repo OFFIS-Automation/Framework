@@ -28,8 +28,7 @@ void PassBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 
 	stream << "pass" << std::endl;
 
-	if (m_successor)
-		m_successor->print(stream, indentationDepth);
+	Block::print(stream, indentationDepth);
 }
 
 } // namespace Scratch

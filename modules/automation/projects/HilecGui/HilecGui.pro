@@ -86,14 +86,12 @@ HEADERS += \
     src/scratch/ControlScene.h \
     src/scratch/FrameBlocks.h \
     src/scratch/Item.h \
-    src/scratch/TrueCondition.h \
     src/scratch/PassBlock.h \
     src/scratch/Parameter.h \
     src/scratch/Condition.h \
     src/scratch/Number.h \
     src/scratch/DefaultNumber.h \
     src/scratch/DefaultCondition.h \
-    src/scratch/PiNumber.h \
     src/scratch/ArgumentItem.h \
     src/scratch/ArgumentBlock.h \
     src/scratch/ArgumentNumber.h \
@@ -147,7 +145,6 @@ SOURCES += \
     src/scratch/ControlScene.cpp \
     src/scratch/FrameBlocks.cpp \
     src/scratch/Item.cpp \
-    src/scratch/TrueCondition.cpp \
     src/scratch/PassBlock.cpp \
     src/scratch/Parameter.cpp \
     src/scratch/Condition.cpp \
@@ -155,7 +152,6 @@ SOURCES += \
     src/scratch/Number.cpp \
     src/scratch/DefaultNumber.cpp \
     src/scratch/DefaultCondition.cpp \
-    src/scratch/PiNumber.cpp \
     src/scratch/ArgumentItem.cpp \
     src/scratch/ArgumentBlock.cpp \
     src/scratch/ArgumentNumber.cpp \

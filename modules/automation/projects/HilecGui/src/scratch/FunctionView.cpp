@@ -1,5 +1,4 @@
 #include <iostream>
-#include <sstream>
 #include <type_traits>
 
 #include <QFile>
@@ -176,52 +175,9 @@ Parameter& FunctionView::addVariable(std::string name, Item::Type type)
 	return *variableBlock;
 }
 
-void FunctionView::generateFile()
+void FunctionView::print(std::ostream& stream)
 {
-	const auto filename = "generated.py";
-
-	auto& hilec = *HilecSingleton::hilec();
-
-	QFile outputFile(filename);
-	outputFile.remove(filename);
-	outputFile.open(QFile::ReadWrite);
-	QTextStream outputStream(&outputFile);
-
-	std::stringstream generatedFile;
-
-	auto printMethodForAllRCUnits = [&](auto & methodName)
-	{
-		for (const auto& name : hilec.rcUnits())
-		{
-			auto help = hilec.getUnitHelp(name);
-
-			generatedFile << help.unitName.toStdString() + "." + methodName + "()" << std::endl;
-		}
-	};
-
-	generatedFile << "from offis import *" << std::endl;
-	generatedFile << std::endl;
-
-	for (const auto& name : hilec.rcUnits())
-	{
-		auto help = hilec.getUnitHelp(name);
-
-		generatedFile << help.unitName.toStdString() + " = rc.getUnit(\"" + help.unitName.toStdString() + "\")" << std::endl;
-	}
-
-	generatedFile << std::endl;
-
-	printMethodForAllRCUnits("acquire");
-	generatedFile << std::endl;
-	m_startBlock->print(generatedFile);
-	generatedFile << std::endl;
-	printMethodForAllRCUnits("release");
-
-	outputStream << generatedFile.str().c_str();
-	outputStream.flush();
-
-	hilec.runFile(filename);
-	outputFile.remove();
+	m_startBlock->print(stream, 0);
 }
 
 }

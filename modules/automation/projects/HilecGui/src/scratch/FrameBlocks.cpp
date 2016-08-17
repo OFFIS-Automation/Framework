@@ -39,7 +39,7 @@ void FrameBlock::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 // Start block
 
 StartBlock::StartBlock(const std::string& name)
-:	FrameBlock("define " + name)
+:	FrameBlock(name)
 {}
 
 void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
@@ -123,7 +123,7 @@ void StartBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
 	stream << "def ";
 	ArgumentItem::print(stream);
-	stream << ":";
+	stream << ":" << std::endl;
 
 	if (m_successor)
 		m_successor->print(stream, indentationDepth + 1);
@@ -228,20 +228,28 @@ Block& EndBlock::clone() const
 
 void EndBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
-	if (m_arguments.empty())
-		return;
-
-	const auto& argument = m_arguments.at(0);
-
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << "return ";
+	stream << "return";
+
+	if (m_arguments.empty())
+	{
+		stream << std::endl;
+
+		return;
+	}
+
+	stream << " ";
+
+	const auto& argument = m_arguments.at(0);
 
 	if (argument.parameter)
 		stream << *argument.parameter;
 	else
 		stream << argument.defaultParameter;
+
+	stream << std::endl;
 }
 
 } // namespace Scratch

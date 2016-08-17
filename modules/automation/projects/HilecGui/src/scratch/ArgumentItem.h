@@ -21,6 +21,11 @@ class ArgumentItem : virtual public Item
 
 			Parameter& defaultParameter;
 			Parameter* parameter;
+
+			Parameter& getParameter() const
+			{
+				return parameter? *parameter : defaultParameter;
+			}
 		};
 
 	public:

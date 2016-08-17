@@ -51,6 +51,7 @@ public:
     virtual QWidget* createRcUnitSettingsWidget(const QString& unitName) = 0;
     virtual QWidget* createRcUnitControlWidget(const QString& unitName) = 0;
 
+	virtual const QString& getBaseDir() = 0;
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0) = 0;
     virtual QList<TraceLine> getStackTrace() = 0;
     virtual QList<QPair<QString, int> > breakpoints() const = 0;

@@ -54,7 +54,7 @@ class FunctionView : public QWidget
 	public:
 		explicit FunctionView(QWidget *parent = 0, const std::string& name = "main");
 
-		void generateFile();
+		void print(std::ostream& stream);
 
 	private:
 		Parameter& addVariable(std::string name, Item::Type type);

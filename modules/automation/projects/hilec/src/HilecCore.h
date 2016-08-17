@@ -48,6 +48,7 @@ public:
     virtual QWidget* createRcUnitSettingsWidget(const QString& unitName);
     virtual QWidget* createRcUnitControlWidget(const QString& unitName);
 
+	const QString& getBaseDir();
     virtual QAbstractItemModel* getDebugVars(int frameDepth = 0);
     virtual QList<TraceLine> getStackTrace();
     void printText(const QString& text) {  emit newTextStr(text); }

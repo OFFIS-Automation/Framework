@@ -191,6 +191,11 @@ void HilecCore::stepReturn()
     mPython.stepReturn();
 }
 
+const QString& HilecCore::getBaseDir()
+{
+	return mBaseDir;
+}
+
 QAbstractItemModel* HilecCore::getDebugVars(int frameDepth)
 {
     return mPython.debugVars(frameDepth);

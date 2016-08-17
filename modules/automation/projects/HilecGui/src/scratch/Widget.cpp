@@ -1,5 +1,7 @@
 #include "Widget.h"
 
+#include <sstream>
+
 #include "ui_ScratchWidget.h"
 #include "../HilecSingleton.h"
 
@@ -81,9 +83,58 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 	{
 		event->accept();
 
-		// TODO
+		auto& hilec = *HilecSingleton::hilec();
 
-		//"if __name__ == \"__main__\": main()"
+		const auto& basedir = hilec.getBaseDir();
+		const auto filename = "scratch.py";
+
+
+		QFile outputFile(basedir + "/" + filename);
+		outputFile.remove();
+
+		outputFile.open(QFile::ReadWrite);
+		QTextStream outputStream(&outputFile);
+
+		std::stringstream generatedFile;
+
+		auto printMethodForAllRCUnits = [&](auto & methodName)
+		{
+			for (const auto& name : hilec.rcUnits())
+			{
+				auto help = hilec.getUnitHelp(name);
+
+				generatedFile << help.unitName.toStdString() + "." + methodName + "()" << std::endl;
+			}
+		};
+
+		generatedFile << "from offis import *" << std::endl;
+		generatedFile << std::endl;
+
+		for (const auto& name : hilec.rcUnits())
+		{
+			auto help = hilec.getUnitHelp(name);
+
+			generatedFile << help.unitName.toStdString() + " = rc.getUnit(\""
+				+ help.unitName.toStdString() + "\")" << std::endl;
+		}
+
+		generatedFile << std::endl;
+
+		printMethodForAllRCUnits("acquire");
+		generatedFile << std::endl;
+
+		for (size_t i = 0; i < m_ui->functions->count() - 1; ++i)
+		{
+			static_cast<FunctionView*>(m_ui->functions->widget(i))->print(generatedFile);
+			generatedFile << std::endl;
+		}
+
+		generatedFile << "if __name__ == \"__main__\": main()" << std::endl;
+
+		outputStream << generatedFile.str().c_str();
+		outputStream.flush();
+
+		hilec.runFile(filename);
 	}
 
 	event->ignore();

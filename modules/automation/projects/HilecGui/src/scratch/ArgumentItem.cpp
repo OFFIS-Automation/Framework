@@ -45,10 +45,7 @@ void ArgumentItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWi
 		paintName(QString::fromStdString(argument.name + ":"));
 		x += s_margin / 2;
 
-		if (argument.parameter)
-			x += argument.parameter->m_width;
-		else
-			x += argument.defaultParameter.m_width;
+		x += argument.getParameter().m_width;
 
 		x += s_margin;
 	}
@@ -60,10 +57,7 @@ void ArgumentItem::print(std::ostream& stream) const
 
 	for (auto argument = m_arguments.cbegin(); argument != m_arguments.cend(); ++argument)
 	{
-		if (argument->parameter)
-			stream << *argument->parameter;
-		else
-			stream << argument->defaultParameter;
+		stream << argument->getParameter();
 
 		if (argument + 1 != m_arguments.cend())
 			stream << ", ";
@@ -178,7 +172,7 @@ bool ArgumentItem::updateItem()
 
 	for (auto& argument : m_arguments)
 	{
-		const auto& paramter = argument.parameter? *argument.parameter : argument.defaultParameter;
+		const auto& paramter = argument.getParameter();
 
 		if (highestArgument < paramter.m_height)
 			highestArgument = paramter.m_height;
@@ -192,7 +186,7 @@ bool ArgumentItem::updateItem()
 	{
 		argument.defaultParameter.setVisible(!argument.parameter);
 
-		auto& paramter = argument.parameter? *argument.parameter : argument.defaultParameter;
+		auto& paramter = argument.getParameter();
 
 		const auto appendageWidth = s_margin + (argument.name != ""?
 			fontMetric.width(QString::fromStdString(argument.name + ":")) + s_margin / 2 : 0);

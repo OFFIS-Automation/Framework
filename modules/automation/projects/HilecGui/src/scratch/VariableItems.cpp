@@ -21,7 +21,7 @@ void SetVariableBlock::print(std::ostream& stream, unsigned indentationDepth) co
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
 
-	stream << m_arguments.at(0).name << " = " << m_arguments.at(0).parameter << std::endl;
+	stream << m_arguments.at(0).name << " = " << m_arguments.at(0).getParameter() << std::endl;
 
 	Block::print(stream, indentationDepth);
 }

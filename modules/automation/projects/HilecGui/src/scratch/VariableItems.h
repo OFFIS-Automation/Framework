@@ -23,10 +23,14 @@ class VariableParameter : public ParameterType
 {
 	public:
 		VariableParameter(const std::string& name);
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 
 		Item& clone() const;
+
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 		void print(std::ostream& stream) const;
+
+	protected:
+		bool updateItem();
 
 	private:
 		std::string m_name;
@@ -35,7 +39,9 @@ class VariableParameter : public ParameterType
 template <typename ParameterType>
 VariableParameter<ParameterType>::VariableParameter(const std::string& name)
 :	m_name(name)
-{}
+{
+	updateItem();
+}
 
 template <typename ParameterType>
 void VariableParameter<ParameterType>::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -56,13 +62,26 @@ void VariableParameter<ParameterType>::paint(QPainter* painter, const QStyleOpti
 template <typename ParameterType>
 Item& VariableParameter<ParameterType>::clone() const
 {
-	return *(new VariableParameter(m_name));
+	return *(new VariableParameter<ParameterType>(m_name));
 }
 
 template <typename ParameterType>
 void VariableParameter<ParameterType>::print(std::ostream& stream) const
 {
 	stream << m_name;
+}
+
+template <typename ParameterType>
+bool VariableParameter<ParameterType>::updateItem()
+{
+	auto oldWidth = m_width;
+
+	auto updated = Item::updateItem(); // -> height
+	updated |= ParameterType::updateItem(); // -> margin
+
+	m_width = QFontMetrics(m_font).width(m_name.c_str()) + 2 * m_horizontalMargin;
+
+	return updated || oldWidth != m_width;
 }
 
 }

@@ -72,7 +72,8 @@ void ArgumentItem::print(std::ostream& stream) const
 	stream << ")";
 }
 
-void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, const bool enable)
+ArgumentItem::Argument& ArgumentItem::addArgument(const std::string& name, const Item::Type& type,
+	const bool enable)
 {
 	auto& defaultParameter = *(type == Item::Type::Number?
 		reinterpret_cast<Parameter*>(new DefaultNumber(enable))
@@ -83,6 +84,8 @@ void ArgumentItem::addArgument(const std::string& name, const Item::Type& type, 
 	m_arguments.push_back({name, type, defaultParameter, nullptr});
 
 	updateItem();
+
+	return m_arguments.back();
 }
 
 void ArgumentItem::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -147,7 +150,7 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 		}
 	};
 
-	for (auto &argument : m_arguments)
+	for (auto& argument : m_arguments)
 	{
 		const auto parameterPosition = argument.defaultParameter.mapFromParent(
 			position.toPoint());

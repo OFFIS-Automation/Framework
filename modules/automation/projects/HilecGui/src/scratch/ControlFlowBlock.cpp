@@ -208,12 +208,6 @@ bool ControlFlowBlock::updateItem()
 	return true;
 }
 
-void ControlFlowBlock::addArgument(const std::string& name, const Item::Type& type,
-	const bool enable)
-{
-	ArgumentItem::addArgument(name, type, enable);
-}
-
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)
 {
 	const auto dy = block.m_height - !bodyBlock * defaultHeight();

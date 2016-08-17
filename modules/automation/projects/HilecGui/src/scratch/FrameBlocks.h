@@ -7,21 +7,33 @@
 namespace Scratch
 {
 
-class FrameBlock : public Block
+class FrameBlock : public Block, public ArgumentItem
 {
+	public:
+		FrameBlock(const std::string& name);
+
+		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) = 0;
+
+		bool updateItem();
+
 	protected:
 		int s_midsegmentOffset = 30;
 		int s_taperHeight = 20;
 
 	protected:
-		void mousePressEvent(QGraphicsSceneMouseEvent*) {};
-		void mouseMoveEvent(QGraphicsSceneMouseEvent*) {};
+		void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+
+		void dragMoveEvent(QGraphicsSceneDragDropEvent* event) = 0;
+		void dropEvent(QGraphicsSceneDragDropEvent* event) = 0;
 };
 
 class StartBlock : public FrameBlock
 {
 	public:
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		StartBlock(const std::string& name);
+
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*item, QWidget*widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth = 0) const;
@@ -34,10 +46,12 @@ class StartBlock : public FrameBlock
 class EndBlock : public FrameBlock
 {
 	public:
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		EndBlock();
+
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem*item, QWidget*widget);
 
 		Block& clone() const;
-		void print(std::ostream&, unsigned = 0) const;
+		void print(std::ostream&stream, unsigned indentationDepth = 0) const;
 
 	protected:
 		void dragMoveEvent(QGraphicsSceneDragDropEvent* event);

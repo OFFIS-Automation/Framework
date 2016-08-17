@@ -66,24 +66,37 @@ void FunctionTabWidget::addFunction(int index)
 	}
 
 	std::string name;
-	Item::Type returnType;
-	std::vector<std::pair<std::string, Item::Type>> parameters;
+	Item::Type type;
+	FunctionView::Parameters parameters;
 
 	auto function = newFunctionDialog.get();
 
-	std::tie(name, returnType, parameters) = function;
+	std::tie(name, type, parameters) = function;
 
-	auto functionView = new FunctionView(this);
+	auto functionView = new FunctionView(this, name);
 
 	addTab(functionView, name.c_str());
 	setCurrentIndex(index);
 
+	auto& endBlock = *dynamic_cast<EndBlock*>(functionView->m_startBlock->m_successor);
+
+	if (type != Item::Type::Block)
+		endBlock.addArgument("return", type, true);
+
 	for (auto const& parameter : parameters)
-		functionView->addVariable(parameter.first, parameter.second);
+	{
+		auto& parameterItem = functionView->addVariable(parameter.first, parameter.second);
+		auto& argument = functionView->m_startBlock->addArgument(parameter.first, parameter.second);
+
+		auto& newParameterItem = *dynamic_cast<Parameter*>(&parameterItem.clone());
+		newParameterItem.setEnabled(false);
+
+		functionView->m_startBlock->addParameter(newParameterItem, argument);
+	}
 }
 
-FunctionView::FunctionView(QWidget *parent) :
-	QWidget(parent),
+FunctionView::FunctionView(QWidget *parent, const std::string& name)
+:	QWidget(parent),
 	m_ui(std::make_unique<Ui::ScratchFunctionView>()),
 	m_programScene(this),
 	m_VariablesScene(this)
@@ -94,7 +107,7 @@ FunctionView::FunctionView(QWidget *parent) :
 	m_ui->variablesView->setScene(&m_VariablesScene);
 
 	// Program scene
-	m_startBlock = new StartBlock();
+	m_startBlock = new StartBlock(name);
 	m_programScene.addItem(m_startBlock);
 
 	auto endBlock = new EndBlock();
@@ -116,9 +129,9 @@ FunctionView::FunctionView(QWidget *parent) :
 
 			addVariable(std::move(name), std::move(type));
 		});
-	}
+}
 
-void FunctionView::addVariable(std::string name, Item::Type type)
+Parameter& FunctionView::addVariable(std::string name, Item::Type type)
 {
 	auto setBlock = new SetVariableBlock(name, type);
 	setBlock->setPos(0, variableY);
@@ -138,6 +151,8 @@ void FunctionView::addVariable(std::string name, Item::Type type)
 		setBlock->pos().y() + setBlock->m_height / 2 - variableBlock->m_height / 2);
 
 	variableY += setBlock->m_height + 30;
+
+	return *variableBlock;
 }
 
 void FunctionView::generateFile()

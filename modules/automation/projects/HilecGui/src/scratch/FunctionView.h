@@ -10,6 +10,7 @@
 
 #include "ControlScene.h"
 #include "Item.h"
+#include "Parameter.h"
 
 namespace Ui {
 class ScratchFunctionView;
@@ -41,12 +42,16 @@ class FunctionView : public QWidget
 	friend FunctionTabWidget;
 
 	public:
-		explicit FunctionView(QWidget *parent = 0);
+		using Parameters = std::vector<std::pair<std::string, Item::Type>>;
+		using Function = std::tuple<std::string, Item::Type, Parameters>;
+
+	public:
+		explicit FunctionView(QWidget *parent = 0, const std::string& name = "main");
 
 		void generateFile();
 
 	private:
-		void addVariable(std::string name, Item::Type type);
+		Parameter& addVariable(std::string name, Item::Type type);
 
 	private:
 		std::unique_ptr<Ui::ScratchFunctionView> m_ui;

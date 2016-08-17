@@ -7,9 +7,42 @@
 namespace Scratch
 {
 
+// Frame block
+
+FrameBlock::FrameBlock(const std::string& name)
+:	ArgumentItem(name)
+{
+	updateItem();
+}
+
+bool FrameBlock::updateItem()
+{
+	auto updated = ArgumentItem::updateItem();
+	m_horizontalMargin = s_midsegmentOffset;
+	updated |= ArgumentItem::updateItem();
+
+	updated |= Block::updateItem();
+
+	return updated;
+}
+
+void FrameBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	event->accept();
+}
+
+void FrameBlock::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+	event->accept();
+};
+
 // Start block
 
-void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
+StartBlock::StartBlock(const std::string& name)
+:	FrameBlock("define " + name)
+{}
+
+void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
 	QPolygon polygon;
 
@@ -31,9 +64,7 @@ void StartBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidg
 	painter->setPen(m_outlineStyle);
 	painter->drawPolygon(polygon);
 
-	painter->setPen(m_textStyle);
-	painter->setFont(m_font);
-	painter->drawText(boundingRect(), Qt::AlignCenter, "Start");
+	ArgumentItem::paint(painter, item, widget);
 }
 
 void StartBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -85,18 +116,26 @@ void StartBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 
 Block& StartBlock::clone() const
 {
-	return *(new StartBlock());
+	return *(new StartBlock(m_name));
 }
 
 void StartBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
+	stream << "def ";
+	ArgumentItem::print(stream);
+	stream << ":";
+
 	if (m_successor)
-		m_successor->print(stream, indentationDepth);
+		m_successor->print(stream, indentationDepth + 1);
 }
 
 // End block
 
-void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
+EndBlock::EndBlock()
+:	FrameBlock("end")
+{}
+
+void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
 	QPolygon polygon;
 
@@ -119,9 +158,7 @@ void EndBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawPolygon(polygon);
 
-	painter->setPen(m_textStyle);
-	painter->setFont(m_font);
-	painter->drawText(boundingRect(), Qt::AlignCenter, "Stop");
+	ArgumentItem::paint(painter, item, widget);
 }
 
 void EndBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
@@ -176,7 +213,22 @@ Block& EndBlock::clone() const
 	return *(new EndBlock());
 }
 
-void EndBlock::print(std::ostream&, unsigned) const
-{}
+void EndBlock::print(std::ostream& stream, unsigned indentationDepth) const
+{
+	if (m_arguments.empty())
+		return;
+
+	const auto& argument = m_arguments.at(0);
+
+	for (unsigned i = 0; i < indentationDepth; ++i)
+		stream << "\t";
+
+	stream << "return ";
+
+	if (argument.parameter)
+		stream << *argument.parameter;
+	else
+		stream << argument.defaultParameter;
+}
 
 } // namespace Scratch

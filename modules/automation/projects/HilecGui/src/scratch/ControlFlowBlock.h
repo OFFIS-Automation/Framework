@@ -26,9 +26,6 @@ class ControlFlowBlock : public Block, public ArgumentItem
 
 		bool updateItem();
 
-		void addArgument(const std::string& name, const Item::Type& type,
-			const bool enable = false);
-
 	protected:
 		ControlFlowBlock(const std::string& name, const size_t& numberOfBodies);
 

@@ -35,6 +35,7 @@ class Widget : public QDockWidget
 
 		ControlScene m_controlFlowScene;
 		ControlScene m_utilityScene;
+		ControlScene m_functionBlockScene;
 };
 
 } // namespace Scratch

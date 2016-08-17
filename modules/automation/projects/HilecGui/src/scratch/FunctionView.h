@@ -11,6 +11,7 @@
 #include "ControlScene.h"
 #include "Item.h"
 #include "Parameter.h"
+#include "ArgumentItem.h"
 
 namespace Ui {
 class ScratchFunctionView;
@@ -28,6 +29,11 @@ class FunctionTabWidget: public QTabWidget
 
 		int addTab(QWidget* widget, const QString &label);
 		int addTab(QWidget* widget, const QIcon& icon, const QString &label);
+
+		void setFunctionBlocks(ControlScene* functionBlocks);
+
+	signals:
+		void newFunctionBlock(ArgumentItem* item);
 
 	private:
 		void addFunction(int index);

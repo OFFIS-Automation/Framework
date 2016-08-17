@@ -44,10 +44,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QTabWidget" name="controlWidget">
-         <property name="currentIndex">
-          <number>2</number>
-         </property>
+        <widget class="QTabWidget" name="blocks">
          <widget class="QWidget" name="tab">
           <attribute name="title">
            <string>Control flow</string>
@@ -75,10 +72,15 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_3">
+         <widget class="QWidget" name="">
           <attribute name="title">
            <string>Functions</string>
           </attribute>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QGraphicsView" name="functionBlockView"/>
+           </item>
+          </layout>
          </widget>
         </widget>
        </item>

@@ -30,7 +30,9 @@ Widget::Widget(QWidget *parent)
 
 	m_ui->controlFlowView->setScene(&m_controlFlowScene);
 	m_ui->utilityView->setScene(&m_utilityScene);
-	m_ui->controlWidget->setTabEnabled(2, false);
+	m_ui->functionBlockView->setScene(&m_functionBlockScene);
+
+	m_ui->blocks->setTabEnabled(2, false);
 
 	auto whileBlock = new WhileBlock();
 	m_controlFlowScene.addItem(whileBlock);
@@ -54,6 +56,15 @@ Widget::Widget(QWidget *parent)
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
 	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
+
+	connect(m_ui->functions, &FunctionTabWidget::newFunctionBlock, this,
+		[&](auto* item)
+		{
+			item->setPos(0, m_functionBlockScene.height() + 30);
+			m_functionBlockScene.addItem(item);
+
+			m_ui->blocks->setTabEnabled(2, true);
+		});
 }
 
 void Widget::keyPressEvent(QKeyEvent *event)
@@ -82,8 +93,8 @@ void Widget::updateRcUnits(bool)
 {
 	const auto& hilec = *HilecSingleton::hilec();
 
-	for (size_t i = 2; i < m_ui->controlWidget->count(); ++i)
-		m_ui->controlWidget->removeTab(i);
+	for (size_t i = 3; i < m_ui->blocks->count(); ++i)
+		m_ui->blocks->removeTab(i);
 
 	for (const auto& name : hilec.rcUnits())
 	{
@@ -100,7 +111,7 @@ void Widget::updateRcUnits(bool)
 		view->setScene(scene);
 
 		gridLayout->addWidget(view, 0, 0, 1, 1);
-		m_ui->controlWidget->addTab(tab, help.unitName);
+		m_ui->blocks->addTab(tab, help.unitName);
 
 		int y = 0;
 

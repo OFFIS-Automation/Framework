@@ -16,6 +16,10 @@
 #include "FrameBlocks.h"
 #include "VariableItems.h"
 
+#include "ArgumentBlock.h"
+#include "ArgumentNumber.h"
+#include "ArgumentCondition.h"
+
 namespace Scratch
 {
 
@@ -83,16 +87,33 @@ void FunctionTabWidget::addFunction(int index)
 	if (type != Item::Type::Block)
 		endBlock.addArgument("return", type, true);
 
+	ArgumentItem* functionItem;
+
+	if (type == Item::Type::Block)
+		functionItem = new ArgumentBlock(name);
+	else if (type == Item::Type::Number)
+		functionItem = new ArgumentNumber(name);
+	else if (type == Item::Type::Condition)
+		functionItem = new ArgumentCondition(name);
+
 	for (auto const& parameter : parameters)
 	{
+		// Variable block
 		auto& parameterItem = functionView->addVariable(parameter.first, parameter.second);
+
+		// Frame block
 		auto& argument = functionView->m_startBlock->addArgument(parameter.first, parameter.second);
 
 		auto& newParameterItem = *dynamic_cast<Parameter*>(&parameterItem.clone());
 		newParameterItem.setEnabled(false);
 
 		functionView->m_startBlock->addParameter(newParameterItem, argument);
+
+		// Function block
+		functionItem->addArgument(parameter.first, parameter.second);
 	}
+
+	newFunctionBlock(functionItem);
 }
 
 FunctionView::FunctionView(QWidget *parent, const std::string& name)

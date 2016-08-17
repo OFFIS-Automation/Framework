@@ -171,7 +171,11 @@ void EndBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	Item& item = Item::unpackItem(*event);
 
 	if (item.itemType() != Item::Type::Block)
+	{
+		ArgumentItem::dragMoveEvent(event);
+
 		return;
+	}
 
 	Block& block = *dynamic_cast<Block*>(&item);
 
@@ -188,7 +192,16 @@ void EndBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	const auto& position = event->pos();
 
-	auto* block = dynamic_cast<Block*>(&Item::unpackItem(*event));
+	Item& item = Item::unpackItem(*event);
+
+	if (item.itemType() != Item::Type::Block)
+	{
+		ArgumentItem::dropEvent(event);
+
+		return;
+	}
+
+	auto* block = dynamic_cast<Block*>(&item);
 
 	event->accept();
 

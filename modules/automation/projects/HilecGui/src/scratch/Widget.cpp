@@ -15,9 +15,12 @@
 #include "WhileBlock.h"
 #include "IfElseBlock.h"
 #include "PassBlock.h"
+
 #include "ArgumentBlock.h"
 #include "ArgumentCondition.h"
 #include "ArgumentNumber.h"
+
+#include "VariableItems.h"
 
 namespace Scratch
 {
@@ -27,6 +30,8 @@ Widget::Widget(QWidget *parent)
 	m_ui(std::make_unique<Ui::ScratchWidget>())
 {
 	m_ui->setupUi(this);
+
+	m_defaultTabCount = m_ui->blocks->count();
 
 	m_ui->controlFlowView->setScene(&m_controlFlowScene);
 	m_ui->utilityView->setScene(&m_utilityScene);
@@ -46,8 +51,11 @@ Widget::Widget(QWidget *parent)
 	m_utilityScene.addItem(passBlock);
 
 	// Signal / slot connections
-	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
-	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)), SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
+	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateTabs(bool)));
+	connect(&OlvisSingleton::instance(), SIGNAL(filterCreated(const FilterInfo&, int)),
+		SLOT(filterCreated(const FilterInfo&, int)));
+	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
+		SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
 
 	connect(m_ui->functions, &FunctionTabWidget::newFunctionBlock, this,
 		[&](auto* item)
@@ -87,16 +95,6 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 		std::stringstream generatedFile;
 
-		auto printMethodForAllRCUnits = [&](auto & methodName)
-		{
-			for (const auto& name : hilec.rcUnits())
-			{
-				auto help = hilec.getUnitHelp(name);
-
-				generatedFile << help.unitName.toStdString() + "." + methodName + "()" << std::endl;
-			}
-		};
-
 		generatedFile << "from offis import *" << std::endl;
 		generatedFile << std::endl;
 
@@ -110,10 +108,20 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 		generatedFile << std::endl;
 
-		printMethodForAllRCUnits("acquire");
+		for (const auto& name : hilec.rcUnits())
+		{
+			const auto& help = hilec.getUnitHelp(name);
+
+			if (help.type != UserRcUnitType::HwRcUnitType
+				&& help.type != UserRcUnitType::RobotRcUnitType)
+				continue;
+
+			generatedFile << help.unitName.toStdString() + ".acquire()" << std::endl;
+		}
+
 		generatedFile << std::endl;
 
-		for (size_t i = 0; i < m_ui->functions->count() - 1; ++i)
+		for (int i = 0; i < m_ui->functions->count() - 1; ++i)
 		{
 			static_cast<FunctionView*>(m_ui->functions->widget(i))->print(generatedFile);
 			generatedFile << std::endl;
@@ -130,19 +138,17 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 	event->ignore();
 }
 
-void Widget::updateRcUnits(bool)
+void Widget::updateTabs(bool partialReload)
 {
 	const auto& hilec = *HilecSingleton::hilec();
 
-	for (size_t i = 3; i < m_ui->blocks->count(); ++i)
+	for (int i = m_ui->blocks->count() - 1; i >= m_defaultTabCount; --i)
 		m_ui->blocks->removeTab(i);
 
 	for (const auto& name : hilec.rcUnits())
 	{
 		auto help = hilec.getUnitHelp(name);
-
-		if (help.methods.empty())
-			continue;
+		auto& methods = help.methods;
 
 		auto tab = new QWidget();
 		auto gridLayout = new QGridLayout(tab);
@@ -152,11 +158,67 @@ void Widget::updateRcUnits(bool)
 		view->setScene(scene);
 
 		gridLayout->addWidget(view, 0, 0, 1, 1);
-		m_ui->blocks->addTab(tab, help.unitName);
+		m_ui->blocks->addTab(tab, name);
 
 		int y = 0;
 
-		for (const auto& method : help.methods)
+		if (help.type == VisionRcUnitType)
+		{
+			for (const auto& filter : m_filter)
+				for (const PortInfo& output : filter.typeInfo.outputs)
+				{
+					if (output.typeName == "Boolean")
+					{
+						auto argumentItem = new VariableParameter<Condition>(
+							(help.unitName + ".get" + output.name).toStdString());
+
+						argumentItem->setPos(QPoint(0, y));
+						scene->addItem(argumentItem);
+
+						y += argumentItem->m_height + 30;
+					}
+					else if(output.typeName == "Real")
+					{
+						auto argumentItem = new VariableParameter<Number>(
+							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
+								+ output.name + "\")").toStdString());
+
+						argumentItem->setPos(QPoint(0, y));
+						scene->addItem(argumentItem);
+
+						y += argumentItem->m_height + 30;
+					}
+					else if(output.typeName == "Point")
+					{
+						auto argumentItemX = new VariableParameter<Number>(
+							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
+								+ output.name + "\").x").toStdString());
+
+						argumentItemX->setPos(QPoint(0, y));
+						scene->addItem(argumentItemX);
+
+						y += argumentItemX->m_height + 30;
+
+						auto argumentItemY = new VariableParameter<Number>(
+							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
+								+ output.name + "\").y").toStdString());
+
+						argumentItemY->setPos(QPoint(0, y));
+						scene->addItem(argumentItemY);
+
+						y += argumentItemY->m_height + 30;
+					}
+					else
+						continue;
+				}
+
+			continue;
+		}
+
+		if (methods.empty())
+			continue;
+
+		for (const auto& method : methods)
 		{
 			if (method.hiddenForScratch)
 				continue;
@@ -205,6 +267,13 @@ void Widget::updateRcUnits(bool)
 			y += argumentBlock->m_height + 30;
 		}
 	}
+}
+
+void Widget::filterCreated(const FilterInfo& info, int insertBefore)
+{
+	m_filter.push_back(info);
+
+	updateTabs();
 }
 
 void Widget::onDockLocationChanged(const Qt::DockWidgetArea&)

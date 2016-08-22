@@ -10,18 +10,18 @@ Item::Type Number::itemType() const
 	return Type::Number;
 }
 
-void Number::drawOutline(QPolygon &polygon, const QRect& area)
+void Number::drawOutline(QPainterPath& path) const
 {
-	polygon
-		<< area.topLeft() + QPoint(0, 0)
-		<< area.topLeft() + QPoint(area.width(), 0)
-		<< area.topLeft() + QPoint(area.width(), area.height())
-		<< area.topLeft() + QPoint(0, area.height());
-}
+	QPolygon polygon;
 
-void Number::drawOutline(QPolygon& polygon) const
-{
-	drawOutline(polygon, QRect(0, 0, m_width, m_height));
+	polygon
+		<< QPoint(0, 0)
+		<< QPoint(m_width, 0)
+		<< QPoint(m_width, m_height)
+		<< QPoint(0, m_height)
+		<< QPoint(0, 0);
+
+	path.addPolygon(polygon);
 }
 
 } // namespace Scratch

@@ -24,13 +24,13 @@ void Parameter::remove()
 
 void Parameter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-	QPolygon outline;
+	QPainterPath outline;
 
 	drawOutline(outline);
 
 	painter->setBrush(m_fillStyle);
 	painter->setPen(m_outlineStyle);
-	painter->drawPolygon(outline);
+	painter->drawPath(outline);
 }
 
 void Parameter::dragMoveEvent(QGraphicsSceneDragDropEvent* event)

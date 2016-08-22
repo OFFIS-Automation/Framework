@@ -2,8 +2,11 @@
 #define SCRATCHWIDGET_H
 
 #include <memory>
+#include <vector>
 
 #include <QDockWidget>
+
+#include "../OlvisSingleton.h"
 
 #include "ControlScene.h"
 
@@ -27,7 +30,9 @@ class Widget : public QDockWidget
 		void keyReleaseEvent(QKeyEvent *event);
 
 	private slots:
-		void updateRcUnits(bool);
+		void updateTabs(bool partialReload = false);
+		void filterCreated(const FilterInfo& info, int insertBefore);
+
 		void onDockLocationChanged(const Qt::DockWidgetArea&);
 
 	private:
@@ -36,6 +41,9 @@ class Widget : public QDockWidget
 		ControlScene m_controlFlowScene;
 		ControlScene m_utilityScene;
 		ControlScene m_functionBlockScene;
+		size_t m_defaultTabCount;
+
+		std::vector<FilterInfo> m_filter;
 };
 
 } // namespace Scratch

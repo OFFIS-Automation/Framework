@@ -27,6 +27,7 @@ class OlvisRcUnit : public UserRcUnit
 public:
     explicit OlvisRcUnit();
     virtual ~OlvisRcUnit();
+	virtual UserRcUnitType rcType() { return VisionRcUnitType; }
     virtual RcFlagDefinitions rcFlagDefinitions() const { return RcFlagDefinitions(); }
     virtual QVariantList rcFlags() { return QVariantList();}
 

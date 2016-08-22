@@ -23,11 +23,13 @@
 #include <QProgressDialog>
 #include <QShortcut>
 
+#include "OlvisSingleton.h"
+
 HilecGui::HilecGui(QObject *parent) :
     QObject(parent)
 {
-    hilec = 0;
-    mMainWindow = 0;
+	hilec = 0;
+	mMainWindow = 0;
 }
 
 QString HilecGui::getName() const
@@ -37,10 +39,16 @@ QString HilecGui::getName() const
 
 void HilecGui::setModelInterface(const QString& name, QObject* object)
 {
-    if(hilec || name != "Hilec")
-        return;
-    hilec = static_cast<HilecInterface*>(object);
-    HilecSingleton::setHilec(hilec);
+	if(!hilec && name == "Hilec")
+	{
+		hilec = static_cast<HilecInterface*>(object);
+		HilecSingleton::setHilec(hilec);
+	}
+	else if(name == "OlvisCore")
+	{
+		auto& olvis = *static_cast<OlvisInterface*>(object);
+		OlvisSingleton::setInstance(olvis);
+	}
 }
 
 bool HilecGui::requirementsMet()

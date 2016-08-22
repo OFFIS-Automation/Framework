@@ -9,12 +9,9 @@ namespace Scratch
 class Condition : public Parameter
 {
 	public:
-		static void drawOutline(QPolygon& poylgon, const QRect& area);
-
-	public:
 		Item::Type itemType() const final;
 
-		void drawOutline(QPolygon &poylgon) const;
+		void drawOutline(QPainterPath& path) const;
 
 	protected:
 		virtual bool updateItem();

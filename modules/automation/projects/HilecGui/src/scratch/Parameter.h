@@ -3,6 +3,8 @@
 
 #include <ostream>
 
+#include <QPainterPath>
+
 #include "Item.h"
 
 namespace Scratch
@@ -19,7 +21,7 @@ class Parameter : virtual public Item
 		void remove();
 
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
-		virtual void drawOutline(QPolygon &polygon) const = 0;
+		virtual void drawOutline(QPainterPath& polygon) const = 0;
 		virtual void print(std::ostream& stream) const = 0;
 
 		Parameter** m_parentReference{nullptr};

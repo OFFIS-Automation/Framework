@@ -8,21 +8,22 @@ Item::Type Condition::itemType() const
 	return Type::Condition;
 }
 
-void Condition::drawOutline(QPolygon &poylgon, const QRect& area)
+void Condition::drawOutline(QPainterPath& path) const
 {
-	const auto tipHeight = area.height() / 2;
+	const auto tipHeight = m_height / 2;
 
-	poylgon	<< (area.topLeft() + QPoint(0, tipHeight))
-		<< (area.topLeft() + QPoint(tipHeight, 0))
-		<< (area.topLeft() + QPoint(area.width() - tipHeight, 0))
-		<< (area.topLeft() + QPoint(area.width(), tipHeight))
-		<< (area.topLeft() + QPoint(area.width() - tipHeight, area.height()))
-		<< (area.topLeft() + QPoint(tipHeight, area.height()));
-}
+	QPolygon polygon;
 
-void Condition::drawOutline(QPolygon &poylgon) const
-{
-	drawOutline(poylgon, QRect(0, 0, m_width, m_height));
+	polygon
+		<< QPoint(0, tipHeight)
+		<< QPoint(tipHeight, 0)
+		<< QPoint(m_width - tipHeight, 0)
+		<< QPoint(m_width, tipHeight)
+		<< QPoint(m_width - tipHeight, m_height)
+		<< QPoint(tipHeight, m_height)
+		<< QPoint(0, tipHeight);
+
+	path.addPolygon(polygon);
 }
 
 bool Condition::updateItem()

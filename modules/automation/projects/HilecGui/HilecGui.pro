@@ -24,6 +24,9 @@ TARGET = HilecGui
 
 INCLUDEPATH += ../../../frontend/include
 INCLUDEPATH += ../../../frontend/projects/LogWidget
+
+INCLUDEPATH += ../../../olvis3/include
+
 INCLUDEPATH += ../../include
 INCLUDEPATH += $${PWD}
 LIBS += -L$${targetDir} -lLogWidget
@@ -99,67 +102,69 @@ HEADERS += \
     src/scratch/FunctionView.h \
     src/scratch/NewVariableDialog.h \
     src/scratch/VariableItems.h \
-    src/scratch/NewFunctionDialog.h
+	src/scratch/NewFunctionDialog.h \
+	src/OlvisSingleton.h
 
 SOURCES += \
-    src/HilecGui.cpp \
-    src/HilecSingleton.cpp \
-    src/debugVars/DebugVariables.cpp \
-    src/exception/ScriptExceptionDialog.cpp \
-    src/rcUnits/RcUnitWidget.cpp \
-    src/rcUnits/RcHelpCreator.cpp \
-    src/rcUnits/HilecHelpWidget.cpp \
-    src/runConfigurations/ConfigurationWidget.cpp \
-    src/scriptInteraction/ScriptUi.cpp \
-    src/scriptInteraction/ScriptProgress.cpp \
-    src/scriptInteraction/ScriptOutput.cpp \
-    src/scriptInteraction/ScriptInput.cpp \
-    src/createRcUnit/CreateRcUnitDialog.cpp \
-    src/telecontrol/TelecontrolWidget.cpp \
-    src/runConfigurations/ConfigurationListWidget.cpp \
-    src/telecontrol/TelecontrolGamepadWidget.cpp \
-    src/scriptInteraction/ScriptInfoPanel.cpp \
-    src/HilecGuiToolbar.cpp \
-    src/rcUnits/RcUnitContainerWidget.cpp \
-    src/debugVars/CallStackWidget.cpp \
-    src/ScriptErrors/ScriptErrorWidget.cpp \
-    src/scriptInteraction/ScriptStringInput.cpp \
-    src/telecontrol/TelecontrolHapticWidget.cpp \
-    src/createRcUnit/AddRcUnitWizard.cpp \
-    src/createRcUnit/SelectRcUnitWizardPage.cpp \
-    src/createRcUnit/DefineRcUnitWizardPage.cpp \
-    src/telecontrol/TelecontrolAssignmentWidget.cpp \
-    src/telecontrol/ShowAssignmentButton.cpp \
-    src/telecontrol/GamepadAssignmentWidget.cpp \
-    src/telecontrol/EditGamepadAssignment.cpp \
-    src/telecontrol/EditGamepadArea.cpp \
-    src/rcUnits/AddRemoteRcServerDialog.cpp \
-    src/rcUnits/RcUnitFlagWidget.cpp \
-    src/telecontrol/TelecontrolSelectionComboBox.cpp \
-    src/telecontrol/ConnexionAssignmentWidget.cpp \
-    src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
-    src/scratch/Widget.cpp \
-    src/scratch/WhileBlock.cpp \
-    src/scratch/IfElseBlock.cpp \
-    src/scratch/Block.cpp \
-    src/scratch/ControlScene.cpp \
-    src/scratch/FrameBlocks.cpp \
-    src/scratch/Item.cpp \
-    src/scratch/PassBlock.cpp \
-    src/scratch/Parameter.cpp \
-    src/scratch/Condition.cpp \
-    src/scratch/ControlFlowBlock.cpp \
-    src/scratch/Number.cpp \
-    src/scratch/DefaultNumber.cpp \
-    src/scratch/DefaultCondition.cpp \
-    src/scratch/ArgumentItem.cpp \
-    src/scratch/ArgumentBlock.cpp \
-    src/scratch/ArgumentNumber.cpp \
-    src/scratch/ArgumentCondition.cpp \
-    src/scratch/FunctionView.cpp \
-    src/scratch/NewVariableDialog.cpp \
-    src/scratch/VariableItems.cpp \
-    src/scratch/NewFunctionDialog.cpp
+	src/HilecGui.cpp \
+	src/HilecSingleton.cpp \
+	src/debugVars/DebugVariables.cpp \
+	src/exception/ScriptExceptionDialog.cpp \
+	src/rcUnits/RcUnitWidget.cpp \
+	src/rcUnits/RcHelpCreator.cpp \
+	src/rcUnits/HilecHelpWidget.cpp \
+	src/runConfigurations/ConfigurationWidget.cpp \
+	src/scriptInteraction/ScriptUi.cpp \
+	src/scriptInteraction/ScriptProgress.cpp \
+	src/scriptInteraction/ScriptOutput.cpp \
+	src/scriptInteraction/ScriptInput.cpp \
+	src/createRcUnit/CreateRcUnitDialog.cpp \
+	src/telecontrol/TelecontrolWidget.cpp \
+	src/runConfigurations/ConfigurationListWidget.cpp \
+	src/telecontrol/TelecontrolGamepadWidget.cpp \
+	src/scriptInteraction/ScriptInfoPanel.cpp \
+	src/HilecGuiToolbar.cpp \
+	src/rcUnits/RcUnitContainerWidget.cpp \
+	src/debugVars/CallStackWidget.cpp \
+	src/ScriptErrors/ScriptErrorWidget.cpp \
+	src/scriptInteraction/ScriptStringInput.cpp \
+	src/telecontrol/TelecontrolHapticWidget.cpp \
+	src/createRcUnit/AddRcUnitWizard.cpp \
+	src/createRcUnit/SelectRcUnitWizardPage.cpp \
+	src/createRcUnit/DefineRcUnitWizardPage.cpp \
+	src/telecontrol/TelecontrolAssignmentWidget.cpp \
+	src/telecontrol/ShowAssignmentButton.cpp \
+	src/telecontrol/GamepadAssignmentWidget.cpp \
+	src/telecontrol/EditGamepadAssignment.cpp \
+	src/telecontrol/EditGamepadArea.cpp \
+	src/rcUnits/AddRemoteRcServerDialog.cpp \
+	src/rcUnits/RcUnitFlagWidget.cpp \
+	src/telecontrol/TelecontrolSelectionComboBox.cpp \
+	src/telecontrol/ConnexionAssignmentWidget.cpp \
+	src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
+	src/scratch/Widget.cpp \
+	src/scratch/WhileBlock.cpp \
+	src/scratch/IfElseBlock.cpp \
+	src/scratch/Block.cpp \
+	src/scratch/ControlScene.cpp \
+	src/scratch/FrameBlocks.cpp \
+	src/scratch/Item.cpp \
+	src/scratch/PassBlock.cpp \
+	src/scratch/Parameter.cpp \
+	src/scratch/Condition.cpp \
+	src/scratch/ControlFlowBlock.cpp \
+	src/scratch/Number.cpp \
+	src/scratch/DefaultNumber.cpp \
+	src/scratch/DefaultCondition.cpp \
+	src/scratch/ArgumentItem.cpp \
+	src/scratch/ArgumentBlock.cpp \
+	src/scratch/ArgumentNumber.cpp \
+	src/scratch/ArgumentCondition.cpp \
+	src/scratch/FunctionView.cpp \
+	src/scratch/NewVariableDialog.cpp \
+	src/scratch/VariableItems.cpp \
+	src/scratch/NewFunctionDialog.cpp \
+	src/OlvisSingleton.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

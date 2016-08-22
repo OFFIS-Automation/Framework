@@ -14,7 +14,7 @@ class Number : public Parameter
 	public:
 		Item::Type itemType() const final;
 
-		void drawOutline(QPolygon &polygon) const;
+		void drawOutline(QPainterPath& path) const;
 };
 
 } // namespace Scratch

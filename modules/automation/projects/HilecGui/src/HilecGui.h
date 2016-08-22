@@ -63,11 +63,11 @@ protected slots:
     void checkFile(const QString& filename);
 protected:
     QStringList allPythonFiles(QDir dir, int depth = 1);
-    MainWindowInterface* mMainWindow;
+	MainWindowInterface* mMainWindow;
     QList<QDockWidget*> mRcUnitGuis;
     // add window objects here
     HilecGuiToolbar* toolbar;
-    HilecInterface* hilec;
+	HilecInterface* hilec;
     ScriptUi* scriptUi;
     QDockWidget* scriptOutput;
     ScriptExceptionDialog* scriptException;

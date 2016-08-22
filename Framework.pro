@@ -24,7 +24,7 @@ SUBDIRS += subtree/qt-remote-signals/qtRemoteSignals \
     modules/frontend/projects/Notifications \
     modules/frontend/projects/Frontend \
     modules/automation \
-    modules/olvis3 \
+	modules/olvis3 \
     modules/TutorialPlugins
 
 # Print enviroment variables

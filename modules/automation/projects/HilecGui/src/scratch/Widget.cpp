@@ -17,8 +17,7 @@
 #include "PassBlock.h"
 
 #include "ArgumentBlock.h"
-#include "ArgumentCondition.h"
-#include "ArgumentNumber.h"
+#include "ArgumentItem.h"
 
 #include "VariableItems.h"
 
@@ -243,7 +242,7 @@ void Widget::updateTabs(bool partialReload)
 			};
 
 			auto argumentBlock =
-				new ArgumentBlock((help.unitName + "." + method.name).toStdString());
+				new Argument<Block>((help.unitName + "." + method.name).toStdString());
 
 			if (!initilizeArgumentItem(argumentBlock, QPoint(0, y)))
 			{
@@ -257,9 +256,9 @@ void Widget::updateTabs(bool partialReload)
 				ArgumentItem* argumentItem;
 
 				if (method.returnParameter.typeName == "bool")
-					argumentItem = new ArgumentCondition((help.unitName + "." + method.name).toStdString());
+					argumentItem = new Argument<Condition>((help.unitName + "." + method.name).toStdString());
 				else if (method.returnParameter.typeName == "double")
-					argumentItem = new ArgumentNumber((help.unitName + "." + method.name).toStdString());
+					argumentItem = new Argument<Number>((help.unitName + "." + method.name).toStdString());
 
 				initilizeArgumentItem(argumentItem, QPoint(argumentBlock->m_width + 30, y));
 			}

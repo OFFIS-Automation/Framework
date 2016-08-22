@@ -3,15 +3,15 @@
 namespace Scratch
 {
 
-ArgumentBlock::ArgumentBlock(const std::string& name)
+Argument<Block>::Argument(const std::string& name)
 :	ArgumentItem(name)
 {
 	updateItem();
 }
 
-Item& ArgumentBlock::clone() const
+Item& Argument<Block>::clone() const
 {
-	auto& argumentBlock =  *(new ArgumentBlock(m_name));
+	auto& argumentBlock =  *(new Argument<Block>(m_name));
 
 	for (const auto& argument : m_arguments)
 		argumentBlock.addArgument(argument.name, argument.type, true);
@@ -19,13 +19,13 @@ Item& ArgumentBlock::clone() const
 	return argumentBlock;
 }
 
-void ArgumentBlock::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
+void Argument<Block>::paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget)
 {
 	Block::paint(painter, item, widget);
 	ArgumentItem::paint(painter, item, widget);
 }
 
-void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
+void Argument<Block>::print(std::ostream& stream, unsigned indentationDepth) const
 {
 	for (unsigned i = 0; i < indentationDepth; ++i)
 		stream << "\t";
@@ -37,7 +37,7 @@ void ArgumentBlock::print(std::ostream& stream, unsigned indentationDepth) const
 	Block::print(stream, indentationDepth);
 }
 
-void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
+void Argument<Block>::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 {
 	if (Item::unpackItem(*event).itemType() == Item::Type::Block)
 	{
@@ -49,7 +49,7 @@ void ArgumentBlock::dragMoveEvent(QGraphicsSceneDragDropEvent* event)
 	ArgumentItem::dragMoveEvent(event);
 }
 
-void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
+void Argument<Block>::dropEvent(QGraphicsSceneDragDropEvent* event)
 {
 	if (Item::unpackItem(*event).itemType() == Item::Type::Block)
 		Block::dropEvent(event);
@@ -57,7 +57,7 @@ void ArgumentBlock::dropEvent(QGraphicsSceneDragDropEvent* event)
 		ArgumentItem::dropEvent(event);
 }
 
-bool ArgumentBlock::updateItem()
+bool Argument<Block>::updateItem()
 {
 	auto updated = ArgumentItem::updateItem();
 	updated |= Block::updateItem();

@@ -15,7 +15,7 @@ namespace Scratch
 
 const std::unordered_map<std::string, Item::Type> Item::nameToItemType =
 	{{"Block", Item::Type::Block}, {"Number", Item::Type::Number},
-	{"Condition", Item::Type::Condition}};
+	{"Condition", Item::Type::Condition}, {"Point", Item::Type::Point}};
 
 Item& Item::unpackItem(const QGraphicsSceneDragDropEvent& event)
 {

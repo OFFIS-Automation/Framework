@@ -27,7 +27,8 @@ class Item : public QGraphicsItem
 		{
 			Block,
 			Condition,
-			Number
+			Number,
+			Point
 		};
 
 		static const std::unordered_map<std::string, Item::Type> nameToItemType;

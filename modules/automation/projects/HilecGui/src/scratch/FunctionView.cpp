@@ -16,8 +16,7 @@
 #include "VariableItems.h"
 
 #include "ArgumentBlock.h"
-#include "ArgumentNumber.h"
-#include "ArgumentCondition.h"
+#include "ArgumentItem.h"
 
 namespace Scratch
 {
@@ -89,11 +88,11 @@ void FunctionTabWidget::addFunction(int index)
 	ArgumentItem* functionItem;
 
 	if (type == Item::Type::Block)
-		functionItem = new ArgumentBlock(name);
+		functionItem = new Argument<Block>(name);
 	else if (type == Item::Type::Number)
-		functionItem = new ArgumentNumber(name);
+		functionItem = new Argument<Number>(name);
 	else if (type == Item::Type::Condition)
-		functionItem = new ArgumentCondition(name);
+		functionItem = new Argument<Condition>(name);
 
 	for (auto const& parameter : parameters)
 	{

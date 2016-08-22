@@ -8,7 +8,7 @@
 namespace Scratch
 {
 
-class SetVariableBlock : public ArgumentBlock
+class SetVariableBlock : public Argument<Block>
 {
 	public:
 		SetVariableBlock(const std::string& name, Item::Type type, bool enable = false);

@@ -6,7 +6,7 @@ namespace Scratch
 {
 
 SetVariableBlock::SetVariableBlock(const std::string& name, Item::Type type, bool enable)
-:	ArgumentBlock("set")
+:	Argument<Block>("set")
 {
 	addArgument(name, type, enable);
 }

@@ -93,12 +93,11 @@ HEADERS += \
     src/scratch/Parameter.h \
     src/scratch/Condition.h \
     src/scratch/Number.h \
+	src/scratch/Point.h \
     src/scratch/DefaultNumber.h \
     src/scratch/DefaultCondition.h \
     src/scratch/ArgumentItem.h \
     src/scratch/ArgumentBlock.h \
-    src/scratch/ArgumentNumber.h \
-    src/scratch/ArgumentCondition.h \
     src/scratch/FunctionView.h \
     src/scratch/NewVariableDialog.h \
     src/scratch/VariableItems.h \
@@ -154,12 +153,11 @@ SOURCES += \
 	src/scratch/Condition.cpp \
 	src/scratch/ControlFlowBlock.cpp \
 	src/scratch/Number.cpp \
+	src/scratch/Point.cpp \
 	src/scratch/DefaultNumber.cpp \
 	src/scratch/DefaultCondition.cpp \
 	src/scratch/ArgumentItem.cpp \
 	src/scratch/ArgumentBlock.cpp \
-	src/scratch/ArgumentNumber.cpp \
-	src/scratch/ArgumentCondition.cpp \
 	src/scratch/FunctionView.cpp \
 	src/scratch/NewVariableDialog.cpp \
 	src/scratch/VariableItems.cpp \

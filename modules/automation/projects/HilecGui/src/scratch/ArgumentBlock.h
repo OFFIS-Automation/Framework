@@ -7,10 +7,11 @@
 namespace Scratch
 {
 
-class ArgumentBlock : public Block, public ArgumentItem
+template <>
+class Argument<Block> : public Block, public ArgumentItem
 {
 	public:
-		ArgumentBlock(const std::string& name);
+		Argument(const std::string& name);
 
 		Item& clone() const;
 

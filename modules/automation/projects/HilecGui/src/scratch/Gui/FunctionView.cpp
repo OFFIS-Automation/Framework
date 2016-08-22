@@ -3,20 +3,21 @@
 
 #include <QFile>
 
-#include "../HilecSingleton.h"
+#include "../../HilecSingleton.h"
 #include "core/RcUnitHelp.h"
 
 #include "FunctionView.h"
 #include "ui_ScratchFunctionView.h"
 
-#include "NewVariableDialog.h"
-#include "NewFunctionDialog.h"
+#include "Dialogs/NewVariableDialog.h"
+#include "Dialogs/NewFunctionDialog.h"
 
-#include "FrameBlocks.h"
-#include "VariableItems.h"
+#include "../Items/FrameBlocks.h"
+#include "../Items/VariableItems.h"
 
-#include "ArgumentBlock.h"
-#include "ArgumentItem.h"
+#include "../Items/Argument/ArgumentItem.h"
+
+#include "../Items/Parameter/Point.h"
 
 namespace Scratch
 {
@@ -93,6 +94,8 @@ void FunctionTabWidget::addFunction(int index)
 		functionItem = new Argument<Number>(name);
 	else if (type == Item::Type::Condition)
 		functionItem = new Argument<Condition>(name);
+	else if (type == Item::Type::Point)
+		functionItem = new Argument<Point>(name);
 
 	for (auto const& parameter : parameters)
 	{
@@ -161,8 +164,10 @@ Parameter& FunctionView::addVariable(std::string name, Item::Type type)
 
 	if (type == Item::Type::Number)
 		variableBlock = new VariableParameter<Number>(name);
-	else
+	else if (type == Item::Type::Condition)
 		variableBlock = new VariableParameter<Condition>(name);
+	else if (type == Item::Type::Point)
+		variableBlock = new VariableParameter<Point>(name);
 
 	m_VariablesScene.addItem(variableBlock);
 	variableBlock->setPos(

@@ -8,7 +8,7 @@
 namespace Scratch
 {
 
-DefaultNumber::NumberTextItem::NumberTextItem(DefaultNumber& parent)
+DefaultNumber::NumberTextItem::NumberTextItem(Parameter& parent)
 	: QGraphicsTextItem("0"),
 	  m_parent(parent)
 {
@@ -32,13 +32,7 @@ void DefaultNumber::NumberTextItem::keyPressEvent(QKeyEvent* event)
 		setTextCursor(cursor);
 	}
 
-	updatePosition();
-}
-
-void DefaultNumber::NumberTextItem::updatePosition()
-{
-	setPos(m_parent.m_width / 2 - boundingRect().width() / 2,
-		m_parent.m_height / 2 - boundingRect().height() / 2);
+	m_parent.updateItem();
 }
 
 DefaultNumber::DefaultNumber(const bool enable)
@@ -54,7 +48,7 @@ DefaultNumber::DefaultNumber(const bool enable)
 	if (enable)
 		m_text.setTextInteractionFlags(Qt::TextEditable);
 
-	m_text.updatePosition();
+	updateItem();
 
 	setAcceptDrops(false);
 }
@@ -71,6 +65,24 @@ Item& DefaultNumber::clone() const
 void DefaultNumber::print(std::ostream& stream) const
 {
 	stream << m_text.toPlainText().toStdString();
+}
+
+bool DefaultNumber::updateItem()
+{
+	prepareGeometryChange();
+
+	auto oldWidth = m_width;
+
+	m_width = m_text.boundingRect().width() + 2 * m_horizontalMargin;
+
+	m_text.setPos(m_horizontalMargin, m_height / 2 - m_text.boundingRect().height() / 2);
+
+	auto updated = oldWidth != m_width;
+
+	if (m_parent && updated)
+		m_parent->updateItem();
+
+	return updated;
 }
 
 void DefaultNumber::mousePressEvent(QGraphicsSceneMouseEvent* event)

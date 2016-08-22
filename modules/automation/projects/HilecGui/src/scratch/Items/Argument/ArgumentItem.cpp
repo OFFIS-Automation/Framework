@@ -6,8 +6,9 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsScene>
 
-#include "DefaultCondition.h"
-#include "DefaultNumber.h"
+#include "../Parameter/Default/DefaultCondition.h"
+#include "../Parameter/Default/DefaultNumber.h"
+#include "../Parameter/Default/DefaultPoint.h"
 
 namespace Scratch
 {
@@ -69,13 +70,18 @@ void ArgumentItem::print(std::ostream& stream) const
 ArgumentItem::Argument& ArgumentItem::addArgument(const std::string& name, const Item::Type& type,
 	const bool enable)
 {
-	auto& defaultParameter = *(type == Item::Type::Number?
-		reinterpret_cast<Parameter*>(new DefaultNumber(enable))
-		: reinterpret_cast<Parameter*>(new DefaultCondition(enable)));
+	Parameter* defaultParameter;
 
-	defaultParameter.setParent(this);
+	if (type == Item::Type::Number)
+		defaultParameter = reinterpret_cast<Parameter*>(new DefaultNumber(enable));
+	else if (type == Item::Type::Condition)
+		defaultParameter = reinterpret_cast<Parameter*>(new DefaultCondition(enable));
+	else if (type == Item::Type::Point)
+		defaultParameter = reinterpret_cast<Parameter*>(new DefaultPoint());
 
-	m_arguments.push_back({name, type, defaultParameter, nullptr});
+	defaultParameter->setParent(this);
+
+	m_arguments.push_back({name, type, *defaultParameter, nullptr});
 
 	updateItem();
 
@@ -165,6 +171,8 @@ void ArgumentItem::dropEvent(QGraphicsSceneDragDropEvent* event)
 bool ArgumentItem::updateItem()
 {
 	QFontMetrics fontMetric(m_font);
+
+	prepareGeometryChange();
 
 	// Find highest argument
 

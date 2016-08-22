@@ -1,9 +1,9 @@
 #ifndef VARIABLEITEMS_H
 #define VARIABLEITEMS_H
 
-#include "ArgumentBlock.h"
-#include "Condition.h"
-#include "Number.h"
+#include "Argument/ArgumentBlock.h"
+#include "Parameter/Condition.h"
+#include "Parameter/Number.h"
 
 namespace Scratch
 {

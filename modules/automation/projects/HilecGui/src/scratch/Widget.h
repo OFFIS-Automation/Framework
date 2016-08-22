@@ -8,7 +8,7 @@
 
 #include "../OlvisSingleton.h"
 
-#include "ControlScene.h"
+#include "Gui/ControlScene.h"
 
 namespace Ui
 {

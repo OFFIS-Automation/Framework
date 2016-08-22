@@ -1,11 +1,14 @@
 #ifndef ARGUMENTBLOCK_H
 #define ARGUMENTBLOCK_H
 
-#include "Block.h"
+#include "../Block.h"
 #include "ArgumentItem.h"
 
 namespace Scratch
 {
+
+template <typename T>
+class Argument<T>;
 
 template <>
 class Argument<Block> : public Block, public ArgumentItem

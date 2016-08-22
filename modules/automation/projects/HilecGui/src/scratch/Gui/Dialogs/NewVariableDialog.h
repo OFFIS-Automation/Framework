@@ -6,7 +6,7 @@
 
 #include <QDialog>
 
-#include "Item.h"
+#include "../../Items/Item.h"
 
 namespace Ui {
 class ScratchNewVariableDialog;

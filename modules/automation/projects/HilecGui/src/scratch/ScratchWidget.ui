@@ -72,7 +72,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="widget">
           <attribute name="title">
            <string>Functions</string>
           </attribute>
@@ -94,7 +94,7 @@
   <customwidget>
    <class>Scratch::FunctionTabWidget</class>
    <extends>QTabWidget</extends>
-   <header>src/scratch/FunctionView.h</header>
+   <header>src/scratch/Gui/FunctionView.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

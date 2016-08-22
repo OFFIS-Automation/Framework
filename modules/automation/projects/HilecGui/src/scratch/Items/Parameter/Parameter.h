@@ -5,7 +5,7 @@
 
 #include <QPainterPath>
 
-#include "Item.h"
+#include "../Item.h"
 
 namespace Scratch
 {

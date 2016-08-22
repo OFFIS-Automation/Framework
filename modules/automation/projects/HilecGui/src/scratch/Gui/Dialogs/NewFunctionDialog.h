@@ -7,8 +7,8 @@
 
 #include <QDialog>
 
-#include "Item.h"
-#include "FunctionView.h"
+#include "../../Items/Item.h"
+#include "../FunctionView.h"
 
 namespace Ui {
 class ScratchNewFunctionDialog;

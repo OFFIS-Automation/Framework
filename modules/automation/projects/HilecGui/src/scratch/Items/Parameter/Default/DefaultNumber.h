@@ -5,7 +5,8 @@
 
 #include <QGraphicsTextItem>
 
-#include "Number.h"
+#include "../Parameter.h"
+#include "../Number.h"
 
 namespace Scratch
 {
@@ -16,15 +17,13 @@ class DefaultNumber : public Number
 		class NumberTextItem : public QGraphicsTextItem
 		{
 			public:
-				NumberTextItem(DefaultNumber& parent);
-
-				void updatePosition();
+				NumberTextItem(Parameter& parent);
 
 			protected:
 				void keyPressEvent(QKeyEvent* event);
 
 			private:
-				DefaultNumber& m_parent;
+				Parameter& m_parent;
 		};
 
 	public:
@@ -32,6 +31,8 @@ class DefaultNumber : public Number
 
 		Item& clone() const;
 		void print(std::ostream& stream) const;
+
+		bool updateItem();
 
 	protected:
 		void mousePressEvent(QGraphicsSceneMouseEvent* event);

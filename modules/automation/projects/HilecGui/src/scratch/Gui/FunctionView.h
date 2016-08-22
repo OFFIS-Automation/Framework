@@ -9,9 +9,9 @@
 #include <QGridLayout>
 
 #include "ControlScene.h"
-#include "Item.h"
-#include "Parameter.h"
-#include "ArgumentItem.h"
+#include "../Items/Item.h"
+#include "../Items/Parameter/Parameter.h"
+#include "../Items/Argument/ArgumentItem.h"
 
 namespace Ui {
 class ScratchFunctionView;

@@ -2,7 +2,7 @@
 #define FRAMEBLOCK_H
 
 #include "Block.h"
-#include "ArgumentBlock.h"
+#include "Argument/ArgumentBlock.h"
 
 namespace Scratch
 {

@@ -18,10 +18,10 @@ void Number::drawOutline(QPainterPath& path) const
 		<< QPoint(0, 0)
 		<< QPoint(m_width, 0)
 		<< QPoint(m_width, m_height)
-		<< QPoint(0, m_height)
-		<< QPoint(0, 0);
+		<< QPoint(0, m_height);
 
 	path.addPolygon(polygon);
+	path.closeSubpath();
 }
 
 } // namespace Scratch

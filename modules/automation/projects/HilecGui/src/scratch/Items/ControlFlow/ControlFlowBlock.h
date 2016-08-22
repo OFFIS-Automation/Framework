@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 
-#include "Block.h"
-#include "ArgumentItem.h"
+#include "../Block.h"
+#include "../Argument/ArgumentItem.h"
 
 namespace Scratch
 {

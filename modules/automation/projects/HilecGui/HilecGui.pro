@@ -82,27 +82,28 @@ HEADERS += \
     src/telecontrol/ConnexionAssignmentWidget.h \
     src/rcUnits/RcFlagWidgetSettingsDialog.h \
     src/scratch/Widget.h \
-    src/scratch/Block.h \
-    src/scratch/ControlFlowBlock.h \
-    src/scratch/IfElseBlock.h \
-    src/scratch/WhileBlock.h \
-    src/scratch/ControlScene.h \
-    src/scratch/FrameBlocks.h \
-    src/scratch/Item.h \
-    src/scratch/PassBlock.h \
-    src/scratch/Parameter.h \
-    src/scratch/Condition.h \
-    src/scratch/Number.h \
-	src/scratch/Point.h \
-    src/scratch/DefaultNumber.h \
-    src/scratch/DefaultCondition.h \
-    src/scratch/ArgumentItem.h \
-    src/scratch/ArgumentBlock.h \
-    src/scratch/FunctionView.h \
-    src/scratch/NewVariableDialog.h \
-    src/scratch/VariableItems.h \
-	src/scratch/NewFunctionDialog.h \
-	src/OlvisSingleton.h
+	src/OlvisSingleton.h \
+    src/scratch/Items/Argument/ArgumentBlock.h \
+    src/scratch/Items/Argument/ArgumentItem.h \
+    src/scratch/Items/ControlFlow/ControlFlowBlock.h \
+    src/scratch/Items/ControlFlow/IfElseBlock.h \
+    src/scratch/Items/ControlFlow/WhileBlock.h \
+    src/scratch/Items/Parameter/Default/DefaultCondition.h \
+    src/scratch/Items/Parameter/Default/DefaultNumber.h \
+    src/scratch/Items/Parameter/Default/DefaultPoint.h \
+    src/scratch/Items/Parameter/Condition.h \
+    src/scratch/Items/Parameter/Number.h \
+    src/scratch/Items/Parameter/Parameter.h \
+    src/scratch/Items/Parameter/Point.h \
+    src/scratch/Items/Block.h \
+    src/scratch/Items/FrameBlocks.h \
+    src/scratch/Items/Item.h \
+    src/scratch/Items/PassBlock.h \
+    src/scratch/Items/VariableItems.h \
+    src/scratch/Gui/Dialogs/NewFunctionDialog.h \
+    src/scratch/Gui/Dialogs/NewVariableDialog.h \
+    src/scratch/Gui/ControlScene.h \
+    src/scratch/Gui/FunctionView.h
 
 SOURCES += \
 	src/HilecGui.cpp \
@@ -142,27 +143,28 @@ SOURCES += \
 	src/telecontrol/ConnexionAssignmentWidget.cpp \
 	src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
 	src/scratch/Widget.cpp \
-	src/scratch/WhileBlock.cpp \
-	src/scratch/IfElseBlock.cpp \
-	src/scratch/Block.cpp \
-	src/scratch/ControlScene.cpp \
-	src/scratch/FrameBlocks.cpp \
-	src/scratch/Item.cpp \
-	src/scratch/PassBlock.cpp \
-	src/scratch/Parameter.cpp \
-	src/scratch/Condition.cpp \
-	src/scratch/ControlFlowBlock.cpp \
-	src/scratch/Number.cpp \
-	src/scratch/Point.cpp \
-	src/scratch/DefaultNumber.cpp \
-	src/scratch/DefaultCondition.cpp \
-	src/scratch/ArgumentItem.cpp \
-	src/scratch/ArgumentBlock.cpp \
-	src/scratch/FunctionView.cpp \
-	src/scratch/NewVariableDialog.cpp \
-	src/scratch/VariableItems.cpp \
-	src/scratch/NewFunctionDialog.cpp \
-	src/OlvisSingleton.cpp
+	src/OlvisSingleton.cpp \
+	src/scratch/Items/Argument/ArgumentBlock.cpp \
+    src/scratch/Items/Argument/ArgumentItem.cpp \
+    src/scratch/Items/ControlFlow/ControlFlowBlock.cpp \
+    src/scratch/Items/ControlFlow/IfElseBlock.cpp \
+    src/scratch/Items/ControlFlow/WhileBlock.cpp \
+    src/scratch/Items/Parameter/Default/DefaultCondition.cpp \
+    src/scratch/Items/Parameter/Default/DefaultNumber.cpp \
+    src/scratch/Items/Parameter/Default/DefaultPoint.cpp \
+    src/scratch/Items/Parameter/Condition.cpp \
+    src/scratch/Items/Parameter/Number.cpp \
+    src/scratch/Items/Parameter/Parameter.cpp \
+    src/scratch/Items/Parameter/Point.cpp \
+    src/scratch/Items/Block.cpp \
+    src/scratch/Items/FrameBlocks.cpp \
+    src/scratch/Items/Item.cpp \
+    src/scratch/Items/PassBlock.cpp \
+    src/scratch/Items/VariableItems.cpp \
+    src/scratch/Gui/Dialogs/NewFunctionDialog.cpp \
+    src/scratch/Gui/Dialogs/NewVariableDialog.cpp \
+    src/scratch/Gui/ControlScene.cpp \
+    src/scratch/Gui/FunctionView.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -195,9 +197,9 @@ FORMS += \
     src/telecontrol/TelecontrolSelectionComboBox.ui \
     src/telecontrol/ConnexionAssignmentWidget.ui \
     src/scratch/ScratchWidget.ui \
-    src/scratch/ScratchFunctionView.ui \
-    src/scratch/ScratchNewVariableDialog.ui \
-    src/scratch/ScratchNewFunctionDialog.ui
+    src/scratch/Gui/Dialogs/ScratchNewFunctionDialog.ui \
+    src/scratch/Gui/Dialogs/ScratchNewVariableDialog.ui \
+    src/scratch/Gui/ScratchFunctionView.ui
 
 
 RESOURCES += \

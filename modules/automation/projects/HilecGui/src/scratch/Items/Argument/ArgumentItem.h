@@ -5,8 +5,8 @@
 
 #include <QPainter>
 
-#include "Block.h"
-#include "Parameter.h"
+#include "../Block.h"
+#include "../Parameter/Parameter.h"
 
 namespace Scratch
 {

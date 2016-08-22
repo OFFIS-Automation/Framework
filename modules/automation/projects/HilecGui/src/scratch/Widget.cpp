@@ -9,17 +9,19 @@
 
 #include <QKeyEvent>
 
-#include "FunctionView.h"
-#include "NewVariableDialog.h"
+#include "Gui/FunctionView.h"
+#include "Gui/Dialogs/NewVariableDialog.h"
 
-#include "WhileBlock.h"
-#include "IfElseBlock.h"
-#include "PassBlock.h"
+#include "Items/ControlFlow/WhileBlock.h"
+#include "Items/ControlFlow/IfElseBlock.h"
+#include "Items/PassBlock.h"
 
-#include "ArgumentBlock.h"
-#include "ArgumentItem.h"
+#include "Items/Argument/ArgumentBlock.h"
+#include "Items/Argument/ArgumentItem.h"
 
-#include "VariableItems.h"
+#include "Items/VariableItems.h"
+
+#include "Items/Parameter/Point.h"
 
 namespace Scratch
 {
@@ -45,8 +47,14 @@ Widget::Widget(QWidget *parent)
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
 	m_controlFlowScene.addItem(ifElseBlock);
 
+	auto point = new Argument<Point>("types.Point");
+	point->addArgument("x", Item::Type::Number);
+	point->addArgument("y", Item::Type::Number);
+	point->setPos(0, 0);
+	m_utilityScene.addItem(point);
+
 	auto passBlock = new PassBlock();
-	passBlock->setPos(ifElseBlock->pos().x() + ifElseBlock->m_width + 30, 0);
+	passBlock->setPos(0, point->m_height + 30);
 	m_utilityScene.addItem(passBlock);
 
 	// Signal / slot connections
@@ -111,11 +119,11 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 		{
 			const auto& help = hilec.getUnitHelp(name);
 
-			if (help.type != UserRcUnitType::HwRcUnitType
-				&& help.type != UserRcUnitType::RobotRcUnitType)
-				continue;
-
-			generatedFile << help.unitName.toStdString() + ".acquire()" << std::endl;
+			if (help.type == UserRcUnitType::HwRcUnitType
+				|| help.type == UserRcUnitType::RobotRcUnitType)
+				generatedFile << help.unitName.toStdString() + ".acquire()" << std::endl;
+			else if (help.type == UserRcUnitType::VisionRcUnitType)
+				generatedFile << help.unitName.toStdString() + ".start()" << std::endl;
 		}
 
 		generatedFile << std::endl;
@@ -166,49 +174,34 @@ void Widget::updateTabs(bool partialReload)
 			for (const auto& filter : m_filter)
 				for (const PortInfo& output : filter.typeInfo.outputs)
 				{
+					Parameter* argumentItem;
+
 					if (output.typeName == "Boolean")
 					{
-						auto argumentItem = new VariableParameter<Condition>(
+						argumentItem = new VariableParameter<Condition>(
 							(help.unitName + ".get" + output.name).toStdString());
-
-						argumentItem->setPos(QPoint(0, y));
-						scene->addItem(argumentItem);
-
-						y += argumentItem->m_height + 30;
 					}
 					else if(output.typeName == "Real")
 					{
-						auto argumentItem = new VariableParameter<Number>(
+						argumentItem = new VariableParameter<Number>(
 							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
 								+ output.name + "\")").toStdString());
-
-						argumentItem->setPos(QPoint(0, y));
-						scene->addItem(argumentItem);
 
 						y += argumentItem->m_height + 30;
 					}
 					else if(output.typeName == "Point")
 					{
-						auto argumentItemX = new VariableParameter<Number>(
+						argumentItem = new VariableParameter<Point>(
 							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
-								+ output.name + "\").x").toStdString());
-
-						argumentItemX->setPos(QPoint(0, y));
-						scene->addItem(argumentItemX);
-
-						y += argumentItemX->m_height + 30;
-
-						auto argumentItemY = new VariableParameter<Number>(
-							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
-								+ output.name + "\").y").toStdString());
-
-						argumentItemY->setPos(QPoint(0, y));
-						scene->addItem(argumentItemY);
-
-						y += argumentItemY->m_height + 30;
+								+ output.name + "\")").toStdString());
 					}
 					else
 						continue;
+
+					argumentItem->setPos(QPoint(0, y));
+					scene->addItem(argumentItem);
+
+					y += argumentItem->m_height + 30;
 				}
 
 			continue;
@@ -227,12 +220,14 @@ void Widget::updateTabs(bool partialReload)
 				argumentItem->setToolTip(method.longDesc);
 
 				for (auto parameter : method.parameters)
-					if (parameter.typeName == "bool")
-						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Condition);
-					else if (parameter.typeName == "double")
-						argumentItem->addArgument(parameter.name.toStdString(), Item::Type::Number);
-					else
+				{
+					const auto& type = Item::nameToItemType.find(parameter.typeName.toStdString());
+
+					if (type == Item::nameToItemType.cend())
 						return false;
+
+					argumentItem->addArgument(parameter.name.toStdString(), type->second);
+				}
 
 				argumentItem->setPos(position);
 
@@ -259,6 +254,8 @@ void Widget::updateTabs(bool partialReload)
 					argumentItem = new Argument<Condition>((help.unitName + "." + method.name).toStdString());
 				else if (method.returnParameter.typeName == "double")
 					argumentItem = new Argument<Number>((help.unitName + "." + method.name).toStdString());
+				else if (method.returnParameter.typeName == "Pointf")
+					argumentItem = new Argument<Point>((help.unitName + "." + method.name).toStdString());
 
 				initilizeArgumentItem(argumentItem, QPoint(argumentBlock->m_width + 30, y));
 			}

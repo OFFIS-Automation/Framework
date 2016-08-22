@@ -1,14 +1,14 @@
-#include "Point.h"
+#include "Condition.h"
 
 namespace Scratch
 {
 
-Item::Type Point::itemType() const
+Item::Type Condition::itemType() const
 {
-	return Type::Point;
+	return Type::Condition;
 }
 
-void Point::drawOutline(QPainterPath& path) const
+void Condition::drawOutline(QPainterPath& path) const
 {
 	const auto tipHeight = m_height / 2;
 
@@ -20,13 +20,13 @@ void Point::drawOutline(QPainterPath& path) const
 		<< QPoint(m_width - tipHeight, 0)
 		<< QPoint(m_width, tipHeight)
 		<< QPoint(m_width - tipHeight, m_height)
-		<< QPoint(tipHeight, m_height)
-		<< QPoint(0, tipHeight);
+		<< QPoint(tipHeight, m_height);
 
 	path.addPolygon(polygon);
+	path.closeSubpath();
 }
 
-bool Point::updateItem()
+bool Condition::updateItem()
 {
 	m_horizontalMargin = m_height / 2;
 

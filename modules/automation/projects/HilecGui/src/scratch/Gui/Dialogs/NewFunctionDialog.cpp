@@ -27,6 +27,7 @@ void NewFunctionDialog::addParameter()
 	auto type = new QComboBox(&parameters);
 	type->addItem("Number");
 	type->addItem("Condition");
+	type->addItem("Point");
 
 	parameters.insertRow(index);
 	parameters.setItem(index, 0, new QTableWidgetItem("parameter" + QString::number(index + 1)));
@@ -43,7 +44,7 @@ FunctionView::Function NewFunctionDialog::get()
 	FunctionView::Parameters parameters;
 	parameters.reserve(m_ui->parameters->rowCount());
 
-	for (size_t i = 0; i < m_ui->parameters->rowCount(); ++i)
+	for (int i = 0; i < m_ui->parameters->rowCount(); ++i)
 		parameters.emplace_back(
 			m_ui->parameters->item(i, 0)->text().toStdString(),
 			Item::nameToItemType.at(static_cast<QComboBox*>(

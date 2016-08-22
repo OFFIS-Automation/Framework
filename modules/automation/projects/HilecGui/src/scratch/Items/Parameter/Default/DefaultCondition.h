@@ -6,7 +6,7 @@
 
 #include <QGraphicsTextItem>
 
-#include "Condition.h"
+#include "../Condition.h"
 
 namespace Scratch
 {

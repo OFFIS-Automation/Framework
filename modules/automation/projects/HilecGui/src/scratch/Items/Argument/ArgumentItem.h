@@ -77,7 +77,7 @@ Argument<T>::Argument(const std::string& name)
 template <typename T>
 Item& Argument<T>::clone() const
 {
-	auto& argumentNumber = *(new Argument(m_name));
+	auto& argumentNumber = *(new Argument<T>(m_name));
 
 	for (const auto& argument : m_arguments)
 		argumentNumber.addArgument(argument.name, argument.type, true);

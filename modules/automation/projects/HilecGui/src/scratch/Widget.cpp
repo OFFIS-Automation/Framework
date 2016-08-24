@@ -18,6 +18,7 @@
 
 #include "Items/Argument/ArgumentBlock.h"
 #include "Items/Argument/ArgumentItem.h"
+#include "Items/Argument/Operation.h"
 
 #include "Items/VariableItems.h"
 
@@ -56,6 +57,14 @@ Widget::Widget(QWidget *parent)
 	auto passBlock = new PassBlock();
 	passBlock->setPos(0, point->m_height + 30);
 	m_utilityScene.addItem(passBlock);
+
+	auto smaller = new Operation<Condition>("<", Item::Type::Number);
+	smaller->setPos(0, passBlock->pos().y() + passBlock->m_height + 30);
+	m_utilityScene.addItem(smaller);
+
+	auto add = new Operation<Number>("+", Item::Type::Number);
+	add->setPos(0, smaller->pos().y() + smaller->m_height + 30);
+	m_utilityScene.addItem(add);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateTabs(bool)));

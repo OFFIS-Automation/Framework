@@ -2,7 +2,7 @@
 
 #include <QGraphicsSceneEvent>
 
-#include "Item.h"
+#include "../Items/Item.h"
 
 namespace Scratch
 {

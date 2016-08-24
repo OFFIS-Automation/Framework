@@ -95,6 +95,8 @@ int Item::defaultHeight()
 
 bool Item::updateItem()
 {
+	prepareGeometryChange();
+
 	auto oldWidth = m_width;
 	auto oldHeight = m_height;
 

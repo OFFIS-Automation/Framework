@@ -26,7 +26,7 @@ class Block : public virtual Item
 	public:
 		Type itemType() const final;
 
-		QRectF boundingRect() const final;
+		virtual QRectF boundingRect() const final;
 
 		virtual void print(std::ostream& stream, unsigned indentationDepth) const;
 

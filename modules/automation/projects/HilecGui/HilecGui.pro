@@ -103,7 +103,8 @@ HEADERS += \
     src/scratch/Gui/Dialogs/NewFunctionDialog.h \
     src/scratch/Gui/Dialogs/NewVariableDialog.h \
     src/scratch/Gui/ControlScene.h \
-    src/scratch/Gui/FunctionView.h
+    src/scratch/Gui/FunctionView.h \
+    src/scratch/Items/Argument/Operation.h
 
 SOURCES += \
 	src/HilecGui.cpp \

@@ -11,6 +11,8 @@ class Operation : public Argument<T>
 {
 	public:
 		Operation(const std::string& name, Item::Type type, bool createArguments = true);
+		Operation(const std::string& name, Item::Type lhs, Item::Type rhs,
+			bool createArguments = true);
 
 		Item& clone() const;
 
@@ -21,28 +23,35 @@ class Operation : public Argument<T>
 		bool updateItem();
 
 	private:
-		Item::Type m_type;
+		Item::Type m_lhs, m_rhs;
 };
 
 template <typename T>
 Operation<T>::Operation(const std::string& name, Item::Type type, bool createArguments)
+:	Operation<T>(name, type, type, createArguments)
+{}
+
+template <typename T>
+Operation<T>::Operation(const std::string& name, Item::Type lhs, Item::Type rhs,
+	bool createArguments)
 :	Argument<T>(name),
-	m_type(type)
+	m_lhs(lhs),
+	m_rhs(rhs)
 {
 	if (createArguments)
 	{
-		addArgument("", m_type);
-		addArgument("", m_type);
+		addArgument("", m_lhs);
+		addArgument("", m_rhs);
 	}
 }
 
 template <typename T>
 Item& Operation<T>::clone() const
 {
-	auto& operation = *(new Operation<T>(m_name, m_type, false));
+	auto& operation = *(new Operation<T>(m_name, m_lhs, m_rhs, false));
 
-	operation.addArgument("", m_type, true);
-	operation.addArgument("", m_type, true);
+	operation.addArgument("", m_lhs, true);
+	operation.addArgument("", m_rhs, true);
 
 	return operation;
 }

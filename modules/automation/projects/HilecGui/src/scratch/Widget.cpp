@@ -36,10 +36,13 @@ Widget::Widget(QWidget *parent)
 	m_defaultTabCount = m_ui->blocks->count();
 
 	m_ui->controlFlowView->setScene(&m_controlFlowScene);
+	m_ui->operationsView->setScene(&m_operationsScene);
 	m_ui->utilityView->setScene(&m_utilityScene);
 	m_ui->functionBlockView->setScene(&m_functionBlockScene);
 
-	m_ui->blocks->setTabEnabled(2, false);
+	m_ui->blocks->setTabEnabled(3, false);
+
+	// Control flow
 
 	auto whileBlock = new WhileBlock();
 	m_controlFlowScene.addItem(whileBlock);
@@ -47,6 +50,34 @@ Widget::Widget(QWidget *parent)
 	auto ifElseBlock = new IfElseBlock();
 	ifElseBlock->setPos(whileBlock->m_width + 30, 0);
 	m_controlFlowScene.addItem(ifElseBlock);
+
+	// Operations
+
+	auto smaller = new Operation<Condition>("<", Item::Type::Number);
+	smaller->setPos(0, 0);
+	m_operationsScene.addItem(smaller);
+
+	auto add = new Operation<Number>("+", Item::Type::Number);
+	add->setPos(0, smaller->pos().y() + smaller->m_height + 30);
+	m_operationsScene.addItem(add);
+
+	auto times = new Operation<Number>("*", Item::Type::Number);
+	times->setPos(0, add->pos().y() + add->m_height + 30);
+	m_operationsScene.addItem(times);
+
+	auto divide = new Operation<Number>("/", Item::Type::Number);
+	divide->setPos(0, times->pos().y() + times->m_height + 30);
+	m_operationsScene.addItem(divide);
+
+	auto subtractPoint = new Operation<Point>("-", Item::Type::Point);
+	subtractPoint->setPos(0, divide->pos().y() + divide->m_height + 30);
+	m_operationsScene.addItem(subtractPoint);
+
+	auto timesPoint = new Operation<Point>("*", Item::Type::Point, Item::Type::Number);
+	timesPoint->setPos(0, subtractPoint->pos().y() + subtractPoint->m_height + 30);
+	m_operationsScene.addItem(timesPoint);
+
+	// Utility
 
 	auto point = new Argument<Point>("types.Point");
 	point->addArgument("x", Item::Type::Number);
@@ -57,14 +88,6 @@ Widget::Widget(QWidget *parent)
 	auto passBlock = new PassBlock();
 	passBlock->setPos(0, point->m_height + 30);
 	m_utilityScene.addItem(passBlock);
-
-	auto smaller = new Operation<Condition>("<", Item::Type::Number);
-	smaller->setPos(0, passBlock->pos().y() + passBlock->m_height + 30);
-	m_utilityScene.addItem(smaller);
-
-	auto add = new Operation<Number>("+", Item::Type::Number);
-	add->setPos(0, smaller->pos().y() + smaller->m_height + 30);
-	m_utilityScene.addItem(add);
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateTabs(bool)));
@@ -79,7 +102,7 @@ Widget::Widget(QWidget *parent)
 			item->setPos(0, m_functionBlockScene.height() + 30);
 			m_functionBlockScene.addItem(item);
 
-			m_ui->blocks->setTabEnabled(2, true);
+			m_ui->blocks->setTabEnabled(3, true);
 		});
 }
 
@@ -195,8 +218,6 @@ void Widget::updateTabs(bool partialReload)
 						argumentItem = new VariableParameter<Number>(
 							(help.unitName + ".getPortValue(\"" + filter.name + "\", \""
 								+ output.name + "\")").toStdString());
-
-						y += argumentItem->m_height + 30;
 					}
 					else if(output.typeName == "Point")
 					{

@@ -45,6 +45,9 @@
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QTabWidget" name="blocks">
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
            <string>Control flow</string>
@@ -52,6 +55,16 @@
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="0" column="0">
             <widget class="QGraphicsView" name="controlFlowView"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Operations</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QGraphicsView" name="operationsView"/>
            </item>
           </layout>
          </widget>

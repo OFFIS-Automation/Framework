@@ -39,6 +39,7 @@ class Widget : public QDockWidget
 		std::unique_ptr<Ui::ScratchWidget> m_ui;
 
 		ControlScene m_controlFlowScene;
+		ControlScene m_operationsScene;
 		ControlScene m_utilityScene;
 		ControlScene m_functionBlockScene;
 		size_t m_defaultTabCount;

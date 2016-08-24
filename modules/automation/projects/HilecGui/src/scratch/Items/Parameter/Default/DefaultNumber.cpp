@@ -18,6 +18,8 @@ DefaultNumber::NumberTextItem::NumberTextItem(Parameter& parent)
 void DefaultNumber::NumberTextItem::keyPressEvent(QKeyEvent* event)
 {
 	if ((event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9)
+		|| (event->key() == Qt::Key_Minus && textCursor().position() == 0
+			&& !toPlainText().contains('-'))
 		|| (event->key() == Qt::Key_Period && !toPlainText().contains('.'))
 		|| event->key() == Qt::Key_Backspace
 		|| event->key() == Qt::Key_Delete)

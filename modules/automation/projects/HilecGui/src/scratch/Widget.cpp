@@ -85,8 +85,18 @@ Widget::Widget(QWidget *parent)
 	point->setPos(0, 0);
 	m_utilityScene.addItem(point);
 
+	auto getX = new Argument<Number>("getX");
+	getX->addArgument("", Item::Type::Point);
+	getX->setPos(0, point->pos().y() + point->m_height + 30);
+	m_utilityScene.addItem(getX);
+
+	auto getY = new Argument<Number>("getY");
+	getY->addArgument("", Item::Type::Point);
+	getY->setPos(0, getX->pos().y() + getX->m_height + 30);
+	m_utilityScene.addItem(getY);
+
 	auto pass = new PassBlock();
-	pass->setPos(0, point->pos().y() + point->m_height + 30);
+	pass->setPos(0, getY->pos().y() + getY->m_height + 30);
 	m_utilityScene.addItem(pass);
 
 	auto raise = new Argument<Block>("raise Exception");
@@ -146,6 +156,10 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 		generatedFile << "from time import *" << std::endl;
 		generatedFile << "from offis import *" << std::endl;
+		generatedFile << std::endl;
+
+		generatedFile << "def getX(p):" << std::endl << "\t" << "return p.x" << std::endl;
+		generatedFile << "def getY(p):" << std::endl << "\t" << "return p.y" << std::endl;
 		generatedFile << std::endl;
 
 		for (const auto& name : hilec.rcUnits())

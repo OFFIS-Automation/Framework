@@ -85,9 +85,19 @@ Widget::Widget(QWidget *parent)
 	point->setPos(0, 0);
 	m_utilityScene.addItem(point);
 
-	auto passBlock = new PassBlock();
-	passBlock->setPos(0, point->m_height + 30);
-	m_utilityScene.addItem(passBlock);
+	auto pass = new PassBlock();
+	pass->setPos(0, point->pos().y() + point->m_height + 30);
+	m_utilityScene.addItem(pass);
+
+	auto raise = new Argument<Block>("raise Exception");
+	raise->setPos(0, pass->pos().y() + pass->m_height + 30);
+	m_utilityScene.addItem(raise);
+
+	auto sleep = new Argument<Block>("sleep");
+	sleep->addArgument("seconds", Item::Type::Number);
+	sleep->setPos(0, raise->pos().y() + raise->m_height + 30);
+	m_utilityScene.addItem(sleep);
+
 
 	// Signal / slot connections
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateTabs(bool)));
@@ -134,6 +144,7 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 		std::stringstream generatedFile;
 
+		generatedFile << "from time import *" << std::endl;
 		generatedFile << "from offis import *" << std::endl;
 		generatedFile << std::endl;
 

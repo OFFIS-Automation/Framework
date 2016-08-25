@@ -158,7 +158,9 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 		generatedFile << "from offis import *" << std::endl;
 		generatedFile << std::endl;
 
+		generatedFile << "# Helper functions for point type" << std::endl;
 		generatedFile << "def getX(p):" << std::endl << "\t" << "return p.x" << std::endl;
+		generatedFile << std::endl;
 		generatedFile << "def getY(p):" << std::endl << "\t" << "return p.y" << std::endl;
 		generatedFile << std::endl;
 

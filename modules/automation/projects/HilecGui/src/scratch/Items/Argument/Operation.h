@@ -77,8 +77,8 @@ void Operation<T>::paint(QPainter* painter, const QStyleOptionGraphicsItem* item
 template <typename T>
 void Operation<T>::print(std::ostream& stream) const
 {
-	stream << m_arguments.at(0).getParameter() << " " << m_name << " "
-		<< m_arguments.at(1).getParameter();
+	stream << "(" << m_arguments.at(0).getParameter() << " " << m_name << " "
+		<< m_arguments.at(1).getParameter() << ")";
 }
 
 template <typename T>

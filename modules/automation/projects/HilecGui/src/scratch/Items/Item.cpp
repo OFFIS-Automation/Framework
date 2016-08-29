@@ -25,6 +25,12 @@ Item& Item::unpackItem(const QGraphicsSceneDragDropEvent& event)
 	return **reinterpret_cast<Item**>(byteArray.data());
 }
 
+void Item::printIndentation(std::ostream& stream, const unsigned& depth)
+{
+	for (unsigned i = 0; i < depth; ++i)
+		stream << "\t";
+}
+
 Item::Item()
 {
 	setAcceptDrops(true);

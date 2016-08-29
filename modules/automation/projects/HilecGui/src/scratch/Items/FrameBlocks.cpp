@@ -17,9 +17,9 @@ FrameBlock::FrameBlock(const std::string& name)
 
 bool FrameBlock::updateItem()
 {
+	m_horizontalMargin = s_midsegmentOffset + !m_arguments.empty() * m_outlineStyle.width() / 2.0;
 	auto updated = ArgumentItem::updateItem();
 	m_horizontalMargin = s_midsegmentOffset;
-	updated |= ArgumentItem::updateItem();
 
 	updated |= Block::updateItem();
 
@@ -228,8 +228,7 @@ Block& EndBlock::clone() const
 
 void EndBlock::print(std::ostream& stream, unsigned indentationDepth) const
 {
-	for (unsigned i = 0; i < indentationDepth; ++i)
-		stream << "\t";
+	printIndentation(stream, indentationDepth);
 
 	stream << "return";
 

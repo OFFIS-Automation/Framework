@@ -12,9 +12,6 @@ ControlFlowBlock::ControlFlowBlock(const std::string& name, const size_t& number
 {
 	m_bodies.resize(numberOfBodies);
 
-	for (auto& body : m_bodies)
-		body.height = defaultHeight();
-
 	updateItem();
 }
 
@@ -171,7 +168,7 @@ bool ControlFlowBlock::updateItem()
 	{
 		if (!body.block)
 		{
-			body.height = defaultHeight();
+			body.height = 0;//defaultHeight();
 			position += body.height + defaultHeight();
 
 			continue;

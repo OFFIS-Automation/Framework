@@ -29,8 +29,7 @@ void Argument<Block>::paint(QPainter* painter, const QStyleOptionGraphicsItem* i
 
 void Argument<Block>::print(std::ostream& stream, unsigned indentationDepth) const
 {
-	for (unsigned i = 0; i < indentationDepth; ++i)
-		stream << "\t";
+	printIndentation(stream, indentationDepth);
 
 	ArgumentItem::print(stream);
 

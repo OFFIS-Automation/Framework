@@ -34,18 +34,21 @@ Block& WhileBlock::clone() const
 
 void WhileBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 {
-	if (!m_body.block)
-		throw std::invalid_argument("Not all loop bodies are defined.");
-
 	// while
-	for (unsigned i = 0; i < indentationDepth; ++i)
-		stream << "\t";
+
+	printIndentation(stream, indentationDepth);
 
 	ArgumentItem::print(stream);
 
 	stream << ":" << std::endl;
 
-	m_body.block->print(stream, indentationDepth + 1);
+	if (m_body.block)
+		m_body.block->print(stream, indentationDepth + 1);
+	else
+	{
+		printIndentation(stream, indentationDepth + 1);
+		stream << "pass" << std::endl;
+	}
 
 	Block::print(stream, indentationDepth);
 }

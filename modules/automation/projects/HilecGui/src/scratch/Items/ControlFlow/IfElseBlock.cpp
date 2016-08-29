@@ -40,28 +40,35 @@ Block& IfElseBlock::clone() const
 
 void IfElseBlock::print(std::ostream& stream, unsigned indentationDepth = 0) const
 {
-	if (!m_trueBody.block || !m_falseBody.block)
-		throw std::invalid_argument("Not all if bodies are defined.");
-
 	// if
 
-	for (unsigned i = 0; i < indentationDepth; ++i)
-		stream << "\t";
+	printIndentation(stream, indentationDepth);
 
 	ArgumentItem::print(stream);
 
 	stream << ":" << std::endl;
 
-	m_trueBody.block->print(stream, indentationDepth + 1);
+	if (m_trueBody.block)
+		m_trueBody.block->print(stream, indentationDepth + 1);
+	else
+	{
+		printIndentation(stream, indentationDepth + 1);
+		stream << "pass" << std::endl;
+	}
 
 	// else
 
-	for (unsigned i = 0; i < indentationDepth; ++i)
-		stream << "\t";
+	printIndentation(stream, indentationDepth);
 
 	stream << "else:" << std::endl;
 
-	m_falseBody.block->print(stream, indentationDepth + 1);
+	if (m_falseBody.block)
+		m_falseBody.block->print(stream, indentationDepth + 1);
+	else
+	{
+		printIndentation(stream, indentationDepth + 1);
+		stream << "pass" << std::endl;
+	}
 
 	// next
 

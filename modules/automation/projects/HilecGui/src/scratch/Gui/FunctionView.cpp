@@ -106,6 +106,7 @@ void FunctionTabWidget::addFunction(int index)
 		auto& argument = functionView->m_startBlock->addArgument(parameter.first, parameter.second);
 
 		auto& newParameterItem = *dynamic_cast<Parameter*>(&parameterItem.clone());
+		newParameterItem.m_fillStyle = Qt::lightGray;
 		newParameterItem.setEnabled(false);
 
 		functionView->m_startBlock->addParameter(newParameterItem, argument);

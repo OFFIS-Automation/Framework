@@ -21,8 +21,6 @@ class Item : public QGraphicsItem
 	public:
 		static const int s_margin = 10;
 
-		static Item& unpackItem(const QGraphicsSceneDragDropEvent& event);
-
 		enum class Type
 		{
 			Block,
@@ -32,6 +30,9 @@ class Item : public QGraphicsItem
 		};
 
 		static const std::unordered_map<std::string, Item::Type> nameToItemType;
+
+		static Item& unpackItem(const QGraphicsSceneDragDropEvent& event);
+		static void printIndentation(std::ostream& stream, const unsigned& depth);
 
 	public:
 		virtual Type itemType() const = 0;

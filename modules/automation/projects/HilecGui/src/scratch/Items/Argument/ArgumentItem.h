@@ -77,12 +77,14 @@ Argument<T>::Argument(const std::string& name)
 template <typename T>
 Item& Argument<T>::clone() const
 {
-	auto& argumentNumber = *(new Argument<T>(m_name));
+	auto& argumentItem = *(new Argument<T>(m_name));
 
 	for (const auto& argument : m_arguments)
-		argumentNumber.addArgument(argument.name, argument.type, true);
+		argumentItem.addArgument(argument.name, argument.type, true);
 
-	return argumentNumber;
+	argumentItem.m_fillStyle = m_fillStyle;
+
+	return argumentItem;
 }
 
 template <typename T>

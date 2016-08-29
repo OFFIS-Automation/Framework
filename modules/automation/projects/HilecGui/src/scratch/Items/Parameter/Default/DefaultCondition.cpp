@@ -26,7 +26,7 @@ void DefaultCondition::ConditionTextItem::mousePressEvent(QGraphicsSceneMouseEve
 DefaultCondition::DefaultCondition(const bool enable)
 	: m_text(*this)
 {
-	m_textStyle.setBrush(Qt::lightGray);
+	m_textStyle.setBrush(Qt::gray);
 	m_fillStyle = Qt::white;
 	m_font.setBold(true);
 

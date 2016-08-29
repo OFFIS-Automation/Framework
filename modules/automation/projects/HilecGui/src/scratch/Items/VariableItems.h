@@ -62,7 +62,11 @@ void VariableParameter<ParameterType>::paint(QPainter* painter, const QStyleOpti
 template <typename ParameterType>
 Item& VariableParameter<ParameterType>::clone() const
 {
-	return *(new VariableParameter<ParameterType>(m_name));
+	auto& variable = *(new VariableParameter<ParameterType>(m_name));
+
+	variable.m_fillStyle = m_fillStyle;
+
+	return variable;
 }
 
 template <typename ParameterType>

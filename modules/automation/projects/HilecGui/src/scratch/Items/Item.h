@@ -47,6 +47,8 @@ class Item : public QGraphicsItem
 		int m_width;
 		int m_height;
 
+		QColor m_fillStyle;
+
 	protected:
 		Item();
 
@@ -60,7 +62,6 @@ class Item : public QGraphicsItem
 		QFont m_font;
 		QPen m_outlineStyle;
 		QPen m_textStyle;
-		QColor m_fillStyle;
 
 		Item* m_parent{nullptr};
 };

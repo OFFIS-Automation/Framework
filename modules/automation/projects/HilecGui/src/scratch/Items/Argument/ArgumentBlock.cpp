@@ -16,6 +16,8 @@ Item& Argument<Block>::clone() const
 	for (const auto& argument : m_arguments)
 		argumentBlock.addArgument(argument.name, argument.type, true);
 
+	argumentBlock.m_fillStyle = m_fillStyle;
+
 	return argumentBlock;
 }
 

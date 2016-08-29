@@ -8,7 +8,7 @@ namespace Scratch
 
 DefaultPoint::DefaultPoint()
 {
-	m_textStyle.setBrush(Qt::lightGray);
+	m_textStyle.setBrush(Qt::gray);
 	m_fillStyle = Qt::white;
 	m_font.setBold(true);
 

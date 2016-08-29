@@ -211,8 +211,15 @@ void Widget::updateTabs(bool partialReload)
 	for (int i = m_ui->blocks->count() - 1; i >= m_defaultTabCount; --i)
 		m_ui->blocks->removeTab(i);
 
+	auto color = Qt::lightGray;
+
 	for (const auto& name : hilec.rcUnits())
 	{
+		color = Qt::GlobalColor(color + 1);
+
+		if (color == Qt::yellow)
+			color = Qt::red;
+
 		auto help = hilec.getUnitHelp(name);
 		auto& methods = help.methods;
 
@@ -255,6 +262,8 @@ void Widget::updateTabs(bool partialReload)
 					else
 						continue;
 
+					argumentItem->m_fillStyle.setHsl(QColor(color).hue(), 50, 100);
+
 					argumentItem->setPos(QPoint(0, y));
 					scene->addItem(argumentItem);
 
@@ -272,9 +281,11 @@ void Widget::updateTabs(bool partialReload)
 			if (method.hiddenForScratch)
 				continue;
 
-			auto initilizeArgumentItem = [&](auto &argumentItem, auto&& position)
+			auto initilizeArgumentItem = [&](auto& argumentItem, auto&& position)
 			{
-				argumentItem->setToolTip(method.longDesc);
+				argumentItem.m_fillStyle.setHsl(QColor(color).hue(), 50, 100);
+
+				argumentItem.setToolTip(method.longDesc);
 
 				for (auto parameter : method.parameters)
 				{
@@ -283,41 +294,47 @@ void Widget::updateTabs(bool partialReload)
 					if (type == Item::nameToItemType.cend())
 						return false;
 
-					argumentItem->addArgument(parameter.name.toStdString(), type->second);
+					argumentItem.addArgument(parameter.name.toStdString(), type->second);
 				}
 
-				argumentItem->setPos(position);
+				argumentItem.setPos(position);
 
-				scene->addItem(argumentItem);
+				scene->addItem(&argumentItem);
 
 				return true;
 			};
 
-			auto argumentBlock =
-				new Argument<Block>((help.unitName + "." + method.name).toStdString());
+			auto name = (help.unitName + "." + method.name).toStdString();
 
-			if (!initilizeArgumentItem(argumentBlock, QPoint(0, y)))
+			auto argumentBlock =
+				new Argument<Block>(name);
+
+			if (!initilizeArgumentItem(*argumentBlock, QPoint(0, y)))
 			{
 				delete argumentBlock;
 
 				continue;
 			}
 
+			y += argumentBlock->m_height + 30;
+
+
 			if (!method.hasReturn)
 			{
 				ArgumentItem* argumentItem;
 
 				if (method.returnParameter.typeName == "bool")
-					argumentItem = new Argument<Condition>((help.unitName + "." + method.name).toStdString());
+					argumentItem = new Argument<Condition>(name);
 				else if (method.returnParameter.typeName == "double")
-					argumentItem = new Argument<Number>((help.unitName + "." + method.name).toStdString());
+					argumentItem = new Argument<Number>(name);
 				else if (method.returnParameter.typeName == "Pointf")
-					argumentItem = new Argument<Point>((help.unitName + "." + method.name).toStdString());
+					argumentItem = new Argument<Point>(name);
+				else
+					continue;
 
-				initilizeArgumentItem(argumentItem, QPoint(argumentBlock->m_width + 30, y));
+				initilizeArgumentItem(*argumentItem,
+					argumentBlock->pos() + QPoint(argumentBlock->m_width + 30, 0));
 			}
-
-			y += argumentBlock->m_height + 30;
 		}
 	}
 }

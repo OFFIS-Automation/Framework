@@ -34,7 +34,7 @@ Item::Item()
 	m_outlineStyle.setBrush(Qt::white);
 	m_outlineStyle.setWidth(3);
 
-	m_fillStyle = Qt::lightGray;
+	m_fillStyle = Qt::gray;
 
 	updateItem();
 }

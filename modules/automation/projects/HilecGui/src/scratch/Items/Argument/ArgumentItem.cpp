@@ -77,7 +77,7 @@ ArgumentItem::Argument& ArgumentItem::addArgument(const std::string& name, const
 	else if (type == Item::Type::Condition)
 		defaultParameter = reinterpret_cast<Parameter*>(new DefaultCondition(enable));
 	else if (type == Item::Type::Point)
-		defaultParameter = reinterpret_cast<Parameter*>(new DefaultPoint());
+		defaultParameter = reinterpret_cast<Parameter*>(new DefaultPoint(enable));
 
 	defaultParameter->setParent(this);
 

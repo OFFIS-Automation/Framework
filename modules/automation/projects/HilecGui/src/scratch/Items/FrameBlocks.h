@@ -33,7 +33,7 @@ class StartBlock : public FrameBlock
 	public:
 		StartBlock(const std::string& name);
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*item, QWidget*widget);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget);
 
 		Block& clone() const;
 		void print(std::ostream& stream, unsigned indentationDepth = 0) const;
@@ -48,7 +48,7 @@ class EndBlock : public FrameBlock
 	public:
 		EndBlock();
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*item, QWidget*widget);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget);
 
 		Block& clone() const;
 		void print(std::ostream&stream, unsigned indentationDepth = 0) const;

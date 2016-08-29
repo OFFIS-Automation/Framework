@@ -35,20 +35,6 @@ DefaultCondition::DefaultCondition(const bool enable)
 	m_text.setEnabled(enable);
 
 	updateItem();
-}
-
-void DefaultCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
-{
-	QPainterPath outline;
-
-	drawOutline(outline);
-
-	painter->setBrush(m_fillStyle);
-	painter->setPen(m_outlineStyle);
-	painter->drawPath(outline);
-
-	painter->setPen(m_textStyle);
-	painter->setFont(m_font);
 
 	setAcceptDrops(false);
 }

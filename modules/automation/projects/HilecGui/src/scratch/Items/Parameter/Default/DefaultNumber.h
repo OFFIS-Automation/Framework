@@ -3,29 +3,16 @@
 
 #include <string>
 
-#include <QGraphicsTextItem>
-
 #include "../Parameter.h"
 #include "../Number.h"
+
+#include "NumberTextItem.h"
 
 namespace Scratch
 {
 
 class DefaultNumber : public Number
 {
-	private:
-		class NumberTextItem : public QGraphicsTextItem
-		{
-			public:
-				NumberTextItem(Parameter& parent);
-
-			protected:
-				void keyPressEvent(QKeyEvent* event);
-
-			private:
-				Parameter& m_parent;
-		};
-
 	public:
 		DefaultNumber(const bool enable = false);
 

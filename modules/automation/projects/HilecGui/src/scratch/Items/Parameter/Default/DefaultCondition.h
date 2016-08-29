@@ -29,8 +29,6 @@ class DefaultCondition : public Condition
 	public:
 		DefaultCondition(const bool enable = false);
 
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
-
 		Item& clone() const;
 		void print(std::ostream& stream) const;
 

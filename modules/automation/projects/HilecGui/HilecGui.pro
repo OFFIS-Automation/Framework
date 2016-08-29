@@ -103,7 +103,8 @@ HEADERS += \
     src/scratch/Gui/Dialogs/NewVariableDialog.h \
     src/scratch/Gui/ControlScene.h \
     src/scratch/Gui/FunctionView.h \
-    src/scratch/Items/Argument/Operation.h
+    src/scratch/Items/Argument/Operation.h \
+    src/scratch/Items/Parameter/Default/NumberTextItem.h
 
 SOURCES += \
 	src/HilecGui.cpp \
@@ -163,7 +164,8 @@ SOURCES += \
     src/scratch/Gui/Dialogs/NewFunctionDialog.cpp \
     src/scratch/Gui/Dialogs/NewVariableDialog.cpp \
     src/scratch/Gui/ControlScene.cpp \
-    src/scratch/Gui/FunctionView.cpp
+    src/scratch/Gui/FunctionView.cpp \
+    src/scratch/Items/Parameter/Default/NumberTextItem.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \

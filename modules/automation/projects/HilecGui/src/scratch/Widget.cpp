@@ -14,7 +14,6 @@
 
 #include "Items/ControlFlow/WhileBlock.h"
 #include "Items/ControlFlow/IfElseBlock.h"
-#include "Items/PassBlock.h"
 
 #include "Items/Argument/ArgumentBlock.h"
 #include "Items/Argument/ArgumentItem.h"
@@ -95,12 +94,8 @@ Widget::Widget(QWidget *parent)
 	getY->setPos(0, getX->pos().y() + getX->m_height + 30);
 	m_utilityScene.addItem(getY);
 
-	auto pass = new PassBlock();
-	pass->setPos(0, getY->pos().y() + getY->m_height + 30);
-	m_utilityScene.addItem(pass);
-
 	auto raise = new Argument<Block>("raise Exception");
-	raise->setPos(0, pass->pos().y() + pass->m_height + 30);
+	raise->setPos(0, getY->pos().y() + getY->m_height + 30);
 	m_utilityScene.addItem(raise);
 
 	auto sleep = new Argument<Block>("sleep");

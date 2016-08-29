@@ -98,7 +98,6 @@ HEADERS += \
     src/scratch/Items/Block.h \
     src/scratch/Items/FrameBlocks.h \
     src/scratch/Items/Item.h \
-    src/scratch/Items/PassBlock.h \
     src/scratch/Items/VariableItems.h \
     src/scratch/Gui/Dialogs/NewFunctionDialog.h \
     src/scratch/Gui/Dialogs/NewVariableDialog.h \
@@ -160,7 +159,6 @@ SOURCES += \
     src/scratch/Items/Block.cpp \
     src/scratch/Items/FrameBlocks.cpp \
     src/scratch/Items/Item.cpp \
-    src/scratch/Items/PassBlock.cpp \
     src/scratch/Items/VariableItems.cpp \
     src/scratch/Gui/Dialogs/NewFunctionDialog.cpp \
     src/scratch/Gui/Dialogs/NewVariableDialog.cpp \

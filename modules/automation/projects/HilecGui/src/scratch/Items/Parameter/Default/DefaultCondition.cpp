@@ -20,13 +20,7 @@ void DefaultCondition::ConditionTextItem::mousePressEvent(QGraphicsSceneMouseEve
 {
 	setPlainText(toPlainText() == "True"? "False" : "True");
 
-	updatePosition();
-}
-
-void DefaultCondition::ConditionTextItem::updatePosition()
-{
-	setPos(m_parent.m_width / 2 - boundingRect().width() / 2,
-		m_parent.m_height / 2 - boundingRect().height() / 2);
+	m_parent.updateItem();
 }
 
 DefaultCondition::DefaultCondition(const bool enable)
@@ -40,7 +34,7 @@ DefaultCondition::DefaultCondition(const bool enable)
 	m_text.setFont(m_font);
 	m_text.setEnabled(enable);
 
-	m_text.updatePosition();
+	updateItem();
 }
 
 void DefaultCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -61,16 +55,25 @@ void DefaultCondition::paint(QPainter* painter, const QStyleOptionGraphicsItem*,
 
 Item& DefaultCondition::clone() const
 {
-	auto& inputNumber = *(new DefaultCondition());
+	auto& item = *(new DefaultCondition());
 
-	inputNumber.m_text.setEnabled(true);
+	item.m_text.setEnabled(true);
 
-	return inputNumber;
+	return item;
 }
 
 void DefaultCondition::print(std::ostream& stream) const
 {
 	stream << m_text.toPlainText().toStdString();
+}
+
+bool DefaultCondition::updateItem()
+{
+	m_text.setPos(
+		m_width / 2 - m_text.boundingRect().width() / 2,
+		m_height / 2 - m_text.boundingRect().height() / 2);
+
+	return false;
 }
 
 void DefaultCondition::mousePressEvent(QGraphicsSceneMouseEvent* event)

@@ -57,11 +57,11 @@ DefaultNumber::DefaultNumber(const bool enable)
 
 Item& DefaultNumber::clone() const
 {
-	auto& inputNumber = *(new DefaultNumber());
+	auto& item = *(new DefaultNumber());
 
-	inputNumber.m_text.setTextInteractionFlags(Qt::TextEditable);
+	item.m_text.setTextInteractionFlags(Qt::TextEditable);
 
-	return inputNumber;
+	return item;
 }
 
 void DefaultNumber::print(std::ostream& stream) const

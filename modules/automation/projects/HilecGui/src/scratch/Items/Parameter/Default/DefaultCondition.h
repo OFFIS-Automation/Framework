@@ -19,8 +19,6 @@ class DefaultCondition : public Condition
 			public:
 				ConditionTextItem(DefaultCondition& parent);
 
-				void updatePosition();
-
 			protected:
 				void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
@@ -35,6 +33,8 @@ class DefaultCondition : public Condition
 
 		Item& clone() const;
 		void print(std::ostream& stream) const;
+
+		bool updateItem();
 
 	protected:
 		void mousePressEvent(QGraphicsSceneMouseEvent* event);

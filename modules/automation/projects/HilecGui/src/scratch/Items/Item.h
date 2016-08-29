@@ -19,7 +19,7 @@ namespace Scratch
 class Item : public QGraphicsItem
 {
 	public:
-		static const int s_margin = 15;
+		static const int s_margin = 10;
 
 		static Item& unpackItem(const QGraphicsSceneDragDropEvent& event);
 

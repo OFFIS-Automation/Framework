@@ -32,7 +32,7 @@ Item::Item()
 	m_textStyle.setBrush(Qt::white);
 
 	m_outlineStyle.setBrush(Qt::white);
-	m_outlineStyle.setWidth(4);
+	m_outlineStyle.setWidth(3);
 
 	m_fillStyle = Qt::lightGray;
 

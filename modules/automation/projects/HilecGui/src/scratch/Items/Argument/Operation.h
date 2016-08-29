@@ -66,7 +66,7 @@ void Operation<T>::paint(QPainter* painter, const QStyleOptionGraphicsItem* item
 	const auto& firstParameter = m_arguments.at(0).getParameter();
 
 	const auto position = QPointF(
-		firstParameter.pos().x() + firstParameter.m_width + s_margin / 2,
+		firstParameter.pos().x() + firstParameter.m_width + s_margin,
 		m_height / 2 + fontMetric.height() / 2);
 
 	painter->setPen(m_textStyle);
@@ -109,7 +109,7 @@ bool Operation<T>::updateItem()
 	};
 
 	setPosition(m_arguments.at(0));
-	position += fontMetric.width(QString::fromStdString(m_name)) + s_margin;
+	position += fontMetric.width(QString::fromStdString(m_name)) + 2 * s_margin;
 	setPosition(m_arguments.at(1));
 
 	// Set extends

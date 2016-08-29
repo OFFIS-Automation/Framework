@@ -28,7 +28,7 @@ void Condition::drawOutline(QPainterPath& path) const
 
 bool Condition::updateItem()
 {
-	m_horizontalMargin = m_height / 2;
+	m_horizontalMargin = m_height / 2 + m_outlineStyle.width();
 
 	return true;
 }

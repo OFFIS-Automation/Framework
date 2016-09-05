@@ -81,7 +81,7 @@ void FunctionTabWidget::addFunction(int index)
 	addTab(functionView, name.c_str());
 	setCurrentIndex(index);
 
-	auto& endBlock = *dynamic_cast<EndBlock*>(functionView->m_startBlock->m_successor);
+	auto& endBlock = *static_cast<EndBlock*>(functionView->m_startBlock->m_successor);
 
 	if (type != Item::Type::Block)
 		endBlock.addArgument("return", type, true);

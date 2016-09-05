@@ -8,7 +8,7 @@ namespace Scratch
 {
 
 ControlFlowBlock::ControlFlowBlock(const std::string& name, const size_t& numberOfBodies)
-	: ArgumentItem(name)
+	: Argument(name)
 {
 	m_bodies.resize(numberOfBodies);
 

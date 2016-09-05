@@ -6,13 +6,12 @@
 #include <vector>
 #include <algorithm>
 
-#include "../Block.h"
-#include "../Argument/ArgumentItem.h"
+#include "../Argument/ArgumentBlock.h"
 
 namespace Scratch
 {
 
-class ControlFlowBlock : public Block, public ArgumentItem
+class ControlFlowBlock : public Argument<Block>
 {
 	protected:
 		struct Body

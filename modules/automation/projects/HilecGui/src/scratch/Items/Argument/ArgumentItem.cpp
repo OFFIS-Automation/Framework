@@ -233,6 +233,7 @@ void ArgumentItem::addParameter(Parameter& parameter, Argument& argument)
 	argument.parameter = &parameter;
 
 	updateItem();
+	scene()->setSceneRect(scene()->itemsBoundingRect());
 }
 
 } // namespace Scratch

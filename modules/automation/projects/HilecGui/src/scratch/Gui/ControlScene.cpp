@@ -45,6 +45,8 @@ void ControlScene::dropEvent(QGraphicsSceneDragDropEvent* event)
 	event->setDropAction(Qt::MoveAction);
 
 	item->remove();
+
+	delete item;
 }
 
 } // namespace Scratch

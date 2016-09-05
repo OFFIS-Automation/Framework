@@ -207,8 +207,6 @@ bool ControlFlowBlock::updateItem()
 
 void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &offset)
 {
-	const auto dy = block.m_height - !bodyBlock * defaultHeight();
-
 	block.setPredecessorsReference(&bodyBlock);
 	block.setSuccessor(bodyBlock);
 	block.setParent(this);
@@ -217,6 +215,7 @@ void ControlFlowBlock::addBody(Block& block, Block*& bodyBlock, const QPoint &of
 	bodyBlock = &block;
 
 	updateItem();
+	scene()->setSceneRect(scene()->itemsBoundingRect());
 }
 
 } // namespace Scratch

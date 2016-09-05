@@ -54,7 +54,10 @@ void Item::setParent(Item* parent)
 
 void Item::remove()
 {
-	scene()->removeItem(this);
+	auto& scene = *this->scene();
+
+	scene.removeItem(this);
+	scene.setSceneRect(scene.itemsBoundingRect());
 
 	setParent(nullptr);
 }
@@ -91,7 +94,10 @@ void Item::addItem(Item& item)
 		m_parent->updateItem();
 	}
 	else
+	{
 		scene()->addItem(&item);
+		scene()->setSceneRect(scene()->itemsBoundingRect());
+	}
 }
 
 int Item::defaultHeight()

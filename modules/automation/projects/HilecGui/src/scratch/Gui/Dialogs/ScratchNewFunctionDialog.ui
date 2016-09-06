@@ -26,6 +26,9 @@
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -57,6 +60,9 @@
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="addParameterButton">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
      <property name="text">
       <string>Add Parameter</string>
      </property>
@@ -95,6 +101,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>name</tabstop>
+  <tabstop>type</tabstop>
+  <tabstop>addParameterButton</tabstop>
+  <tabstop>parameters</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

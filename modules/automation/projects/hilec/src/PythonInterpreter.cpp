@@ -31,7 +31,7 @@ PythonInterpreter::PythonInterpreter(const QString &configDir)
     : mDebugger(new PythonDebugger())
 {
     mConfigDir = configDir;
-    PyImport_AppendInittab("offisio", initIoModule);
+	PyImport_AppendInittab("offisio", initIoModule);
 }
 
 PythonInterpreter::~PythonInterpreter()
@@ -39,13 +39,15 @@ PythonInterpreter::~PythonInterpreter()
     mDebugger->step(PythonDebugger::Quit);
     wait();
     delete mDebugger;
+
+	Py_Finalize();
 }
 
 void PythonInterpreter::start(const QString &filename, const QString &baseDir)
 {
-    if(filename.isEmpty()){
+	if (filename.isEmpty())
         return;
-    }
+
     mBaseDir = baseDir;
     mFilename = filename;
     QThread::start();
@@ -53,35 +55,32 @@ void PythonInterpreter::start(const QString &filename, const QString &baseDir)
 
 void PythonInterpreter::run()
 {
+	Py_Initialize();
+
     qDebug() << "Python: Executing" << mFilename;
     mDebugger->step();
     QString last = QDir::currentPath();
     QDir::setCurrent(mBaseDir);
 
-    wchar_t path[2048], pName[2048];
-    memset(path, 0, sizeof(path));
-    memset(pName, 0, sizeof(pName));
-    wchar_t* pNamePtr = pName;
-    mFilename.toWCharArray(pName);
+	wchar_t path[2048];
+	memset(path, 0, sizeof(path));
 
-    Py_SetProgramName(pName);
-
-#ifdef Q_OS_WIN
-    QString(mBaseDir + ";" + mConfigDir + "/python").toWCharArray(path);
-#else
-    QString(mBaseDir + ":" + mConfigDir + "/python").toWCharArray(path);
-#endif
+	QString(
+		mBaseDir + ";"
+		+ mConfigDir + "/python;"
+		+ mConfigDir + "/python/site-packages;"
+		// Fall back to the system path
+		+ QString::fromWCharArray(Py_GetPath()) + ";"
+		+ QString::fromWCharArray(Py_GetPrefix()) + "/Lib/site-packages;"
+	).toWCharArray(path);
 
     Py_SetPath(path);
     mDebugger->initialize();
 
-    Py_Initialize();
-    PySys_SetArgvEx(1, &pNamePtr, 0);
     PyEval_SetTrace(PythonDebugger_Trace, 0);
     runFile(mConfigDir + "/python/offis/init.py");
     runFile(mFilename);
     UserRequestManager::instance()->abortAll();
-    Py_Finalize();
 
     mDebugger->deinitialize();
     QDir::setCurrent(last);
@@ -92,10 +91,11 @@ void PythonInterpreter::run()
 void PythonInterpreter::runFile(const QString &filename)
 {
     FILE* file = _Py_fopen(qPrintable(filename), "r");
-    if(!file){
+
+	if(!file)
         return;
-    }
-    int ret = PyRun_SimpleFile(file, qPrintable(filename));
+
+	PyRun_SimpleFile(file, qPrintable(filename));
     fclose(file);
 }
 

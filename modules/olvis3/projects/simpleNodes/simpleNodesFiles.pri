@@ -81,7 +81,7 @@ SOURCES += \
 	src/Webcam.cpp \
 	src/VideoStreamer.cpp \
 	src/VideoReceiver.cpp \
-    $$PWD/GStreamerInitializer.cpp
+	src/GStreamerInitializer.cpp
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -141,7 +141,7 @@ HEADERS += \
 	src/Webcam.h \
 	src/VideoStreamer.h \
 	src/VideoReceiver.h \
-    $$PWD/GStreamerInitializer.h
+	src/GStreamerInitializer.h
 
 RESOURCES += \
 	images/images.qrc

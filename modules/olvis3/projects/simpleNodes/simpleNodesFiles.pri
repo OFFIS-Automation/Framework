@@ -80,7 +80,8 @@ SOURCES += \
 	src/ColorPicker.cpp \
 	src/Webcam.cpp \
 	src/VideoStreamer.cpp \
-	src/VideoReceiver.cpp
+	src/VideoReceiver.cpp \
+    $$PWD/GStreamerInitializer.cpp
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -139,7 +140,8 @@ HEADERS += \
 	src/ColorPicker.h \
 	src/Webcam.h \
 	src/VideoStreamer.h \
-	src/VideoReceiver.h
+	src/VideoReceiver.h \
+    $$PWD/GStreamerInitializer.h
 
 RESOURCES += \
 	images/images.qrc

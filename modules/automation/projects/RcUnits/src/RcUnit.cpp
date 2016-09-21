@@ -15,19 +15,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RcUnit.h"
+
 #include <QMetaMethod>
 #include <QMetaObject>
-#include <QVector>
-#include <QDebug>
 #include <QStringList>
 #include <QRectF>
+#include <QVector>
 #include <QVector3D>
 #include <QVector4D>
-#include <rc/RcExceptions.h>
 #include <QDebug>
+
 #include "TcInvoker.h"
 #include "RcMethodInvoker.h"
-#include <QDebug>
+
+#include <rc/RcExceptions.h>
 #include <rc/types/RobotRcUnit.h>
 
 QMutex RcUnit::sNameListMutex;

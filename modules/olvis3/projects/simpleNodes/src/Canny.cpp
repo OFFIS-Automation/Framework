@@ -42,7 +42,7 @@ Canny::Canny()
     mRatio.setName("ratio");
     mRatio.setDesc(QObject::tr("The ratio between lower and upper threshold"));
     mRatio.setDefault(3.0);
-    mRatio.setRange(2, 3);
+    mRatio.setRange(1, 10);
     addInputPort(mRatio);
 
     mUseL1Gradient.setName("fastNormalization");

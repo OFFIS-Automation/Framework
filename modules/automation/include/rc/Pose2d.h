@@ -21,11 +21,11 @@ class Pose2d
 {
 public:
     Pose2d() : x(0), y(0), phi(0){}
-    Pose2d(float x_, float y_, float phi_): x(x_), y(y_), phi(phi_){}
+    Pose2d(double x_, double y_, double phi_): x(x_), y(y_), phi(phi_){}
     Pose2d(const Pose2d &other) : x(other.x), y(other.y), phi(other.phi){}
     Pose2d& operator=(const Pose2d& other) { x = other.x; y = other.y; phi = other.phi; return*this; }
 
-    float x, y, phi;
+    double x, y, phi;
 };
 
 inline const Pose2d operator+(const Pose2d& p1, const Pose2d& p2)

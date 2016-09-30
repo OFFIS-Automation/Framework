@@ -53,6 +53,7 @@ SOURCES += \
 	src/Overlay.cpp \
 	src/PathCreator.cpp \
 	src/PointInput.cpp \
+        src/PoseInput.cpp \
 	src/RectInput.cpp \
 	src/ResizeImage.cpp \
 	src/Rgb2Gray.cpp \
@@ -113,6 +114,7 @@ HEADERS += \
 	src/Overlay.h \
 	src/PathCreator.h \
 	src/PointInput.h \
+        src/PoseInput.h \
 	src/RectInput.h \
 	src/ResizeImage.h \
 	src/Rgb2Gray.h \

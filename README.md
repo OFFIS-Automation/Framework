@@ -19,10 +19,31 @@ review the guidelines written by [Nicolas Gallagher](https://github.com/necolas/
 * [Feature requests](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#features)
 * [Pull requests](https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests)
 
-## Integrated / Included Frameworks
+## Open Source Software Attribution
 
-* [Qt](http://www.qt.io/download-open-source/)
-* [QScintilla](http://www.riverbankcomputing.com/software/qscintilla/intro)
+<h3><a href="">Gstreamer</a></h3>
+Gstreamer is licensed under <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">GNU Lesser General Public License (LGPL) v3</a>.
+ 
+<h3><a href="http://opencv.org/">OpenCV</a></h3>
+OpenCV is licensed under <a href="http://opencv.org/license.html">3-clause BSD License</a>.
+
+<h3><a href="https://python.org">Python</a></h3>
+Python is licensed under the <a href="https://docs.python.org/3/license.html">Python Software Foundation Licensen</a>. 
+
+<h3><a href="https://www.riverbankcomputing.com/software/qscintilla/intro">QScintilla 2.9.3 by Riverbank Computing Limited</a></h3>
+QScintilla is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License (GPL) v3</a>.
+
+<h3><a href="https://www.qt.io/">Qt</a></h3>
+Qt is licensed under <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">GNU Lesser General Public License (LGPL) v3</a>.
+
+<h3><a href="https://github.com/OFFIS-Automation/qt-remote-signals">qt-remote-signals</a></h3>
+qt-remote-signals is licensed under <a href="https://opensource.org/licenses/MIT">MIT License (MIT)</a>.
+
+<h3><a href="http://www.famfamfam.com/lab/icons/silk/">Silk Icons 1.3 by FamFamFam</a></h3>
+Silk Icons are licensed under <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
+
+<h3><a href="https://winsparkle.org/">WinSparkle</a></h3>
+No license was given for WinSparkle. 
 
 # Scientific publications
 

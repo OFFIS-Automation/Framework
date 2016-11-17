@@ -50,7 +50,7 @@ void shutdownRequestCallback()
 
 int main(int argc, char *argv[])
 {
-    Application a(argc, argv);
+    QApplication a(argc, argv);
     a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
     a.setOrganizationName("OFFIS - Institut fuer Informatik");
     a.setApplicationName("OFFIS Automation Framework");
@@ -58,6 +58,11 @@ int main(int argc, char *argv[])
     if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
         a.setStyle(QStyleFactory::create("Fusion"));
     }
+
+    QFont newFont("Helvetica", 10, QFont::ExtraLight);
+    a.setFont(newFont);
+    a.setStyleSheet("QAbstractButton, QComboBox, QLabel, QLineEdit { min-height: 30px; };"
+                    "QToolButton { qproperty-iconSize: 30px 30px; };");
 
     // Init winSparkle, Setup update feeds.
     wchar_t charVersion[256];

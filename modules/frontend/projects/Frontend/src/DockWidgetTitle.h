@@ -47,7 +47,6 @@ public slots:
 private slots:
     void on_switchWindow_clicked();
     void on_switchFloat_clicked();
-
     void on_makeCentral_clicked();
 };
 

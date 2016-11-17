@@ -26,6 +26,9 @@
       <property name="frameShape">
        <enum>QFrame::Box</enum>
       </property>
+      <property name="autoScrollMargin">
+       <number>27</number>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::EditKeyPressed</set>
       </property>
@@ -37,6 +40,12 @@
       </property>
       <property name="defaultDropAction">
        <enum>Qt::MoveAction</enum>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
       </property>
       <property name="uniformRowHeights">
        <bool>true</bool>

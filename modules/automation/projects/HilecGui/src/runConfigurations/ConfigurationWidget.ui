@@ -29,6 +29,9 @@
       <property name="frameShape">
        <enum>QFrame::Box</enum>
       </property>
+      <property name="autoScrollMargin">
+       <number>30</number>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::EditKeyPressed</set>
       </property>
@@ -37,6 +40,18 @@
       </property>
       <property name="defaultDropAction">
        <enum>Qt::MoveAction</enum>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="gridSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
       </property>
       <property name="sortingEnabled">
        <bool>false</bool>
@@ -154,8 +169,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../images/images.qrc"/>
   <include location="../../../ProjectEditor/images/images.qrc"/>
+  <include location="../../images/images.qrc"/>
  </resources>
  <connections/>
 </ui>

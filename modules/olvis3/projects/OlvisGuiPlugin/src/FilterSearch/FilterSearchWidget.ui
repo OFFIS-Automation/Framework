@@ -10,9 +10,6 @@
     <height>416</height>
    </rect>
   </property>
-  <property name="toolTip">
-   <string>Clear the search</string>
-  </property>
   <property name="windowTitle">
    <string>Filter overview</string>
   </property>
@@ -74,10 +71,16 @@
            <property name="checked">
             <bool>false</bool>
            </property>
+           <property name="tristate">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton">
+           <property name="toolTip">
+            <string>Clear the search</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -215,12 +218,12 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>164</x>
-     <y>108</y>
+     <x>166</x>
+     <y>137</y>
     </hint>
     <hint type="destinationlabel">
-     <x>76</x>
-     <y>110</y>
+     <x>87</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
@@ -231,12 +234,12 @@
    <slot>collapseAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>266</x>
-     <y>112</y>
+     <x>252</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>238</x>
-     <y>410</y>
+     <x>248</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>
@@ -247,12 +250,12 @@
    <slot>expandAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>237</x>
-     <y>112</y>
+     <x>223</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>410</y>
+     <x>188</x>
+     <y>396</y>
     </hint>
    </hints>
   </connection>
@@ -263,12 +266,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>173</x>
-     <y>97</y>
+     <x>190</x>
+     <y>140</y>
     </hint>
     <hint type="destinationlabel">
-     <x>70</x>
-     <y>105</y>
+     <x>81</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>

@@ -116,6 +116,12 @@ void MainWindow::setCentralDockWidget(QDockWidget *dock)
 
     mLayout->addWidget(dock);
     dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    if(dock->widget()){
+        QMargins margins = dock->widget()->contentsMargins();
+        margins.setTop(margins.top() + 18);
+        dock->widget()->setContentsMargins(margins);
+    }
+
     if(mLayout->count() > 1){
         QDockWidget* current = qobject_cast<QDockWidget*>(mLayout->itemAt(0)->widget());
         if(current && current != dock){
@@ -123,6 +129,11 @@ void MainWindow::setCentralDockWidget(QDockWidget *dock)
             addDockWidget(area, current);
 
             current->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable);
+            if(current->widget()){
+                QMargins margins = current->widget()->contentsMargins();
+                margins.setTop(margins.top() - 18);
+                current->widget()->setContentsMargins(margins);
+            }
             current->setVisible(true);
         }
     }

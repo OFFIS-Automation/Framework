@@ -25,9 +25,7 @@ public:
     SimpleShapeOverlay(QString name);
     virtual void paint(QPainter& painter, bool showControls);
     virtual void paintElement(QPainter& painter, const QVariant& element);
-
     virtual void setPortId(const PortId &portId, bool output);
-
     virtual void paintLegendSymbol(QPainter& painter, const QRect& rect);
 
 protected:

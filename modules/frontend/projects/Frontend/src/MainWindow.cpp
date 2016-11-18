@@ -15,10 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "MainWindow.h"
-#include <QMouseEvent>
+
 #include "LogWindow.h"
 #include "DockWidgetTitle.h"
+
 #include <interfaces/logging.h>
+#include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QMenuBar>
 #include <QToolBar>

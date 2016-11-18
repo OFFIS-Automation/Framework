@@ -66,7 +66,12 @@ void SimpleShapeOverlay::paintElement(QPainter &painter, const QVariant &element
         painter.drawLine(point - QPointF(0, 5), point + QPointF(0, 5));
         painter.drawLine(point - QPointF(5, 0), point + QPointF(5, 0));
     } else if (mPortTypeName == "Polygon") {
-        painter.drawPolygon(port::Polygon::fromVariant(element).translated(QPointF(0.5, 0.5)));
+        QPolygonF poly = port::Polygon::fromVariant(element).translated(QPointF(0.5, 0.5));
+        if(poly.isClosed()){
+            painter.drawPolygon(poly);
+        } else {
+            painter.drawPolyline(poly);
+        }
     } else if (mPortTypeName == "Pose2d") {
         Pose2d pose = port::Pose2d::fromVariant(element);
         QPointF point = QPoint(pose.x, pose.y) + QPointF(0.5, 0.5);

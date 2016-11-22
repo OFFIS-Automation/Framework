@@ -14,28 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HILEC_POSE2D_H
-#define HILEC_POSE2D_H
+#include "PoseInput.h"
 
-class Pose2d
+REGISTER_FILTER(PoseInput);
+
+PoseInput::PoseInput()
 {
-public:
-    Pose2d() : x(0), y(0), phi(0){}
-    Pose2d(double x_, double y_, double phi_): x(x_), y(y_), phi(phi_){}
-    Pose2d(const Pose2d &other) : x(other.x), y(other.y), phi(other.phi){}
-    Pose2d& operator=(const Pose2d& other) { x = other.x; y = other.y; phi = other.phi; return*this; }
+    setName(tr("Pose"));
+    setDesc(QObject::tr("Pose input filter for the automation"));
+    setGroup("automation/input");
 
-    double x, y, phi;
-};
+    mIn.setName("input pose");
+    mIn.setMode(SingleShotPortMode);
 
-inline const Pose2d operator+(const Pose2d& p1, const Pose2d& p2)
-{
-    return Pose2d(p1.x + p2.x, p1.y + p2.y, p1.phi + p2.phi);
+    mOut.setName("output pose");
+
+    mUpdated.setName("updated");
+    mUpdated.setVisibility(ExpertPortVisibility);
+
+    addInputPort(mIn);
+    addOutputPort(mOut);
+    addOutputPort(mUpdated);
 }
 
-inline const Pose2d operator-(const Pose2d& p1, const Pose2d& p2)
+void PoseInput::execute()
 {
-    return Pose2d(p1.x - p2.x, p1.y - p2.y, p1.phi - p2.phi);
+    bool updated = mIn.hasValue();
+    if(updated){
+       mOut.send(mIn.getValue());
+    }
+    mUpdated.send(updated);
 }
-
-#endif // HILEC_POSE2D_H

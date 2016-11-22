@@ -36,18 +36,23 @@ LIBS += -L$${targetDir}/plugins -lRcUnits
 
 # Python
 INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Include
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PC
+INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PC # Legacy, should be removed soon
 LIBS        += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/libs
 
-pylibs.path      = $${DESTDIR}/hilec/python
-pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
-INSTALLS        += pylibs
+#DEFINES += NO_BUNDLED_PYTHON
 
-pyDlls.path   = $${DESTDIR}
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/python*.dll
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/python*.exe
-pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/bin/python*.pdb
-INSTALLS     += pyDlls
+!contains(DEFINES, NO_BUNDLED_PYTHON) {
+	pylibs.path      = $${DESTDIR}/hilec/python
+	pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
+	pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/DLLs/*.pyd
+	INSTALLS        += pylibs
+
+	pyDlls.path   = $${DESTDIR}
+	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.dll
+	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.exe
+	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.pdb
+	INSTALLS     += pyDlls
+}
 
 amirlibs.path    = $${DESTDIR}/hilec/python
 amirlibs.files  += $${PWD}/python/*

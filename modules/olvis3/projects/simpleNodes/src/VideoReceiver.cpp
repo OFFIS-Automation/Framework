@@ -22,6 +22,7 @@
 #include <gst/app/gstappsink.h>
 
 #include "VideoReceiver.h"
+#include "GStreamerInitializer.h"
 
 REGISTER_FILTER(VideoReceiver);
 
@@ -48,8 +49,6 @@ VideoReceiver::VideoReceiver()
 	addOutputPort(m_frameOut);
 
 	// Gstreamer
-
-	gst_init(nullptr, nullptr);
 
 	m_loop = g_main_loop_new(nullptr, false);
 	m_source = gst_element_factory_make("udpsrc", "videosource");

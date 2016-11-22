@@ -53,6 +53,7 @@ SOURCES += \
 	src/Overlay.cpp \
 	src/PathCreator.cpp \
 	src/PointInput.cpp \
+        src/PoseInput.cpp \
 	src/RectInput.cpp \
 	src/ResizeImage.cpp \
 	src/Rgb2Gray.cpp \
@@ -80,7 +81,8 @@ SOURCES += \
 	src/ColorPicker.cpp \
 	src/Webcam.cpp \
 	src/VideoStreamer.cpp \
-	src/VideoReceiver.cpp
+	src/VideoReceiver.cpp \
+	src/GStreamerInitializer.cpp
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -112,6 +114,7 @@ HEADERS += \
 	src/Overlay.h \
 	src/PathCreator.h \
 	src/PointInput.h \
+        src/PoseInput.h \
 	src/RectInput.h \
 	src/ResizeImage.h \
 	src/Rgb2Gray.h \
@@ -139,7 +142,8 @@ HEADERS += \
 	src/ColorPicker.h \
 	src/Webcam.h \
 	src/VideoStreamer.h \
-	src/VideoReceiver.h
+	src/VideoReceiver.h \
+	src/GStreamerInitializer.h
 
 RESOURCES += \
 	images/images.qrc

@@ -82,7 +82,6 @@ QPolygonF in::Polygon::getValue()
     return fromVariant(getRawValue());
 }
 
-
 void out::Polygon::send(const QPolygonF& value)
 {
     sendRaw(variant(value));
@@ -95,4 +94,3 @@ void out::Polygon::send(const std::vector<cv::Point> &pointList)
         poly << (port::Point::qpoint(pointList[j]));
     send(poly);
 }
-

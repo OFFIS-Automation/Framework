@@ -15,13 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "MainWindow.h"
-#include <QMouseEvent>
+
 #include "LogWindow.h"
 #include "DockWidgetTitle.h"
+
 #include <interfaces/logging.h>
+#include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QMenuBar>
 #include <QToolBar>
+
+#define MARGIN_OFFSET_DOCK_WIDGET 5
 
 MainWindow::MainWindow(QWidget *parent, bool setupCentral) :
     QMainWindow(parent) , mOther(0)
@@ -116,6 +120,15 @@ void MainWindow::setCentralDockWidget(QDockWidget *dock)
 
     mLayout->addWidget(dock);
     dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+    // Update margins by adding headspace
+    // This will correct QDockWigets "false" margin calculation with NoDockWidgetFeatures
+    if(dock->widget()){
+        QMargins margins = dock->widget()->contentsMargins();
+        margins.setTop(margins.top() + MARGIN_OFFSET_DOCK_WIDGET);
+        dock->widget()->setContentsMargins(margins);
+    }
+
     if(mLayout->count() > 1){
         QDockWidget* current = qobject_cast<QDockWidget*>(mLayout->itemAt(0)->widget());
         if(current && current != dock){
@@ -123,6 +136,13 @@ void MainWindow::setCentralDockWidget(QDockWidget *dock)
             addDockWidget(area, current);
 
             current->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable);
+
+            // Update margins, remove headspace
+            if(current->widget()){
+                QMargins margins = current->widget()->contentsMargins();
+                margins.setTop(margins.top() - MARGIN_OFFSET_DOCK_WIDGET);
+                current->widget()->setContentsMargins(margins);
+            }
             current->setVisible(true);
         }
     }

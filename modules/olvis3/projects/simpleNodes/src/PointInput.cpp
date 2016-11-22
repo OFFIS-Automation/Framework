@@ -23,7 +23,7 @@ PointInput::PointInput(bool list)
 {
     mAsList = list;
     setName(list ? "PointList" : "Point");
-    setDesc(QObject::tr("Input filter for the automation"));
+    setDesc(QObject::tr("Point input filter for the automation"));
     setGroup("automation/input");
 
     mIn.setName(list ? "input point" : "input points");

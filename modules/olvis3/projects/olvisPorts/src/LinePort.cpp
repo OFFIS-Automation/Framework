@@ -17,13 +17,10 @@
 #include <ports/LinePort.h>
 #include <core/PortInfo.h>
 
-
-
 port::Line::Line() : Port(QVariant::LineF, "Line")
 {
     setIcon(QImage(":/defaultPorts/images/chart_line.png"));
 }
-
 
 QString port::Line::toString(const QVariant& var) const
 {
@@ -68,10 +65,7 @@ QLineF in::Line::getValue()
     return getRawValue().toLineF();
 }
 
-
 void out::Line::send(const QLineF& value)
 {
     sendRaw(value);
 }
-
-

@@ -14,28 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HILEC_POSE2D_H
-#define HILEC_POSE2D_H
+#ifndef POSEINPUT_H
+#define POSEINPUT_H
 
-class Pose2d
+#include <filter/PluginInterface.h>
+#include <ports/PosePort.h>
+#include <ports/BooleanPort.h>
+#include <ports/PolygonPort.h>
+
+class PoseInput : public UserFilter
 {
 public:
-    Pose2d() : x(0), y(0), phi(0){}
-    Pose2d(double x_, double y_, double phi_): x(x_), y(y_), phi(phi_){}
-    Pose2d(const Pose2d &other) : x(other.x), y(other.y), phi(other.phi){}
-    Pose2d& operator=(const Pose2d& other) { x = other.x; y = other.y; phi = other.phi; return*this; }
-
-    double x, y, phi;
+    PoseInput();
+    virtual void execute();
+protected:
+    in::Pose2d mIn;
+    out::Pose2d mOut;
+    out::Boolean mUpdated;
 };
 
-inline const Pose2d operator+(const Pose2d& p1, const Pose2d& p2)
-{
-    return Pose2d(p1.x + p2.x, p1.y + p2.y, p1.phi + p2.phi);
-}
-
-inline const Pose2d operator-(const Pose2d& p1, const Pose2d& p2)
-{
-    return Pose2d(p1.x - p2.x, p1.y - p2.y, p1.phi - p2.phi);
-}
-
-#endif // HILEC_POSE2D_H
+#endif // POSEINPUT_H

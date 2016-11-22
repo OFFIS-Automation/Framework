@@ -21,7 +21,7 @@ REGISTER_FILTER(PhysicalImageSize);
 PhysicalImageSize::PhysicalImageSize()
 {
     setName("PhysicalImageSize");
-    setDesc(QObject::tr("Inverts the image"));
+    setDesc(QObject::tr("Outputs a scale bar for image measurments"));
     setGroup("measurement");
 
     mOut.setName("imageOut");
@@ -32,7 +32,7 @@ PhysicalImageSize::PhysicalImageSize()
     mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
-    mMPerPixel.setName("m/pixel");
+    mMPerPixel.setName("mm/pixel");
     addOutputPort(mMPerPixel);
 
     mTotalWidth.setName("width");

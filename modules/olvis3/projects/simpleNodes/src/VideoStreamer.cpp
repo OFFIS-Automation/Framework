@@ -19,6 +19,7 @@
 #include <gst/app/gstappsrc.h>
 
 #include "VideoStreamer.h"
+#include "GStreamerInitializer.h"
 
 REGISTER_FILTER(VideoStreamer);
 
@@ -56,8 +57,6 @@ VideoStreamer::VideoStreamer()
 	addInputPort(m_frameIn);
 
 	// Gstreamer
-
-	gst_init(nullptr, nullptr);
 
 	m_loop = g_main_loop_new(nullptr, false);
 	m_source = gst_element_factory_make("appsrc", "cvsource");

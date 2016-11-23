@@ -43,7 +43,7 @@ qt-remote-signals is licensed under <a href="https://opensource.org/licenses/MIT
 Silk Icons are licensed under <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
 
 <h3><a href="https://winsparkle.org/">WinSparkle</a></h3>
-No license was given for WinSparkle. 
+WinSparkle is licensed under <a href="https://opensource.org/licenses/MIT">MIT License (MIT)</a>.
 
 # Scientific publications
 

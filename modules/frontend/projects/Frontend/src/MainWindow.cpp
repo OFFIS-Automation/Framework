@@ -19,7 +19,6 @@
 #include "LogWindow.h"
 #include "DockWidgetTitle.h"
 
-#include <interfaces/logging.h>
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QMenuBar>

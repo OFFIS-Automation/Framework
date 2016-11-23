@@ -19,7 +19,6 @@
 
 #include <QMainWindow>
 #include <QMenu>
-#include "logging.h"
 
 class PerspectiveInterface
 {

@@ -34,7 +34,6 @@
 #include "version.h"
 #include "qglobal.h"
 
-#include <interfaces/logging.h>
 #include <LogWindow.h>
 #include <winsparkle.h>
 

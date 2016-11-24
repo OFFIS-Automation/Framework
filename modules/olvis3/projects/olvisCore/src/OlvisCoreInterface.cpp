@@ -1381,12 +1381,12 @@ void OlvisCoreInterface::start()
         return;
     if(!check())
         return;
-    qDebug() << "starting";
+    qDebug() << tr("Trying to start processor …");
     mTraceId++;
     Tracer::instance().trace(Tracer::SystemStarted, 0, 0, mTraceId);
     foreach(Processor* p, mProcessors)
         p->start();
-    qDebug() << "started";
+    qDebug() << tr("Processor started …");
     QMutexLocker lock(&mStopWaitMutex);
     mIsRunning = true;
     emit executionStarted();
@@ -1398,7 +1398,7 @@ void OlvisCoreInterface::stop()
         return;
     foreach(Processor* p, mProcessors)
         p->stop();
-    qDebug() << "Stopping ...";
+    qDebug() << tr("Stopping image processing …");
 }
 
 bool OlvisCoreInterface::waitForStop(uint timeout)
@@ -1421,7 +1421,7 @@ void OlvisCoreInterface::onProcessorFinished()
     if(!allFinished)
         return;
     Tracer::instance().trace(Tracer::SystemStopped, 0, 0, mTraceId);
-    qDebug() << "Execution has ended";
+    qDebug() << tr("Processor execution has ended");
     QMutexLocker lock(&mStopWaitMutex);
     mIsRunning = false;
     mStopWait.wakeAll();

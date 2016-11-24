@@ -17,21 +17,35 @@
 #ifndef WEBCAM_H
 #define WEBCAM_H
 
+#include "CameraFrameGrabber.h"
+
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
+#include <ports/StringPort.h>
 
 #include <QCamera>
+#include <QMutex>
 
 class Webcam : public UserFilter
 {
+    Q_OBJECT
 public:
     Webcam();
     virtual void execute();
     virtual void initialize();
     virtual void deinitialize();
+
+public slots:
+    void handleFrame(QImage frame);
+
 protected:
+    in::String mCameraName;
     out::Image mOut;
+
+    QImage mCurrentImage;
     QCamera *mCamera;
+    CameraFrameGrabber *mCameraFrameGrabber;
+    QMutex mImageMutex;
 };
 
 

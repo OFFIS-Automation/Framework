@@ -34,7 +34,7 @@ Widget::Widget(QWidget *parent)
 
 void Widget::keyPressEvent(QKeyEvent *event)
 {
-	if(event->key() == Qt::Key_G)
+	if (event->key() == Qt::Key_G || event->key() == Qt::Key_S || event->key() == Qt::Key_L)
 		event->accept();
 	else
 		event->ignore();
@@ -42,13 +42,13 @@ void Widget::keyPressEvent(QKeyEvent *event)
 
 void Widget::keyReleaseEvent(QKeyEvent *event)
 {
-	if(event->key() == Qt::Key_G)
+	const auto& page = m_ui->webView->page();
+
+	if (event->key() == Qt::Key_G)
 	{
 		event->accept();
 
-		const auto& webView = m_ui->webView;
-
-		webView->page()->runJavaScript("Blockly.Python.workspaceToCode(workspace)",
+		page->runJavaScript("Blockly.Python.workspaceToCode(workspace)",
 			[](const QVariant& variant)
 			{
 				auto& hilec = *HilecSingleton::hilec();
@@ -91,8 +91,56 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 				hilec.runFile(filename);
 			});
-
+	}
+	else if (event->key() == Qt::Key_S)
+	{
 		event->accept();
+
+		page->runJavaScript(
+			"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace))",
+			[](const QVariant& variant)
+			{
+				auto& hilec = *HilecSingleton::hilec();
+
+				const auto& basedir = hilec.getBaseDir();
+				const auto filename = "blockly.xml";
+
+				QFile outputFile(basedir + "/" + filename);
+				outputFile.remove();
+
+				outputFile.open(QFile::ReadWrite);
+				QTextStream outputStream(&outputFile);
+
+				outputStream << variant.toString();
+
+				outputStream.flush();
+			});
+	}
+	else if (event->key() == Qt::Key_L)
+	{
+		event->accept();
+
+		auto& hilec = *HilecSingleton::hilec();
+
+		const auto& basedir = hilec.getBaseDir();
+		const auto filename = "blockly.xml";
+
+		QFile inputFile(basedir + "/" + filename);
+
+		inputFile.open(QFile::ReadOnly | QFile::Text);
+		QTextStream inputStream(&inputFile);
+
+		auto xml = inputStream.readAll().toStdString();
+
+		// Escape all quotes
+		for (size_t n = xml.find("\"", 0); n != std::string::npos; n = xml.find("\"", n))
+		{
+			xml.insert(n, "\\");
+			n+=2;
+		}
+
+		page->runJavaScript(("workspace.clear();Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(\""
+			+ xml + "\"), workspace);").c_str());
 	}
 
 	event->ignore();

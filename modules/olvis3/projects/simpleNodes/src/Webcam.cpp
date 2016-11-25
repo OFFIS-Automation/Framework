@@ -28,8 +28,8 @@ REGISTER_FILTER(Webcam);
 
 Webcam::Webcam()
 {
-    setName("Webcam");
-    setDesc(QObject::tr("Outputs data from a webcam"));
+    setName("Simple camera");
+    setDesc(QObject::tr("Outputs data from a camera"));
     setGroup("input");
 
     mCameraName.setName("camera");

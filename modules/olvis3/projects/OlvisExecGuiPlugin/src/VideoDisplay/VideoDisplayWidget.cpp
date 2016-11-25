@@ -38,6 +38,7 @@
 #include <QMutexLocker>
 #include <QAction>
 #include <QMimeData>
+#include <QGraphicsDropShadowEffect>
 
 #include <QDebug>
 #include <QPalette>
@@ -48,7 +49,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-#include <QGraphicsDropShadowEffect>
+
 
 VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
 #ifdef OPEN_GL
@@ -57,7 +58,7 @@ VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
     QWidget(parent),
 #endif
     mModel(OlvisSingleton::instance()), mScaleToFit(false), mHorizontalFlip(false), mVerticalFlip(false), mScale(1.0), mOffset(0, 0),
-    mIncrementScaler(1.0), mRecorder(this), mMainOverlay(0), mActiveOverlay(0), mFont(font()), mNumberDragInput(NoNumberDrag)
+    mIncrementScaler(1.0), mRecorder(this), mMainOverlay(0), mActiveOverlay(0), mFont(font()), mNumberDragInput(NoNumberDrag), mRate(-1.0)
 {
     //setAttribute(Qt::WA_OpaquePaintEvent, true);
     setAutoFillBackground(false);
@@ -67,7 +68,6 @@ VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
     connect(&mModel, SIGNAL(filterDeleted(FilterInfo)), this, SLOT(deleteListeners(FilterInfo)));
     connect(this, SIGNAL(valueChanged(PortId,QVariant)), &mModel, SLOT(setPortValue(PortId,QVariant)));
     connect(&mModel, SIGNAL(portValueChanged(int,QString,QVariant)), this, SLOT(portValueChanged(int,QString,QVariant)));
-
 
     mFont.setPixelSize(20);
 
@@ -203,8 +203,10 @@ void VideoDisplayWidget::setOffset(int dx, int dy)
 
 void VideoDisplayWidget::dataChanged(OverlayInterface *source)
 {
-    if (source == mMainOverlay)
+    if (source == mMainOverlay){
+        mRate = mUpdateTimer.restart();
         emit newData();
+    }
     if (mTimer.elapsedSeconds() > 0.03) {
         mTimer.restart();
         emit threadSaveUpdate();
@@ -268,7 +270,6 @@ void VideoDisplayWidget::removeInfo()
         mToolbar->show();
     update();
 }
-
 
 void VideoDisplayWidget::paintEvent(QPaintEvent*)
 {
@@ -377,7 +378,9 @@ void VideoDisplayWidget::paintEvent(QPaintEvent*)
             p.setFont(mFont);
             QSize size = imageSize();
             p.fillRect(r, QColor(0, 0, 0, 127));
-            p.drawText(r, Qt::AlignLeft, tr("Size: %1 x %2\nRate: %3", "rate is update rate (Hz)").arg(size.width()).arg(size.height()).arg(1000.0/imageRate()));
+            if(mMainOverlay){
+                p.drawText(r, Qt::AlignLeft, tr("Size: %1 x %2\nRate: %3", "rate is update rate (Hz)").arg(size.width()).arg(size.height()).arg(1000.0/imageRate()));
+            }
         }
     }
 }
@@ -391,7 +394,8 @@ QSize VideoDisplayWidget::imageSize()
 
 double VideoDisplayWidget::imageRate()
 {
-    // TODO
+    if (mMainOverlay)
+        return mRate;
     return 0.0;
 }
 

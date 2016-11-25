@@ -41,8 +41,14 @@ public:
         process.start(dir + "/compile.bat", QStringList(QFileInfo(mFile).canonicalFilePath()) << mBase);
         if(!process.waitForFinished(5000))
         {
-            qDebug() << process.readAllStandardOutput();;
-            qWarning() << process.readAllStandardError();
+            QByteArray standardOutput = process.readAllStandardOutput();
+            if(!standardOutput.isEmpty()){
+                qDebug() << standardOutput;
+            }
+            QByteArray standardError = process.readAllStandardError();
+            if(!standardError.isEmpty()){
+                qDebug() << standardError;
+            }
             process.kill();
             return;
         }

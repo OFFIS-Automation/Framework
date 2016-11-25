@@ -17,14 +17,30 @@
 #include "Webcam.h"
 
 #include <QCameraInfo>
+#include <QCameraImageCapture>
+#include <QMutexLocker>
+
+#include <opencv2/imgproc.hpp>
+
+using namespace cv;
 
 REGISTER_FILTER(Webcam);
 
 Webcam::Webcam()
 {
-    setName("Webcam");
-    setDesc(QObject::tr("Outputs data from a webcam"));
+    setName("Simple camera");
+    setDesc(QObject::tr("Outputs data from a camera"));
     setGroup("input");
+
+    mCameraName.setName("camera");
+    mCameraName.setDesc(QObject::tr("Selected camera for output"));
+
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &cameraInfo, cameras) {
+        mCameraName.addChoice(cameraInfo.description());
+    }
+    mCameraName.setDefault(QCameraInfo::defaultCamera().description());
+    addInputPort(mCameraName);
 
     mOut.setName("imageOut");
     mOut.setDesc(QObject::tr("Image output"));
@@ -33,13 +49,64 @@ Webcam::Webcam()
 
 void Webcam::execute()
 {
+    // Check if user might has changed the cameraName
+    if(QCameraInfo(*mCamera).description() != mCameraName){
+        mCamera->stop();
+        initialize();
+    }
 
+    QMutexLocker lock(&mImageMutex);
+    if(mCurrentImage.isNull()){
+       mOut.send(Mat());
+    }
+
+    Mat mat;
+    switch (mCurrentImage.format()) {
+    case QImage::Format_RGB888:{
+       mat = Mat(mCurrentImage.height(), mCurrentImage.width(), CV_8UC3, mCurrentImage.bits(), mCurrentImage.bytesPerLine());
+
+    }
+    case QImage::Format_Indexed8:{
+       mat = Mat(mCurrentImage.height(), mCurrentImage.width(), CV_8U, mCurrentImage.bits(), mCurrentImage.bytesPerLine());
+    }
+    case QImage::Format_RGB32:
+        mCurrentImage = mCurrentImage.convertToFormat(QImage::Format_ARGB32);
+    case QImage::Format_ARGB32:
+    case QImage::Format_ARGB32_Premultiplied:{
+        mat = Mat(mCurrentImage.height(), mCurrentImage.width(), CV_8UC4, mCurrentImage.bits(), mCurrentImage.bytesPerLine());
+    }
+    default:
+        break;
+    }
+    mOut.send(mat.clone());
 }
 
 void Webcam::initialize()
 {
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &cameraInfo, cameras) {
+        if(cameraInfo.description() == mCameraName){
+            mCamera = new QCamera(cameraInfo);
+            mCamera->setCaptureMode(QCamera::CaptureVideo);
+
+            mCameraFrameGrabber = new CameraFrameGrabber();
+            mCamera->setViewfinder(mCameraFrameGrabber);
+            connect(mCameraFrameGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(handleFrame(QImage)));
+
+            mCamera->start();
+
+            break;
+        }
+    }
 }
 
 void Webcam::deinitialize()
 {
+    mCamera->stop();
+}
+
+void Webcam::handleFrame(QImage frame)
+{
+    QMutexLocker lock(&mImageMutex);
+    mCurrentImage = frame.copy();
 }

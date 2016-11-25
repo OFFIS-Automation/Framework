@@ -16,7 +16,7 @@
 
 #include "LogWindow.h"
 #include "ui_LogWindow.h"
-#include <interfaces/logging.h>
+
 #include <QMainWindow>
 #include <QLabel>
 
@@ -41,11 +41,10 @@ LogWindow::LogWindow(QWidget *parent) :
     ui->plainTextEdit->setMaximumBlockCount(200);
     mHighlighter = new LogSyntaxHighlighter(ui->plainTextEdit->document());
 
-    addLogType(InfoLogType, tr("Info"), "INF", QColor(64, 64, 64));
+    addLogType(QtDebugMsg, tr("Debug"), "DBG", Qt::blue);
     addLogType(QtWarningMsg, tr("Warning"), "WRN", Qt::darkYellow);
     addLogType(QtCriticalMsg, tr("Error"), "ERR", Qt::red);
-    addLogType(QtDebugMsg, tr("Debug"), "DBG", Qt::blue);
-    addLogType(TraceLogType, tr("Trace"), "TRC", Qt::darkCyan);
+    addLogType(QtInfoMsg, tr("Info"), "INF", QColor(64, 64, 64));
 
     sInstance = this;
     mPreviousHandler = qInstallMessageHandler(&LogWindow::logMessage);
@@ -84,6 +83,7 @@ void LogWindow::addLogType(int id, const QString &name, const QString &prefix, c
     type.edit = new ExtendedTextEdit();
     type.edit->setReadOnly(true);
     type.edit->setMaximumBlockCount(200);
+
     LogSyntaxHighlighter* highlighter = new LogSyntaxHighlighter(type.edit->document());
     highlighter->addType(prefix, color);
     ui->tabWidget->addTab(type.edit, name);

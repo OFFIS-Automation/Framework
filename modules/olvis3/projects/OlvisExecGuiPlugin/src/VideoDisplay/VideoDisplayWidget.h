@@ -64,8 +64,8 @@ public:
 
     virtual void setOffset(int dx, int dy);
     virtual QSize imageSize();
-    virtual QWidget* overlayParentWidget() { return this; }
     virtual double imageRate();
+    virtual QWidget* overlayParentWidget() { return this; }
     virtual void paintContent(QPainter& painter, bool showControls);
 
     static QPoint closestPoint(const QRect& bounds, QPoint point);
@@ -153,6 +153,8 @@ private:
     QFont mFont;
 
     Timer mTimer;
+    Timer mUpdateTimer;
+    double mRate;
 
     VideoControlToolbar* mToolbar;
     QPoint mMouseDownAt;

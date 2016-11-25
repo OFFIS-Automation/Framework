@@ -85,7 +85,7 @@ void MasterWindow::on_actionOpen_project_triggered()
     if(!mRecentProjects.empty()){
         defaultOpen = mRecentProjects.first();
     }
-    QString filter = "OFFIS automation projects (*.oap);;Old projects (*.pro *.ogr)";
+    QString filter = "OFFIS automation projects (*.oap)";
     QString filename = QFileDialog::getOpenFileName(this, tr("Open project"), defaultOpen, filter);
 
     if(filename.isEmpty())

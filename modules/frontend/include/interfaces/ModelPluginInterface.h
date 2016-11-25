@@ -17,8 +17,6 @@
 #ifndef MODELPLUGININTERFACE_H
 #define MODELPLUGININTERFACE_H
 
-#include "logging.h"
-
 class ModelPluginInterface
 {
 public:

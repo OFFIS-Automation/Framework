@@ -75,7 +75,6 @@ HEADERS  += src/MainWindow.h \
     ../../include/interfaces/GuiPluginInterface.h \
     ../../include/interfaces/ModelPluginInterface.h \
     src/PluginLoader.h \
-    ../../include/interfaces/logging.h \
     src/DockWidgetTitle.h \
     src/PerspectiveControl.h \
     src/Application.h \

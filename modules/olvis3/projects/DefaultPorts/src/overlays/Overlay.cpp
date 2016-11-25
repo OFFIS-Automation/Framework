@@ -82,11 +82,6 @@ QList<QPoint> Overlay::snapPoints()
     return QList<QPoint>();
 }
 
-double Overlay::rate()
-{
-    return mRate;
-}
-
 void Overlay::setPortId(const PortId &portId, bool output)
 {
     mIsOutput = output;
@@ -117,7 +112,6 @@ void Overlay::setValue(const QVariant &value)
 {
     if(!mMutex.tryLock(50))
         return;
-    //QMutexLocker lock(&mMutex);
     mLastValue = value;
     mMutex.unlock();
     emit updated();

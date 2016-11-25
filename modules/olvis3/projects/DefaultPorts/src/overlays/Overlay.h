@@ -65,7 +65,6 @@ public:
 
     virtual bool contains(const QPoint& pos) = 0;
     virtual QList<QPoint> snapPoints();
-    virtual double rate();
 
     virtual QString name();
 

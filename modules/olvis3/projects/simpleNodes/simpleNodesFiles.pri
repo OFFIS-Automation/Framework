@@ -16,7 +16,7 @@
 
 VPATH += $$PWD
 
-QT  += multimedia
+QT  += multimedia multimediawidgets
 
 DEFINES += DEFAULTPORTS_LIBRARY
 INCLUDEPATH += $$PWD/../../include
@@ -82,7 +82,8 @@ SOURCES += \
 	src/Webcam.cpp \
 	src/VideoStreamer.cpp \
 	src/VideoReceiver.cpp \
-	src/GStreamerInitializer.cpp
+	src/GStreamerInitializer.cpp \
+        src/CameraFrameGrabber.cpp
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -143,7 +144,8 @@ HEADERS += \
 	src/Webcam.h \
 	src/VideoStreamer.h \
 	src/VideoReceiver.h \
-	src/GStreamerInitializer.h
+	src/GStreamerInitializer.h \
+        src/CameraFrameGrabber.h
 
 RESOURCES += \
 	images/images.qrc

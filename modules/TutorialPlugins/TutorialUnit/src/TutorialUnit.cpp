@@ -38,7 +38,6 @@ TutorialUnit::TutorialUnit()
 
     // Initialize sensor system
     mDataProvider = SensorSystemInterface::createProvider("tutorial/position");
-
 }
 
 TutorialUnit::~TutorialUnit()

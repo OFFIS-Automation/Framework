@@ -16,7 +16,7 @@
 
 TEMPLATE = lib
 
-QT += core gui widgets
+QT += core gui widgets webenginewidgets
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
@@ -81,30 +81,8 @@ HEADERS += \
     src/telecontrol/TelecontrolSelectionComboBox.h \
     src/telecontrol/ConnexionAssignmentWidget.h \
     src/rcUnits/RcFlagWidgetSettingsDialog.h \
-    src/scratch/Widget.h \
-	src/OlvisSingleton.h \
-    src/scratch/Items/Argument/ArgumentBlock.h \
-    src/scratch/Items/Argument/ArgumentItem.h \
-    src/scratch/Items/ControlFlow/ControlFlowBlock.h \
-    src/scratch/Items/ControlFlow/IfElseBlock.h \
-    src/scratch/Items/ControlFlow/WhileBlock.h \
-    src/scratch/Items/Parameter/Default/DefaultCondition.h \
-    src/scratch/Items/Parameter/Default/DefaultNumber.h \
-    src/scratch/Items/Parameter/Default/DefaultPoint.h \
-    src/scratch/Items/Parameter/Condition.h \
-    src/scratch/Items/Parameter/Number.h \
-    src/scratch/Items/Parameter/Parameter.h \
-    src/scratch/Items/Parameter/Point.h \
-    src/scratch/Items/Block.h \
-    src/scratch/Items/FrameBlocks.h \
-    src/scratch/Items/Item.h \
-    src/scratch/Items/VariableItems.h \
-    src/scratch/Gui/Dialogs/NewFunctionDialog.h \
-    src/scratch/Gui/Dialogs/NewVariableDialog.h \
-    src/scratch/Gui/ControlScene.h \
-    src/scratch/Gui/FunctionView.h \
-    src/scratch/Items/Argument/Operation.h \
-    src/scratch/Items/Parameter/Default/NumberTextItem.h
+	src/blockly/Widget.h \
+	src/OlvisSingleton.h
 
 SOURCES += \
 	src/HilecGui.cpp \
@@ -143,29 +121,8 @@ SOURCES += \
 	src/telecontrol/TelecontrolSelectionComboBox.cpp \
 	src/telecontrol/ConnexionAssignmentWidget.cpp \
 	src/rcUnits/RcFlagWidgetSettingsDialog.cpp \
-	src/scratch/Widget.cpp \
-	src/OlvisSingleton.cpp \
-	src/scratch/Items/Argument/ArgumentBlock.cpp \
-    src/scratch/Items/Argument/ArgumentItem.cpp \
-    src/scratch/Items/ControlFlow/ControlFlowBlock.cpp \
-    src/scratch/Items/ControlFlow/IfElseBlock.cpp \
-    src/scratch/Items/ControlFlow/WhileBlock.cpp \
-    src/scratch/Items/Parameter/Default/DefaultCondition.cpp \
-    src/scratch/Items/Parameter/Default/DefaultNumber.cpp \
-    src/scratch/Items/Parameter/Default/DefaultPoint.cpp \
-    src/scratch/Items/Parameter/Condition.cpp \
-    src/scratch/Items/Parameter/Number.cpp \
-    src/scratch/Items/Parameter/Parameter.cpp \
-    src/scratch/Items/Parameter/Point.cpp \
-    src/scratch/Items/Block.cpp \
-    src/scratch/Items/FrameBlocks.cpp \
-    src/scratch/Items/Item.cpp \
-    src/scratch/Items/VariableItems.cpp \
-    src/scratch/Gui/Dialogs/NewFunctionDialog.cpp \
-    src/scratch/Gui/Dialogs/NewVariableDialog.cpp \
-    src/scratch/Gui/ControlScene.cpp \
-    src/scratch/Gui/FunctionView.cpp \
-    src/scratch/Items/Parameter/Default/NumberTextItem.cpp
+	src/blockly/Widget.cpp \
+	src/OlvisSingleton.cpp
 
 FORMS += \
     src/debugVars/DebugVariables.ui \
@@ -197,27 +154,9 @@ FORMS += \
     src/telecontrol/TelecontrolGamepadWidget.ui \
     src/telecontrol/TelecontrolSelectionComboBox.ui \
     src/telecontrol/ConnexionAssignmentWidget.ui \
-    src/scratch/ScratchWidget.ui \
-    src/scratch/Gui/Dialogs/ScratchNewFunctionDialog.ui \
-    src/scratch/Gui/Dialogs/ScratchNewVariableDialog.ui \
-    src/scratch/Gui/ScratchFunctionView.ui
+    src/blockly/BlocklyWidget.ui
 
 
 RESOURCES += \
-    images/images.qrc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	images/images.qrc \
+	html/html.qrc

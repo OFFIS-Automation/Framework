@@ -1,0 +1,10 @@
+<RCC>
+    <qresource>
+        <file>index.html</file>
+        <file alias="blockly_compressed.js">blockly/blockly_compressed.js</file>
+        <file alias="blocks_compressed.js">blockly/blocks_compressed.js</file>
+        <file alias="python_compressed.js">blockly/python_compressed.js</file>
+		<file alias="/msg/js/en.js">blockly/msg/js/en.js</file>
+		<file alias="/media/sprites.png">blockly/media/sprites.png</file>
+    </qresource>
+</RCC>

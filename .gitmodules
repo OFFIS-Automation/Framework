@@ -1,0 +1,3 @@
+[submodule "modules/automation/projects/HilecGui/html/blockly"]
+	path = modules/automation/projects/HilecGui/html/blockly
+	url = git://github.com/google/blockly.git

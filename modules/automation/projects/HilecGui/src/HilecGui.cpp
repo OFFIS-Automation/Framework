@@ -62,7 +62,7 @@ void HilecGui::initialize(const QString&)
     scriptOutput = new ScriptOutput();
     scriptUi = new ScriptUi();
     scriptException = new ScriptExceptionDialog(scriptUi);
-	scratch = new Scratch::Widget();
+	blockly = new Blockly::Widget();
     rcUnits = new RcUnitWidget();
     help = new HilecHelpWidget();
     debugVars = new DebugVariables();
@@ -189,7 +189,7 @@ void HilecGui::addElements(MainWindowInterface* mainWindow)
 
     mainWindow->addDockWidget(Qt::BottomDockWidgetArea, scriptOutput, tr("Scripting"));
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, scriptUi, tr("Scripting"));
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, scratch, tr("Scripting"));
+    mainWindow->addDockWidget(Qt::RightDockWidgetArea, blockly, tr("Scripting"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, help, tr("Scripting"));
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, debugVars, tr("Scripting"));
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, callStack, tr("Scripting"));

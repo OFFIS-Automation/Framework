@@ -92,7 +92,7 @@ void Webcam::initialize()
             mCameraFrameGrabber = new CameraFrameGrabber();
             mCamera->setViewfinder(mCameraFrameGrabber);
             connect(mCameraFrameGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(handleFrame(QImage)));
-			
+
             mCamera->start();
 
             break;

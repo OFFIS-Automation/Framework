@@ -99,8 +99,6 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 				std::stringstream preamble;
 
-				preamble << "import pdb" << std::endl;
-				preamble << std::endl;
 				preamble << "from time import *" << std::endl;
 				preamble << "from offis import *" << std::endl;
 				preamble << std::endl;

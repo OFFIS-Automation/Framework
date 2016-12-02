@@ -15,6 +15,8 @@
 namespace Blockly
 {
 
+const std::string Widget::blockIDPrefix("... # Block ID: ");
+
 Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::BlocklyWidget>())
@@ -28,8 +30,30 @@ Widget::Widget(QWidget *parent)
 	webView->show();
 
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
+	connect(HilecSingleton::hilec(), SIGNAL(breakpointHit(QString, int)),
+		SLOT(highlightBlock(QString, int)));
+
 	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
 		SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
+}
+
+void Widget::highlightBlock(QString fileName, int lineNumber)
+{
+	QFile file(fileName);
+
+	if (!file.open(QFile::ReadOnly))
+		return;
+
+	QTextStream stream(&file);
+
+	std::string line;
+
+	for (int i = 0; i < lineNumber; ++i)
+		line = stream.readLine().toStdString();
+
+	const auto blockID = line.substr(line.find(blockIDPrefix) + blockIDPrefix.length());
+
+	m_ui->webView->page()->runJavaScript(("workspace.highlightBlock(" + blockID + ");").c_str());
 }
 
 void Widget::keyPressEvent(QKeyEvent *event)
@@ -44,9 +68,20 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 {
 	const auto& page = m_ui->webView->page();
 
-	if (event->key() == Qt::Key_G)
+	if (event->key() == Qt::Key_N)
 	{
 		event->accept();
+
+		HilecSingleton::hilec()->resume();
+	}
+	else if (event->key() == Qt::Key_G || event->key() == Qt::Key_D)
+	{
+		event->accept();
+
+		HilecSingleton::hilec()->quit();
+
+		page->runJavaScript(
+			("Blockly.Python.STATEMENT_PREFIX = '" + blockIDPrefix + "%1\\n';").c_str());
 
 		page->runJavaScript("Blockly.Python.workspaceToCode(workspace)",
 			[](const QVariant& variant)
@@ -64,6 +99,8 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 
 				std::stringstream preamble;
 
+				preamble << "import pdb" << std::endl;
+				preamble << std::endl;
 				preamble << "from time import *" << std::endl;
 				preamble << "from offis import *" << std::endl;
 				preamble << std::endl;
@@ -85,9 +122,23 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 				}
 
 				outputStream << preamble.str().c_str();
-				outputStream << variant.toString();
 
+				const auto& code = variant.toString();
+				outputStream << code;
 				outputStream.flush();
+
+				QString line;
+				int lineNumber = 1;
+
+				outputStream.seek(0);
+
+				while (outputStream.readLineInto(&line))
+				{
+					if (line.toStdString().find(blockIDPrefix) != std::string::npos)
+						hilec.addBreakpoint(basedir + "/" + filename, lineNumber);
+
+					++lineNumber;
+				}
 
 				hilec.runFile(filename);
 			});

@@ -19,6 +19,9 @@ class Widget : public QDockWidget
 {
     Q_OBJECT
 
+	private:
+		static const std::string blockIDPrefix;
+
 	public:
 		Widget(QWidget* parent = nullptr);
 
@@ -27,6 +30,8 @@ class Widget : public QDockWidget
 		void keyReleaseEvent(QKeyEvent *event);
 
 	private slots:
+		void highlightBlock(QString fileName, int lineNumber);
+
 		void updateRcUnits(bool partialReload = false);
 
 		void onDockLocationChanged(const Qt::DockWidgetArea&);

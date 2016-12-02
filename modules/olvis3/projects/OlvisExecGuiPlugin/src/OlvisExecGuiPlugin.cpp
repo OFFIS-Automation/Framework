@@ -105,7 +105,7 @@ void OlvisExecGuiPlugin::deinitialize()
 
 void OlvisExecGuiPlugin::addElements(MainWindowInterface *mainWindow)
 {
-    mainWindow->addToolBar(toolbar, tr("Vision"));
+	mainWindow->addToolBar(toolbar, tr("Vision"));
     mainWindow->addDockWidget(Qt::TopDockWidgetArea, videoWidget, tr("Vision"));
 
     QMenu* fileMenu = &mainWindow->getMenu(tr("File"));

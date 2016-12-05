@@ -15,11 +15,18 @@ class BlocklyWidget;
 namespace Blockly
 {
 
+template <bool debug>
+class CodeGenerator
+{
+	public:
+		void operator()(const QVariant& variant);
+};
+
 class Widget : public QDockWidget
 {
     Q_OBJECT
 
-	private:
+	public:
 		static const std::string blockIDPrefix;
 
 	public:

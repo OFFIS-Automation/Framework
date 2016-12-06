@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <QDockWidget>
+#include <QtWebChannel>
 
 #include "../OlvisSingleton.h"
 
@@ -15,22 +16,17 @@ class BlocklyWidget;
 namespace Blockly
 {
 
-template <bool debug>
-class CodeGenerator
-{
-	public:
-		void operator()(const QVariant& variant);
-};
-
 class Widget : public QDockWidget
 {
     Q_OBJECT
 
-	public:
+	private:
 		static const std::string blockIDPrefix;
+		static const std::string fileName;
 
 	public:
 		Widget(QWidget* parent = nullptr);
+		~Widget();
 
 	protected:
 		void keyPressEvent(QKeyEvent *event);
@@ -38,13 +34,15 @@ class Widget : public QDockWidget
 
 	private slots:
 		void highlightBlock(QString fileName, int lineNumber);
-
 		void updateRcUnits(bool partialReload = false);
-
 		void onDockLocationChanged(const Qt::DockWidgetArea&);
+
+	public slots:
+		void generateCode(const bool debug, const bool execute);
 
 	private:
 		std::unique_ptr<Ui::BlocklyWidget> m_ui;
+		QWebChannel* webChannel;
 };
 
 } // namespace Blockly

@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<title>Blockly</title>
-	<script src="qrc:/blockly_compressed.js"></script>
-	<script src="qrc:/blocks_compressed.js"></script>
-	<script src="qrc:/msg/js/en.js"></script>
-	<script src="qrc:/python_compressed.js"></script>
+	<script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+	<script type="text/javascript" src="qrc:/blockly_compressed.js"></script>
+	<script type="text/javascript" src="qrc:/blocks_compressed.js"></script>
+	<script type="text/javascript" src="qrc:/msg/js/en.js"></script>
+	<script type="text/javascript" src="qrc:/python_compressed.js"></script>
 	<style>
 		html, body {
 			height: 100%;
@@ -359,6 +360,16 @@
 		};
 
 		var workspace = Blockly.inject(blocklyDiv, options);
+
+		new QWebChannel(qt.webChannelTransport, function(channel)
+			{
+				window.widget = channel.objects.widget;
+			});
+
+		workspace.addChangeListener(function(event)
+			{
+				window.widget.generateCode(false, false);
+			});
 	</script>
 </body>
 </html>

@@ -16,7 +16,7 @@
 
 TEMPLATE = lib
 
-QT += core gui widgets webenginewidgets
+QT += core gui widgets webenginewidgets webchannel
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins

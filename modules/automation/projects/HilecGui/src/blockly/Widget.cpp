@@ -16,73 +16,17 @@ namespace Blockly
 {
 
 const std::string Widget::blockIDPrefix("... # Block ID: ");
-
-template <bool debug>
-void CodeGenerator<debug>::operator()(const QVariant& variant)
-{
-	auto& hilec = *HilecSingleton::hilec();
-
-	const auto& basedir = hilec.getBaseDir();
-	const auto filename = debug? "blockly_debug.py" : "blockly.py";
-
-	QFile outputFile(basedir + "/" + filename);
-	outputFile.remove();
-
-	outputFile.open(QFile::ReadWrite);
-	QTextStream outputStream(&outputFile);
-
-	std::stringstream preamble;
-
-	preamble << "from time import *" << std::endl;
-	preamble << "from offis import *" << std::endl;
-	preamble << std::endl;
-
-	for (const auto& name : hilec.rcUnits())
-	{
-		const auto& help = hilec.getUnitHelp(name);
-
-		preamble << help.unitName.toStdString() << " = rc.getUnit(\""
-			<< help.unitName.toStdString() + "\")" << std::endl;
-
-		if (help.type == UserRcUnitType::HwRcUnitType
-			|| help.type == UserRcUnitType::RobotRcUnitType)
-			preamble << help.unitName.toStdString() + ".acquire()" << std::endl;
-		else if (help.type == UserRcUnitType::VisionRcUnitType)
-			preamble << help.unitName.toStdString() + ".start()" << std::endl;
-
-		preamble << std::endl;
-	}
-
-	outputStream << preamble.str().c_str();
-
-	const auto& code = variant.toString();
-	outputStream << code;
-	outputStream.flush();
-
-	// Add breakpoints for each block
-	if (debug)
-	{
-		QString line;
-		int lineNumber = 1;
-
-		outputStream.seek(0);
-
-		while (outputStream.readLineInto(&line))
-		{
-			if (line.toStdString().find(Widget::blockIDPrefix) != std::string::npos)
-				hilec.addBreakpoint(basedir + "/" + filename, lineNumber);
-
-			++lineNumber;
-		}
-	}
-
-	hilec.runFile(filename);
-}
+const std::string Widget::fileName("blockly");
 
 Widget::Widget(QWidget *parent)
 	: QDockWidget(parent),
 	m_ui(std::make_unique<Ui::BlocklyWidget>())
 {
+	#ifdef QT_DEBUG
+		// Debug via http://localhost:23654
+		qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "23654");
+	#endif
+
 	m_ui->setupUi(this);
 
 	const auto& webView = m_ui->webView;
@@ -91,12 +35,21 @@ Widget::Widget(QWidget *parent)
 	webView->setContextMenuPolicy(Qt::ContextMenuPolicy::NoContextMenu);
 	webView->show();
 
+	webChannel = new QWebChannel(webView->page());
+	webView->page()->setWebChannel(webChannel);
+	webChannel->registerObject("widget", this);
+
 	connect(HilecSingleton::hilec(), SIGNAL(rcUnitsChanged(bool)), SLOT(updateRcUnits(bool)));
 	connect(HilecSingleton::hilec(), SIGNAL(breakpointHit(QString, int)),
 		SLOT(highlightBlock(QString, int)));
 
 	connect(this, SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
 		SLOT(onDockLocationChanged(Qt::DockWidgetArea)));
+}
+
+Widget::~Widget()
+{
+	delete webChannel;
 }
 
 void Widget::highlightBlock(QString fileName, int lineNumber)
@@ -118,9 +71,83 @@ void Widget::highlightBlock(QString fileName, int lineNumber)
 	m_ui->webView->page()->runJavaScript(("workspace.highlightBlock(" + blockID + ");").c_str());
 }
 
+void Widget::generateCode(const bool debug, const bool execute)
+{
+	const auto& page = m_ui->webView->page();
+
+	if (debug)
+		page->runJavaScript(
+			("Blockly.Python.STATEMENT_PREFIX = '" + Widget::blockIDPrefix + "%1\\n';").c_str());
+	else
+		page->runJavaScript("Blockly.Python.STATEMENT_PREFIX = '';");
+
+	page->runJavaScript("Blockly.Python.workspaceToCode(workspace)", [=](const QVariant& variant)
+		{
+			auto& hilec = *HilecSingleton::hilec();
+
+			const auto& basedir = hilec.getBaseDir();
+			const auto filename = debug? Widget::fileName + "_debug.py" :  Widget::fileName + ".py";
+			const auto path = basedir + "/" + filename.c_str();
+
+			QFile outputFile(path);
+			outputFile.remove();
+
+			outputFile.open(QFile::ReadWrite);
+			QTextStream outputStream(&outputFile);
+
+			std::stringstream preamble;
+
+			preamble << "from time import *" << std::endl;
+			preamble << "from offis import *" << std::endl;
+			preamble << std::endl;
+
+			for (const auto& name : hilec.rcUnits())
+			{
+				const auto& help = hilec.getUnitHelp(name);
+
+				preamble << help.unitName.toStdString() << " = rc.getUnit(\""
+					<< help.unitName.toStdString() + "\")" << std::endl;
+
+				if (help.type == UserRcUnitType::HwRcUnitType
+					|| help.type == UserRcUnitType::RobotRcUnitType)
+					preamble << help.unitName.toStdString() + ".acquire()" << std::endl;
+				else if (help.type == UserRcUnitType::VisionRcUnitType)
+					preamble << help.unitName.toStdString() + ".start()" << std::endl;
+
+				preamble << std::endl;
+			}
+
+			outputStream << preamble.str().c_str();
+
+			const auto& code = variant.toString();
+			outputStream << code;
+			outputStream.flush();
+
+			// Add breakpoints for each block
+			if (debug)
+			{
+				QString line;
+				int lineNumber = 1;
+
+				outputStream.seek(0);
+
+				while (outputStream.readLineInto(&line))
+				{
+					if (line.toStdString().find(Widget::blockIDPrefix) != std::string::npos)
+						hilec.addBreakpoint(path, lineNumber);
+
+					++lineNumber;
+				}
+			}
+
+			if (execute)
+				hilec.runFile(filename.c_str());
+		});
+};
+
 void Widget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_G || event->key() == Qt::Key_D ||
+	if (event->key() == Qt::Key_R || event->key() == Qt::Key_D ||
 			event->key() == Qt::Key_S || event->key() == Qt::Key_L)
 		event->accept();
 	else
@@ -131,34 +158,27 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 {
 	const auto& page = m_ui->webView->page();
 
-	if (event->key() == Qt::Key_N)
+	if (event->key() == Qt::Key_N) // Step
 	{
 		event->accept();
 
 		HilecSingleton::hilec()->resume();
 	}
-	else if (event->key() == Qt::Key_G)
+	else if (event->key() == Qt::Key_R) // Run
+	{
+		event->accept();
+
+		generateCode(false, true);
+	}
+	else if (event->key() == Qt::Key_D) // Debug
 	{
 		event->accept();
 
 		HilecSingleton::hilec()->quit();
 
-		page->runJavaScript("Blockly.Python.STATEMENT_PREFIX = '';");
-
-		page->runJavaScript("Blockly.Python.workspaceToCode(workspace)", CodeGenerator<false>());
+		generateCode(true, true);
 	}
-	else if (event->key() == Qt::Key_D)
-	{
-		event->accept();
-
-		HilecSingleton::hilec()->quit();
-
-		page->runJavaScript(
-			("Blockly.Python.STATEMENT_PREFIX = '" + blockIDPrefix + "%1\\n';").c_str());
-
-		page->runJavaScript("Blockly.Python.workspaceToCode(workspace)", CodeGenerator<true>());
-	}
-	else if (event->key() == Qt::Key_S)
+	else if (event->key() == Qt::Key_S) // Save
 	{
 		event->accept();
 
@@ -182,7 +202,7 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 				outputStream.flush();
 			});
 	}
-	else if (event->key() == Qt::Key_L)
+	else if (event->key() == Qt::Key_L) // Load
 	{
 		event->accept();
 

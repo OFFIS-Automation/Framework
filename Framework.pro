@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 # Do all the other stuff
-SUBDIRS += subtree/qt-remote-signals/qtRemoteSignals \
-    modules/sensorSystem \
+SUBDIRS += modules/sensorSystem \
     modules/frontend/projects/LogWidget \
     modules/frontend/projects/Notifications \
     modules/frontend/projects/Frontend \

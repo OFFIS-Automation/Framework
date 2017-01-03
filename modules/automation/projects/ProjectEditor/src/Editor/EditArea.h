@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ public:
     explicit EditArea(QWidget *parent = 0);
     ~EditArea();
     void setBaseDir(QString baseDir);
+
 signals:
     void currentFileChanged(const QString& filename);
     void fileSaved(const QString& filename);

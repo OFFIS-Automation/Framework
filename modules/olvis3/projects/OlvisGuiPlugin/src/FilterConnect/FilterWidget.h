@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -51,14 +51,12 @@ signals:
     void renameRequested(int id, const QString &newName);
     void deleteRequest(int id);
     void selected(int id);
-    void newPortValue(int filterId, const QString &portId,
-                      const QVariant &value);
+    void newPortValue(int filterId, const QString &portId, const QVariant &value);
     void startConnect(FilterPortWidget *start);
     void startDisconnect(FilterPortWidget *target);
 
 private slots:
     void onFilterRename(const FilterInfo &info);
-    void showMenu(const QPoint &pos);
 
     void on_actionDeleteFilter_triggered();
     void on_actionRename_triggered();
@@ -69,6 +67,7 @@ private slots:
 protected:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void showMenu(const QPoint &pos);
     void startRename();
     void endRename();
 

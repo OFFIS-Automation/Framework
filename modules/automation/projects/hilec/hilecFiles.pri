@@ -29,10 +29,10 @@ INCLUDEPATH += $${PWD}/../RcUnits/src
 
 LIBS += -L$${targetDir}/plugins -lRcUnits
 
-!contains(DEFINES, NO_REMOTE_CLIENT) {
-    INCLUDEPATH += $${PWD}/../remoteClient/src
-    LIBS += -L$${targetDir}/plugins -lRemoteClient
-}
+#!contains(DEFINES, NO_REMOTE_CLIENT) {
+#    INCLUDEPATH += $${PWD}/../remoteClient/src
+#    LIBS += -L$${targetDir}/plugins -lRemoteClient
+#}
 
 # Python
 INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Include

@@ -28,10 +28,10 @@
 #include <QTcpSocket>
 #include <QThreadPool>
 
-#ifndef NO_REMOTE_CLIENT
+/*#ifndef NO_REMOTE_CLIENT
 #include "RemoteRcUnits.h"
 #include "RemoteRcUnit.h"
-#endif
+#endif*/
 
 #include "FlagCollectorRunnable.h"
 
@@ -70,7 +70,7 @@ void RcUnits::loadConfig(const QString &filename)
         if(unit->hasGamepadControl())
             mTelecontrolRcUnits << key;
     }
-#ifndef NO_REMOTE_CLIENT
+/*#ifndef NO_REMOTE_CLIENT
     QSettings settings(filename, QSettings::IniFormat);
     int size = settings.beginReadArray("remoteServers");
     for(int i=0; i< size; i++)
@@ -86,7 +86,7 @@ void RcUnits::loadConfig(const QString &filename)
         mRemoteRcUnits[name] = rl;
         rl->startConnect();
     }
-#endif
+#endif*/
     mFlagTimer.start();
 }
 
@@ -96,10 +96,10 @@ void RcUnits::releaseConfig()
     qDeleteAll(mFlagCollectors);
     mFlagCollectors.clear();
     RcUnitsBase::releaseConfig();
-#ifndef NO_REMOTE_CLIENT
+/*#ifndef NO_REMOTE_CLIENT
     qDeleteAll(mRemoteRcUnits);
     mRemoteRcUnits.clear();
-#endif
+#endif*/
 }
 
 void RcUnits::rcUnitStatusChanged(bool)
@@ -119,7 +119,7 @@ void RcUnits::collectFlags()
     }
 }
 
-#ifndef NO_REMOTE_CLIENT
+/*#ifndef NO_REMOTE_CLIENT
 void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStringList &oldRcUnits)
 {
     RemoteRcUnits* rl = mRemoteRcUnits.value(remoteServerName, 0);
@@ -152,5 +152,5 @@ void RcUnits::onRemoteRcUnitsListed(const QString &remoteServerName, const QStri
 
     emit unitListUpdated(true);
 }
-#endif
+#endif*/
 

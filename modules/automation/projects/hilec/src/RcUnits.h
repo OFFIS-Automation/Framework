@@ -49,9 +49,9 @@ signals:
     void flagsUpdated(const QString& name, const QVariantList& values);
 private slots:
     void collectFlags();
-#ifndef NO_REMOTE_CLIENT
+/*#ifndef NO_REMOTE_CLIENT
     void onRemoteRcUnitsListed(const QString& remoteServerName, const QStringList& oldRcUnits);
-#endif
+#endif*/
 private:
     QTimer mFlagTimer;
     static RcUnits* mInstance;

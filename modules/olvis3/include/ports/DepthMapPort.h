@@ -17,7 +17,6 @@
 #ifndef DEPTHMAPPORT_H
 #define DEPTHMAPPORT_H
 
-
 #include "ImagePort.h"
 #include "DepthMap.h"
 

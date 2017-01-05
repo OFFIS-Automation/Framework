@@ -41,7 +41,7 @@ void SensorWidgetLine::startDrag()
 
     mimeData->setData("application/x-sensorSystem-value", name().toLocal8Bit());
     QPoint p1 = ui->checkBox->mapFromParent(mStartPos);
-    drag->setPixmap(QPixmap::grabWidget(ui->checkBox));
+    drag->setPixmap(ui->checkBox->grab());
     drag->setHotSpot(p1);
     drag->setMimeData(mimeData);
     drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);

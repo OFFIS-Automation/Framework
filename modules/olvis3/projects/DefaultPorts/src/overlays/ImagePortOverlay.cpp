@@ -60,30 +60,40 @@ void ImagePortOverlay::paintContent(QPainter& p)
             if(dm.data != 0)
                 mat = dm.toImage();
         }
-        if (mat.size().width != 0 && mat.size().height != 0) {
-            QImage::Format format = QImage::Format_ARGB32;
-            if (mat.type() == CV_8UC1) {
-                cv::cvtColor(mat, mConverted, CV_GRAY2BGRA, 4);
-            } else if (mat.type() == CV_8UC3) {
-                cv::cvtColor(mat, mConverted, CV_BGR2BGRA);
-            } else if(mat.type() == CV_8UC4) {
-                mConverted = mat;
-                // all is good
-            } else {
-                qCritical() << "VideoDisplayWidget: unknown image format received" << mat.type();
-            }
-            mLastValue = QVariant();
 
+        if (mat.size().width != 0 && mat.size().height != 0) {
+            // Color conversion
+            if (mat.type() == CV_8UC1 || mat.type() == CV_16UC1) {
+                cv::cvtColor(mat, mConverted, CV_GRAY2BGRA);
+            } else if (mat.type() == CV_8UC3 || mat.type() == CV_16UC3) {
+                cv::cvtColor(mat, mConverted, CV_BGR2BGRA);
+            } else if(mat.type() == CV_8UC4 || mat.type() == CV_16UC4) {
+                mConverted = mat;
+            } else {
+                qCritical() << tr("VideoDisplayWidget: unknown image format received") << mat.type();
+            }
+
+            // Bit width conversion (if required)
+            // We can only display 8Bit images
+            if(mConverted.depth() == CV_16U){
+                // Use a scale factor to bring 0 -> 65535 to 0 -> 255
+                // otherwise convertTo will only chop of the highest bits
+                mConverted.convertTo(mConverted, CV_8U, 1/255.0);
+            }
+
+            // Convert to QImage
+            QImage::Format format = QImage::Format_ARGB32;
             QImage image = QImage(mConverted.data, mConverted.size().width, mConverted.size().height, mConverted.step, format);
             mPixmap = QPixmap::fromImage(image);
+            mLastValue = QVariant();
 
+            // Set ascpect ratio
             QSize imageSize = mPixmap.size();
             if (mState == Scaling){
                 mScale = mRect.width() / (double) imageSize.width();
             } else {
                 mRect.setSize(imageSize * mScale);
             }
-            //setAspectRatio(mImage.width() / (double) mImage.height());
         } else {
             qWarning() << tr("VideoDisplay: image without dimensions received");
         }

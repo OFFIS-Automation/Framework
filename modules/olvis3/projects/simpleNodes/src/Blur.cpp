@@ -32,6 +32,4 @@ void Blur::execute()
     cv::Mat dest;
     cv::blur(src, dest, cv::Size(kSize, kSize));
     mOut.send(dest);
-
-    mOut.setVisibility(ExpertPortVisibility);
 }

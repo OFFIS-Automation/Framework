@@ -74,7 +74,7 @@ void RgbImage::makeRgb()
     if(image.depth() != CV_8U)
     {
         modified = true;
-        image_.convertTo(image, CV_8U);
+        image.convertTo(image, CV_8U, image.depth() == CV_16U ? 1/255.0 : 255.0);
     }
     if(image.channels() != 3)
     {

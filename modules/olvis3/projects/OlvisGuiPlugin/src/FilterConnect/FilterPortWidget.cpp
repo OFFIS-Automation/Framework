@@ -63,7 +63,7 @@ void FilterPortWidget::startDrag()
     data << QByteArray::number(portType());
 
     mimeData->setData("application/x-olvis-port", data.join("#").toLocal8Bit());
-    drag->setPixmap(QPixmap::grabWidget(this));
+    drag->setPixmap(grab());
     drag->setHotSpot(QPoint(width()/2, height()/2));
     drag->setMimeData(mimeData);
     drag->exec(Qt::CopyAction);

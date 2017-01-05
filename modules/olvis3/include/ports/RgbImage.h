@@ -42,6 +42,7 @@ public:
     // assignment operators
     RgbImage& operator = (const RgbImage& m);
     RgbImage& operator = (const cv::MatExpr& expr);
+
 protected:
     void makeRgb();
 };

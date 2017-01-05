@@ -46,7 +46,6 @@ QVariant port::Image::fromString(const QString &) const
     return QVariant();
 }
 
-
 QVariant port::Image::constrainedValue(const QVariant &var) const
 {
     return var;
@@ -57,8 +56,6 @@ QVariant port::Image::toSimpleType(const QVariant &var) const
     cv::Mat mat = fromVariant(var);
     return QSizeF(mat.cols, mat.rows);
 }
-
-
 
 in::Image::Image() : port::Image(qMetaTypeId<cv::Mat>(), "Image")
 {
@@ -128,11 +125,8 @@ out::Image::Image() : port::Image(qMetaTypeId<cv::Mat>(), "Image")
     setName("imageOut");
 }
 
-void out::Image::send(const cv::Mat &image_)
+void out::Image::send(const cv::Mat &image)
 {
-    cv::Mat image = image_;
-    if(image.depth() != CV_8U)
-        image_.convertTo(image, CV_8U);
     sendRaw(variant(image));
 }
 

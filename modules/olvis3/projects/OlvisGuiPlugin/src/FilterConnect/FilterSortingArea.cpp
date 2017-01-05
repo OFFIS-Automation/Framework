@@ -383,7 +383,7 @@ void FilterSortingArea::startDrag(FilterWidget *widget, const QPoint &hotspot)
         return;
     QDrag *drag = new QDrag(widget);
     QMimeData *mimeData = new QMimeData;
-    drag->setPixmap(QPixmap::grabWidget(widget));
+    drag->setPixmap(widget->grab());
     drag->setHotSpot(hotspot);
     drag->setMimeData(mimeData);
     int index = ui->layout->indexOf(widget);

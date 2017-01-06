@@ -20,20 +20,18 @@
 using namespace cv;
 
 REGISTER_FILTER(HistogramFilter);
-
 HistogramFilter::HistogramFilter()
 {
-    
-    setName("HistogramFilter");
-    setDesc("Creates a histogram of the incoming image");
-	setGroup("user");
-	
-    mIn.setName("input");
-    mIn.setDesc("image input");
+    setGroup("image/analysis");
+    setName("Histogram");
+    setDesc(QObject::tr("Creates a histogram of the incoming image"));
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
-	
-	mOut.setName("histogram");
-    mOut.setDesc("the calculated histogram");
+
+    mOut.setName("historgram");
+    mOut.setDesc(QObject::tr("Historgram output"));
     addOutputPort(mOut);
 }
 

@@ -44,7 +44,7 @@ protected:
     out::Rect mFastSearchOut;
     out::Point mPositionOut;
     out::Real mScoreOut;
-    out::GrayImage mResultOut;
+    out::Image mResultOut;
     out::Point mResultOffset;
 
     cv::Point mLastPos;

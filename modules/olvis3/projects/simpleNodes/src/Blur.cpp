@@ -16,8 +16,8 @@
 
 #include "Blur.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(Blur);
 
+REGISTER_FILTER(Blur);
 Blur::Blur()
 {
     setName("Blur");
@@ -30,6 +30,6 @@ void Blur::execute()
     int kSize = mKSize;
     const cv::Mat& src = mIn;
     cv::Mat dest;
-    cv::blur(src, dest, cv::Size(kSize, kSize));
+    blur(src, dest, cv::Size(kSize, kSize));
     mOut.send(dest);
 }

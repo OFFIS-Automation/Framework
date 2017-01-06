@@ -25,8 +25,8 @@ class ImageSubstraction : public UserFilter
 public:
     ImageSubstraction();
     void execute();
+	
 protected:
-
     in::Image mIn;
     in::Image mBackgroundIn;
     out::Image mOut;

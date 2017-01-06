@@ -26,6 +26,7 @@ class CorrectPosition : public UserFilter
 public:
     CorrectPosition();
     virtual void execute();
+	
 protected:
     in::Real mXOffset, mYOffset;
     in::Point mIn;

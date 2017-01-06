@@ -26,6 +26,7 @@ class RotateImage : public UserFilter
 public:
     RotateImage();
     virtual void execute();
+	
 protected:
     in::Integer mAngle;
     in::Image mIn;

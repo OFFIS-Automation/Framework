@@ -18,30 +18,28 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Threshold);
-
-
 Threshold::Threshold()
 {
     setName("Threshold");
-    setDesc(QObject::tr("Thresholds an image"));
+    setDesc(tr("Thresholds an image"));
     setGroup("image/color");
 
     mOut.setName("imageOut");
-    mOut.setDesc(QObject::tr("Image output"));
+    mOut.setDesc(tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
-    mIn.setDesc(QObject::tr("Image input"));
+    mIn.setDesc(tr("Image input"));
     addInputPort(mIn);
 
     mThreshold.setName("threshold");
-    mThreshold.setDesc(QObject::tr("Threshold value"));
+    mThreshold.setDesc(tr("Threshold value"));
     mThreshold.setDefault(128);
     mThreshold.setRange(0, 255);
     addInputPort(mThreshold);
 
     mMode.setName("mode");
-    mMode.setDesc(QObject::tr("Thresholding mode"));
+    mMode.setDesc(tr("Thresholding mode"));
     mMode.addChoice(cv::THRESH_BINARY, tr("Binary (value = value > threshold ? max_value : 0 )"));
     mMode.addChoice(cv::THRESH_BINARY_INV, tr("Binary inverted (value = value > threshold ? 0 : max_value)"));
     mMode.addChoice(cv::THRESH_TOZERO, tr("To zero (value = value > threshold ? value : 0)"));
@@ -58,8 +56,10 @@ Threshold::Threshold()
 void Threshold::execute()
 {
     int threshold = mThreshold;
-    const GrayImage src = mIn;
-    GrayImage dest;
+    cv::Mat src = mIn;
+    ((Image)src).convertToGray(CV_8U);
+
+    Image dest;
     if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
         cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY + mMode);
     } else if(mMode == cv::THRESH_OTSU+1){

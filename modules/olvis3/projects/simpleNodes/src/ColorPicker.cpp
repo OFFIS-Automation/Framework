@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(ColorPicker);
-
 ColorPicker::ColorPicker()
 {
     setName("ColorPicker");
@@ -42,23 +41,25 @@ ColorPicker::ColorPicker()
 
 void ColorPicker::execute()
 {
-    cv::Mat source = mIn;
+    cv::Mat src = mIn;
+    ((Image)src).convertToBit(CV_8U);
+
     cv::Vec4b bgra(0,0,0,0xFF);
     cv::Point2d p = mPointIn.getValue();
-    if(source.channels() == 1)
+    if(src.channels() == 1)
     {
-        uchar gray = source.at<uchar>(p.y, p.x);
+        uchar gray = src.at<uchar>(p.y, p.x);
         bgra[0] = gray;
         bgra[1] = gray;
         bgra[2] = gray;
-    } else if(source.channels() == 3)
+    } else if(src.channels() == 3)
     {
-        cv::Vec3b bgr = source.at<cv::Vec3b>(p.y, p.x);
+        cv::Vec3b bgr = src.at<cv::Vec3b>(p.y, p.x);
         bgra[0] = bgr[0];
         bgra[1] = bgr[1];
         bgra[2] = bgr[2];
-    } else if(source.channels() == 4) {
-        bgra = source.at<cv::Vec4b>(p.y, p.x);
+    } else if(src.channels() == 4) {
+        bgra = src.at<cv::Vec4b>(p.y, p.x);
     }
     mColorOut.sendBgra(bgra);
 }

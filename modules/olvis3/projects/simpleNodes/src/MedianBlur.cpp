@@ -16,8 +16,8 @@
 
 #include "MedianBlur.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(MedianBlur);
 
+REGISTER_FILTER(MedianBlur);
 MedianBlur::MedianBlur()
 {
     setName("Median");

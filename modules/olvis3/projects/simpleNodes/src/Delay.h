@@ -27,6 +27,7 @@ class Delay : public UserFilter, QThread
 public:
     Delay();
     virtual void execute();
+	
 protected:
     in::Integer mDelay;
 };

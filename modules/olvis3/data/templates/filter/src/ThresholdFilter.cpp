@@ -23,13 +23,15 @@ REGISTER_FILTER(ThresholdFilter);
 ThresholdFilter::ThresholdFilter()
 {
     setName("Threshold");
-    setDesc("Thresholds an image");
-    setGroup("user");
+    setDesc(tr("Thresholds an image"));
+    setGroup("image/color");
 
     mOut.setName("imageOut");
+    mOut.setDesc(tr("Image output"));
     addOutputPort(mOut);
 
     mIn.setName("imageIn");
+    mIn.setDesc(tr("Image input"));
     addInputPort(mIn);
 
     mThreshold.setName("threshold");
@@ -39,12 +41,16 @@ ThresholdFilter::ThresholdFilter()
     addInputPort(mThreshold);
 
     mMode.setName("mode");
-    mMode.setDesc("Thresholding mode");
-    mMode.addChoice(cv::THRESH_BINARY, "Binary (value = value > threshold ? max_value : 0 )");
-    mMode.addChoice(cv::THRESH_BINARY_INV, "Binary inverted (value = value > threshold ? 0 : max_value)");
-    mMode.addChoice(cv::THRESH_TOZERO, "To zero (value = value > threshold ? value : 0)");
-    mMode.addChoice(cv::THRESH_TOZERO_INV, "To zero inverted (value = value > threshold ? 0 : value)");
-    mMode.addChoice(cv::THRESH_TRUNC, "Truncate (value = value > threshold ? threshold : value)");
+    mMode.setDesc(tr("Thresholding mode"));
+    mMode.addChoice(cv::THRESH_BINARY, tr("Binary (value = value > threshold ? max_value : 0 )"));
+    mMode.addChoice(cv::THRESH_BINARY_INV, tr("Binary inverted (value = value > threshold ? 0 : max_value)"));
+    mMode.addChoice(cv::THRESH_TOZERO, tr("To zero (value = value > threshold ? value : 0)"));
+    mMode.addChoice(cv::THRESH_TOZERO_INV, tr("To zero inverted (value = value > threshold ? 0 : value)"));
+    mMode.addChoice(cv::THRESH_TRUNC, tr("Truncate (value = value > threshold ? threshold : value)"));
+    mMode.addChoice(cv::THRESH_OTSU, tr("Otsu’s Algorithm (threshold automatically determined)"));
+    mMode.addChoice(cv::THRESH_OTSU+1, tr("Otsu’s Algorithm inverted (threshold automatically determined)"));
+    mMode.addChoice(cv::THRESH_TRIANGLE, tr("Triangle algorithm (threshold automatically determined)"));
+    mMode.addChoice(cv::THRESH_TRIANGLE+1, tr("Triangle algorithm inverted (threshold automatically determined)"));
     mMode.setDefault(cv::THRESH_BINARY);
     addInputPort(mMode);
 }
@@ -52,8 +58,18 @@ ThresholdFilter::ThresholdFilter()
 void ThresholdFilter::execute()
 {
     int threshold = mThreshold;
-    const GrayImage src = mIn;
-    GrayImage dest;
-    cv::threshold(src, dest, threshold, 255, mMode);
+    cv::Mat src = mIn;
+    ((Image)src).convertToGray(CV_8U);
+
+    Image dest;
+    if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
+        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY + mMode);
+    } else if(mMode == cv::THRESH_OTSU+1){
+        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
+    }else if(mMode == cv::THRESH_TRIANGLE+1){
+        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
+    } else {
+        cv::threshold(src, dest, threshold, 255, mMode);
+    }
     mOut.send(dest);
 }

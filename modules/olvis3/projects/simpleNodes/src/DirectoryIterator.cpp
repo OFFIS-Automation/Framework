@@ -18,7 +18,6 @@
 
 
 REGISTER_FILTER(DirectoryIterator);
-
 DirectoryIterator::DirectoryIterator()
     : mIter(mFileList)
 {
@@ -79,6 +78,5 @@ void DirectoryIterator::execute()
         QFileInfo info(mIter.next());
         mNameOut.send(info.fileName());
         mOut.send(info);
-
     }
 }

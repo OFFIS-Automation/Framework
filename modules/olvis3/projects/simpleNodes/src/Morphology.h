@@ -22,7 +22,7 @@
 
 #include "KernelFilter.h"
 
-class Morphology : public GrayKernelFilter
+class Morphology : public KernelFilter
 {
 public:
     Morphology();
@@ -32,12 +32,10 @@ protected:
     in::Integer mIterations;
     in::Integer mElementType;
     in::Integer mOperation;
-    in::GrayImage mUserElement;
+    in::Image mUserElement;
     cv::Mat mElement;
     int mElementSize;
     int mElementShape;
-
-
 };
 
 #endif // MORPHOLOGY_H

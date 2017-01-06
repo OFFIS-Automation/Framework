@@ -26,6 +26,7 @@ class ScaleImage : public UserFilter
 public:
     ScaleImage();
     void execute();
+	
 protected:
     in::Image mIn;
     out::Image mOut;

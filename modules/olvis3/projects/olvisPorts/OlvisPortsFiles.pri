@@ -27,7 +27,7 @@ SOURCES += \
     src/IntegerPort.cpp \
     src/ImagePort.cpp \
     src/FilePort.cpp \
-    src/GrayImage.cpp \
+    src/Image.cpp \
     src/DirectoryPort.cpp \
     src/StringPort.cpp \
     src/RealPort.cpp \
@@ -42,8 +42,6 @@ SOURCES += \
     src/DepthMapPort.cpp \
     src/Histogram.cpp \
     src/HistogramPort.cpp \
-    src/RgbImage.cpp \
-    src/RgbaImage.cpp \
     src/DateTimePort.cpp \
     $$PWD/src/special/PhysicalSizePort.cpp \
     $$PWD/src/ColorPort.cpp
@@ -53,7 +51,7 @@ HEADERS += \
     ../../include/ports/ImagePort.h \
     ../../include/ports/FilePort.h \
     ../../include/ports/DefaultPortsGlobal.h \
-    ../../include/ports/GrayImage.h \
+    ../../include/ports/Image.h \
     ../../include/ports/DirectoryPort.h \
     ../../include/ports/StringPort.h \
     ../../include/ports/RealPort.h \
@@ -65,7 +63,6 @@ HEADERS += \
     ../../include/ports/PolygonPort.h \
     ../../include/ports/LinePort.h \
     ../../include/ports/StringPort.h \
-    ../../include/ports/RgbImage.h \
     ../../include/ports/RectPort.h \
     ../../include/ports/RealPort.h \
     ../../include/ports/PosePort.h \
@@ -75,7 +72,6 @@ HEADERS += \
     ../../include/ports/LinePort.h \
     ../../include/ports/IntegerPort.h \
     ../../include/ports/ImagePort.h \
-    ../../include/ports/GrayImage.h \
     ../../include/ports/FilePort.h \
     ../../include/ports/DirectoryPort.h \
     ../../include/ports/DepthMapPort.h \

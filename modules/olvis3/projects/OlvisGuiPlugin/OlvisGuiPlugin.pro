@@ -132,6 +132,3 @@ FORMS += \
 
 RESOURCES += \
     images/images.qrc
-
-OTHER_FILES += \
-    ../../include/ports/RgbImage.h

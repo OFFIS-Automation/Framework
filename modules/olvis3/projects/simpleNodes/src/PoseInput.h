@@ -27,6 +27,7 @@ class PoseInput : public UserFilter
 public:
     PoseInput();
     virtual void execute();
+	
 protected:
     in::Pose2d mIn;
     out::Pose2d mOut;

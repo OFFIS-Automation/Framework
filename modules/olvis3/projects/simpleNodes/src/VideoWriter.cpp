@@ -59,7 +59,9 @@ void VideoWriter::stop()
 
 void VideoWriter::execute()
 {
-    const cv::Mat source = mIn;
+    cv::Mat source = mIn;
+    ((Image)source).convertToRGB(CV_8U);
+
     if(!mWriter)
         return;
     if(!mWriter->isOpened())

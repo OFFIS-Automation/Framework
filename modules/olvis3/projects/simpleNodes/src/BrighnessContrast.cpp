@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include "BrighnessContrast.h"
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(BrighnessContrast);
-
 BrighnessContrast::BrighnessContrast()
 {
     setName("BrightnessContrast");
@@ -49,20 +47,17 @@ BrighnessContrast::BrighnessContrast()
 
 void BrighnessContrast::execute()
 {
-
     double brighness = mBrighness.getValue();
     double contrast = mContrast.getValue();
     contrast /= 100;
     brighness *=255/100;
-    cv::Mat source = mIn;
+
+    cv::Mat src = mIn;
     cv::Mat wide;
-    source.convertTo(wide, CV_16S, 1.0, -127);
-    if(source.channels() == 4)
-    {
-        RgbImage rgb(source);
-        source = rgb;
-    }
-    cv::Mat target;
-    wide.convertTo(target,-1,1.0 + contrast, brighness + 127);
-    mOut.send(target);
+    src.convertTo(wide, CV_16S, 1.0, -127);
+
+    cv::Mat dest;
+    wide.convertTo(dest, -1, 1.0 + contrast, brighness + 127);
+
+    mOut.send(dest);
 }

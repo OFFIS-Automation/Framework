@@ -35,12 +35,12 @@ public:
     virtual void start();
     virtual void execute();
 
-
 protected:
     enum {
         SleepMode,
         ActiveWaitMode
     };
+	
     in::Real mFps;
     in::Integer mMode;
     Timer mTimer;

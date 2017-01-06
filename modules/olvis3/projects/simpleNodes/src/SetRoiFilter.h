@@ -28,12 +28,13 @@ class SetRoiFilter : public UserFilter
 public:
     SetRoiFilter();
     virtual void execute();
+	
 protected:
-    in::Image mImageIn;
+    in::Image mIn;
     in::Rect mRoiIn;
     in::Point mOffsetIn;
     in::Integer mOffsetModeIn;
-    out::Image mImageOut;
+    out::Image mOut;
     out::Point mOffsetOut;
 
     enum OffsetTypes

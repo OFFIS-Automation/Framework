@@ -163,8 +163,10 @@ cv::Mat Rgb2Graphen::gauss(cv::Mat matrix, double s, double m)
 
 void Rgb2Graphen::execute()
 {
-    const cv::Mat input = mIn;
-    GrayImage dest(input.rows, input.cols);
+    Image input = mIn;
+    input.convertToRGB(CV_8U);
+
+    cv::Mat dest(input.rows, input.cols, CV_8UC1);
     int mode = mMode;
     int target = mTarget;
 

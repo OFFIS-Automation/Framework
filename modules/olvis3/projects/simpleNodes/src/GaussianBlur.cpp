@@ -16,8 +16,8 @@
 
 #include "GaussianBlur.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(GaussianBlur);
 
+REGISTER_FILTER(GaussianBlur);
 GaussianBlur::GaussianBlur()
 {
     setName("Gaussian");

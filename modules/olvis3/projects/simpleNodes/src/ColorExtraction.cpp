@@ -57,22 +57,21 @@ ColorExtraction::ColorExtraction()
 
 void ColorExtraction::execute()
 {
-    const RgbImage input = mIn;
+    cv::Mat src = mIn;
+    ((Image)src).convertToRGB(CV_8U);
 
     cv::Vec3b color = mColor.bgr();
     int tolerance = mTolerance.getValue();
 
     // calculate the lower and upper border for the allowed colors
-    cv::Scalar low(color[0] - tolerance / 2, color[1] - tolerance / 2,
-                   color[2] - tolerance / 2);
-    cv::Scalar high(color[0] + tolerance / 2, color[1] + tolerance / 2,
-                    color[2] + tolerance / 2);
+    cv::Scalar low(color[0] - tolerance / 2, color[1] - tolerance / 2, color[2] - tolerance / 2);
+    cv::Scalar high(color[0] + tolerance / 2, color[1] + tolerance / 2, color[2] + tolerance / 2);
 
     // create a mask where all pixels that are between the borders are white
     // (255) and all others
     // are black (0)
     cv::Mat mask;
-    cv::inRange(input, low, high, mask);
+    cv::inRange(src, low, high, mask);
 
     // convert to 3 channel matrix
     std::vector<cv::Mat> channels;
@@ -84,7 +83,7 @@ void ColorExtraction::execute()
     // only take the pixel values from original image where the mask is 255
     cv::Mat dest;
     cv::Mat foreground;
-    cv::bitwise_and(input, mask, foreground);
+    cv::bitwise_and(src, mask, foreground);
     if(mFillColor.hasValue())
     {
         cv::Vec3b backgroundColor = mFillColor.bgr();

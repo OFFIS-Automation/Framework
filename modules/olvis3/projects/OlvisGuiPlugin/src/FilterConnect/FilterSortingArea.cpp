@@ -403,14 +403,12 @@ void FilterSortingArea::startDrag(FilterWidget *widget, const QPoint &hotspot)
 
 void FilterSortingArea::onStartConnect(FilterPortWidget *output)
 {
-    qDebug() << "Start connect";
     mCurrent.source = output;
-    ;
+
     int x = 0;
     if (!output->isLeft())
         x = output->width();
     mCurrent.start = output->mapTo(this, QPoint(x, output->height() / 2));
-    ;
     mCurrent.possible = false;
     mCurrent.ignore = 0;
 }
@@ -445,21 +443,18 @@ void FilterSortingArea::mouseMoveEvent(QMouseEvent *event)
         if (port) {
             mCurrent.valid = true;
             mCurrent.end = port->mapTo(this, QPoint(0, port->height() / 2));
-            ;
+
             mCurrent.end.setX(mCurrent.start.x());
             QString warning;
-            ProcessorInputPortWidget *input =
-                qobject_cast<ProcessorInputPortWidget *>(mCurrent.source);
+            ProcessorInputPortWidget *input = qobject_cast<ProcessorInputPortWidget *>(mCurrent.source);
             if (input)
                 mCurrent.possible =
                     port == mCurrent.ignore ||
-                    mInterface.canConnectInput(input->realName(),
-                                               port->portId(), warning);
+                    mInterface.canConnectInput(input->realName(), port->portId(), warning);
             else
                 mCurrent.possible =
                     port == mCurrent.ignore ||
-                    mInterface.canConnect(mCurrent.source->portId(),
-                                          port->portId(), warning);
+                    mInterface.canConnect(mCurrent.source->portId(), port->portId(), warning);
             mCurrent.hasWarning = !warning.isEmpty();
             if (!warning.isEmpty())
                 QToolTip::showText(mapToGlobal(event->pos()), warning);
@@ -468,18 +463,13 @@ void FilterSortingArea::mouseMoveEvent(QMouseEvent *event)
         } else
             QToolTip::hideText();
 
-        ProcessorOutputsWidget *outputs =
-            firstParentWidget<ProcessorOutputsWidget *>(
-                qobject_cast<QWidget *>(child));
+        ProcessorOutputsWidget *outputs = firstParentWidget<ProcessorOutputsWidget *>(qobject_cast<QWidget *>(child));
 
         if (outputs) {
             if (mInterface.canBeProcessorOutput(mCurrent.source->portId())) {
-                ui->outputs->addTempPort(mCurrent.source->isLeft(),
-                                         mCurrent.source->filterId(),
-                                         mCurrent.source->portName());
+                ui->outputs->addTempPort(mCurrent.source->isLeft(), mCurrent.source->filterId(), mCurrent.source->portName());
                 mCurrent.valid = true;
-                mCurrent.end = ui->outputs->tempPort()->mapTo(
-                    this, QPoint(0, ui->outputs->tempPort()->height() / 2));
+                mCurrent.end = ui->outputs->tempPort()->mapTo(this, QPoint(0, ui->outputs->tempPort()->height() / 2));
                 mCurrent.end.setX(mCurrent.start.x());
                 mCurrent.possible = true; // child == ui->outputs->tempPort();
                 mCurrent.hasWarning = false;

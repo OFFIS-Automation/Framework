@@ -35,8 +35,7 @@ public:
     virtual void stop();
 
 protected:
-
-    in::RgbImage mIn;
+    in::Image mIn;
     in::Real mFpsIn;
     in::WriteFile mFileName;
     in::Integer mMode;

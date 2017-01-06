@@ -41,7 +41,7 @@ class VideoReceiver : public UserFilter
 		in::String m_ip;
 		in::Integer m_port;
 
-		out::RgbImage m_frameOut;
+        out::Image m_frameOut;
 
 		// Member
 		GstFlowReturn onNewFrame();

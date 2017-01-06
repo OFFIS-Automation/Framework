@@ -26,6 +26,7 @@ class RectInput : public UserFilter
 public:
     RectInput();
     virtual void execute();
+	
 protected:
     in::Rect mIn;
     out::Rect mOut, mSingleOut;

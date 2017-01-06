@@ -17,7 +17,6 @@
 #include "CorrectPosition.h"
 
 REGISTER_FILTER(CorrectPosition);
-
 CorrectPosition::CorrectPosition()
 {
     setName("CorrectPosition");

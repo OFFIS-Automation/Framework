@@ -42,7 +42,7 @@ class VideoStreamer : public UserFilter
 		in::String m_tune;
 		in::String m_speed_preset;
 
-		in::RgbImage m_frameIn;
+        in::Image m_frameIn;
 
 		// Member
 		bool m_initialized = false;

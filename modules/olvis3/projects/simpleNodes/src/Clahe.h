@@ -26,11 +26,11 @@ class Clahe : public UserFilter
 public:
     Clahe();
     virtual void execute();
+	
 protected:
-    in::RgbImage mIn;
-    out::RgbImage mOut;
+    in::Image mIn;
+    out::Image mOut;
     in::Integer mClipLimit;
 };
-
 
 #endif // CLAHE_H

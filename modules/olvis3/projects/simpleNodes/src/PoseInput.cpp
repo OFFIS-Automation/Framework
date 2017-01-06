@@ -17,7 +17,6 @@
 #include "PoseInput.h"
 
 REGISTER_FILTER(PoseInput);
-
 PoseInput::PoseInput()
 {
     setName(tr("Pose"));

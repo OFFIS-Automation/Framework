@@ -37,9 +37,9 @@ protected:
         DebayerGB
     };
 
-    in::GrayImage mIn;
+    in::Image mIn;
     in::Integer mMode;
-    out::RgbImage mOut;
+    out::Image mOut;
 };
 
 #endif // GRAY2RGB_H

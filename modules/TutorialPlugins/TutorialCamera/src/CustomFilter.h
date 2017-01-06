@@ -36,7 +36,7 @@ public:
 public slots:
     void onNewImage(const QImage& data);
 protected:
-    out::RgbImage mOut;
+    out::Image mOut;
     QMutex mMutex;
     QImage mImg;
     QWaitCondition mWait;

@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Bilateral);
-
 Bilateral::Bilateral()
 {
     setName("Bilateral");
@@ -55,9 +54,10 @@ void Bilateral::execute()
     int kSigmaColor = mSigmaColor;
     int kSigmaSpace = mSigmaSpace;
 
-    const cv::Mat src = mIn;
-    cv::Mat dest;
+    cv::Mat src = mIn;
+    ((Image)src).convertToBit(CV_8U);
 
+    cv::Mat dest;
     cv::bilateralFilter(src, dest, kD, kSigmaColor, kSigmaSpace);
 
     mOut.send(dest);

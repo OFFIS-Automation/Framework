@@ -15,10 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RotateImage.h"
-
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(RotateImage);
 
+REGISTER_FILTER(RotateImage);
 RotateImage::RotateImage()
 {
     setName("Rotate");
@@ -45,26 +44,26 @@ RotateImage::RotateImage()
 
 void RotateImage::execute()
 {
-    const cv::Mat source = mIn;
+    const cv::Mat src = mIn;
     int angle = mAngle;
     cv::Mat dest;
     if(angle == 90)
     {
-        dest = source.t();
+        dest = src.t();
         cv::flip(dest, dest, 1);
     }
     else if(angle == 180)
     {
-        cv::flip(source, dest, -1);
+        cv::flip(src, dest, -1);
     }
     else if(angle == 270)
     {
-        dest = source.t();
+        dest = src.t();
         cv::flip(dest, dest, 0);
     }
     else
     {
-        dest = source;
+        dest = src;
     }
 
     mOut.send(dest);

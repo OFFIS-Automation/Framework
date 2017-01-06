@@ -116,9 +116,9 @@ DepthMap& DepthMap::operator=(const MatExpr& exp)
     return *this;
 }
 
-GrayImage DepthMap::toImage()
+Image DepthMap::toImage()
 {
-    GrayImage img;
+    Image img;
     double minVal, maxVal;
     cv::minMaxLoc(*this, &minVal, &maxVal);
     double factor = 255.0/(maxVal- minVal);

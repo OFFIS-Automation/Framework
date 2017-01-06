@@ -16,8 +16,10 @@
 
 #include "WhiteBalance.h"
 #include <opencv2/opencv.hpp>
-REGISTER_FILTER(WhiteBalance);
 
+using namespace cv;
+
+REGISTER_FILTER(WhiteBalance);
 WhiteBalance::WhiteBalance()
 {
     setName("WhiteBalance");
@@ -35,7 +37,9 @@ WhiteBalance::WhiteBalance()
 
 void WhiteBalance::execute()
 {
-    const cv::Mat src = mIn;
+    cv::Mat src = mIn;
+    ((Image)src).convertToRGB();
+
     cv::Mat dest;
     if(src.rows > 0 && src.cols > 0){
         // http://opencvintro.blogspot.de/2015/05/grey-world-algorithm-in-opencv.html

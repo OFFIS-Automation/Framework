@@ -18,20 +18,27 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(NormalizeHistogramm);
-
 NormalizeHistogramm::NormalizeHistogramm()
 {
     setGroup("image/analysis");
     setName("EqualizeHistogram");
     setDesc(QObject::tr("Improves the contrast of an image by equalizing the histogram"));
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 }
 
 void NormalizeHistogramm::execute()
 {
-    const cv::Mat img = mIn;
+    cv::Mat src = mIn;
+    ((Image)src).convertToGray(CV_8U);
+
     cv::Mat dest;
-    cv::equalizeHist(img, dest);
+    cv::equalizeHist(src, dest);
     mOut.send(dest);
 }

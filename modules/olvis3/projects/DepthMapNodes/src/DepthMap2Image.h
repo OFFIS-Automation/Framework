@@ -28,7 +28,7 @@ public:
     virtual void execute();
 protected:
     in::DepthMap mIn;
-    out::GrayImage mOut;
+    out::Image mOut;
 };
 
 #endif // USER_DEPTHMAP2IMAGE_H

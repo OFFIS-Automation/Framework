@@ -27,9 +27,8 @@ public:
     virtual void execute();
 
 protected:
-    in::RgbImage mIn;
-    out::RgbImage mOut;
+    in::Image mIn;
+    out::Image mOut;
 };
-
 
 #endif // WHITEBALANCE_H

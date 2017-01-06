@@ -26,9 +26,10 @@ class NormalizeHistogramm : public UserFilter
 public:
     NormalizeHistogramm();
     virtual void execute();
+	
 protected:
-    in::GrayImage mIn;
-    out::GrayImage mOut;
+    in::Image mIn;
+    out::Image mOut;
 };
 
 #endif // NORMALIZEHISTOGRAMM_H

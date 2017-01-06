@@ -34,5 +34,4 @@ protected:
     in::Integer mIterarions;
 };
 
-
 #endif // SHARP_H

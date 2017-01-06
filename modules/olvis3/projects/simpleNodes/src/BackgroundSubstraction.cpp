@@ -52,14 +52,14 @@ BackgroundSubstraction::BackgroundSubstraction()
 
 void BackgroundSubstraction::execute()
 {
-    const cv::Mat input = mIn;
+    const cv::Mat src = mIn;
     cv::Mat background;
 
     if(mMode == KNN){
-        mKNN->apply(input, mForegroundMask);
+        mKNN->apply(src, mForegroundMask);
         mKNN->getBackgroundImage(background);
     } else {
-        mMog2->apply(input, mForegroundMask);
+        mMog2->apply(src, mForegroundMask);
         mMog2->getBackgroundImage(background);
     }
 

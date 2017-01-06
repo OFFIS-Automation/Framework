@@ -28,6 +28,7 @@ class BackgroundSubstraction : public UserFilter
 public:
     BackgroundSubstraction();
     void execute();
+
 protected:
     enum Mode
     {
@@ -39,6 +40,7 @@ protected:
     in::Integer mMode;
     out::Image mBackgroundOut;
     out::Image mForegroundOut;
+	
 private:
     cv::Ptr<cv::BackgroundSubtractorKNN> mKNN;
     cv::Ptr<cv::BackgroundSubtractorMOG2> mMog2;

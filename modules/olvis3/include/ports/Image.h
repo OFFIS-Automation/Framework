@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,24 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_CONTOURSFILTER_H
-#define USER_CONTOURSFILTER_H
+#ifndef IMAGE_H
+#define IMAGE_H
 
-#include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
-#include <ports/PolygonPort.h>
-#include <ports/PointPort.h>
+#include "DefaultPortsGlobal.h"
+#include <opencv2/core.hpp>
 
-class ContoursFilter : public UserFilter
+
+class DEFAULTPORTSSHARED_EXPORT Image : public cv::Mat
 {
 public:
-    ContoursFilter();
-    virtual void execute();
+    Image();
 
-protected:
-    in::GrayImage mIn;
-    in::Point mOffsetIn;
-    out::Polygon mContourOut;
+    // copy constructor
+    Image(const Image& m);
+    Image(const cv::Mat& m);
+
+    // assignment operators
+    Image& operator = (const Image& m);
+    Image& operator = (const cv::MatExpr& expr);
+
+    // Helper, -1 will keep type
+    void convertToBit(int type = -1);
+    void convertToGray(int type = -1);
+    void convertToRGB(int type = -1);
 };
 
-#endif // USER_CONTOURSFILTER_H
+#endif // GRAYIMAGE_H

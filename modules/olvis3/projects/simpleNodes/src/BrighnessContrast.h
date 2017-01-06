@@ -26,11 +26,11 @@ class BrighnessContrast : public UserFilter
 public:
     BrighnessContrast();
     virtual void execute();
+	
 protected:
-    in::RgbImage mIn;
-    out::RgbImage mOut;
+    in::Image mIn;
+    out::Image mOut;
     in::Integer mBrighness, mContrast;
 };
-
 
 #endif // BRIGHNESSCONTRAST_H

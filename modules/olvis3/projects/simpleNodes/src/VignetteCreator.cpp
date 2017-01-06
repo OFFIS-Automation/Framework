@@ -18,7 +18,6 @@
 #include "VignetteCreator.h"
 
 REGISTER_FILTER(VignetteCreator);
-
 VignetteCreator::VignetteCreator()
 {
     setName("VignetteCreator");

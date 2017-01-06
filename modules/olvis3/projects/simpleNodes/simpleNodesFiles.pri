@@ -33,7 +33,6 @@ SOURCES += \
 	src/CorrectPosition.cpp \
         src/Clahe.cpp \
 	src/Delay.cpp \
-	src/Denoising.cpp \
 	src/DirectoryIterator.cpp \
 	src/FetchTemplate.cpp \
 	src/FlipImage.cpp \
@@ -45,7 +44,6 @@ SOURCES += \
 	src/ImageSubstraction.cpp \
 	src/Invert.cpp \
 	src/main.cpp \
-	src/MathFilter.cpp \
 	src/MedianBlur.cpp \
 	src/MinimumFps.cpp \
 	src/Morphology.cpp \
@@ -94,7 +92,6 @@ HEADERS += \
 	src/CorrectPosition.h \
         src/Clahe.h \
 	src/Delay.h \
-	src/Denoising.h \
 	src/DirectoryIterator.h \
 	src/FetchTemplate.h \
 	src/FlipImage.h \
@@ -107,7 +104,6 @@ HEADERS += \
 	src/ImageOutput.h \
 	src/Invert.h \
 	src/KernelFilter.h \
-	src/MathFilter.h \
 	src/MedianBlur.h \
 	src/MinimumFps.h \
 	src/Morphology.h \

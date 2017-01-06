@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Canny);
-
 Canny::Canny()
 {
     setName("Canny");
@@ -57,8 +56,11 @@ void Canny::execute()
     int thresh = mThreshhold.getValue();
     int thresh2 = mRatio.getValue()*thresh;
     bool useL2grad = !mUseL1Gradient.getValue();
-    const GrayImage src = mIn;
-    GrayImage dest;
+
+    cv::Mat src = mIn;
+    ((Image)src).convertToBit(CV_8U);
+
+    cv::Mat dest;
     cv::Canny(src, dest,thresh, thresh2 , 3 , useL2grad);
     mOut.send(dest);
 }

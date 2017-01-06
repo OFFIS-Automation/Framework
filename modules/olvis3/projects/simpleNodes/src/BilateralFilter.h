@@ -28,12 +28,12 @@ class Bilateral : public UserFilter
 public:
     Bilateral();
     virtual void execute();
+
 protected:
     in::Image mIn;
     out::Image mOut;
     in::Integer mD;
     in::Real mSigmaColor, mSigmaSpace;
 };
-
 
 #endif // BILATERAL_H

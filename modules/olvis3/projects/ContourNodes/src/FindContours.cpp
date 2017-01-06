@@ -39,7 +39,9 @@ FindContours::FindContours()
 
 void FindContours::execute()
 {
-    const cv::Mat input = mIn;
+    Image input = mIn;
+    input.convertToGray(CV_8U);
+
     cv::Mat image = input.clone();
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;

@@ -23,7 +23,6 @@
 #include <opencv2/imgproc.hpp>
 
 using namespace cv;
-
 REGISTER_FILTER(Webcam);
 
 Webcam::Webcam()

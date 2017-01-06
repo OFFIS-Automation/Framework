@@ -48,5 +48,4 @@ protected:
     QMutex mImageMutex;
 };
 
-
 #endif // WEBCAM_H

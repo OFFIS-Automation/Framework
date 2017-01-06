@@ -26,9 +26,10 @@ class ColorCorrection : public UserFilter
 public:
     ColorCorrection();
     virtual void execute();
+	
 protected:
-    in::RgbImage mIn;
-    out::RgbImage mOut;
+    in::Image mIn;
+    out::Image mOut;
     in::Real mRFactor, mGFactor, mBFactor;
 };
 

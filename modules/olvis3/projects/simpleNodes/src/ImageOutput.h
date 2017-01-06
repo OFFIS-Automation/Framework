@@ -26,6 +26,7 @@ class ImageOutput : public UserFilter
 public:
     ImageOutput();
     virtual void execute();
+	
 protected:
     in::Image mImage;
     in::WriteFile mFile;

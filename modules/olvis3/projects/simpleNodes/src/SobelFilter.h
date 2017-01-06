@@ -26,8 +26,8 @@ public:
     SobelFilter();
     virtual void execute();
 protected:
-    in::GrayImage mIn;
-    out::GrayImage mOut;
+    in::Image mIn;
+    out::Image mOut;
 };
 
 #endif // SOBELFILTER_H

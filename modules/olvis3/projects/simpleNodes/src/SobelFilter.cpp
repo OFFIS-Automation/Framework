@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(SobelFilter);
-
 SobelFilter::SobelFilter()
 {
     setName("Sobel");

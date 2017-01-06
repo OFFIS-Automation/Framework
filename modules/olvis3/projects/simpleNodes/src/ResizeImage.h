@@ -27,19 +27,19 @@ class ResizeImage : public UserFilter
 public:
     ResizeImage();
     void execute();
+	
 protected:
     in::Image mIn;
     in::Integer mAspectRatio;
     in::Integer mWidth, mHeight;
+	out::Image mOut;
 
     enum SizeContraint
     {
         IgnoreAspectRatio,
         KeepAspectRatioByWidth,
         KeepAspectRatioByHeight
-    };
-
-    out::Image mOut;
+    }; 
 };
 
 #endif // RESIZEIMAGE_H

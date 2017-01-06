@@ -26,5 +26,4 @@ public:
     virtual void execute();
 };
 
-
 #endif // BLUR_H

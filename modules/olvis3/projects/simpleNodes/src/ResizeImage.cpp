@@ -51,21 +51,21 @@ ResizeImage::ResizeImage()
 
 void ResizeImage::execute()
 {
-    const cv::Mat in = mIn;
-    cv::Mat out = in;
+    const cv::Mat src = mIn;
+    cv::Mat out = src.clone();
 
     if(mWidth.hasValue() && mHeight.hasValue()){
         cv::Size size;
 
 
         if(mAspectRatio.getValue() == KeepAspectRatioByWidth){
-            size = cv::Size(mWidth, ((float)mWidth / (float)in.size().width) * in.size().height);
+            size = cv::Size(mWidth, ((float)mWidth / (float)src.size().width) * src.size().height);
         } else if(mAspectRatio.getValue() == KeepAspectRatioByHeight) {
-            size = cv::Size(((float)mHeight / (float)in.size().height) * in.size().width , mHeight);
+            size = cv::Size(((float)mHeight / (float)src.size().height) * src.size().width , mHeight);
         } else {
             size = cv::Size(mWidth, mHeight);
         }
-        cv::resize(in, out, size, 0, 0);
+        cv::resize(src, out, size, 0, 0);
     }
 
     mOut.send(out);

@@ -52,7 +52,7 @@ protected:
     };
 
     // image input
-    in::RgbImage mIn;
+    in::Image mIn;
     // mode option
     in::Integer mMode;
     in::Integer mTarget;
@@ -68,7 +68,7 @@ protected:
     in::Integer mChannel;
 
     // output image
-    out::GrayImage mOut;
+    out::Image mOut;
 
 private:
     // variables to hold the configured RGB values and
@@ -87,6 +87,5 @@ private:
     // to reduce string coversions to a minimum
     void loadRGBConfig();
 };
-
 
 #endif // RGB2GRAPHEN_H

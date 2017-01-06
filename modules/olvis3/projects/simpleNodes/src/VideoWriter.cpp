@@ -22,7 +22,7 @@ REGISTER_FILTER(VideoWriter);
 VideoWriter::VideoWriter()
 {
     setName("VideoOutput");
-    setDesc(QObject::tr("Writes incoming data to an *.avi video file"));
+    setDesc(QObject::tr("Writes incoming data to an *.avi video file<br>Input: 8C1 / 8C3 / 8C4"));
     setGroup("output");
 
     mIn.setName("imageIn");
@@ -59,8 +59,9 @@ void VideoWriter::stop()
 
 void VideoWriter::execute()
 {
-    cv::Mat source = mIn;
-    ((Image)source).convertToRGB(CV_8U);
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToRGB(CV_8U);
 
     if(!mWriter)
         return;
@@ -68,8 +69,8 @@ void VideoWriter::execute()
     {
 
         std::string filename = mFileName.getValue().absoluteFilePath().toStdString();
-        mWriter->open(filename, mMode.getValue() ,mFpsIn.getValue(), source.size());
+        mWriter->open(filename, mMode.getValue(), mFpsIn.getValue(), srcConverted.size());
     }
     if(mWriter->isOpened())
-    *mWriter << source.clone();
+    *mWriter << srcConverted.clone();
 }

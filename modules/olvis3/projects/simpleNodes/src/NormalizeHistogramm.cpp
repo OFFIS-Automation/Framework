@@ -22,7 +22,7 @@ NormalizeHistogramm::NormalizeHistogramm()
 {
     setGroup("image/analysis");
     setName("EqualizeHistogram");
-    setDesc(QObject::tr("Improves the contrast of an image by equalizing the histogram"));
+    setDesc(QObject::tr("Improves the contrast of an image by equalizing the histogram<br>Input: 8C1 / 8C3 / 8C4"));
 
     mIn.setName("imageIn");
     mIn.setDesc(QObject::tr("Image input"));
@@ -35,10 +35,11 @@ NormalizeHistogramm::NormalizeHistogramm()
 
 void NormalizeHistogramm::execute()
 {
-    cv::Mat src = mIn;
-    ((Image)src).convertToGray(CV_8U);
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToBit(CV_8U);
 
     cv::Mat dest;
-    cv::equalizeHist(src, dest);
+    cv::equalizeHist(srcConverted, dest);
     mOut.send(dest);
 }

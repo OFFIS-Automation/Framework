@@ -21,7 +21,7 @@ REGISTER_FILTER(Bilateral);
 Bilateral::Bilateral()
 {
     setName("Bilateral");
-    setDesc(QObject::tr("Removes noise from a given image by applying the bilateral filter to an image"));
+    setDesc(QObject::tr("Removes noise from a given image by applying the bilateral filter to an image<br>Input: 8C1 / 8C3"));
     setGroup("image/smoothing");
 
     mIn.setName("imageIn");
@@ -54,11 +54,12 @@ void Bilateral::execute()
     int kSigmaColor = mSigmaColor;
     int kSigmaSpace = mSigmaSpace;
 
-    cv::Mat src = mIn;
-    ((Image)src).convertToBit(CV_8U);
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToBit(CV_8U);
 
     cv::Mat dest;
-    cv::bilateralFilter(src, dest, kD, kSigmaColor, kSigmaSpace);
+    cv::bilateralFilter(srcConverted, dest, kD, kSigmaColor, kSigmaSpace);
 
     mOut.send(dest);
 }

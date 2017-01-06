@@ -23,7 +23,7 @@ REGISTER_FILTER(WhiteBalance);
 WhiteBalance::WhiteBalance()
 {
     setName("WhiteBalance");
-    setDesc(QObject::tr("Simple white balance based on grayworld white balance algorithm"));
+    setDesc(QObject::tr("Simple white balance based on grayworld white balance algorithm<br>Input: 8C3 / 16C3"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
@@ -37,24 +37,25 @@ WhiteBalance::WhiteBalance()
 
 void WhiteBalance::execute()
 {
-    cv::Mat src = mIn;
-    ((Image)src).convertToRGB();
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToRGB();
 
     cv::Mat dest;
-    if(src.rows > 0 && src.cols > 0){
+    if(srcConverted.rows > 0 && srcConverted.cols > 0){
         // http://opencvintro.blogspot.de/2015/05/grey-world-algorithm-in-opencv.html
-        cv::Scalar sumImg = cv::sum(src);
-        cv::Scalar illum = sumImg/(src.rows*src.cols);
+        cv::Scalar sumImg = cv::sum(srcConverted);
+        cv::Scalar illum = sumImg/(srcConverted.rows*srcConverted.cols);
 
         std::vector<cv::Mat> rgbChannels(3);
-        cv::split(src, rgbChannels);
+        cv::split(srcConverted, rgbChannels);
 
         cv::Mat redImg = rgbChannels[2];
         cv::Mat greenImg = rgbChannels[1];
         cv::Mat blueImg = rgbChannels[0];
 
         // Calculate scale factor for normalisation you can use 255 instead
-        double scale=(illum(0)+illum(1)+illum(2))/3;
+        double scale = (illum(0)+illum(1)+illum(2))/3;
 
         // Correct for illuminant (white balancing)
         redImg = redImg*scale/illum(2);

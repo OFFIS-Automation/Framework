@@ -25,7 +25,7 @@ REGISTER_FILTER(BlobDetection);
 BlobDetection::BlobDetection()
 {
     setName("BlobDetection");
-    setDesc(QObject::tr("Finds binary large objects in an image. The input image must be be thresholded"));
+    setDesc(QObject::tr("Finds binary large objects in an image. The input image must be be thresholded<br>Input: 8C1"));
     setGroup("image/object detection");
 
     mIn.setName("imageIn");
@@ -77,12 +77,13 @@ BlobDetection::BlobDetection()
 
 void BlobDetection::execute()
 {
-    Mat src = mIn;
-    ((Image)src).convertToGray(CV_8U);
+    const Mat src = mIn;
+    Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToGray(CV_8U);
 
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
-    findContours(src, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+    findContours(srcConverted, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
     int numBlobs = 0;
     for(uint i = 0; i< contours.size(); i++ )
     {
@@ -98,7 +99,7 @@ void BlobDetection::execute()
         double alpha = 0.0;
         if(mUseAxis)
         {
-            Mat roi = src(r);
+            Mat roi = srcConverted(r);
             Mat contMat = Mat::zeros(roi.size(), CV_8UC1);
             drawContours(contMat, contours, i, Scalar(255, 255, 255), CV_FILLED, 8, noArray(), INT_MAX, Point(-r.x, -r.y));
             Mat temp;

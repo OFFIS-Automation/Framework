@@ -35,9 +35,9 @@ public:
     Image& operator = (const cv::MatExpr& expr);
 
     // Helper, -1 will keep type
-    void convertToBit(int type = -1);
-    void convertToGray(int type = -1);
-    void convertToRGB(int type = -1);
+    void convertToBit(int depth = -1);
+    void convertToGray(int depth = -1);
+    void convertToRGB(int depth = -1);
 };
 
 #endif // GRAYIMAGE_H

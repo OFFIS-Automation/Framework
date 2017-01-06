@@ -27,7 +27,7 @@ REGISTER_FILTER(Rgb2Graphen);
 Rgb2Graphen::Rgb2Graphen()
 {
     setName("RGB2Graphen");
-    setDesc(QObject::tr("Extracts graphene layers from an RGB image"));
+    setDesc(QObject::tr("Extracts graphene layers from an RGB image<br>Input: 8C3"));
     setGroup("application/graphene");
 
     // define image input

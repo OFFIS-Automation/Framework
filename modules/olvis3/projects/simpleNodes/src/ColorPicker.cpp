@@ -21,7 +21,7 @@ REGISTER_FILTER(ColorPicker);
 ColorPicker::ColorPicker()
 {
     setName("ColorPicker");
-    setDesc(QObject::tr("Extracts the color of a given point of the input image"));
+    setDesc(QObject::tr("Extracts the color of a given point of the input image<br>Input: 8C1 / 8C3 / 8C4"));
     setGroup("image/color");
 
     mIn.setName("imageIn");
@@ -41,25 +41,26 @@ ColorPicker::ColorPicker()
 
 void ColorPicker::execute()
 {
-    cv::Mat src = mIn;
-    ((Image)src).convertToBit(CV_8U);
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToBit(CV_8U);
 
     cv::Vec4b bgra(0,0,0,0xFF);
     cv::Point2d p = mPointIn.getValue();
-    if(src.channels() == 1)
+    if(srcConverted.channels() == 1)
     {
-        uchar gray = src.at<uchar>(p.y, p.x);
+        uchar gray = srcConverted.at<uchar>(p.y, p.x);
         bgra[0] = gray;
         bgra[1] = gray;
         bgra[2] = gray;
-    } else if(src.channels() == 3)
+    } else if(srcConverted.channels() == 3)
     {
-        cv::Vec3b bgr = src.at<cv::Vec3b>(p.y, p.x);
+        cv::Vec3b bgr = srcConverted.at<cv::Vec3b>(p.y, p.x);
         bgra[0] = bgr[0];
         bgra[1] = bgr[1];
         bgra[2] = bgr[2];
-    } else if(src.channels() == 4) {
-        bgra = src.at<cv::Vec4b>(p.y, p.x);
+    } else if(srcConverted.channels() == 4) {
+        bgra = srcConverted.at<cv::Vec4b>(p.y, p.x);
     }
     mColorOut.sendBgra(bgra);
 }

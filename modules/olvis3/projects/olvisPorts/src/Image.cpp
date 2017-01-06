@@ -64,56 +64,64 @@ void Image::convertToBit(int type)
 
 }
 
-void Image::convertToGray(int type)
+void Image::convertToGray(int depth)
 {
     cv::Mat image_ = *this;
     cv::Mat image = image_;
     bool modified = false;
 
-    if(type >= 0)
+    if(depth >= 0)
     {
-        if(image.type() != type)
+        if(image.depth() != depth)
         {
             modified = true;
-            image.convertTo(image, type, image.depth() == CV_16U ? 1/255.0 : 255.0);
+            cv::Mat dest;
+            image.convertTo(dest, depth, image.depth() == CV_16U ? 1/255.0 : 255.0);
+            image = dest;
         }
     }
 
     if(image.channels() != 1)
     {
        modified = true;
+       cv::Mat dest;
        if(image.channels() == 4)
-           cv::cvtColor(image, image, CV_RGBA2GRAY);
+           cv::cvtColor(image, dest, CV_RGBA2GRAY);
        else
-           cv::cvtColor(image, image, CV_RGB2GRAY);
+           cv::cvtColor(image, dest, CV_RGB2GRAY);
+       image = dest;
     }
     if(modified)
-        Mat::operator = (image);
+        Mat::operator =(image);
 }
 
-void Image::convertToRGB(int type)
+void Image::convertToRGB(int depth)
 {
     cv::Mat image_ = *this;
     cv::Mat image = image_;
     bool modified = false;
 
-    if(type >= 0)
+    if(depth >= 0)
     {
-        if(image.type() != type)
+        if(image.depth() != depth)
         {
             modified = true;
-            image.convertTo(image, type, image.depth() == CV_16U ? 1/255.0 : 255.0);
+            cv::Mat dest;
+            image.convertTo(dest, depth, image.depth() == CV_16U ? 1/255.0 : 255.0);
+            image = dest;
         }
     }
 
     if(image.channels() != 3)
     {
        modified = true;
+       cv::Mat dest;
        if(image.channels() == 4)
-           cv::cvtColor(image, image, CV_RGBA2RGB);
+           cv::cvtColor(image, dest, CV_RGBA2RGB);
        else
-           cv::cvtColor(image, image, CV_GRAY2RGB);
+           cv::cvtColor(image, dest, CV_GRAY2RGB);
+       image = dest;
     }
     if(modified)
-        Mat::operator = (image);
+        Mat::operator =(image);
 }

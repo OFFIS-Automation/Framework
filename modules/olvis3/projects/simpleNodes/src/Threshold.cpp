@@ -21,7 +21,7 @@ REGISTER_FILTER(Threshold);
 Threshold::Threshold()
 {
     setName("Threshold");
-    setDesc(tr("Thresholds an image"));
+    setDesc(tr("Thresholds an image<br>Input: 8C1"));
     setGroup("image/color");
 
     mOut.setName("imageOut");
@@ -56,18 +56,20 @@ Threshold::Threshold()
 void Threshold::execute()
 {
     int threshold = mThreshold;
-    cv::Mat src = mIn;
-    ((Image)src).convertToGray(CV_8U);
 
-    Image dest;
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToGray(CV_8U);
+
+    cv::Mat dest;
     if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
-        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY + mMode);
+        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY + mMode);
     } else if(mMode == cv::THRESH_OTSU+1){
-        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
+        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
     }else if(mMode == cv::THRESH_TRIANGLE+1){
-        cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
+        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
     } else {
-        cv::threshold(src, dest, threshold, 255, mMode);
+        cv::threshold(srcConverted, dest, threshold, 255, mMode);
     }
     mOut.send(dest);
 }

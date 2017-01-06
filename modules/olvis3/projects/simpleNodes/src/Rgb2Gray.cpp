@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2017 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -21,7 +21,7 @@ REGISTER_FILTER(Rgb2Gray);
 Rgb2Gray::Rgb2Gray()
 {
     setName("RgbToGray");
-    setDesc(QObject::tr("Converts an RGB image into a grayscale image. Can extract a single channel"));
+    setDesc(QObject::tr("Converts an RGB image into a grayscale image. Can extract a single channel<br>Input: 8C3 / 16C3"));
     setGroup("image/color");
 
     mOut.setName("imageOut");
@@ -51,15 +51,17 @@ Rgb2Gray::Rgb2Gray()
 void Rgb2Gray::execute()
 {
     int mode = mMode;
-    cv::Mat src = mIn;
-    ((Image)src).convertToRGB();
 
-    cv::Mat dest(src.rows, src.cols, src.depth() == CV_8U ? CV_8UC1 : CV_16UC1);
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image*)&srcConverted)->convertToRGB();
+
+    cv::Mat dest(srcConverted.rows, srcConverted.cols, srcConverted.depth() == CV_8U ? CV_8UC1 : CV_16UC1);
 
     if(mode == MinMode || mode == MaxMode)
     {
         std::vector<cv::Mat> channels(3);
-        cv::split(src,channels);
+        cv::split(srcConverted,channels);
         const cv::Mat& b(channels[0]);
         const cv::Mat& g(channels[1]);
         const cv::Mat& r(channels[2]);
@@ -73,7 +75,7 @@ void Rgb2Gray::execute()
     {
         int channel = mode-BlueSubstractMode;
         std::vector<cv::Mat> channels(3);
-        cv::split(src,channels);
+        cv::split(srcConverted,channels);
         int other1 = (channel+1)%3;
         int other2 = (channel+2)%3;
         cv::Mat diff;
@@ -89,11 +91,11 @@ void Rgb2Gray::execute()
     {
         int channel = mode-BlueMode;
         int mix[] = {channel, 0};
-        cv::mixChannels(&src, 1, &dest, 1, mix, 1);
+        cv::mixChannels(&srcConverted, 1, &dest, 1, mix, 1);
     }
     else
     {
-        cv::cvtColor(src, dest, CV_BGR2GRAY);
+        cv::cvtColor(srcConverted, dest, CV_BGR2GRAY);
     }
     mOut.send(dest);
 }

@@ -25,7 +25,7 @@ ColorExtraction::ColorExtraction()
     setName("ColorExtraction");
     setDesc(QObject::tr("Extracts a color from an input image. The result image contains "
             "all pixels that are close to the given color within a given "
-            "tolerance"));
+            "tolerance<br>Input: 8C3"));
     setGroup("image/color");
 
     mIn.setName("imageIn");

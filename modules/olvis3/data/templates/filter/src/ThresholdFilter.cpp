@@ -58,9 +58,11 @@ ThresholdFilter::ThresholdFilter()
 void ThresholdFilter::execute()
 {
     int threshold = mThreshold;
-    cv::Mat src = mIn;
-    ((Image)src).convertToGray(CV_8U);
-
+	
+	const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToGray(CV_8U);
+	
     Image dest;
     if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
         cv::threshold(src, dest, 0, 255, cv::THRESH_BINARY + mMode);

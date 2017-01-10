@@ -116,7 +116,7 @@ void VideoWidget::createDisplay()
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     widget->setGeometry(QRect(0, 0, 391, 280));
     scrollArea->setWidget(widget);
-    //scrollArea->registerWidget(widget);
+    //
     // calculate the position, it should be
     // -------------
     // | 0 | 1 | 4 |

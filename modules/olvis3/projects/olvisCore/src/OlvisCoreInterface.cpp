@@ -781,6 +781,7 @@ bool OlvisCoreInterface::canConnect(const PortId &sourceId, const PortId &target
         return false;
     return canConnectSub(sourceId, targetId, warning);
 }
+
 bool OlvisCoreInterface::canConnectSub(const PortId &sourceId, const PortId &targetId, QString &warning) const
 {
     FilterInfo source = getFilter(sourceId.filter);

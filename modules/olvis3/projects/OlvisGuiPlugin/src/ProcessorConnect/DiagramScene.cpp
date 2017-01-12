@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -303,7 +303,7 @@ void DiagramScene::keyPressEvent(QKeyEvent *event)
 
             if(mItemMap.key(item) == 0)
                 return;     // should not happen
-            if(QMessageBox::question(0, tr("Delete processer"), tr("Do you really want to delete the processor %1?").arg(item->getName()),
+            if(QMessageBox::question(0, tr("Delete processor"), tr("Do you really want to delete the processor %1?").arg(item->getName()),
                                      QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
                 return;
             id = mItemMap.key(item);

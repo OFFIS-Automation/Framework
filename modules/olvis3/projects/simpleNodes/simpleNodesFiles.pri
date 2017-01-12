@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ SOURCES += \
 	src/DirectoryIterator.cpp \
 	src/FetchTemplate.cpp \
 	src/FlipImage.cpp \
+        src/Frames.cpp \
 	src/GaussianBlur.cpp \
 	src/Gray2Rgb.cpp \
 	src/HistogramNode.cpp \
@@ -98,6 +99,7 @@ HEADERS += \
 	src/DirectoryIterator.h \
 	src/FetchTemplate.h \
 	src/FlipImage.h \
+        src/Frames.h \
 	src/GaussianBlur.h \
 	src/Gray2Rgb.h \
 	src/Rgb2Graphen.h \

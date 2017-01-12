@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ public:
      * RegularPortMode: default bahavior, port must always have a value
      * OptionalPortMode: port may or may not have a value. The filter must
      * check with hasValue()
-     * SingleShotPortMode: port may or may not have a value. IF a value is
+     * SingleShotPortMode: port may or may not have a value. If a value is
      * assigned, it is only valid for one execution of the
      * filter. After the execution, it is automatically reset to NoValue
      */
@@ -68,6 +68,7 @@ public:
      * @param visibility
      */
     void setVisibility(PortVisibility visibility);
+
     /**
      * Returns whether this port holds a valid value. For default ports that are
      * not lists, the return value is always true For list ports, this commands
@@ -139,7 +140,7 @@ protected:
     void setType(int type);
 
 protected:
-    PortData *d;
+    PortData *portData;
     friend class Filter;
     friend class InputPort;
     friend class OutputPort;

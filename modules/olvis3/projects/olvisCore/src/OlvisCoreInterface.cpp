@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -781,6 +781,7 @@ bool OlvisCoreInterface::canConnect(const PortId &sourceId, const PortId &target
         return false;
     return canConnectSub(sourceId, targetId, warning);
 }
+
 bool OlvisCoreInterface::canConnectSub(const PortId &sourceId, const PortId &targetId, QString &warning) const
 {
     FilterInfo source = getFilter(sourceId.filter);

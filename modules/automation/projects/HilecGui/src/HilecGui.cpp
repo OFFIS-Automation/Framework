@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,7 +63,6 @@ void HilecGui::initialize(const QString&)
     rcContainer = new RcUnitContainerWidget();
     errors = new ScriptErrorWidget();
 
-    connect(toolbar, SIGNAL(aboutToRunFile(QString)), SIGNAL(aboutToRunFile(QString)), Qt::DirectConnection);
     connect(toolbar, SIGNAL(createGamepadMapping()), telecontrol, SLOT(editButtonAssignment()));
     connect(toolbar, SIGNAL(addRcServer()), rcUnits, SLOT(addRcServer()));
     connect(scriptException, SIGNAL(focusLine(QString, int)), SIGNAL(focusLine(QString,int)));

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ void RgbImage::makeRgb()
     if(image.depth() != CV_8U)
     {
         modified = true;
-        image_.convertTo(image, CV_8U);
+        image.convertTo(image, CV_8U, image.depth() == CV_16U ? 1/255.0 : 255.0);
     }
     if(image.channels() != 3)
     {

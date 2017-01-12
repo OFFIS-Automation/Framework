@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -92,25 +92,6 @@ void MasterWindow::on_actionOpen_project_triggered()
         return;
     if(!QFileInfo(filename).exists())
         return;
-
-    // Convert old
-    bool oldAutomationFile = filename.endsWith(".pro", Qt::CaseInsensitive);
-    bool oldOlvisFile = filename.endsWith(".ogr", Qt::CaseInsensitive);
-    if(oldAutomationFile || oldOlvisFile)
-    {
-        if (QMessageBox::information(this, tr("Update project"), tr("The project needs to be updated. Proceed?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
-        {
-            QFileInfo info(filename);
-            QString newName = info.absolutePath() + "/" + info.baseName() + ".oap";
-            if(oldAutomationFile)
-                QFile::rename(filename,newName);
-            QSettings settings(newName, QSettings::IniFormat);
-            settings.setValue("version", 2.0);
-            if(oldOlvisFile)
-                settings.setValue("visionFile", info.fileName());
-            filename = newName;
-        }
-    }
     open(filename);
 }
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,14 +22,14 @@
 
 OutputPort::OutputPort(Port &parent) : mParent(parent)
 {
-    parent.d->out = this;
+    parent.portData->out = this;
     mFired = false;
 }
 
 OutputPort::OutputPort(Port &parent, bool isList) : mParent(parent)
 {
-    parent.d->out = this;
-    parent.d->info.isArray = isList;
+    parent.portData->out = this;
+    parent.portData->info.isArray = isList;
     mFired = false;
 }
 

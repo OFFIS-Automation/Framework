@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@
 InputPort::InputPort(Port& parent, bool isList) :
     mParent(parent)
 {
-    parent.d->in = this;
-    parent.setDefaultValueRaw(parent.d->info.defaultValue);
-    parent.d->info.isArray = isList;
+    parent.portData->in = this;
+    parent.setDefaultValueRaw(parent.portData->info.defaultValue);
+    parent.portData->info.isArray = isList;
     removeSource();
 }
 

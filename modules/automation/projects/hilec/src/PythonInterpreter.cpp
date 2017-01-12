@@ -87,6 +87,7 @@ void PythonInterpreter::run()
     runFile(mFilename);
     UserRequestManager::instance()->abortAll();
 
+	Py_Finalize();
     mDebugger->deinitialize();
     QDir::setCurrent(last);
     qDebug() << "Python: Execution finished" << mFilename;

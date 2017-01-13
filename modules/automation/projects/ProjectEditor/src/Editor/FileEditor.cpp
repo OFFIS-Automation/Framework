@@ -342,10 +342,10 @@ void FileEditor::updateLexer()
     QString suffix = QFileInfo(filename()).completeSuffix().toLower();
     QsciLexer *lexer = 0;
     if(suffix.compare("cpp") == 0 || suffix.compare("hpp") == 0 || suffix.compare("h") == 0){
-        lexer = new QsciLexerCPP();
+		lexer = new QsciLexerCPP();
     }
     if(suffix.compare("py") == 0){
-        lexer = new QsciLexerPython();
+		lexer = new QsciLexerPython();
 
         // For python we have an predefined API
         QsciAPIs *api = new QsciAPIs(lexer);
@@ -367,7 +367,7 @@ void FileEditor::setupEditor()
 {
     // Line numbers
     QFont font("Courier");
-    setMarginsFont(font);
+	setMarginsFont(font);
     setMarginLineNumbers(LINENUMBER_MARGIN, true);
     setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines()) + 6);
     setMarginMarkerMask(1, 0);

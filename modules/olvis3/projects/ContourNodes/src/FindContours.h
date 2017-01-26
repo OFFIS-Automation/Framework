@@ -30,7 +30,7 @@ public:
     virtual void execute();
 
 protected:
-    in::GrayImage mIn;
+    in::Image mIn;
     in::Point mOffsetIn;
     out::Polygon mContourOut;
 };

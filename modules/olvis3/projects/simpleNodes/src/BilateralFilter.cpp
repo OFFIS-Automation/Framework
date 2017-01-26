@@ -18,11 +18,10 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Bilateral);
-
 Bilateral::Bilateral()
 {
     setName("Bilateral");
-    setDesc(QObject::tr("Removes noise from a given image by applying the bilateral filter to an image"));
+    setDesc(QObject::tr("Removes noise from a given image by applying the bilateral filter to an image<br>Input: 8C1 / 8C3"));
     setGroup("image/smoothing");
 
     mIn.setName("imageIn");
@@ -56,9 +55,11 @@ void Bilateral::execute()
     int kSigmaSpace = mSigmaSpace;
 
     const cv::Mat src = mIn;
-    cv::Mat dest;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToBit(CV_8U);
 
-    cv::bilateralFilter(src, dest, kD, kSigmaColor, kSigmaSpace);
+    cv::Mat dest;
+    cv::bilateralFilter(srcConverted, dest, kD, kSigmaColor, kSigmaSpace);
 
     mOut.send(dest);
 }

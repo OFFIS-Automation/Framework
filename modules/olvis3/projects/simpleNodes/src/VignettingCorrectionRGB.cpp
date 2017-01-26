@@ -16,8 +16,8 @@
 
 #include "VignettingCorrectionRGB.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(VignettingCorrectionRGB);
 
+REGISTER_FILTER(VignettingCorrectionRGB);
 VignettingCorrectionRGB::VignettingCorrectionRGB()
 {
     setName("VignettingCorrectionRGB");

@@ -25,6 +25,7 @@ class Invert : public UserFilter
 public:
     Invert();
     void execute();
+	
 protected:
     in::Image mIn;
     out::Image mOut;

@@ -18,81 +18,93 @@
 #include <opencv2/imgproc.hpp>
 #include <cmath>
 
+using namespace cv;
+using namespace std;
+
 REGISTER_FILTER(BlobDetection);
-
-
 BlobDetection::BlobDetection()
 {
     setName("BlobDetection");
-    setDesc(QObject::tr("Finds binary large objects in an image. The input image must be be thresholded"));
+    setDesc(QObject::tr("Finds binary large objects in an image. The input image must be be thresholded<br>Input: 8C1"));
     setGroup("image/object detection");
 
     mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
+
     mMinPixels.setName("minPixels");
     mMinPixels.setRange(0, INT_MAX);
     mMinPixels.setDefault(0);
     mMinPixels.setVisibility(AdvancedPortVisibility);
+    addInputPort(mMinPixels);
+
     mMaxPixels.setName("maxPixels");
     mMaxPixels.setRange(1, INT_MAX);
     mMaxPixels.setDefault(INT_MAX);
     mMaxPixels.setVisibility(AdvancedPortVisibility);
+    addInputPort(mMaxPixels);
+
     mUseAxis.setName("useMainAxis");
     mUseAxis.setDesc(QObject::tr("Enables the calculation of the objects main axis and PCe value"));
     mUseAxis.setDefault(true);
     mUseAxis.setVisibility(AdvancedPortVisibility);
+    addInputPort(mUseAxis);
+
     mNumBlobs.setName("numBlobs");
     addOutputPort(mNumBlobs);
-    addInputPort(mMinPixels);
-    addInputPort(mMaxPixels);
-    addInputPort(mUseAxis);
-    addOutputListPort(mRects);
-    addOutputListPort(mPolygons);
-    addOutputListPort(mPoints);
+
     mNumPixels.setName("numPixels");
     addOutputListPort(mNumPixels);
+
     mPCe.setName("PCe");
-    mPCe.setVisibility(AdvancedPortVisibility);
+    mPCe.setVisibility(ExpertPortVisibility);
     addOutputListPort(mPCe);
+
     mOffsetIn.setName("offset");
     mOffsetIn.setDesc(QObject::tr("Offset that will be added to all calculated positions"));
     mOffsetIn.setDefault(QPointF(0.0, 0.0));
     mOffsetIn.setVisibility(AdvancedPortVisibility);
     addInputPort(mOffsetIn);
+
     mLines.setName("lines");
     mLines.setDesc(QObject::tr("Lines in main direction, to detect the length"));
     addOutputListPort(mLines);
-    mPCe.setVisibility(ExpertPortVisibility);
+
+    addOutputListPort(mRects);
+    addOutputListPort(mPolygons);
+    addOutputListPort(mPoints);
 }
 
 void BlobDetection::execute()
 {
-    const cv::Mat source = mIn;
-    cv::Mat image = source.clone();
-    std::vector<std::vector<cv::Point> > contours;
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(image, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+    const Mat src = mIn;
+    Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToGray(CV_8U);
+
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    findContours(srcConverted, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
     int numBlobs = 0;
     for(uint i = 0; i< contours.size(); i++ )
     {
         if(hierarchy[i][3] >= 0) // this is an inner contour
             continue;
-        std::vector<cv::Point> &contour = contours[i];
-        cv::Moments mom = cv::moments(contour, true);
+        vector<Point> &contour = contours[i];
+        Moments mom = moments(contour, true);
         if(mom.m00 > mMaxPixels || mom.m00 < mMinPixels)
             continue;
         numBlobs++;
-        cv::Rect r = cv::boundingRect(contour);
+        Rect r = boundingRect(contour);
 
         double alpha = 0.0;
         if(mUseAxis)
         {
-            cv::Mat roi =source(r);
-            cv::Mat contMat = cv::Mat::zeros(roi.size(), CV_8UC1);
-            cv::drawContours(contMat, contours, i, cv::Scalar(255, 255, 255), CV_FILLED, 8, cv::noArray(), INT_MAX, cv::Point(-r.x, -r.y));
-            cv::Mat temp;
-            cv::bitwise_and(contMat, roi, temp);
-            cv::Mat pcaData(temp.cols*temp.rows, 2, CV_32FC1);
+            Mat roi = srcConverted(r);
+            Mat contMat = Mat::zeros(roi.size(), CV_8UC1);
+            drawContours(contMat, contours, i, Scalar(255, 255, 255), CV_FILLED, 8, noArray(), INT_MAX, Point(-r.x, -r.y));
+            Mat temp;
+            bitwise_and(contMat, roi, temp);
+            Mat pcaData(temp.cols*temp.rows, 2, CV_32FC1);
             int pcaId = 0;
             for(int y= 0; y < temp.rows; y++)
             {
@@ -109,11 +121,11 @@ void BlobDetection::execute()
             if(pcaId == 0)
                 continue;
             pcaData = pcaData.rowRange(0, pcaId);
-            cv::Mat coVar;
-            cv::Mat mean;// = cv::Mat(1,2, CV_32FC1);
-            cv::calcCovarMatrix(pcaData, coVar, mean,  CV_COVAR_NORMAL | CV_COVAR_ROWS, CV_32F);
-            cv::Mat eigenValues, eigenVectors;
-            cv::eigen(coVar, eigenValues, eigenVectors);
+            Mat coVar;
+            Mat mean;// = Mat(1,2, CV_32FC1);
+            calcCovarMatrix(pcaData, coVar, mean,  CV_COVAR_NORMAL | CV_COVAR_ROWS, CV_32F);
+            Mat eigenValues, eigenVectors;
+            eigen(coVar, eigenValues, eigenVectors);
             alpha = atan2(eigenVectors.at<float>(0,0), eigenVectors.at<float>(0, 1));
             double eigen1 = eigenValues.at<float>(0,0);
             double eigen2 = eigenValues.at<float>(1,0);
@@ -128,7 +140,6 @@ void BlobDetection::execute()
         QPolygonF poly;
         for(uint j=0;j<contour.size(); j++)
             poly << (port::Point::qpoint(contour[j]) + offset);
-
 
         mPolygons.send(poly);
         QRectF rect = port::Rect::qrect(r).translated(offset);

@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Clahe);
-
 Clahe::Clahe()
 {
     setName("Contrast Limited Adaptive Histogram Equalization (CLAHE)");
@@ -39,12 +38,13 @@ Clahe::Clahe()
 
 void Clahe::execute()
 {
-    const cv::Mat input = mIn;
+    const cv::Mat src = mIn;
+
     int clipLimit = mClipLimit;
 
     // Convert image to LAB color space
     cv::Mat labImage;
-    cv::cvtColor(input, labImage, CV_BGR2Lab);
+    cv::cvtColor(src, labImage, CV_BGR2Lab);
 
     // Extract the L channel
     std::vector<cv::Mat> lapPlanes(3);
@@ -53,6 +53,7 @@ void Clahe::execute()
     // Apply the CLAHE algorithm to the L channel
     cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
     clahe->setClipLimit(clipLimit);
+
     cv::Mat dst;
     clahe->apply(lapPlanes[0], dst);
 

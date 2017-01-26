@@ -28,6 +28,7 @@ public:
     ImageInput();
     virtual void start();
     virtual void execute();
+	
 protected:
     in::ReadFile mIn;
     in::Boolean mAlwaysRead;

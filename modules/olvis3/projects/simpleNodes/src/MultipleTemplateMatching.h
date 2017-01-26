@@ -29,11 +29,10 @@ class MultipleTemplateMatching : public UserFilter
 {
 public:
     MultipleTemplateMatching();
-    void start();
     void execute();
 
 protected:
-    in::Image mImageIn, mTemplateIn;
+    in::Image mIn, mTemplateIn;
     in::Integer mMethodIn;
     in::Real mMinScoreIn;
     in::Boolean mSendResultImage, mNeedNewImage;
@@ -41,7 +40,7 @@ protected:
 
     out::Point mPositionOuts;
     out::Real mScoreOuts;
-    out::GrayImage mResultOut;
+    out::Image mOut;
 };
 
 #endif // MULTIPLETEMPLATEMATCHING_H

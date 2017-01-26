@@ -15,13 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SimpleCameraInput.h"
+
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include <stdexcept>
 
 REGISTER_FILTER(SimpleCameraInput);
-
 SimpleCameraInput::SimpleCameraInput()
 {
     setName("Webcam");
@@ -40,7 +40,7 @@ SimpleCameraInput::SimpleCameraInput()
 void SimpleCameraInput::initialize()
 {
     if(!mCapture.open(0))
-        throw std::runtime_error("could not initialize webcam");
+        throw std::runtime_error("Could not initialize webcam");
     mCapture.set(CV_CAP_PROP_CONVERT_RGB, 1);
 }
 

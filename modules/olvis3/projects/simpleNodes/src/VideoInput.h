@@ -36,7 +36,8 @@ public:
     virtual void execute();
     virtual void start();
     virtual void stop();
-protected:
+
+	protected:
     in::ReadFile mIn;
     in::Boolean mRepeat;
     out::Image mOut;
@@ -52,6 +53,5 @@ protected:
     cv::VideoCapture mCapture;
     Timer mTimer;
 };
-
 
 #endif // VIDEOINPUT_H

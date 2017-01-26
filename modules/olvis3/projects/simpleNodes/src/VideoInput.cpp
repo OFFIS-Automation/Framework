@@ -21,7 +21,6 @@
 #include <stdexcept>
 
 REGISTER_FILTER(VideoInput);
-
 VideoInput::VideoInput()
 {
     setName("VideoInput");

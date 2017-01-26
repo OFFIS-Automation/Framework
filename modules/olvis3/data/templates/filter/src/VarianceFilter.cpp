@@ -40,7 +40,8 @@ VarianceFilter::VarianceFilter()
 
 void VarianceFilter::execute()
 {
-    const cv::Mat source = mIn;
+    cv::Mat source = mIn;
+	
     cv::Mat image = source;
     if(mRoiIn.hasValue())
     {

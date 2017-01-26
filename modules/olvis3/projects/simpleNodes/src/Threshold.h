@@ -27,13 +27,13 @@ class Threshold : public UserFilter
 public:
     Threshold();
     virtual void execute();
+	
 protected:
-    in::GrayImage mIn;
+    in::Image mIn;
     in::Integer mThreshold;
     in::Integer mMode;
-    out::GrayImage mOut;
+    out::Image mOut;
     bool mInvert;
 };
-
 
 #endif // THRESHOLD_H

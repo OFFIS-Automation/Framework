@@ -17,12 +17,12 @@
 #include "Delay.h"
 
 REGISTER_FILTER(Delay);
-
 Delay::Delay()
 {
     setName("Delay");
     setGroup("helper");
     setDesc(QObject::tr("Insert a specific delay into your image processing chain"));
+
     mDelay.setName("delayTime");
     mDelay.setDesc(QObject::tr("Delay time in ms"));
     mDelay.setRange(1,10000);

@@ -18,7 +18,6 @@
 #include <opencv2/highgui.hpp>
 
 REGISTER_FILTER(ImageOutput);
-
 ImageOutput::ImageOutput()
 {
     setName("ImageOutput");

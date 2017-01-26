@@ -29,6 +29,7 @@ public:
     SimpleCameraInput();
     virtual void execute();
     virtual void initialize();
+	
 protected:
     out::Image mOut;
     out::Real mFps;

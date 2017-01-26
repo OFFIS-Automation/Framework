@@ -26,11 +26,11 @@ class FlipImage : public UserFilter
 public:
     FlipImage();
     void execute();
+	
 protected:
-    in::Image mImageIn;
+    in::Image mIn;
     in::Integer mFlipModeIn;
-    out::Image mImageOut;
-
+    out::Image mOut;
 };
 
 #endif // FLIPIMAGE_H

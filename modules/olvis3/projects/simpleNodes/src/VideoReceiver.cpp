@@ -29,7 +29,6 @@ REGISTER_FILTER(VideoReceiver);
 VideoReceiver::VideoReceiver()
 {
 	// Ports
-
 	setName(QObject::tr("Video Receiver"));
 	setDesc(QObject::tr("Receives data from the network"));
 	setGroup("input");

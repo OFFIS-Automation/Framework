@@ -49,13 +49,20 @@ void ColorCorrection::execute()
     double bGain = mBFactor.getValue();
     double gGain = mGFactor.getValue();
     double rGain = mRFactor.getValue();
-    const cv::Mat source = mIn;
+
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToRGB();
+
+    // Correct color by multiplying with factors
     std::vector<cv::Mat> channels;
-    cv::split(source, channels);
+    cv::split(srcConverted, channels);
     channels[0] *= bGain;
     channels[1] *= gGain;
     channels[2] *= rGain;
+
     cv::Mat dest;
     cv::merge(channels, dest);
+
     mOut.send(dest);
 }

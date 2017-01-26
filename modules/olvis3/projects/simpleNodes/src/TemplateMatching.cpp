@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(TemplateMatching);
-
 TemplateMatching::TemplateMatching()
 {
     setName("TemplateMatching");

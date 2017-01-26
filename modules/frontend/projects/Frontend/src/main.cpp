@@ -67,9 +67,6 @@ int main(int argc, char *argv[])
     win_sparkle_set_can_shutdown_callback(canShutdownCallback);
     win_sparkle_set_shutdown_request_callback(shutdownRequestCallback);
 
-    // Initialize the updater and possibly show some UI
-    win_sparkle_init();
-
     // Initialize translator
     TranslationLoader translator;
     translator.installSystemTranslator();
@@ -151,6 +148,9 @@ int main(int argc, char *argv[])
 
     // Set notification reference
     Notifications::setMainWindow(masterWindow);
+
+    // Initialize the updater and possibly show some UI
+    win_sparkle_init();
 
     // Run
     int retVal = a.exec();

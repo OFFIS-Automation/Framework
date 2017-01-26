@@ -16,8 +16,8 @@
 
 #include "Sharp.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(Sharp);
 
+REGISTER_FILTER(Sharp);
 Sharp::Sharp()
 {
     setName("Sharpening");
@@ -44,13 +44,13 @@ Sharp::Sharp()
 
 void Sharp::execute()
 {
-    const cv::Mat& src = mIn;
+    const cv::Mat src = mIn;
     int kernelSize = mKernelSize;
     int iterations = mIterarions;
 
-    cv::Mat blurredSrc;
-    cv::GaussianBlur(src, blurredSrc, cv::Size(kernelSize, kernelSize), iterations);
-    cv::addWeighted(src, 1.5, blurredSrc, -0.5, 0, blurredSrc);
+    cv::Mat dest;
+    cv::GaussianBlur(src, dest, cv::Size(kernelSize, kernelSize), iterations);
+    cv::addWeighted(src, 1.5, dest, -0.5, 0, dest);
 
-    mOut.send(blurredSrc);
+    mOut.send(dest);
 }

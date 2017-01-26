@@ -70,11 +70,13 @@ void Morphology::execute()
     }
 
     cv::Mat element;
-    if(mUserElement.hasValue())
-        element = mUserElement;
-    else
+    if(mUserElement.hasValue()) {
+        Image userElement = mUserElement;
+        userElement.convertToGray();
+        element = userElement;
+    } else {
         element = mElement;
-
+    }
 
     const cv::Mat src = mIn;
     cv::Mat dest;

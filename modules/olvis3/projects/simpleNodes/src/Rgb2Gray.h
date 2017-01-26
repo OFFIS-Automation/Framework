@@ -27,6 +27,7 @@ class Rgb2Gray : public UserFilter
 public:
     Rgb2Gray();
     void execute();
+	
 protected:
     enum Mode
     {
@@ -41,10 +42,10 @@ protected:
         MaxMode
     };
 
-    in::RgbImage mIn;
+    in::Image mIn;
     in::Integer mMode;
     in::Boolean mSubstract;
-    out::GrayImage mOut;
+    out::Image mOut;
 };
 
 #endif // RGB2GRAY_H

@@ -17,7 +17,7 @@
 #ifndef HISTOGRAM_H
 #define HISTOGRAM_H
 
-#include "GrayImage.h"
+#include "Image.h"
 
 class DEFAULTPORTSSHARED_EXPORT Histogram : public cv::Mat
 {

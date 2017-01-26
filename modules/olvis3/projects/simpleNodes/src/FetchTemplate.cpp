@@ -17,7 +17,6 @@
 #include "FetchTemplate.h"
 
 REGISTER_FILTER(FetchTemplate);
-
 FetchTemplate::FetchTemplate()
 {
     setName("FetchTemplate");

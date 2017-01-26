@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
 // Copyright (C) 2013-2017 OFFIS e.V.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -1036,12 +1036,12 @@ void OlvisCoreInterface::setPortValueThrow(const PortId &port, const QVariant &v
             foreach(QVariant child, value.toList())
             {
                 if(typeInfo.portType(port.port) != child.userType())
-				{
-					QString type1 = QMetaType::typeName(child.userType());
-					QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
+                {
+                    QString type1 = QMetaType::typeName(child.userType());
+                    QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
                     QString errStr = tr("List element is of type %1, type %2 expected").arg(type1, type2);
-					throw std::runtime_error(errStr.toStdString());
-				}
+                    throw std::runtime_error(errStr.toStdString());
+                }
             }
         }
         else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // dont return if optional ports is set to invalid

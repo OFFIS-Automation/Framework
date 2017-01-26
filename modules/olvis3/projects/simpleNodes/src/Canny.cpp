@@ -18,11 +18,10 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Canny);
-
 Canny::Canny()
 {
     setName("Canny");
-    setDesc(QObject::tr("Canny edge filter"));
+    setDesc(QObject::tr("Canny edge filter<br>Input: 8C1 / 8C3"));
     setGroup("image/edge detection");
 
     mOut.setName("imageOut");
@@ -57,8 +56,12 @@ void Canny::execute()
     int thresh = mThreshhold.getValue();
     int thresh2 = mRatio.getValue()*thresh;
     bool useL2grad = !mUseL1Gradient.getValue();
-    const GrayImage src = mIn;
-    GrayImage dest;
-    cv::Canny(src, dest,thresh, thresh2 , 3 , useL2grad);
+
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToBit(CV_8U);
+
+    cv::Mat dest;
+    cv::Canny(srcConverted, dest,thresh, thresh2 , 3 , useL2grad);
     mOut.send(dest);
 }

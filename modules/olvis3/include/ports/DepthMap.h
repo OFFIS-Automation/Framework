@@ -17,7 +17,7 @@
 #ifndef DEPTHMAP_H
 #define DEPTHMAP_H
 
-#include "GrayImage.h"
+#include "Image.h"
 
 class DEFAULTPORTSSHARED_EXPORT DepthMap : public cv::Mat
 {
@@ -44,8 +44,8 @@ public:
     DepthMap& operator = (const cv::MatExpr& expr);
     void setUMPerPixel(double umPerPixel) { muMPerPixel = umPerPixel; }
     double umPerPixel() const { return muMPerPixel; }
-    GrayImage toImage();
-    operator GrayImage() { return toImage(); }
+    Image toImage();
+    operator Image() { return toImage(); }
 
     double* ptr(int i = 0)  { return cv::Mat::ptr<double>(i); }
     const double* ptr(int i = 0)  const { return cv::Mat::ptr<double>(i); }

@@ -18,7 +18,6 @@
 #define SIMPLENODES_H
 #include <filter/OlvisPlugin.h>
 
-
 class SimpleNodes : public OlvisPlugin
 {
     Q_OBJECT

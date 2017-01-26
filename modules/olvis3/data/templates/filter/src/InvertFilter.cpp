@@ -24,21 +24,25 @@ InvertFilter::InvertFilter()
     setDesc("Inverts the pixel values of each channel of the image");
     setGroup("user");
 
-	mIn.setName("input");
-    addInputPort(mIn);
-	
-	mOut.setName("output");
+	mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("Image input"));
+    addInputPort(mIn);
 }
 
 void InvertFilter::execute()
 {
-    cv::Mat mat = mIn.getValue().clone();
-    unsigned char* data = mat.datastart;
-    while(data < mat.dataend)
+    const cv::Mat src = mIn;
+    cv::Mat dest = src.clone();
+
+    uchar* data = (uchar*)dest.datastart;
+    while(data < dest.dataend)
     {
         *data = 255-*data;
         data++;
     }
-    mOut.send(mat);
+    mOut.send(dest);
 }

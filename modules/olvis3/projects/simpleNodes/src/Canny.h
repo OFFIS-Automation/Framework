@@ -30,8 +30,8 @@ public:
     virtual void execute();
 
 protected:
-    in::GrayImage mIn;
-    out::GrayImage mOut;
+    in::Image mIn;
+    out::Image mOut;
 
     in::Integer mThreshhold;
     in::Real mRatio;

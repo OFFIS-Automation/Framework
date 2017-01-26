@@ -17,7 +17,6 @@
 #include "RectInput.h"
 
 REGISTER_FILTER(RectInput);
-
 RectInput::RectInput()
 {
     setName("Rect");

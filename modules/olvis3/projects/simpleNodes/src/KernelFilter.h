@@ -16,6 +16,7 @@
 
 #ifndef KERNELFILTER_H
 #define KERNELFILTER_H
+
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
 #include <ports/IntegerPort.h>
@@ -27,13 +28,13 @@ public:
     {
         setGroup("image/convert");
 
-        mOut.setName("imageOut");
-        mOut.setDesc(QObject::tr("Image output"));
-        addOutputPort(mOut);
-
         mIn.setName("imageIn");
         mIn.setDesc(QObject::tr("Image input"));
         addInputPort(mIn);
+
+        mOut.setName("imageOut");
+        mOut.setDesc(QObject::tr("Image output"));
+        addOutputPort(mOut);
 
         mKSize.setName("kernelSize");
         mKSize.setDesc(QObject::tr("Size of the used kernel for operation"));
@@ -51,10 +52,6 @@ protected:
 };
 
 class KernelFilter : public TemplateKernelFilter<in::Image, out::Image>
-{
-};
-
-class GrayKernelFilter : public TemplateKernelFilter<in::GrayImage, out::GrayImage>
 {
 };
 

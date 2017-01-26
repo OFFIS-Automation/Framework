@@ -18,14 +18,13 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(MultipleTemplateMatching);
-
 MultipleTemplateMatching::MultipleTemplateMatching()
 {
     setName("MultipleTemplateMatching");
     setDesc(QObject::tr("Match a template on an image and output the all found positions, the matching scores and the result image"));
     setGroup("image/object detection");
-    mImageIn.setName("image");
-    addInputPort(mImageIn);
+    mIn.setName("image");
+    addInputPort(mIn);
 
     mTemplateIn.setName("template");
     addInputPort(mTemplateIn);
@@ -68,23 +67,22 @@ MultipleTemplateMatching::MultipleTemplateMatching()
     mSendResultImage.setVisibility(ExpertPortVisibility);
     addInputPort(mSendResultImage);
 
-    mResultOut.setName("result");
-    mResultOut.setDesc(QObject::tr("The result image from the template matching operation. Only sent if the port <send result image> is set to true"));
-    mResultOut.setVisibility(ExpertPortVisibility);
-    addOutputPort(mResultOut);
+    mOut.setName("result");
+    mOut.setDesc(QObject::tr("The result image from the template matching operation. Only sent if the port <send result image> is set to true"));
+    mOut.setVisibility(ExpertPortVisibility);
+    addOutputPort(mOut);
 }
-
-void MultipleTemplateMatching::start(){}
 
 void MultipleTemplateMatching::execute()
 {
     // Only execute for new image data
-    if(mNeedNewImage.getValue() && !mImageIn.isUpdated())
+    if(mNeedNewImage.getValue() && !mIn.isUpdated())
         return;
 
     // Init data
-    const cv::Mat imageIn = mImageIn;
-    cv::Mat image = imageIn;
+    const cv::Mat src = mIn;
+    cv::Mat image = src;
+
     const cv::Mat templateIn = mTemplateIn;
     cv::Mat tpl = templateIn;
 
@@ -103,7 +101,7 @@ void MultipleTemplateMatching::execute()
     if((bool)mSendResultImage){
         cv::Mat resultSend;
         result.convertTo(resultSend, CV_8UC1, 255);
-        mResultOut.send(resultSend);
+        mOut.send(resultSend);
     }
 
     while (true){

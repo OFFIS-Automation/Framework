@@ -27,6 +27,7 @@ class PointInput : public UserFilter
 public:
     PointInput(bool list = false);
     virtual void execute();
+	
 protected:
     in::Point mIn;
     out::Point mOut;

@@ -20,7 +20,6 @@
 #include <stdexcept>
 
 REGISTER_FILTER(ImageInput);
-
 ImageInput::ImageInput()
 {
     setName("ImageInput");
@@ -50,7 +49,6 @@ void ImageInput::start()
 
 void ImageInput::execute()
 {
-
     QFileInfo path = mIn;
     if(path != lastInfo || mAlwaysRead.getValue())
     {

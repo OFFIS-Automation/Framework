@@ -34,9 +34,9 @@ class BlobDetection : public UserFilter
 public:
     BlobDetection();
     virtual void execute();
-protected:
 
-    in::GrayImage mIn;
+protected:
+    in::Image mIn;
     in::Integer mMinPixels, mMaxPixels;
     in::Boolean mUseAxis;
     out::Integer mNumBlobs;

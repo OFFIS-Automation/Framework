@@ -29,6 +29,7 @@ class PathCreator : public UserFilter
 public:
     PathCreator();
     virtual void execute();
+	
 protected:
     in::Directory mDir;
     in::String mPrefix;

@@ -32,11 +32,11 @@ BrighnessContrast::BrighnessContrast()
     mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
-    mBrighness.setName("brightnessFactor");
-    mBrighness.setDesc(QObject::tr("Adjust the brightness"));
-    mBrighness.setDefault(0);
-    mBrighness.setRange(-100, 100);
-    addInputPort(mBrighness);
+    mBrightness .setName("brightnessFactor");
+    mBrightness .setDesc(QObject::tr("Adjust the brightness"));
+    mBrightness .setDefault(0);
+    mBrightness .setRange(-100, 100);
+    addInputPort(mBrightness );
 
     mContrast.setName("contrastFactor");
     mContrast.setDesc(QObject::tr("Adjust the contrast"));
@@ -47,17 +47,17 @@ BrighnessContrast::BrighnessContrast()
 
 void BrighnessContrast::execute()
 {
-    double brighness = mBrighness.getValue();
+    double brightness = mBrightness .getValue();
     double contrast = mContrast.getValue();
     contrast /= 100;
-    brighness *=255/100;
+    brightness *=65535/100;
 
     cv::Mat src = mIn;
-    cv::Mat wide;
-    src.convertTo(wide, CV_16S, 1.0, -127);
+    cv::Mat workingImage;
+    src.convertTo(workingImage, CV_16U);
 
     cv::Mat dest;
-    wide.convertTo(dest, -1, 1.0 + contrast, brighness + 127);
+    workingImage.convertTo(dest, -1, 1.0 + contrast, brightness);
 
     mOut.send(dest);
 }

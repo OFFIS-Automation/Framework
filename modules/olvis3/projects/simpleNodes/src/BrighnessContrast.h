@@ -30,7 +30,7 @@ public:
 protected:
     in::Image mIn;
     out::Image mOut;
-    in::Integer mBrighness, mContrast;
+    in::Integer mBrightness , mContrast;
 };
 
 #endif // BRIGHNESSCONTRAST_H

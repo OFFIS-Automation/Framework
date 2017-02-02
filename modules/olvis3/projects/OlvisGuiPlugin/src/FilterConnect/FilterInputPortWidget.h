@@ -38,7 +38,6 @@ signals:
 protected:
     void editFinished(const QVariant &var, const PortInfo &info);
     void editCanceled(const PortInfo &info);
-
     virtual void mouseDoubleClickEvent(QMouseEvent*);
     PortEditInterface* mEdit;
 

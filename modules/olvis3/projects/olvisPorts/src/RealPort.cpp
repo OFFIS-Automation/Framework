@@ -39,6 +39,12 @@ void port::Real::setRange(double min, double max)
     setConstraint("max", max);
 }
 
+void port::Real::setDecimals(int decimals)
+{
+    mDecimals = decimals;
+    setConstraint("decimals", decimals);
+}
+
 void port::Real::addChoice(double value)
 {
     addChoice(value, QString::number(value));

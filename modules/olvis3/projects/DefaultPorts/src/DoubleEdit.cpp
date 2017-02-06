@@ -20,6 +20,7 @@ DoubleEdit::DoubleEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
     mSpinBox = new QDoubleSpinBox(this);
     mSpinBox->setObjectName("spinBox");
+
     ui->layout->insertWidget(0, mSpinBox);
 }
 
@@ -33,6 +34,9 @@ void DoubleEdit::onStartEdit()
     double max = mInfo.constraints.value("max", QVariant(INT_MAX)).toDouble();
     mSpinBox->setRange(min, max);
     mSpinBox->setValue(mValue.toDouble());
+
+    int decimals = mInfo.constraints.value("decimals", QVariant(2)).toInt();
+    mSpinBox->setDecimals(decimals);
 }
 
 QString DoubleEdit::asString()

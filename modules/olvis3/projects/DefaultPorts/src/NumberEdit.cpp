@@ -22,6 +22,7 @@ NumberEdit::NumberEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
     mSpinBox = new QSpinBox(this);
     mSpinBox->setObjectName("spinBox");
+
     ui->layout->insertWidget(0, mSpinBox);
 }
 

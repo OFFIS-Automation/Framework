@@ -36,7 +36,6 @@ protected:
     in::Integer mThreshhold;
     in::Real mRatio;
     in::Boolean mUseL1Gradient;
-
 };
 
 #endif // CANNY_H

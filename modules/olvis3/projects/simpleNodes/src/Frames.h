@@ -19,7 +19,8 @@
 
 #include <filter/PluginInterface.h>
 #include <ports/RealPort.h>
-#include <Timer.h>
+
+#include "Timer.h"
 
 class Frames : public UserFilter
 {

@@ -66,6 +66,7 @@ SOURCES += \
 	src/SobelFilter.cpp \
 	src/TemplateMatching.cpp \
 	src/Threshold.cpp \
+        src/Timer.cpp \
 	src/VarianceFilter.cpp \
 	src/VideoInput.cpp \
 	src/VideoWriter.cpp \

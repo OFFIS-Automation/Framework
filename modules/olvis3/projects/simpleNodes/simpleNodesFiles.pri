@@ -43,6 +43,7 @@ SOURCES += \
 	src/ImageInput.cpp \
 	src/ImageOutput.cpp \
 	src/ImageSubstraction.cpp \
+        src/Inpainting.cpp \
 	src/Invert.cpp \
 	src/main.cpp \
 	src/MedianBlur.cpp \
@@ -59,6 +60,7 @@ SOURCES += \
 	src/Rgb2Graphen.cpp \
 	src/RotateImage.cpp \
 	src/ScaleImage.cpp \
+        src/ScaleImage2.cpp \
 	src/SetRoiFilter.cpp \
         src/Sharp.cpp \
 	src/SimpleCameraInput.cpp \
@@ -104,6 +106,7 @@ HEADERS += \
 	src/HistogramNode.h \
 	src/ImageInput.h \
 	src/ImageSubstraction.h \
+        src/Inpainting.h \
 	src/ImageOutput.h \
 	src/Invert.h \
 	src/KernelFilter.h \
@@ -120,6 +123,7 @@ HEADERS += \
 	src/Rgb2Gray.h \
 	src/RotateImage.h \
 	src/ScaleImage.h \
+        src/ScaleImage2.h \
 	src/SetRoiFilter.h \
         src/Sharp.h \
 	src/SimpleCameraInput.h \

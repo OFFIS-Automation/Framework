@@ -30,6 +30,7 @@ public:
 protected:
     in::Image mIn;
     out::Image mOut;
+    out::Image mInverse;
     in::Real mScale;
 };
 

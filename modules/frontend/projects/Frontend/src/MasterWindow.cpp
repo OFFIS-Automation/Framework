@@ -34,6 +34,18 @@
 #include "version.h"
 #include "newProjectWizard/CreateProjectDialog.h"
 
+// Update callbacks
+int canShutdownCallback()
+{
+    return 1;
+}
+
+void shutdownRequestCallback()
+{
+    QApplication::quit();
+}
+
+// Claas related
 MasterWindow::MasterWindow(QWidget *parent) :
     MainWindow(parent, false),
     ui(new Ui::MasterWindow)
@@ -49,6 +61,9 @@ MasterWindow::MasterWindow(QWidget *parent) :
     ui->actionClose_project->setEnabled(false);
     ui->actionReload_project->setEnabled(false);
 
+    // Update
+    connect(this, SIGNAL(windowWasShown()), this, SLOT(initWinSparkle()), Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
+
     // Start screen
     mStartScreen = new StartScreen();
     connect(this, SIGNAL(showStartScreen()), mStartScreen, SLOT(exec()), Qt::QueuedConnection);
@@ -63,6 +78,9 @@ MasterWindow::MasterWindow(QWidget *parent) :
 
 MasterWindow::~MasterWindow()
 {
+    // Shut WinSparkle down cleanly when the app exits
+    win_sparkle_cleanup();
+
     delete ui;
 }
 
@@ -77,6 +95,39 @@ QMenu *MasterWindow::getMenu(QString name)
     QMenu* newMenu = new QMenu(name);
     bar->insertMenu(ui->menuHelp->menuAction(), newMenu);
     return newMenu;
+}
+
+void MasterWindow::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+
+    // showEvent() is called right *before* the window is shown, but WinSparkle
+    // requires that the main UI of the application is already shown when
+    // calling win_sparkle_init() (otherwise it could show its updates UI
+    // behind the app instead of at top). By using a helper signal, we delay
+    // calling initWinSparkle() until after the window was shown.
+    //
+    // Alternatively, one could achieve the same effect in arguably a simpler
+    // way, by initializing WinSparkle in main(), right after showing the main
+    // window. See https://github.com/vslavik/winsparkle/issues/41#issuecomment-70367197
+    // for a discussion of this.
+    emit windowWasShown();
+}
+
+void MasterWindow::initWinSparkle()
+{
+    // Init winSparkle, Setup update feeds.
+    // This must be done before win_sparkle_init().
+    wchar_t charVersion[256];
+    swprintf_s(charVersion, L"%d", Version::BUILD_VERSION_NUMBER);
+
+    win_sparkle_set_appcast_url("http://134.106.47.173:8080/userContent/Framework/Framework.rss");
+    win_sparkle_set_app_details(L"OFFIS", L"OFFIS Automation Framework", charVersion);
+    win_sparkle_set_can_shutdown_callback(canShutdownCallback);
+    win_sparkle_set_shutdown_request_callback(shutdownRequestCallback);
+
+    // Initialize the updater and possibly show some UI
+    win_sparkle_init();
 }
 
 void MasterWindow::on_actionOpen_project_triggered()
@@ -206,5 +257,8 @@ void MasterWindow::setVisible(bool visible)
         ui->menu_File->addSeparator();
         ui->menu_File->addAction(ui->actionExit);
         emit showStartScreen();
+
+        // Initialize the updater and possibly show some UI
+        win_sparkle_init();
     }
 }

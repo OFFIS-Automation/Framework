@@ -28,6 +28,10 @@ ScaleImage2::ScaleImage2()
     mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
+    mInverse.setName("inverse");
+    mInverse.setDesc(QObject::tr("Inverse output"));
+    addOutputPort(mInverse);
+
     mIn.setName("imageIn");
     mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
@@ -43,16 +47,22 @@ void ScaleImage2::execute()
 {
     const cv::Mat in = mIn;
     cv::Mat out = cv::Mat::zeros(in.rows * mScale, in.cols * mScale, in.type());
+    cv::Mat inverse = cv::Mat::zeros(in.rows * mScale, in.cols * mScale, in.type());
 
     for(int i=0; i<in.rows; i++){
         for(int j=0; j<in.cols; j++){
             if(in.depth() == CV_8U && in.channels() == 3){
                 out.at<cv::Vec3b>(i*mScale, j*mScale) = in.at<cv::Vec3b>(i, j);
+                inverse.at<cv::Vec3b>(i*mScale, j*mScale, 0) = 255;
+                inverse.at<cv::Vec3b>(i*mScale, j*mScale, 1) = 255;
+                inverse.at<cv::Vec3b>(i*mScale, j*mScale, 2) = 255;
             } else if(in.depth() == CV_8U && in.channels() == 1){
                 out.at<uchar>(i*mScale, j*mScale) = in.at<uchar>(i, j);
+                inverse.at<uchar>(i*mScale, j*mScale) = 255;
             }
         }
     }
 
     mOut.send(out);
+    mInverse.send(inverse);
 }

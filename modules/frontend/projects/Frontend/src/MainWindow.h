@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0, bool setupCentral = true);
     ~MainWindow();
+
     void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockwidget);
     void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockwidget, Qt::Orientation orientation);
     void addCentralDockWidget(Qt::DockWidgetArea fallbackArea, QDockWidget *dockwidget);
@@ -40,11 +41,13 @@ public:
 
     QDockWidget* centralDockWidget();
     QStringList saveDocks();
+
 public slots:
     void restoreDocks(QStringList data, MainWindow* other, QStringList visibleObjects);
 
 signals:
     void aboutToClose();
+
 protected:
     void keyPressEvent(QKeyEvent*);
     QDockWidget* takeoverDock(const QString& name, MainWindow* other);

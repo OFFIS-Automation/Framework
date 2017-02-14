@@ -48,7 +48,7 @@ void ScaleImage2::execute()
         for(int j=0; j<in.cols; j++){
             if(in.depth() == CV_8U && in.channels() == 3){
                 out.at<cv::Vec3b>(i*mScale, j*mScale) = in.at<cv::Vec3b>(i, j);
-            } else if(in.depth() == CV_8U && in.channels() == 3){
+            } else if(in.depth() == CV_8U && in.channels() == 1){
                 out.at<uchar>(i*mScale, j*mScale) = in.at<uchar>(i, j);
             }
         }

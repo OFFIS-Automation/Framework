@@ -22,7 +22,7 @@ ScaleImage2::ScaleImage2()
 {
     setName("Spreading");
     setDesc(QObject::tr("Spreads an image by a factor"));
-    setGroup("image/reshape");
+    setGroup("image/test");
 
     mOut.setName("imageOut");
     mOut.setDesc(QObject::tr("Image output"));

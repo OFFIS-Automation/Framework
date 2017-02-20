@@ -37,13 +37,18 @@ public:
     virtual void finish(){}
     PortInfo getInfo();
     QString name() const;
+
     void addTarget(PortListener* inputPort);
     void removeTarget(PortListener* inputPort);
+    bool hasTargets();
+
     bool hasFired() const { return mFired; }
     void resetFired() { mFired = false; }
+
     QVariant lastValue();
     void setTracer(SubTracer* tracer);
     bool isNormalType() const;
+
 protected:
     OutputPort(Port& parent, bool isArray);
     Port& mParent;

@@ -74,6 +74,12 @@ void OutputPort::removeTarget(PortListener *inputPort)
     mTargets.remove(inputPort);
 }
 
+bool OutputPort::hasTargets()
+{
+    QMutexLocker lock(&mMutex);
+    return mTargets.size() > 0;
+}
+
 QVariant OutputPort::lastValue()
 {
     mLastValueMutex.lock();

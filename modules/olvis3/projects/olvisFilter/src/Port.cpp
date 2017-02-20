@@ -55,6 +55,15 @@ void Port::setVisibility(PortVisibility visibility)
     portData->info.visibility = visibility;
 }
 
+bool Port::isConnetected()
+{
+    if(portData->in)
+        return portData->in->isConnected();
+    if(portData->out)
+        return portData->out->hasTargets();
+    return false;
+}
+
 PortInfo Port::getInfo() const
 {
     return portData->info;

@@ -57,8 +57,9 @@ void ImagePortOverlay::paintContent(QPainter& p)
         cv::Mat mat = port::Image::fromVariant(mLastValue);
         if(mat.data == 0) {
             DepthMap dm = port::DepthMap::fromVariant(mLastValue);
-            if(dm.data != 0)
+            if(dm.data != 0){
                 mat = dm.toImage();
+            }
         }
 
         if (mat.size().width != 0 && mat.size().height != 0) {

@@ -35,6 +35,7 @@ public:
      * @param name the port name
      */
     void setName(const QString &name);
+
     /**
      * @brief setDesc sets a description for the port that is displayed to the
      * user.
@@ -70,18 +71,25 @@ public:
     void setVisibility(PortVisibility visibility);
 
     /**
+     * @brief Check if port is connected to another port within the
+     * processing pipeline.
+     * @return true is port is connected
+     */
+    bool isConnetected();
+
+    /**
      * Returns whether this port holds a valid value. For default ports that are
      * not lists, the return value is always true For list ports, this commands
      * returns true if the list holds another value.
      * You can iterate through the input list using
      * while(hasValue()) getValue();
      * getValue returns one element of the list and increments the list id
-    */
+     */
     bool hasValue();
 
     /**
      * Returns whether the port was updated since the last execution
-    */
+     */
     bool isUpdated();
 
     /**
@@ -91,7 +99,7 @@ public:
     bool hasChanged();
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the frameowrk to gather port information
      */
     PortInfo getInfo() const;
     /**
@@ -114,12 +122,12 @@ public:
     virtual QVariant fromString(const QString &str) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the frameowrk to gather port information
      */
     virtual QVariant constrainedValue(const QVariant &var) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the frameowrk to gather port information
      */
     virtual QVariant toSimpleType(const QVariant &var) const { return var; }
 

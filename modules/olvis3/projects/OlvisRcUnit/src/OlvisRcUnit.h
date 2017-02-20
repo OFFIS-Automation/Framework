@@ -45,13 +45,12 @@ public slots:
     void stop();
     void pauseProcessor(const QString& name);
     void resumeProcessor(const QString& name);
+
 protected:
     QVariant formatReturn(const PortId& id, const QVariant& var);
     int getFilterId(const QString& name);
     int getProcessorId(const QString& name);
     PortId getPortId(const QString& filterName, const QString& portName);
-
-
 };
 
 #endif // OLVISRCUNIT_H

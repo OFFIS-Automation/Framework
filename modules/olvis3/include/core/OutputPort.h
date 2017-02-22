@@ -45,6 +45,8 @@ public:
     bool hasFired() const { return mFired; }
     void resetFired() { mFired = false; }
 
+    bool isOverlayed();
+
     QVariant lastValue();
     void setTracer(SubTracer* tracer);
     bool isNormalType() const;

@@ -93,7 +93,6 @@ QVariant InputPort::setDefaultValue(QVariant value)
         emit portValueChanged(name(), mValue);
     }
     return value;
-
 }
 
 void InputPort::setSource(QObject *filter, OutputPort *output)

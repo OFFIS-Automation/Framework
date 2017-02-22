@@ -15,10 +15,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "OutputPortPrivate.h"
+#include "PortData.h"
+
 #include <core/PortListener.h>
 #include <core/Tracer.h>
-#include "PortData.h"
 #include <filter/Port.h>
+#include <gui/OverlayInterface.h>
+
+#include <QDebug>
+#include <typeinfo>
 
 OutputPort::OutputPort(Port &parent) : mParent(parent)
 {
@@ -41,7 +46,6 @@ QString OutputPort::name() const
 
 void OutputPort::send(const QVariant &val)
 {
-    static QString firedString("fired");
     mLastValueMutex.lock();
     mLastValue = val;
     if(mTracer)
@@ -77,7 +81,20 @@ void OutputPort::removeTarget(PortListener *inputPort)
 bool OutputPort::hasTargets()
 {
     QMutexLocker lock(&mMutex);
-    return mTargets.size() > 0;
+    return mTargets.size() > 1;
+}
+
+bool OutputPort::isOverlayed()
+{
+    QMutexLocker lock(&mMutex);
+    QSetIterator<PortListener*> targets(mTargets);
+    while(targets.hasNext()){
+        OverlayInterface *interface = dynamic_cast<OverlayInterface *>(targets.next());
+        if(interface){
+            return true;
+        }
+    }
+    return false;
 }
 
 QVariant OutputPort::lastValue()

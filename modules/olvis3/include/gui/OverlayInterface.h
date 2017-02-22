@@ -22,8 +22,9 @@
 #include <QPainter>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include <core/PortId.h>
 #include <QWidget>
+
+#include <core/PortId.h>
 
 class OverlayParent
 {

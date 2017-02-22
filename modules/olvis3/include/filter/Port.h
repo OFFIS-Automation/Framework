@@ -73,9 +73,15 @@ public:
     /**
      * @brief Check if port is connected to another port within the
      * processing pipeline.
-     * @return true is port is connected
+     * @return true if port is connected
      */
     bool isConnetected();
+
+    /**
+     * @brief isShown
+     * @return true if port is drawn on image display widget
+     */
+    bool isOverlayed();
 
     /**
      * Returns whether this port holds a valid value. For default ports that are

@@ -64,6 +64,13 @@ bool Port::isConnetected()
     return false;
 }
 
+bool Port::isOverlayed()
+{
+    if(portData->out)
+        return portData->out->isOverlayed();
+    return false;
+}
+
 PortInfo Port::getInfo() const
 {
     return portData->info;

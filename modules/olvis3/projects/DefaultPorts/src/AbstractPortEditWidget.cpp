@@ -57,7 +57,7 @@ void AbstractPortEditWidget::submit()
 
 void AbstractPortEditWidget::keyPressEvent(QKeyEvent *ev)
 {
-    if((ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return) && ev->modifiers() == Qt::NoModifier)
+    if((ev->key() == Qt::Key_Return && ev->modifiers() == Qt::NoModifier) || ev->key() == Qt::Key_Enter)
     {
         submit();
     }
@@ -65,4 +65,5 @@ void AbstractPortEditWidget::keyPressEvent(QKeyEvent *ev)
     {
         editCanceled();
     }
+
 }

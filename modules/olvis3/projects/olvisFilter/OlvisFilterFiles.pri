@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
+QT += core gui widgets
+
 TEMPLATE = lib
 DEFINES += FILTERBASE_LIBRARY
 
@@ -32,6 +34,7 @@ INCLUDEPATH += $$PWD/../../include
     HEADERS += src/OlvisSensorProvider.h
 }
 
+CONFIG+=dll
 
 SOURCES += \
     src/UserFilterPrivate.cpp \
@@ -69,8 +72,6 @@ HEADERS += \
     ../../include/core/InputPort.h \
     ../../include/core/SrcFilter.h \
     ../../include/core/OutputPort.h
-
-CONFIG+=dll
 
 RESOURCES += \
     resource/resource.qrc

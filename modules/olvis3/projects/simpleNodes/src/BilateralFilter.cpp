@@ -56,7 +56,7 @@ void Bilateral::execute()
 
     const cv::Mat src = mIn;
     cv::Mat srcConverted = src.clone();
-    ((Image *)&srcConverted)->convertToBit(CV_8U);
+    ((Image *)&srcConverted)->convertToDepth(CV_8U);
 
     cv::Mat dest;
     cv::bilateralFilter(srcConverted, dest, kD, kSigmaColor, kSigmaSpace);

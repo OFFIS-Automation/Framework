@@ -30,6 +30,7 @@ public:
 
 protected:
     in::Image mIn;
+    out::Image mOut;
     in::Point mPointIn;
     out::Color mColorOut;
 };

@@ -45,18 +45,18 @@ Image &Image::operator =(const MatExpr &expr)
     return *this;
 }
 
-void Image::convertToBit(int type)
+void Image::convertToDepth(int depth)
 {
     cv::Mat image_ = *this;
     cv::Mat image = image_;
     bool modified = false;
 
-    if(type >= 0)
+    if(depth >= 0)
     {
-        if(image.type() != type)
+        if(image.depth() != depth)
         {
             modified = true;
-            image.convertTo(image, type, image.depth() == CV_16U ? 1/255.0 : 255.0);
+            image.convertTo(image, depth, image.depth() == CV_16U ? 1/255.0 : 255.0);
         }
     }
     if(modified)

@@ -28,6 +28,10 @@ ColorPicker::ColorPicker()
     mIn.setDesc(QObject::tr("Input image"));
     addInputPort(mIn);
 
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("Output image"));
+    addOutputPort(mOut);
+
     mPointIn.setName("position");
     mPointIn.setDesc(QObject::tr("The position inside the image where the color is extracted"));
     mPointIn.setDefault(QPointF(0,0));
@@ -43,7 +47,7 @@ void ColorPicker::execute()
 {
     const cv::Mat src = mIn;
     cv::Mat srcConverted = src.clone();
-    ((Image *)&srcConverted)->convertToBit(CV_8U);
+    ((Image *)&srcConverted)->convertToDepth(CV_8U);
 
     cv::Vec4b bgra(0,0,0,0xFF);
     cv::Point2d p = mPointIn.getValue();
@@ -62,5 +66,6 @@ void ColorPicker::execute()
     } else if(srcConverted.channels() == 4) {
         bgra = srcConverted.at<cv::Vec4b>(p.y, p.x);
     }
+    mOut.send(srcConverted);
     mColorOut.sendBgra(bgra);
 }

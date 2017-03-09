@@ -23,7 +23,6 @@
 #include <QMutex>
 #include <QList>
 #include <QWidget>
-//#include <Timer.h>
 
 #include <gui/OverlayInterface.h>
 #include <core/OlvisInterface.h>
@@ -32,8 +31,6 @@ class QMouseEvent;
 class QXmlStreamWriter;
 class QXmlStreamReader;
 class VideoDisplayWidget;
-
-
 
 class Overlay : public OverlayInterface, public PortListener
 {

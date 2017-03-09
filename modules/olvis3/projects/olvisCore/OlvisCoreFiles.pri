@@ -24,7 +24,6 @@ INCLUDEPATH += $${PWD}/../../../frontend/projects/Notifications/include
 LIBS += -L$${targetDir}/plugins -L$${targetDir} -lolvisFilter -lolvisPorts -lNotifications
 LIBS += -L$${targetDir} -lNotifications
 
-
 CONFIG+=dll
 
 HEADERS += \

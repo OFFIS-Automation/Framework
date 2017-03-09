@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include <QMutex>
 #include <QList>
 #include <QWidget>
-//#include <Timer.h>
 
 #include <gui/OverlayInterface.h>
 #include <core/OlvisInterface.h>
@@ -32,8 +31,6 @@ class QMouseEvent;
 class QXmlStreamWriter;
 class QXmlStreamReader;
 class VideoDisplayWidget;
-
-
 
 class Overlay : public OverlayInterface, public PortListener
 {

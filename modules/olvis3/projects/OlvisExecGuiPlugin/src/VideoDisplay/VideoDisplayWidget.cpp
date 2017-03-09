@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -69,13 +69,14 @@ VideoDisplayWidget::VideoDisplayWidget(QWidget *parent) :
     connect(this, SIGNAL(valueChanged(PortId,QVariant)), &mModel, SLOT(setPortValue(PortId,QVariant)));
     connect(&mModel, SIGNAL(portValueChanged(int,QString,QVariant)), this, SLOT(portValueChanged(int,QString,QVariant)));
 
-    mFont.setPixelSize(20);
+    mFont.setPixelSize(16);
 
     mToolbar = new VideoControlToolbar(this);
     mToolbar->setVisible(false);
     mToolbar->setEnabled(false);
     mToolbar->setGeometry(QRect(QPoint(10, 10), mToolbar->sizeHint()));
     mToolbar->setAutoFillBackground(true);
+
     connect(mToolbar, SIGNAL(clearClicked()), this, SLOT(clear()));
     connect(mToolbar, SIGNAL(zoomChanged(double)), this, SLOT(setZoom(double)));
     connect(mToolbar, SIGNAL(zoomToFitChanged(bool)), this, SLOT(setZoomToFit(bool)));
@@ -157,17 +158,15 @@ void VideoDisplayWidget::readConfig(QXmlStreamReader& reader)
             if (overlay != 0) {
                 overlay->setParent(this);
                 overlay->readConfig(reader);
-                if(!mMainOverlay)
-                {
+                if(!mMainOverlay){
                     setMainOverlay(overlay);
-                }
-                else
+                } else {
                     addOverlay(overlay);
+                }
             }
         }
         reader.readElementText();
     }
-
     update();
 }
 
@@ -365,22 +364,43 @@ void VideoDisplayWidget::paintEvent(QPaintEvent*)
     } else {
         p.setFont(mFont);
         p.setPen(Qt::white);
+
         if (!mInfo.isEmpty()) {
             QRect r = rect();
-            r.setHeight(40);
+            r.setHeight(30);
             r.moveTopLeft(QPoint(0, 0));
+
             p.fillRect(r, QColor(0, 0, 0, 127));
             p.drawText(r, Qt::AlignCenter, mInfo);
         }
-        if (mToolbar->showImageInfo()) {
-            QRect r(0, 0, 200, 50);
+        if (mToolbar->showImageInfo() && mMainOverlay) {
+            QRect r(0, 0, 200, 60);
             r.moveBottomLeft(rect().bottomLeft());
-            p.setFont(mFont);
+
+            PortId portId = mMainOverlay->portId();
+            PortInfo portInfo = OlvisSingleton::instance().getPortInfo(portId);
+            FilterInfo filterInfo = OlvisSingleton::instance().getFilter(portId.filter);
+
             QSize size = imageSize();
-            p.fillRect(r, QColor(0, 0, 0, 127));
-            if(mMainOverlay){
-                p.drawText(r, Qt::AlignLeft, tr("Size: %1 x %2\nRate: %3", "rate is update rate (Hz)").arg(size.width()).arg(size.height()).arg(1000.0/imageRate()));
+            QString sizeString = tr("Size: %1x%2").arg(size.width()).arg(size.height());
+            QString rateString = tr("Rate: %1").arg(1000.0/imageRate());
+
+            QString string = QString("%1 (%2)\n%3\n%4").arg(portInfo.name).arg(filterInfo.name).arg(sizeString).arg(rateString);
+
+            // Resize for fit
+            int width = 0;
+            QFontMetrics fontMetrics(mFont);
+            foreach (QString line, string.split("\n")) {
+                int lineWidth = fontMetrics.boundingRect(line).width();
+                if(lineWidth > width){
+                    width = lineWidth;
+                }
             }
+            r.setWidth(width);
+
+            // Finally draw
+            p.fillRect(r, QColor(0, 0, 0, 127));
+            p.drawText(r, Qt::AlignLeft, string);
         }
     }
 }
@@ -413,8 +433,7 @@ void VideoDisplayWidget::portValueChanged(int filterId, const QString& portId, Q
 
 void VideoDisplayWidget::dropEvent(QDropEvent* event)
 {
-    if (event->mimeData()->hasFormat("application/x-olvis-port"))
-    {
+    if (event->mimeData()->hasFormat("application/x-olvis-port")){
         QList<QByteArray> parts = event->mimeData()->data("application/x-olvis-port").split('#');
         PortId portId(parts[1].toInt(), parts[2]);
         //const OlvisInterface& model = OlvisSingleton::instance();
@@ -425,13 +444,11 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
             return;
         overlay->setPortId(portId, parts[0] == "output");
         overlay->setParent(this);
-        if(!mMainOverlay)
-        {
+        if(!mMainOverlay){
             setMainOverlay(overlay);
             QList<PortInfo> ports = OlvisSingleton::instance().getFilter(overlay->portId().filter).typeInfo.outputs;
             foreach (PortInfo p, ports) {
-                if(p.typeName == "PhysicalSize")
-                {
+                if(p.typeName == "PhysicalSize"){
                     PortInfo info = OlvisSingleton::instance().getPortInfo(PortId(overlay->portId().filter, p.name));
                     OverlayInterface* scaleOverlay = PluginContainer::getInstance().overlayFor(info,true, false, &OlvisSingleton::instance());
                     scaleOverlay->setParent(this);
@@ -441,9 +458,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
                     mToolbar->addPortAction(PortId(portId.filter, info.name));
                 }
             }
-        }
-        else
-        {
+        } else{
             foreach (OverlayInterface* o, mOverlays) {
                 if (o->portId() == portId)
                     removeOverlay(o);
@@ -459,8 +474,7 @@ void VideoDisplayWidget::dropEvent(QDropEvent* event)
         if(!mMainOverlay)
             return;
         OverlayInterface* overlay = PluginContainer::getInstance().overlayFor("SensorSystemOverlay", true, false, &OlvisSingleton::instance());
-        if(overlay)
-        {
+        if(overlay){
             QString sensorId = event->mimeData()->data("application/x-sensorSystem-value");
             overlay->setPortId(PortId(0, sensorId), true);
             overlay->setParent(this);

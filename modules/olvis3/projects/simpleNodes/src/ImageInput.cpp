@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include <stdexcept>
 
 REGISTER_FILTER(ImageInput);
-
 ImageInput::ImageInput()
 {
     setName("ImageInput");
@@ -50,7 +49,6 @@ void ImageInput::start()
 
 void ImageInput::execute()
 {
-
     QFileInfo path = mIn;
     if(path != lastInfo || mAlwaysRead.getValue())
     {

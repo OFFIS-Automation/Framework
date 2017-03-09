@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,14 +52,14 @@ BackgroundSubstraction::BackgroundSubstraction()
 
 void BackgroundSubstraction::execute()
 {
-    const cv::Mat input = mIn;
+    const cv::Mat src = mIn;
     cv::Mat background;
 
     if(mMode == KNN){
-        mKNN->apply(input, mForegroundMask);
+        mKNN->apply(src, mForegroundMask);
         mKNN->getBackgroundImage(background);
     } else {
-        mMog2->apply(input, mForegroundMask);
+        mMog2->apply(src, mForegroundMask);
         mMog2->getBackgroundImage(background);
     }
 

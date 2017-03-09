@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,22 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_CONVEXHULLFILTER_H
-#define USER_CONVEXHULLFILTER_H
+#ifndef SCALEIMAGE2_H
+#define SCALEIMAGE2_H
 
 #include <filter/PluginInterface.h>
-#include <ports/PolygonPort.h>
-#include <ports/PointPort.h>
+#include <ports/ImagePort.h>
+#include <ports/RealPort.h>
 
-class ConvexHullFilter : public UserFilter
+class ScaleImage2 : public UserFilter
 {
 public:
-    ConvexHullFilter();
-    virtual void execute();
-
+    ScaleImage2();
+    void execute();
+	
 protected:
-    in::Polygon mIn;
-    out::Polygon mOut;
+    in::Image mIn;
+    out::Image mOut;
+    out::Image mInverse;
+    in::Real mScale;
 };
 
-#endif // USER_CONVEXHULLFILTER_H
+#endif // SCALEIMAGE2_H

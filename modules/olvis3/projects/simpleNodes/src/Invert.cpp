@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 #include "Invert.h"
 
 REGISTER_FILTER(Invert);
-
 Invert::Invert()
 {
     setName("Invert");
@@ -35,12 +34,14 @@ Invert::Invert()
 
 void Invert::execute()
 {
-    cv::Mat mat = mIn.getValue().clone();
-    uchar* data = (uchar*)mat.datastart;
-    while(data < mat.dataend)
+    const cv::Mat src = mIn;
+    cv::Mat dest = src.clone();
+
+    uchar* data = (uchar*)dest.datastart;
+    while(data < dest.dataend)
     {
         *data = 255-*data;
         data++;
     }
-    mOut.send(mat);
+    mOut.send(dest);
 }

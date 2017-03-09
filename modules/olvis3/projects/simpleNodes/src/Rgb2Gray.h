@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ class Rgb2Gray : public UserFilter
 public:
     Rgb2Gray();
     void execute();
+	
 protected:
     enum Mode
     {
@@ -41,10 +42,10 @@ protected:
         MaxMode
     };
 
-    in::RgbImage mIn;
+    in::Image mIn;
     in::Integer mMode;
     in::Boolean mSubstract;
-    out::GrayImage mOut;
+    out::Image mOut;
 };
 
 #endif // RGB2GRAY_H

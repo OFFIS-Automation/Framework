@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -285,8 +285,3 @@ void MainToolBar::on_actionOptions_triggered()
     pluginConfig.exec();
 }
 
-
-void MainToolBar::on_actionEnableTracing_triggered(bool checked)
-{
-    emit setTraceEnabled(checked);
-}

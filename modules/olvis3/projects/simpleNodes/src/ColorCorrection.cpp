@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,13 +49,20 @@ void ColorCorrection::execute()
     double bGain = mBFactor.getValue();
     double gGain = mGFactor.getValue();
     double rGain = mRFactor.getValue();
-    const cv::Mat source = mIn;
+
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToRGB();
+
+    // Correct color by multiplying with factors
     std::vector<cv::Mat> channels;
-    cv::split(source, channels);
+    cv::split(srcConverted, channels);
     channels[0] *= bGain;
     channels[1] *= gGain;
     channels[2] *= rGain;
+
     cv::Mat dest;
     cv::merge(channels, dest);
+
     mOut.send(dest);
 }

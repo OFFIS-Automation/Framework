@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ void SensorWidgetLine::startDrag()
 
     mimeData->setData("application/x-sensorSystem-value", name().toLocal8Bit());
     QPoint p1 = ui->checkBox->mapFromParent(mStartPos);
-    drag->setPixmap(QPixmap::grabWidget(ui->checkBox));
+    drag->setPixmap(ui->checkBox->grab());
     drag->setHotSpot(p1);
     drag->setMimeData(mimeData);
     drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);

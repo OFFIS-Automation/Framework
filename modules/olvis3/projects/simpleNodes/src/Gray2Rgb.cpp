@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(Gray2Rgb);
-
 Gray2Rgb::Gray2Rgb()
 {
     setName("GrayToRgb");
@@ -46,21 +45,21 @@ Gray2Rgb::Gray2Rgb()
 
 void Gray2Rgb::execute()
 {
-    const cv::Mat input = mIn;
+    const cv::Mat src = mIn;
     cv::Mat dest;
     int m = mMode;
     switch ((Mode) m) {
     case DebayerRG:
-        cv::cvtColor(input, dest, CV_BayerRG2RGB);
+        cv::cvtColor(src, dest, CV_BayerRG2RGB);
         break;
     case DebayerGR:
-        cv::cvtColor(input, dest, CV_BayerGR2RGB);
+        cv::cvtColor(src, dest, CV_BayerGR2RGB);
         break;
     case DebayerBG:
-        cv::cvtColor(input, dest, CV_BayerBG2RGB);
+        cv::cvtColor(src, dest, CV_BayerBG2RGB);
         break;
     case DebayerGB:
-        cv::cvtColor(input, dest, CV_BayerGB2RGB);
+        cv::cvtColor(src, dest, CV_BayerGB2RGB);
         break;
     }
     mOut.send(dest);

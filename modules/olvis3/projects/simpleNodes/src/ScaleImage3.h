@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,24 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_CONTOURSFILTER_H
-#define USER_CONTOURSFILTER_H
+#ifndef SCALEIMAGE3_H
+#define SCALEIMAGE3_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/PolygonPort.h>
-#include <ports/PointPort.h>
+#include <ports/RealPort.h>
 
-class ContoursFilter : public UserFilter
+class ScaleImage3 : public UserFilter
 {
 public:
-    ContoursFilter();
-    virtual void execute();
-
+    ScaleImage3();
+    void execute();
+	
 protected:
-    in::GrayImage mIn;
-    in::Point mOffsetIn;
-    out::Polygon mContourOut;
+    in::Image mIn;
+    out::Image mOut;
+    out::Image mMask;
+    out::Image mScale;
+    in::Real mMod;
 };
 
-#endif // USER_CONTOURSFILTER_H
+#endif // SCALEIMAGE2_H

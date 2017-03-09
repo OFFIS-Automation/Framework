@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -137,16 +137,7 @@ void FilterWidget::mouseMoveEvent(QMouseEvent * event)
     else
         event->ignore();
 }
-
-
-void FilterWidget::showMenu(const QPoint &pos)
-{
-    QMenu menu;
-    menu.addAction(ui->actionDeleteFilter);
-    menu.addAction(ui->actionRename);
-    menu.exec(pos);
-}
-
+#
 void FilterWidget::on_actionDeleteFilter_triggered()
 {
     emit deleteRequest(mFilterId);
@@ -167,6 +158,14 @@ void FilterWidget::on_name_returnPressed()
 void FilterWidget::on_name_editingFinished()
 {
     endRename();
+}
+
+void FilterWidget::showMenu(const QPoint &pos)
+{
+    QMenu menu;
+    menu.addAction(ui->actionDeleteFilter);
+    menu.addAction(ui->actionRename);
+    menu.exec(pos);
 }
 
 void FilterWidget::startRename()

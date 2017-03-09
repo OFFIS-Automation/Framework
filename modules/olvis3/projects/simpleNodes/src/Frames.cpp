@@ -1,43 +1,35 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
-//
+// Copyright (C) 2013-2017 OFFIS e.V.
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
+// 
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Frames.h"
 
-#ifndef HANDLER_H
-#define HANDLER_H
+REGISTER_FILTER(Frames);
 
-#include <QObject>
-#include <QString>
-#include <QLocalSocket>
-#include <QTimer>
-#include "TestDataServer.h"
-
-class Handler : public QObject
+Frames::Frames() : mRate(-1.0)
 {
-    Q_OBJECT
-public:
-    Handler(QLocalSocket* socket);
+    setName("FPS");
+    setGroup("helper");
+    setDesc(QObject::tr("Outputs the frames per second of your image processing chain"));
 
-private slots:
-    void logMessage(QString text);
-    void logError(QString text);
+    mFPS.setName("FPS");
+    addOutputPort(mFPS);
+}
 
-protected:
-    TestDataServer mDataServer;
-    QTimer mTimer;
-
-};
-
-#endif // HANDLER_H
+void Frames::execute()
+{
+    mRate = mUpdateTimer.restart();
+    mFPS.send(1000.0/mRate);
+}

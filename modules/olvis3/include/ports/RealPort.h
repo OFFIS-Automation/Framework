@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ class DEFAULTPORTSSHARED_EXPORT Real : public OverlayPort
 public:
     void setDefault(double value);
     void setRange(double min, double max);
+    void setDecimals(int decimals);
     void addChoice(double value);
     void addChoice(double value, const QString &name);
 
@@ -36,6 +37,7 @@ protected:
     QVariant fromString(const QString &str) const;
     QVariant constrainedValue(const QVariant &var) const;
     double mMin, mMax;
+    int mDecimals;
     QList<double> mKeys;
 };
 }

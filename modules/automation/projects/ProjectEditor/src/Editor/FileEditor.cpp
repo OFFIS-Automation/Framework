@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -342,14 +342,14 @@ void FileEditor::updateLexer()
     QString suffix = QFileInfo(filename()).completeSuffix().toLower();
     QsciLexer *lexer = 0;
     if(suffix.compare("cpp") == 0 || suffix.compare("hpp") == 0 || suffix.compare("h") == 0){
-        lexer = new QsciLexerCPP();
+		lexer = new QsciLexerCPP();
     }
     if(suffix.compare("py") == 0){
-        lexer = new QsciLexerPython();
+		lexer = new QsciLexerPython();
 
         // For python we have an predefined API
         QsciAPIs *api = new QsciAPIs(lexer);
-        QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.4.api";
+		QString filename = QCoreApplication::applicationDirPath() + "/plugins/hilec/python/api/Python-3.5.api";
         api->load(filename);
         api->prepare();
     }
@@ -367,7 +367,7 @@ void FileEditor::setupEditor()
 {
     // Line numbers
     QFont font("Courier");
-    setMarginsFont(font);
+	setMarginsFont(font);
     setMarginLineNumbers(LINENUMBER_MARGIN, true);
     setMarginWidth(LINENUMBER_MARGIN, QString("%1").arg(lines()) + 6);
     setMarginMarkerMask(1, 0);

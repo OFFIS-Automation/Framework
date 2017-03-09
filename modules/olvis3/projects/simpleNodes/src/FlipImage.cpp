@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,14 +17,13 @@
 #include "FlipImage.h"
 
 REGISTER_FILTER(FlipImage);
-
 FlipImage::FlipImage()
 {
     setName("Flip");
     setDesc(QObject::tr("Flips an image horizontal, vertical or both"));
     setGroup("image/reshape");
-    addInputPort(mImageIn);
-    addOutputPort(mImageOut);
+    addInputPort(mIn);
+    addOutputPort(mOut);
     mFlipModeIn.setName("flipMode");
     mFlipModeIn.addChoice(0, tr("Vertical"));
     mFlipModeIn.addChoice(1, tr("Horizontal"));
@@ -35,9 +34,9 @@ FlipImage::FlipImage()
 
 void FlipImage::execute()
 {
+    const cv::Mat source = mIn;
     cv::Mat target;
-    const cv::Mat source = mImageIn;
     cv::flip(source, target, (int)mFlipModeIn);
-    mImageOut.send(target);
+    mOut.send(target);
 }
 

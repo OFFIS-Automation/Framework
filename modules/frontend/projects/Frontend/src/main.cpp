@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,40 +35,17 @@
 #include "qglobal.h"
 
 #include <LogWindow.h>
-#include <winsparkle.h>
-
-int canShutdownCallback()
-{
-    return 1;
-}
-
-void shutdownRequestCallback()
-{
-    QApplication::quit();
-}
 
 int main(int argc, char *argv[])
 {
-    Application a(argc, argv);
-    a.setLibraryPaths(a.libraryPaths() << a.applicationDirPath() + "/plugins");
-    a.setOrganizationName("OFFIS - Institut fuer Informatik");
-    a.setApplicationName("OFFIS Automation Framework");
-    a.setOrganizationDomain("http://www.uni-oldenburg.de/amir");
+    Application application(argc, argv);
+    application.setLibraryPaths(application.libraryPaths() << application.applicationDirPath() + "/plugins");
+    application.setOrganizationName("OFFIS - Institut fuer Informatik");
+    application.setApplicationName("OFFIS Automation Framework");
+    application.setOrganizationDomain("http://www.uni-oldenburg.de/amir");
     if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
-        a.setStyle(QStyleFactory::create("Fusion"));
+        application.setStyle(QStyleFactory::create("Fusion"));
     }
-
-    // Init winSparkle, Setup update feeds.
-    wchar_t charVersion[256];
-    swprintf_s(charVersion, L"%d", Version::BUILD_VERSION_NUMBER);
-
-    win_sparkle_set_appcast_url("http://134.106.47.173:8080/userContent/Framework/Framework.rss");
-    win_sparkle_set_app_details(L"OFFIS", L"OFFIS Automation Framework", charVersion);
-    win_sparkle_set_can_shutdown_callback(canShutdownCallback);
-    win_sparkle_set_shutdown_request_callback(shutdownRequestCallback);
-
-    // Initialize the updater and possibly show some UI
-    win_sparkle_init();
 
     // Initialize translator
     TranslationLoader translator;
@@ -95,17 +72,17 @@ int main(int argc, char *argv[])
 
     // Show
     splashScreen.show();
-    splashScreen.showMessage(a.translate("splash screen", "Starting"), Qt::AlignHCenter);
+    splashScreen.showMessage(application.translate("splash screen", "Starting"), Qt::AlignHCenter);
 
     // Get window arguments
-    QDesktopWidget* desktop = a.desktop();
+    QDesktopWidget* desktop = application.desktop();
     bool multiScreen = desktop->screenCount() > 1;
-    if(a.arguments().contains("--singleScreen")){
+    if(application.arguments().contains("--singleScreen")){
         multiScreen = false;
     }
-    bool noload = a.arguments().contains("--noload");
+    bool noload = application.arguments().contains("--noload");
 
-    PluginLoader loader(a.applicationDirPath() + "/plugins");
+    PluginLoader loader(application.applicationDirPath() + "/plugins");
     loader.load(&splashScreen);
 
     MasterWindow* masterWindow = new MasterWindow();
@@ -117,8 +94,8 @@ int main(int argc, char *argv[])
     // Set windowm titles
     if(multiScreen){
         QString title = masterWindow->windowTitle();
-        masterWindow->setWindowTitle(a.translate("MainWindow", "%1 - Master window").arg(title));
-        slaveWindow->setWindowTitle(a.translate("MainWindow", "%1 - Slave window").arg(title));
+        masterWindow->setWindowTitle(application.translate("MainWindow", "%1 - Master window").arg(title));
+        slaveWindow->setWindowTitle(application.translate("MainWindow", "%1 - Slave window").arg(title));
     }
 
     // Signal / slot connections
@@ -153,7 +130,7 @@ int main(int argc, char *argv[])
     Notifications::setMainWindow(masterWindow);
 
     // Run
-    int retVal = a.exec();
+    int retVal = application.exec();
 
     // Free notification reference
     Notifications::setMainWindow(0);
@@ -162,9 +139,6 @@ int main(int argc, char *argv[])
     perspectiveControl.savePerspective();
     loader.closeProject();
     loader.deinitializeGuis();
-
-    // Shut WinSparkle down cleanly when the app exits
-    win_sparkle_cleanup();
 
     // Free memory
     if(multiScreen){

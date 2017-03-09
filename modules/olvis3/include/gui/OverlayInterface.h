@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,8 +22,9 @@
 #include <QPainter>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include <core/PortId.h>
 #include <QWidget>
+
+#include <core/PortId.h>
 
 class OverlayParent
 {
@@ -65,6 +66,7 @@ public:
 protected slots:
     void removeMe() { emit removeOverlay(this); }
     void updated() { emit updated(this); }
+
 signals:
     void removeOverlay(OverlayInterface* overlay);
     void updated(OverlayInterface* overlay);

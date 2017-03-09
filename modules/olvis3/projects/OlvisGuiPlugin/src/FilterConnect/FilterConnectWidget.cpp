@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -156,9 +156,9 @@ void FilterConnectWidget::removeConnection(const QString &src,
     mWidgets[processorId]->removeConnection(src, target);
 }
 
-void FilterConnectWidget::addFilter(const FilterInfo &filter, int beforeFilter)
+void FilterConnectWidget::addFilter(const FilterInfo &filterInfo, int beforeFilter)
 {
-    FilterWidget *w = new FilterWidget(filter);
+    FilterWidget *w = new FilterWidget(filterInfo);
     w->setPortVisibility(mPortVisibility);
     connect(w, SIGNAL(selected(int)), SIGNAL(filterSelected(int)));
     connect(w, SIGNAL(newPortValue(int, QString, QVariant)),
@@ -166,9 +166,9 @@ void FilterConnectWidget::addFilter(const FilterInfo &filter, int beforeFilter)
     connect(w, SIGNAL(deleteRequest(int)), SIGNAL(deleteFilterRequested(int)));
     connect(w, SIGNAL(renameRequested(int, QString)),
             SIGNAL(renameFilterRequested(int, QString)));
-    mFilterWidgets[filter.name] = w;
-    mWidgets[filter.processorId]->addWidget(w);
-    mWidgets[filter.processorId]->moveWidget(filter, beforeFilter);
+    mFilterWidgets[filterInfo.name] = w;
+    mWidgets[filterInfo.processorId]->addWidget(w);
+    mWidgets[filterInfo.processorId]->moveWidget(filterInfo, beforeFilter);
 
 }
 
@@ -183,17 +183,17 @@ void FilterConnectWidget::removeFilter(const FilterInfo &filterInfo)
     }
 }
 
-void FilterConnectWidget::addMakroFilter(const FilterInfo &filter)
+void FilterConnectWidget::addMakroFilter(const FilterInfo &filterInfo)
 {
     FilterSortingArea *sortingArea =
-        new FilterSortingArea(filter.id, mInterface, true);
+        new FilterSortingArea(filterInfo.id, mInterface, true);
     connect(sortingArea, SIGNAL(portSelected(int, QString)),
             SIGNAL(portSelected(int, QString)));
     sortingArea->hide();
-    mWidgets[filter.id] = sortingArea;
+    mWidgets[filterInfo.id] = sortingArea;
     ui->sortLayout->addWidget(sortingArea);
-    ui->comboBox->addItem(tr("MacroFilter: ") + filter.name,
-                          QVariant(filter.id));
+    ui->comboBox->addItem(tr("MacroFilter: ") + filterInfo.name,
+                          QVariant(filterInfo.id));
     ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
 }
 
@@ -303,12 +303,8 @@ void FilterConnectWidget::on_deleteProcessoButton_clicked()
 
     if (info.isValid()) {
         // Delete the processor / ask the user for permission
-        if (QMessageBox::question(
-                0, tr("Delete processor"),
-                tr("Do you really want to delete the processor %1?")
-                    .arg(info.name),
-                QMessageBox::Yes | QMessageBox::No,
-                QMessageBox::No) != QMessageBox::Yes)
+        if (QMessageBox::question(0, tr("Delete processor"), tr("Do you really want to delete the processor %1?").arg(info.name),
+                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
             return;
         // User really wants to delete => go on and delete
         emit deleteProcessorRequested(mCurrentProcessor);
@@ -398,6 +394,7 @@ void FilterConnectWidget::changeVisibility()
         mPortVisibility = ExpertPortVisibility;
     else if(ui->flat->isChecked())
         mPortVisibility = -1;
+
     foreach (FilterWidget *widget, mFilterWidgets.values()) {
         widget->setPortVisibility(mPortVisibility);
     }

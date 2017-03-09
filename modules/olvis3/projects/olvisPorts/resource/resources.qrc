@@ -3,11 +3,9 @@
         <file>bool.png</file>
         <file>file.png</file>
         <file>folder.png</file>
-        <file>grayimage.png</file>
         <file>image.png</file>
         <file>number.png</file>
         <file>rect.png</file>
-        <file>rgbimage.png</file>
         <file>string.png</file>
         <file>pose.png</file>
         <file>point.png</file>

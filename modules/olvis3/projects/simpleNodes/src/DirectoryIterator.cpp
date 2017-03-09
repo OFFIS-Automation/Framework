@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 
 REGISTER_FILTER(DirectoryIterator);
-
 DirectoryIterator::DirectoryIterator()
     : mIter(mFileList)
 {
@@ -79,6 +78,5 @@ void DirectoryIterator::execute()
         QFileInfo info(mIter.next());
         mNameOut.send(info.fileName());
         mOut.send(info);
-
     }
 }

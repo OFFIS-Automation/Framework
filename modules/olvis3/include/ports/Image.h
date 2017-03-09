@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,23 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DENOISING_H
-#define DENOISING_H
+#ifndef IMAGE_H
+#define IMAGE_H
 
-#include <filter/PluginInterface.h>
-#include <ports/ImagePort.h>
-#include <ports/IntegerPort.h>
+#include "DefaultPortsGlobal.h"
+#include <opencv2/core.hpp>
 
-class Denoising : public UserFilter
+
+class DEFAULTPORTSSHARED_EXPORT Image : public cv::Mat
 {
 public:
-    Denoising();
-    virtual void execute();
-protected:
-    in::GrayImage mIn;
-    out::GrayImage mOut;
-    in::Integer mTemplateWindowSize , mSearchWindowSize, mH;
+    Image();
+
+    // copy constructor
+    Image(const Image& m);
+    Image(const cv::Mat& m);
+
+    // assignment operators
+    Image& operator = (const Image& m);
+    Image& operator = (const cv::MatExpr& expr);
+
+    // Helper, -1 will keep type
+    void convertToDepth(int depth = -1);
+    void convertToGray(int depth = -1);
+    void convertToRGB(int depth = -1);
 };
 
-
-#endif // DENOISING_H
+#endif // GRAYIMAGE_H

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -45,13 +45,12 @@ public slots:
     void stop();
     void pauseProcessor(const QString& name);
     void resumeProcessor(const QString& name);
+
 protected:
     QVariant formatReturn(const PortId& id, const QVariant& var);
     int getFilterId(const QString& name);
     int getProcessorId(const QString& name);
     PortId getPortId(const QString& filterName, const QString& portName);
-
-
 };
 
 #endif // OLVISRCUNIT_H

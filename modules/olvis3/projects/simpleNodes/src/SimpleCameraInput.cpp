@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SimpleCameraInput.h"
+
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include <stdexcept>
 
 REGISTER_FILTER(SimpleCameraInput);
-
 SimpleCameraInput::SimpleCameraInput()
 {
     setName("Webcam");
@@ -40,7 +40,7 @@ SimpleCameraInput::SimpleCameraInput()
 void SimpleCameraInput::initialize()
 {
     if(!mCapture.open(0))
-        throw std::runtime_error("could not initialize webcam");
+        throw std::runtime_error("Could not initialize webcam");
     mCapture.set(CV_CAP_PROP_CONVERT_RGB, 1);
 }
 

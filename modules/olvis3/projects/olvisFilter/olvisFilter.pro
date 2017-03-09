@@ -18,6 +18,4 @@ include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins
 TARGET = olvisFilter
 
-QT += widgets
-
 include(OlvisFilterFiles.pri)

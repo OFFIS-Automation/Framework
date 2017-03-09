@@ -36,6 +36,7 @@ CONFIG+=dll
 HEADERS += \
     ../../include/gui/PortEditInterface.h \
     ../../include/gui/OlvisGuiPluginInterface.h \
+    ../../include/gui/OverlayInterface.h \
     src/DefaultPorts.h \
     src/BoolEdit.h \
     src/AbstractPortEditWidget.h \
@@ -49,7 +50,6 @@ HEADERS += \
     src/RectEdit.h \
     src/PointEdit.h \
     src/DateTimeEdit.h \
-    ../../include/gui/OverlayInterface.h \
     src/overlays/RectOverlay.h \
     src/overlays/StringOverlay.h \
     src/overlays/ImagePortOverlay.h \

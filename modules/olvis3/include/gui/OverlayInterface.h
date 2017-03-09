@@ -66,6 +66,7 @@ public:
 protected slots:
     void removeMe() { emit removeOverlay(this); }
     void updated() { emit updated(this); }
+
 signals:
     void removeOverlay(OverlayInterface* overlay);
     void updated(OverlayInterface* overlay);

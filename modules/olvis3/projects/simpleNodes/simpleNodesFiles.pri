@@ -83,10 +83,10 @@ SOURCES += \
 	src/MultipleTemplateMatching.cpp \
 	src/ColorPicker.cpp \
 	src/Webcam.cpp \
-	src/VideoStreamer.cpp \
-	src/VideoReceiver.cpp \
-	src/GStreamerInitializer.cpp \
-        src/CameraFrameGrabber.cpp
+        src/CameraFrameGrabber.cpp \
+#       src/VideoStreamer.cpp \
+#	src/VideoReceiver.cpp \
+#	src/GStreamerInitializer.cpp \
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -147,10 +147,10 @@ HEADERS += \
 	src/MultipleTemplateMatching.h \
 	src/ColorPicker.h \
 	src/Webcam.h \
-	src/VideoStreamer.h \
-	src/VideoReceiver.h \
-	src/GStreamerInitializer.h \
-        src/CameraFrameGrabber.h
+        src/CameraFrameGrabber.h \
+#	src/VideoStreamer.h \
+#	src/VideoReceiver.h \
+#	src/GStreamerInitializer.h \
 
 RESOURCES += \
 	images/images.qrc

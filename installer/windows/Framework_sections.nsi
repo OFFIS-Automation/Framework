@@ -10,6 +10,7 @@ Section "!OFFIS Automation Framework" SecToolbox
 	SectionIn RO
 	SetOutPath "$INSTDIR"
 	File "..\..\bin\Framework.exe"
+	File "..\..\bin\Framework.pdb"
 	File "..\..\bin\Notifications.dll"
 	File "..\..\bin\Qt5*.dll"
 	File /nonfatal "..\..\bin\icu*.dll"
@@ -76,6 +77,7 @@ SectionEnd
 Section /o "Development version" SecDevFiles
 	SetOutPath "$INSTDIR\debug"
 	File "..\..\bin\debug\Framework.exe"
+	File "..\..\bin\debug\Framework.pdb"
 	File "..\..\bin\debug\Notifications.dll"
 	File "..\..\bin\debug\Qt5*.dll"
 	File /nonfatal "..\..\bin\debug\icu*.dll"

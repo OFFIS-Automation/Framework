@@ -34,10 +34,24 @@
 #include "version.h"
 #include "qglobal.h"
 
+#include "qt_breakpad.h"
+
 #include <LogWindow.h>
 
 int main(int argc, char *argv[])
 {
+    // QtBreakpad init before all the other stuff
+    // See https://github.com/JPNaude/dev_notes/wiki/Using-Google-Breakpad-with-Qt for usage
+    QString path;
+    const QStringList desktopsLocation = QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
+    if (!desktopsLocation.isEmpty()){
+        path = desktopsLocation.first();
+    } else {
+        path = QDir::homePath();
+    }
+    QtBreakpad::init(path);
+
+    // App starts here
     Application application(argc, argv);
     application.setLibraryPaths(application.libraryPaths() << application.applicationDirPath() + "/plugins");
     application.setOrganizationName("OFFIS - Institut fuer Informatik");

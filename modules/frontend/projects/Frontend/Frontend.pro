@@ -26,6 +26,7 @@ win32-msvc*{
     RC_FILE = appIcon.rc
 }
 
+include($$(OFFIS_DEVELOPMENT_ENVIRONMENT)/qt-breakpad/qt-breakpad.pri)
 include(../../../properties/pathes.pro)
 
 BUILD_NUMBER_EXISTS=$$(BUILD_NUMBER)

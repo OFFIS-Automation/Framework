@@ -32,6 +32,9 @@ protected:
     in::Image mIn;
     in::Integer mThreshold;
     in::Integer mMode;
+    in::Integer mAdaptiveMode;
+    in::Integer mAdaptiveBlockSize;
+    in::Integer mAdaptiveC;
     out::Image mOut;
     bool mInvert;
 };

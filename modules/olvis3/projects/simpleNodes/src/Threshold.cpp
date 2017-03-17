@@ -42,14 +42,38 @@ Threshold::Threshold()
     mMode.setDesc(tr("Thresholding mode"));
     mMode.addChoice(cv::THRESH_BINARY, tr("Binary (value = value > threshold ? max_value : 0 )"));
     mMode.addChoice(cv::THRESH_BINARY_INV, tr("Binary inverted (value = value > threshold ? 0 : max_value)"));
+    mMode.addChoice(cv::THRESH_TRUNC, tr("Truncate (value = value > threshold ? threshold : value)"));
     mMode.addChoice(cv::THRESH_TOZERO, tr("To zero (value = value > threshold ? value : 0)"));
     mMode.addChoice(cv::THRESH_TOZERO_INV, tr("To zero inverted (value = value > threshold ? 0 : value)"));
-    mMode.addChoice(cv::THRESH_TRUNC, tr("Truncate (value = value > threshold ? threshold : value)"));
     mMode.addChoice(cv::THRESH_OTSU, tr("Otsu’s Algorithm (threshold automatically determined)"));
     mMode.addChoice(cv::THRESH_OTSU+1, tr("Otsu’s Algorithm inverted (threshold automatically determined)"));
     mMode.addChoice(cv::THRESH_TRIANGLE, tr("Triangle algorithm (threshold automatically determined)"));
     mMode.addChoice(cv::THRESH_TRIANGLE+1, tr("Triangle algorithm inverted (threshold automatically determined)"));
     mMode.setDefault(cv::THRESH_BINARY);
+
+    mAdaptiveMode.setName("adaptiveMode");
+    mAdaptiveMode.setDesc(tr("Only works with Binary or Binary inverted mode"));
+    mAdaptiveMode.addChoice(-1, tr("None"));
+    mAdaptiveMode.addChoice(cv::ADAPTIVE_THRESH_MEAN_C, tr("Threshold value is mean of the neighborhood minus C"));
+    mAdaptiveMode.addChoice(cv::ADAPTIVE_THRESH_GAUSSIAN_C, tr("Threshold value is a weighted sum (cross-correlation with a Gaussian window) of the neighborhood minus C"));
+    mAdaptiveMode.setDefault(-1);
+    mAdaptiveMode.setVisibility(AdvancedPortVisibility);
+    addInputPort(mAdaptiveMode);
+
+    mAdaptiveBlockSize.setName("adaptiveBlockSize");
+    mAdaptiveBlockSize.setDesc(tr("Size of the neighborhood"));
+    mAdaptiveBlockSize.setOnlyOdd();
+    mAdaptiveBlockSize.setDefault(3);
+    mAdaptiveBlockSize.setVisibility(AdvancedPortVisibility);
+    addInputPort(mAdaptiveBlockSize);
+
+    mAdaptiveC.setName("adaptivC");
+    mAdaptiveC.setDesc(tr("Constant subtracted from the mean or weighted mean"));
+    mAdaptiveC.setOnlyOdd();
+    mAdaptiveC.setDefault(5);
+    mAdaptiveC.setVisibility(AdvancedPortVisibility);
+    addInputPort(mAdaptiveC);
+
     addInputPort(mMode);
 }
 
@@ -62,14 +86,22 @@ void Threshold::execute()
     ((Image *)&srcConverted)->convertToGray(CV_8U);
 
     cv::Mat dest;
-    if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
-        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY + mMode);
-    } else if(mMode == cv::THRESH_OTSU+1){
-        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
-    }else if(mMode == cv::THRESH_TRIANGLE+1){
-        cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
+    if(mAdaptiveMode > 0){
+        if(mMode == cv::THRESH_BINARY || mMode == cv::THRESH_BINARY_INV){
+            cv::adaptiveThreshold(srcConverted, dest, 255, mAdaptiveMode, mMode, mAdaptiveBlockSize, mAdaptiveC);
+        } else {
+            throw std::runtime_error(qPrintable(tr("Mode not supported for adaptive threshold. Use Binary or Binary inverted.")));
+        }
     } else {
-        cv::threshold(srcConverted, dest, threshold, 255, mMode);
+        if(mMode == cv::THRESH_OTSU || mMode == cv::THRESH_TRIANGLE){
+            cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY + mMode);
+        } else if(mMode == cv::THRESH_OTSU+1){
+            cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_OTSU);
+        }else if(mMode == cv::THRESH_TRIANGLE+1){
+            cv::threshold(srcConverted, dest, 0, 255, cv::THRESH_BINARY_INV + cv::THRESH_TRIANGLE);
+        } else {
+            cv::threshold(srcConverted, dest, threshold, 255, mMode);
+        }
     }
     mOut.send(dest);
 }

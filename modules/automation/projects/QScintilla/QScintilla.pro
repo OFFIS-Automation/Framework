@@ -71,8 +71,10 @@ HEADERS = \
 	Qt4Qt5/Qsci/qscilexeridl.h \
 	Qt4Qt5/Qsci/qscilexerjava.h \
 	Qt4Qt5/Qsci/qscilexerjavascript.h \
+        Qt4Qt5/Qsci/qscilexerjson.h \
 	Qt4Qt5/Qsci/qscilexerlua.h \
 	Qt4Qt5/Qsci/qscilexermakefile.h \
+        Qt4Qt5/Qsci/qscilexermarkdown.h \
 	Qt4Qt5/Qsci/qscilexermatlab.h \
 	Qt4Qt5/Qsci/qscilexeroctave.h \
 	Qt4Qt5/Qsci/qscilexerpascal.h \
@@ -101,6 +103,7 @@ HEADERS = \
 	Qt4Qt5/ScintillaQt.h \
 	include/ILexer.h \
 	include/Platform.h \
+        include/Sci_Position.h \
 	include/SciLexer.h \
 	include/Scintilla.h \
 	include/ScintillaWidget.h \
@@ -139,11 +142,13 @@ HEADERS = \
 	src/MarginView.h \
 	src/Partitioning.h \
 	src/PerLine.h \
+        src/Position.h \
 	src/PositionCache.h \
 	src/RESearch.h \
 	src/RunStyles.h \
 	src/ScintillaBase.h \
 	src/Selection.h \
+        src/SparseVector.h \
 	src/SplitVector.h \
 	src/Style.h \
 	src/UnicodeFromUTF8.h \
@@ -165,7 +170,7 @@ SOURCES = \
 	Qt4Qt5/qscilexerbatch.cpp \
 	Qt4Qt5/qscilexercmake.cpp \
 	Qt4Qt5/qscilexercoffeescript.cpp \
-	Qt4Qt5/qscilexercpp.cpp \
+        Qt4Qt5/qscilexercpp.cpp \
 	Qt4Qt5/qscilexercsharp.cpp \
 	Qt4Qt5/qscilexercss.cpp \
 	Qt4Qt5/qscilexercustom.cpp \
@@ -177,8 +182,10 @@ SOURCES = \
 	Qt4Qt5/qscilexeridl.cpp \
 	Qt4Qt5/qscilexerjava.cpp \
 	Qt4Qt5/qscilexerjavascript.cpp \
+        Qt4Qt5/qscilexerjson.cpp \
 	Qt4Qt5/qscilexerlua.cpp \
 	Qt4Qt5/qscilexermakefile.cpp \
+        Qt4Qt5/qscilexermarkdown.cpp \
 	Qt4Qt5/qscilexermatlab.cpp \
 	Qt4Qt5/qscilexeroctave.cpp \
 	Qt4Qt5/qscilexerpascal.cpp \
@@ -220,6 +227,7 @@ SOURCES = \
 	lexers/LexBaan.cpp \
 	lexers/LexBash.cpp \
 	lexers/LexBasic.cpp \
+        lexers/LexBatch.cpp \
 	lexers/LexBibTex.cpp \
 	lexers/LexBullant.cpp \
 	lexers/LexCaml.cpp \
@@ -233,11 +241,14 @@ SOURCES = \
 	lexers/LexCsound.cpp \
 	lexers/LexCSS.cpp \
 	lexers/LexD.cpp \
+        lexers/LexDiff.cpp \
 	lexers/LexDMAP.cpp \
 	lexers/LexDMIS.cpp \
 	lexers/LexECL.cpp \
+        lexers/LexEDIFACT.cpp \
 	lexers/LexEiffel.cpp \
 	lexers/LexErlang.cpp \
+        lexers/LexErrorList.cpp \
 	lexers/LexEScript.cpp \
 	lexers/LexFlagship.cpp \
 	lexers/LexForth.cpp \
@@ -248,6 +259,7 @@ SOURCES = \
 	lexers/LexHex.cpp \
 	lexers/LexHTML.cpp \
 	lexers/LexInno.cpp \
+        lexers/LexJSON.cpp \
 	lexers/LexKix.cpp \
 	lexers/LexKVIrc.cpp \
 	lexers/LexLaTex.cpp \
@@ -255,6 +267,7 @@ SOURCES = \
 	lexers/LexLout.cpp \
 	lexers/LexLua.cpp \
 	lexers/LexMagik.cpp \
+        lexers/LexMake.cpp \
 	lexers/LexMarkdown.cpp \
 	lexers/LexMatlab.cpp \
 	lexers/LexMetapost.cpp \
@@ -265,9 +278,10 @@ SOURCES = \
 	lexers/LexMySQL.cpp \
 	lexers/LexNimrod.cpp \
 	lexers/LexNsis.cpp \
+        lexers/LexNull.cpp \
 	lexers/LexOpal.cpp \
 	lexers/LexOScript.cpp \
-	lexers/LexOthers.cpp \
+        #lexers/LexOthers.cpp \
 	lexers/LexPascal.cpp \
 	lexers/LexPB.cpp \
 	lexers/LexPerl.cpp \
@@ -277,6 +291,7 @@ SOURCES = \
 	lexers/LexPowerPro.cpp \
 	lexers/LexPowerShell.cpp \
 	lexers/LexProgress.cpp \
+        lexers/LexProps.cpp \
 	lexers/LexPS.cpp \
 	lexers/LexPython.cpp \
 	lexers/LexR.cpp \

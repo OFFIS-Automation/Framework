@@ -64,7 +64,6 @@ SOURCES += \
         src/ScaleImage3.cpp \
 	src/SetRoiFilter.cpp \
         src/Sharp.cpp \
-	src/SimpleCameraInput.cpp \
 	src/SimpleNodes.cpp \
 	src/SobelFilter.cpp \
 	src/TemplateMatching.cpp \
@@ -82,11 +81,12 @@ SOURCES += \
 	src/WhiteBalance.cpp \
 	src/MultipleTemplateMatching.cpp \
 	src/ColorPicker.cpp \
-	src/Webcam.cpp \
+        src/SimpleCameraCV.cpp \
+        src/SimpleCameraQt.cpp \
         src/CameraFrameGrabber.cpp \
-#       src/VideoStreamer.cpp \
-#	src/VideoReceiver.cpp \
-#	src/GStreamerInitializer.cpp \
+#        src/VideoStreamer.cpp \
+#	 src/VideoReceiver.cpp \
+#	 src/GStreamerInitializer.cpp \
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -125,10 +125,9 @@ HEADERS += \
 	src/RotateImage.h \
 	src/ScaleImage.h \
         src/ScaleImage2.h \
-        src/ScaleImage3.cpp \
+        src/ScaleImage3.h \
 	src/SetRoiFilter.h \
         src/Sharp.h \
-	src/SimpleCameraInput.h \
 	src/SimpleNodes.h \
 	src/SobelFilter.h \
 	src/TemplateMatching.h \
@@ -146,11 +145,12 @@ HEADERS += \
 	src/WhiteBalance.h \
 	src/MultipleTemplateMatching.h \
 	src/ColorPicker.h \
-	src/Webcam.h \
+        src/SimpleCameraCV.h \
+        src/SimpleCameraQt.h \
         src/CameraFrameGrabber.h \
-#	src/VideoStreamer.h \
-#	src/VideoReceiver.h \
-#	src/GStreamerInitializer.h \
+#	 src/VideoStreamer.h \
+#	 src/VideoReceiver.h \
+#	 src/GStreamerInitializer.h \
 
 RESOURCES += \
 	images/images.qrc

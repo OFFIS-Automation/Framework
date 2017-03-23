@@ -14,38 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WEBCAM_H
-#define WEBCAM_H
-
-#include "CameraFrameGrabber.h"
+#ifndef SIMPLECAMERACV_H
+#define SIMPLECAMERACV_H
 
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/StringPort.h>
+#include <ports/FilePort.h>
+#include <ports/RealPort.h>
 
-#include <QCamera>
-#include <QMutex>
+#include <opencv2/highgui.hpp>
 
-class Webcam : public UserFilter
+class SimpleCameraCV : public UserFilter
 {
-    Q_OBJECT
 public:
-    Webcam();
-    virtual void execute();
+    SimpleCameraCV();
     virtual void initialize();
+    virtual void execute();
     virtual void deinitialize();
-
-public slots:
-    void handleFrame(QImage frame);
-
+	
 protected:
-    in::String mCameraName;
     out::Image mOut;
+    out::Real mFps;
+    cv::VideoCapture mCapture;
 
-    QImage mCurrentImage;
-    QCamera *mCamera;
-    CameraFrameGrabber *mCameraFrameGrabber;
-    QMutex mImageMutex;
 };
 
-#endif // WEBCAM_H
+#endif // SIMPLECAMERACV_H

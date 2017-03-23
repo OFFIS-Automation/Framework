@@ -14,27 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SIMPLECAMERAINPUT_H
-#define SIMPLECAMERAINPUT_H
+#ifndef SIMPLECAMERAQT_H
+#define SIMPLECAMERAQT_H
+
+#include "CameraFrameGrabber.h"
+
 #include <filter/PluginInterface.h>
 #include <ports/ImagePort.h>
-#include <ports/FilePort.h>
-#include <ports/RealPort.h>
+#include <ports/StringPort.h>
 
-#include <opencv2/highgui.hpp>
+#include <QCamera>
+#include <QMutex>
 
-class SimpleCameraInput : public UserFilter
+class SimpleCameraQt : public UserFilter
 {
+    Q_OBJECT
 public:
-    SimpleCameraInput();
-    virtual void execute();
+    SimpleCameraQt();
+    ~SimpleCameraQt();
     virtual void initialize();
-	
-protected:
-    out::Image mOut;
-    out::Real mFps;
-    cv::VideoCapture mCapture;
+    virtual void execute();
+    virtual void deinitialize();
 
+public slots:
+    void handleFrame(QImage frame);
+
+protected:
+    in::String mCameraName;
+    out::Image mOut;
+
+    QImage mCurrentImage;
+    QCamera *mCamera;
+    CameraFrameGrabber *mCameraFrameGrabber;
+    QMutex mImageMutex;
 };
 
-#endif // SIMPLECAMERAINPUT_H
+#endif // SIMPLECAMERAQT_H

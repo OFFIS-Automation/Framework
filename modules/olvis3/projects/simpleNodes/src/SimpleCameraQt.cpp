@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Webcam.h"
+#include "SimpleCameraQt.h"
 
 #include <QCameraInfo>
 #include <QCameraImageCapture>
@@ -23,12 +23,12 @@
 #include <opencv2/imgproc.hpp>
 
 using namespace cv;
-REGISTER_FILTER(Webcam);
+REGISTER_FILTER(SimpleCameraQt);
 
-Webcam::Webcam()
+SimpleCameraQt::SimpleCameraQt() : mCamera(0), mCameraFrameGrabber(0)
 {
-    setName("Simple camera");
-    setDesc(QObject::tr("Outputs data from a camera"));
+    setName("SimpleCameraQt");
+    setDesc(QObject::tr("Outputs data from a camera using QCamera"));
     setGroup("input");
 
     mCameraName.setName("camera");
@@ -46,8 +46,32 @@ Webcam::Webcam()
     addOutputPort(mOut);
 }
 
-void Webcam::execute()
+SimpleCameraQt::~SimpleCameraQt()
 {
+    delete mCamera;
+    delete mCameraFrameGrabber;
+}
+
+void SimpleCameraQt::initialize()
+{
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &cameraInfo, cameras) {
+        if(cameraInfo.description() == mCameraName){
+            mCameraFrameGrabber = new CameraFrameGrabber();
+            connect(mCameraFrameGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(handleFrame(QImage)));
+
+            mCamera = new QCamera(cameraInfo);
+            mCamera->setCaptureMode(QCamera::CaptureVideo);
+            mCamera->setViewfinder(mCameraFrameGrabber);
+            mCamera->start();
+
+            break;
+        }
+    }
+}
+
+void SimpleCameraQt::execute()
+{  
     // Check if user might has changed the cameraName
     if(QCameraInfo(*mCamera).description() != mCameraName){
         mCamera->stop();
@@ -80,31 +104,12 @@ void Webcam::execute()
     mOut.send(mat.clone());
 }
 
-void Webcam::initialize()
-{
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-    foreach (const QCameraInfo &cameraInfo, cameras) {
-        if(cameraInfo.description() == mCameraName){
-            mCamera = new QCamera(cameraInfo);
-            mCamera->setCaptureMode(QCamera::CaptureVideo);
-
-            mCameraFrameGrabber = new CameraFrameGrabber();
-            mCamera->setViewfinder(mCameraFrameGrabber);
-            connect(mCameraFrameGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(handleFrame(QImage)));
-
-            mCamera->start();
-
-            break;
-        }
-    }
-}
-
-void Webcam::deinitialize()
+void SimpleCameraQt::deinitialize()
 {
     mCamera->stop();
 }
 
-void Webcam::handleFrame(QImage frame)
+void SimpleCameraQt::handleFrame(QImage frame)
 {
     QMutexLocker lock(&mImageMutex);
     mCurrentImage = frame.copy();

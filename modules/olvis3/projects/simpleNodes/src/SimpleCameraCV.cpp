@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SimpleCameraInput.h"
+#include "SimpleCameraCV.h"
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <QDebug>
 #include <stdexcept>
 
-REGISTER_FILTER(SimpleCameraInput);
-SimpleCameraInput::SimpleCameraInput()
+REGISTER_FILTER(SimpleCameraCV);
+SimpleCameraCV::SimpleCameraCV()
 {
-    setName("Webcam");
-    setDesc(QObject::tr("Reads a the default webcam with the default setup"));
+    setName("SimpleCameraCV");
+    setDesc(QObject::tr("Outputs data from the default camera using cv::VideoCapture"));
     setGroup("input");
 
     mOut.setName("imageOut");
@@ -33,22 +33,28 @@ SimpleCameraInput::SimpleCameraInput()
     addOutputPort(mOut);
 
     mFps.setName("fps");
-    mFps.setDesc(QObject::tr("Camera fps. Must be connected to a minimum fps core to avoid sending the same image multiple times"));
+    mFps.setDesc(QObject::tr("Camera FPS. Must be connected to a minimum fps core to avoid sending the same image multiple times"));
     addOutputPort(mFps);
 }
 
-void SimpleCameraInput::initialize()
+void SimpleCameraCV::initialize()
 {
     if(!mCapture.open(0))
         throw std::runtime_error("Could not initialize webcam");
     mCapture.set(CV_CAP_PROP_CONVERT_RGB, 1);
 }
 
-void SimpleCameraInput::execute()
+void SimpleCameraCV::execute()
 {
     mCapture.grab();
     cv::Mat image, image2;
     mCapture.retrieve(image);
     mOut.send(image.clone());
     mFps.send(mCapture.get(CV_CAP_PROP_FPS));
+}
+
+void SimpleCameraCV::deinitialize()
+{
+    if(mCapture.isOpened())
+        mCapture.release();
 }

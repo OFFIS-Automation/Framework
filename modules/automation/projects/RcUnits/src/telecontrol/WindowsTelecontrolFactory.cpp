@@ -83,28 +83,32 @@ BOOL CALLBACK WindowsTelecontrolFactory::enumDevices(const DIDEVICEINSTANCE *ins
         QString name = QString::fromWCharArray(inst->tszInstanceName).trimmed();
         QString guid = QUuid(inst->guidProduct).toString().replace('{',"").replace('}',"");
 
+        // Check if controller is not allowed
         foreach (QString disallowedControllerName, disallowedControllerNames) {
             if(name.contains(disallowedControllerName)){
                 return DIENUM_CONTINUE;
             }
         }
 
+        if(sGamepadDevices.contains(name)){
+            // Name duplicate => Append number
+            for(int i=2; i<=99; i++){
+                QString newName = name + " #" + QString::number(i);
+                if(!sGamepadDevices.contains(newName)){
+                    name = newName;
+                    break;
+                }
+            }
+        }
+
+        // Create instance
         WindowsGamepad* gamepad = new WindowsGamepad(name, guid);
         HRESULT hr = sDirectInput->CreateDevice(inst->guidInstance, &gamepad->mDevice, NULL);
         if(FAILED(hr) || !gamepad->initialize()){
             gamepad->deleteLater();
             throw std::runtime_error(qPrintable(tr("Error initializing gamepad: %1").arg(name)));
         } else {
-            for(int i=1; i<=99; i++){
-                if(i >= 2){
-                    name = name + " " + QString::number(i);
-                }
-                if(sGamepadDevices.contains(name)){
-                    continue;
-                }
-                sGamepadDevices[name] = gamepad;
-                break;
-            }
+            sGamepadDevices[name] = gamepad;
         }
     }
     catch(const std::exception& e)

@@ -27,8 +27,9 @@ class DoubleEdit : public AbstractPortEditWidget
 public:
     explicit DoubleEdit(QWidget *parent = 0);
     virtual ~DoubleEdit();
-    virtual void onStartEdit();
+    virtual void setInfo(const PortInfo &info);
     virtual QString asString();
+    virtual void onStartEdit();
     virtual QVariant editValue(bool& ok);
 
 private:

@@ -32,23 +32,37 @@ ChoiceEdit::~ChoiceEdit()
 
 void ChoiceEdit::setInfo(const PortInfo &info)
 {
-    mComboBox->clear();
-    mNames.clear();
-    mValues.clear();
-    AbstractPortEditWidget::setInfo(info);
-    QList<QVariant> values = mInfo.constraints.value("choices").toList();
-    QStringList names = mInfo.constraints.value("choiceNames").toStringList();
-    for(int i=0;i<values.size(); i++){
-        const QVariant& value = values[i];
-        QString name;
-        if(names.size() > i){
-            name = names[i];
-        } else {
-            name = value.toString();
+    QList<QVariant> values = info.constraints.value("choices").toList();
+    QList<QVariant> currentValues = mInfo.constraints.value("choices").toList();
+
+    QStringList names = info.constraints.value("choiceNames").toStringList();
+    QStringList currentNames = mInfo.constraints.value("choiceNames").toStringList();
+
+    if(values != currentValues || names != currentNames){
+        bool oldState = mComboBox->blockSignals(true);
+
+        mComboBox->clear();
+        mNames.clear();
+        mValues.clear();
+
+        AbstractPortEditWidget::setInfo(info);
+
+        QList<QVariant> values = mInfo.constraints.value("choices").toList();
+        QStringList names = mInfo.constraints.value("choiceNames").toStringList();
+        for(int i=0;i<values.size(); i++){
+            const QVariant& value = values[i];
+            QString name;
+            if(names.size() > i){
+                name = names[i];
+            } else {
+                name = value.toString();
+            }
+            mValues.append(value);
+            mNames.append(name);
+            mComboBox->addItem(name, value);
         }
-        mValues.append(value);
-        mNames.append(name);
-        mComboBox->addItem(name, value);
+
+        mComboBox->blockSignals(oldState);
     }
 }
 
@@ -63,7 +77,7 @@ QString ChoiceEdit::asString()
 
 void ChoiceEdit::onStartEdit()
 {
-    // select the correct item
+    // Select the correct item
     bool oldState = mComboBox->blockSignals(true);
     mComboBox->setCurrentIndex(mComboBox->findData(mValue));
     mComboBox->blockSignals(oldState);

@@ -22,7 +22,6 @@ NumberEdit::NumberEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
     mSpinBox = new QSpinBox(this);
     mSpinBox->setObjectName("spinBox");
-
     ui->layout->insertWidget(0, mSpinBox);
 }
 
@@ -30,20 +29,32 @@ NumberEdit::~NumberEdit()
 {
 }
 
-void NumberEdit::onStartEdit()
+void NumberEdit::setInfo(const PortInfo &info)
 {
-    int min = mInfo.constraints.value("min", QVariant(INT_MAX)).toInt();
-    int max = mInfo.constraints.value("max", QVariant(INT_MAX)).toInt();
-    mSpinBox->setRange(min, max);
-    mSpinBox->setValue(mValue.toInt());
+    int min = info.constraints.value("min", QVariant(INT_MAX)).toInt();
+    int max = info.constraints.value("max", QVariant(INT_MAX)).toInt();
+    if(min != mSpinBox->minimum() || max != mSpinBox->maximum()){
+       AbstractPortEditWidget::setInfo(info);
+       mSpinBox->setRange(min, max);
+    }
 
-    int stepping = mInfo.constraints.value("div", QVariant(1)).toInt();
-    mSpinBox->setSingleStep(qMax(1, stepping));
+    int stepping = info.constraints.value("div", QVariant(1)).toInt();
+    if(stepping != mSpinBox->singleStep()){
+        AbstractPortEditWidget::setInfo(info);
+        mSpinBox->setSingleStep(qMax(1, stepping));
+    }
 }
 
 QString NumberEdit::asString()
 {
     return QString::number(mValue.toInt());
+}
+
+void NumberEdit::onStartEdit()
+{
+    bool oldState = mSpinBox->blockSignals(true);
+    mSpinBox->setValue(mValue.toInt());
+    mSpinBox->blockSignals(oldState);
 }
 
 QVariant NumberEdit::editValue(bool&)

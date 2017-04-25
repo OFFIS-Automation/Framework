@@ -85,6 +85,7 @@ InputPortMode Port::mode() const
 {
     return portData->info.mode;
 }
+
 void Port::setConstraint(const QByteArray &key, const QVariant &value)
 {
     if(portData->info.constraints.value(key) != value)
@@ -109,7 +110,6 @@ void Port::addChoiceRaw(const QVariant &value, const QString &name)
    setConstraint("choices", portData->choiceValues);
    setConstraint("choiceNames", portData->choiceNames);
 }
-
 
 // Input port
 bool Port::hasValue()

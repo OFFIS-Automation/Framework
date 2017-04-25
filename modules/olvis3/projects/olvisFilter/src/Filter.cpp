@@ -28,14 +28,12 @@ void Filter::initialize(int id, const QString &name, int processorId)
     mInitialized = true;
 }
 
-
 Filter::Filter()
 {
     mProcessorId = 0;
     mId = 0;
     mInitialized = false;
 }
-
 
 void Filter::connect(const QString &portId, Filter *targetFilter, const QString &targetPortId)
 {

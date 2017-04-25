@@ -28,6 +28,7 @@ class NumberEdit : public AbstractPortEditWidget
 public:
     explicit NumberEdit(QWidget *parent = 0);
     virtual ~NumberEdit();
+    virtual void setInfo(const PortInfo &info);
     virtual void onStartEdit();
     virtual QString asString();
     virtual QVariant editValue(bool& ok);

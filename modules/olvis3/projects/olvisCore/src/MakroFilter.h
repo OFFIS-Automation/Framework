@@ -71,6 +71,7 @@ public:
 
     const QMap<QString, Input*>& listOfInputs() { return mInputs; }
     const QMap<QString, Output*>& listOfOutputs() { return mOutputs; }
+
 private slots:
     void onPortValueChanged(int filterId, const QString& portId, const QVariant &value);
 

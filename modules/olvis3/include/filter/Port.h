@@ -105,35 +105,37 @@ public:
     bool hasChanged();
 
     /**
-     * Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     PortInfo getInfo() const;
+
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     const QString &name() const;
+
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     InputPortMode mode() const;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QString toString(const QVariant &var) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant fromString(const QString &str) const = 0;
 
     /**
-     * Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant constrainedValue(const QVariant &var) const = 0;
 
     /**
-     * Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant toSimpleType(const QVariant &var) const { return var; }
 

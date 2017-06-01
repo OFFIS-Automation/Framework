@@ -27,9 +27,6 @@ ScaleBarOverlay::ScaleBarOverlay(const QString &name)
     : RectOverlay(name),
       mFont("Arial")
 {
-    mPen.setColor(QColor(Qt::lightGray));
-    mPen.setWidth(3);
-
 }
 
 void ScaleBarOverlay::paintContent(QPainter &painter)
@@ -52,15 +49,29 @@ void ScaleBarOverlay::paintContent(QPainter &painter)
         scaleBarLen = scaleValue /scale;
     }
     int barHeight = qMin(20, mRect.height()/2);
+    int elems = 4;
+    for(int i = 0; i < elems; i++){
+        QPointF p1(mRect.left()+(scaleBarLen/elems)*i, mRect.bottom() - barHeight);
+        QPointF p2(mRect.left()+(scaleBarLen/elems)*(i+1), mRect.bottom() - barHeight);
+
+        mPen.setColor(QColor(i % 2 == 0 ? Qt::white : Qt::black));
+        mPen.setWidth(10);
+
+        painter.setPen(mPen);
+        painter.drawLine(p1, p2);
+    }
+
     QPointF p1(mRect.left(), mRect.bottom() - barHeight);
     QPointF p2(mRect.left()+scaleBarLen, mRect.bottom() - barHeight);
-    painter.setPen(mPen);
-    painter.drawLine(p1, p2);
-    painter.drawLine(p1 + QPoint(0, barHeight), p1 - QPoint(0, barHeight));
-    painter.drawLine(p2 + QPoint(0, barHeight), p2 - QPoint(0, barHeight));
     QRectF paintRect(p1 - QPoint(0,qMin(50, mRect.height()/2)), p2);
+
     mFont.setPixelSize(paintRect.height()*7/8);
+    mPen.setColor(QColor(Qt::black));
+    mPen.setWidth(3);
+
+    painter.setPen(mPen);
     painter.setFont(mFont);
+
     QStringList unitNames = QStringList("m") <<  "mm" << "µm" << "nm";
     QString suffix = " "+ unitNames[0];
     for(int i=1; i<unitNames.size();i++)
@@ -70,6 +81,7 @@ void ScaleBarOverlay::paintContent(QPainter &painter)
         scaleValue *= 1000;
         suffix = " "+unitNames[i];
     }
+
     painter.drawText(paintRect, Qt::AlignCenter, QString::number(scaleValue) + suffix);
 }
 

@@ -442,6 +442,9 @@ void RcUnitsBase::updateGamepadParameters(const QString &unitName, const QString
         invertList << QString(invert ? "1" : "0");
     }
     settings.setValue("inverts", invertList);
+
+    QString currentTelecontrolDeviceName = getTelecontrolConfig(unitName).tcDeviceName;
+    emit gamepadSensitivityUpdated(currentTelecontrolDeviceName, unitName);
 }
 
 void RcUnitsBase::remoteGamepadDataUpdated(const QMap<int, double> &data, const QString &gamepadName)

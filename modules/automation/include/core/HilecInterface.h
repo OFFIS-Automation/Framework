@@ -126,6 +126,7 @@ signals:
     void telecontrolAssignmentUpdated(const QString& deviceName, const QString& unitName);
 
     void gamepadUpdated(const QString& deviceName, const QString& unitName, bool gamepadActive);
+    void gamepadSensitivityUpdated(const QString& deviceName, const QString& unitName);
     void gamepadSensitivityChangeRequested(const QString& deviceName, const QString& unitName, bool increase);
     void gamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down);
     void gamepadButtonToggled(const QString& deviceName, int buttonId, bool pressed);

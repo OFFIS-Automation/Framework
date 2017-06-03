@@ -43,6 +43,12 @@ void NumberEdit::setInfo(const PortInfo &info)
         AbstractPortEditWidget::setInfo(info);
         mSpinBox->setSingleStep(qMax(1, stepping));
     }
+
+    // Set tooltip
+    mSpinBox->setToolTip(tr("Minimum: %1; Maximum: %2").arg(min).arg(max));
+    if(stepping != mSpinBox->singleStep()){
+        mSpinBox->setToolTip(tr("%1; Step: %2").arg(mSpinBox->toolTip()).arg(stepping));
+    }
 }
 
 QString NumberEdit::asString()

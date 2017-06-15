@@ -50,7 +50,7 @@ PathCreator::PathCreator()
     mFileId.setVisibility(AdvancedPortVisibility);
     addOutputPort(mFileId);
 
-    mOut.setName("file");
+    mOut.setName("filePath");
     mOut.setDesc(QObject::tr("The constructed file name"));
     addOutputPort(mOut);
 }

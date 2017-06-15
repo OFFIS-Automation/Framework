@@ -39,3 +39,10 @@ win32-msvc*:contains(QMAKE_TARGET.arch, x86_64):{
 } else {
     message("Building for 32 bit Windows")
 }
+
+# The following makes sure .pdb files are generated in release mode in order to analyze crash reports:
+win32-msvc* {
+    QMAKE_LFLAGS_RELEASE += /MAP
+    QMAKE_CFLAGS_RELEASE += /Zi
+    QMAKE_LFLAGS_RELEASE += /debug /opt:ref
+}

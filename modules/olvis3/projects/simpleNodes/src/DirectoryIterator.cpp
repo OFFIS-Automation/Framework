@@ -24,10 +24,12 @@ DirectoryIterator::DirectoryIterator()
     setName("DirectoryIterator");
     setDesc(QObject::tr("Iterates through a directory and outputs all files that fit the filter"));
     setGroup("input");
-    mNameOut.setName("file name");
+
+    mNameOut.setName("fileName");
     mNameOut.setDesc(QObject::tr("The file name only, without the path"));
     addOutputPort(mNameOut);
-    mOut.setName("file");
+
+    mOut.setName("filePath");
     mOut.setDesc(QObject::tr("The full file path"));
 
     addOutputPort(mOut);

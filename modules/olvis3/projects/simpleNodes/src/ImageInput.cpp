@@ -30,7 +30,7 @@ ImageInput::ImageInput()
     mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
-    mIn.setName("fileName");
+    mIn.setName("filePath");
     mIn.setDesc(QObject::tr("File to read"));
     mIn.setFilter("*.jpg *.png *.bmp");
 

@@ -28,7 +28,7 @@ VideoInput::VideoInput()
     setGroup("input");
 
     // Inputs
-    mIn.setName("fileName");
+    mIn.setName("filePath");
     mIn.setDesc(QObject::tr("File to read video data stream from"));
     mIn.setFilter("*.avi *.wmv *.m4v *.mp4 *.mov");
     addInputPort(mIn);

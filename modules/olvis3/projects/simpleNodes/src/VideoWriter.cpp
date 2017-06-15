@@ -29,7 +29,7 @@ VideoWriter::VideoWriter()
     mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
-    mFileName.setName("file");
+    mFileName.setName("filePath");
     addInputPort(mFileName);
 
     mFpsIn.setName("fps");

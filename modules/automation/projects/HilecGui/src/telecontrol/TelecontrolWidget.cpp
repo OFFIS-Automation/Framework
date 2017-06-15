@@ -167,9 +167,10 @@ void TelecontrolWidget::onTelecontrolAssignmentUpdate(const QString& deviceName,
 
 void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down)
 {
-    Q_UNUSED(deviceName);
+    Q_UNUSED(deviceName)
+    Q_UNUSED(unitName)
 
-    int currentIndex = mUnitIndexes.key(unitName, 0);
+    int currentIndex = ui->tabWidget->currentIndex();
     int newIndex = down ? currentIndex+1 : currentIndex-1;
 
     // Bound to range

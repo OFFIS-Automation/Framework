@@ -28,7 +28,7 @@ ImageOutput::ImageOutput()
     mImage.setDesc(QObject::tr("Image input"));
     addInputPort(mImage);
 
-    mFile.setName("file");
+    mFile.setName("filePath");
     mFile.setDesc(QObject::tr("File to write"));
     mFile.setFilter("*.jpg *.png *.bmp");
     addInputPort(mFile);

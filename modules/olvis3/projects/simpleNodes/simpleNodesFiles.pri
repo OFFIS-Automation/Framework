@@ -87,6 +87,7 @@ SOURCES += \
 #        src/VideoStreamer.cpp \
 #	 src/VideoReceiver.cpp \
 #	 src/GStreamerInitializer.cpp \
+	src/OriginSink.cpp \
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -151,6 +152,7 @@ HEADERS += \
 #	 src/VideoStreamer.h \
 #	 src/VideoReceiver.h \
 #	 src/GStreamerInitializer.h \
+	src/OriginSink.h \
 
 RESOURCES += \
 	images/images.qrc

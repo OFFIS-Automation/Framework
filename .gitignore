@@ -22,3 +22,6 @@ subtree/qt-remote-signals/bin/*
 
 /bin/*
 Framework.pro.user
+
+# Origin TLB Output
+modules/properties/Origin.*

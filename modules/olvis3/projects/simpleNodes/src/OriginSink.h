@@ -23,7 +23,7 @@
 #include <ports/StringPort.h>
 #include <ports/IntegerPort.h>
 
-#include <Origin.h>
+#import "Origin8.tlb" rename_namespace("Origin") no_dual_interfaces
 
 class COleSafeArray;
 

@@ -16,5 +16,5 @@
 
 
 win32-msvc*{
-	TYPELIBS = $$system(dumpcpp -n Origin -o Origin \"$$(OFFIS_DEVELOPMENT_ENVIRONMENT)\/origin\/Origin8.tlb\")
+	INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/origin/
 }

@@ -21,7 +21,7 @@
 
 // According to: http://www.originlab.com/doc/COM/Images-and-Plots-Live-Update#VC.2B.2B
 
-std::map<int, Origin::COLDATAFORMAT> OriginSink::opencvToOrigin = {
+const std::map<int, Origin::COLDATAFORMAT> OriginSink::opencvToOrigin = {
 	{CV_8U, Origin::DF_BYTE},
 	{CV_8S, Origin::DF_CHAR},
 	{CV_16U, Origin::DF_USHORT},
@@ -30,7 +30,7 @@ std::map<int, Origin::COLDATAFORMAT> OriginSink::opencvToOrigin = {
 	{CV_32F, Origin::DF_FLOAT},
 	{CV_64F, Origin::DF_DOUBLE}};
 
-std::map<int, VARENUM> OriginSink::opencvToVariantType = {
+const std::map<int, VARENUM> OriginSink::opencvToVariantType = {
 	{CV_8U, VT_UI1},
 	{CV_8S, VT_I1},
 	{CV_16U, VT_UI2},
@@ -90,7 +90,7 @@ void OriginSink::execute()
 			m_originMatrixObject = m_originSheet->GetMatrixObjects()->Add();
 
 		m_originMatrixObject->Activate();
-		m_originMatrixObject->DataFormat = opencvToOrigin[frame.depth()];
+		m_originMatrixObject->DataFormat = opencvToOrigin.at(frame.depth());
 
 		m_initialized = true;
 	}
@@ -101,7 +101,7 @@ void OriginSink::execute()
 	COleSafeArray safeArray;
 	DWORD bounds[] = {frame.rows, frame.cols};
 
-	safeArray.Create(opencvToVariantType[frame.depth()], 2, bounds);
+	safeArray.Create(opencvToVariantType.at(frame.depth()), 2, bounds);
 
 	for (auto row = 0; row < frame.rows; ++row)
 		for (auto col = 0; col < frame.cols; ++col)

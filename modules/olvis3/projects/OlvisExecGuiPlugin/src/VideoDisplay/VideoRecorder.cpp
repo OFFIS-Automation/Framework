@@ -50,7 +50,7 @@ void VideoRecorder::init(QRect rect)
     mRect = rect;
 }
 
-void VideoRecorder::saveScreenshot(QRect rect, QString &fileName)
+void VideoRecorder::saveScreenshot(QRect rect, QString fileName)
 {
     init(rect);
     QImage img = getImage();

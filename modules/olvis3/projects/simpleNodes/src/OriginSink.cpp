@@ -92,7 +92,7 @@ void OriginSink::execute()
 		m_originMatrixObject->Activate();
 		m_originMatrixObject->DataFormat = opencvToOrigin.at(frame.depth());
 
-		m_initialized = true;
+        m_initialized = false;
 	}
 
 	if(!m_originMatrixObject)

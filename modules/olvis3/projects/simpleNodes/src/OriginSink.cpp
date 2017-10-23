@@ -19,6 +19,8 @@
 
 #include "OriginSink.h"
 
+#include <iostream>
+
 // According to: http://www.originlab.com/doc/COM/Images-and-Plots-Live-Update#VC.2B.2B
 
 const std::map<int, Origin::COLDATAFORMAT> OriginSink::opencvToOrigin = {
@@ -59,18 +61,14 @@ void OriginSink::start()
 	m_originApplication.CreateInstance(__uuidof(Origin::ApplicationSI));
 	m_originApplication->PutVisible(Origin::MAINWND_SHOW_BRING_TO_FRONT);
 
-	m_originApplication->CreatePage(_variant_t(static_cast<long>(Origin::OPT_MATRIX)), vtMissing,
-		vtMissing, _variant_t(2));
+	auto pageName = m_originApplication->CreatePage(
+		_variant_t(static_cast<long>(Origin::OPT_MATRIX)), vtMissing, vtMissing, _variant_t(2));
 
-	auto matrixPage = m_originApplication->GetActivePage();
-	m_originSheet = matrixPage->GetLayers()->GetItem(_variant_t(0));
-	m_originSheet->Activate();
+	m_originSheet = m_originApplication->FindMatrixSheet(pageName);
 }
 
 void OriginSink::stop()
-{
-	m_initialized = false;
-}
+{}
 
 void OriginSink::execute()
 {
@@ -79,24 +77,18 @@ void OriginSink::execute()
 	if (frame.channels() != 1)
 		throw std::runtime_error("Only singel channel data is allowed");
 
-	if (!m_initialized && m_originSheet)
-	{
-		m_originSheet->PutCols(frame.cols);
-		m_originSheet->PutRows(frame.rows);
-
-		m_originMatrixObject = m_originSheet->GetMatrixObjects()->GetItem(_variant_t(0));
-
-		if (!m_originMatrixObject)
-			m_originMatrixObject = m_originSheet->GetMatrixObjects()->Add();
-
-		m_originMatrixObject->Activate();
-		m_originMatrixObject->DataFormat = opencvToOrigin.at(frame.depth());
-
-        m_initialized = false;
-	}
-
-	if(!m_originMatrixObject)
+	if (!m_originSheet)
 		return;
+
+	m_originSheet->PutCols(frame.cols);
+	m_originSheet->PutRows(frame.rows);
+
+	auto originMatrixObject = m_originSheet->GetMatrixObjects()->GetItem(_variant_t(0));
+
+	if (!originMatrixObject)
+		originMatrixObject = m_originSheet->GetMatrixObjects()->Add();
+
+	originMatrixObject->DataFormat = opencvToOrigin.at(frame.depth());
 
 	COleSafeArray safeArray;
 	DWORD bounds[] = {frame.rows, frame.cols};
@@ -124,7 +116,7 @@ void OriginSink::execute()
 				addToSafeArray<double>(safeArray, frame, index);
 		}
 
-	m_originMatrixObject->SetData(safeArray, _variant_t(0), _variant_t(0));
+	originMatrixObject->SetData(safeArray, _variant_t(0), _variant_t(0));
 }
 
 template <class Type>

@@ -50,13 +50,9 @@ class OriginSink : public UserFilter
 		// Ports
         in::Image m_frameIn;
 
-		// Member
-		bool m_initialized = false;
-
 		// Origin
 		Origin::IOApplicationPtr m_originApplication;
 		Origin::MatrixSheetPtr m_originSheet;
-		Origin::MatrixObjectPtr m_originMatrixObject;
 };
 
 #endif // VIDEOSTREAMER_H

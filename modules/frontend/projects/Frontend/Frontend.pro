@@ -37,18 +37,26 @@ isEmpty(BUILD_NUMBER_EXISTS){
 }
 
 DESTDIR = $${targetDir}
-
-INCLUDEPATH += $${PWD}
 INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/include
+INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../Notifications/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 
 LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
-CONFIG(debug, debug|release) {
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/debug -lWinSparkle
+
+win32-msvc*:contains(QT_ARCH, i386):{
+    CONFIG(debug, debug|release) {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/lib/debug -lWinSparkle
+    } else {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/lib/release -lWinSparkle
+    }
 } else {
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/release -lWinSparkle
+    CONFIG(debug, debug|release) {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/lib/debug -lWinSparkle
+    } else {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/lib/release -lWinSparkle
+    }
 }
 
 SOURCES += src/main.cpp\
@@ -123,19 +131,23 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svgd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
 
-    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/debug/WinSparkle.dll
+win32-msvc*:contains(QT_ARCH, i386):{
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/bin/debug/WinSparkle.dll
+} else {
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/bin/debug/WinSparkle.dll
+}
 
-    dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
+    dllPlatforms.files += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
 
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
 
     dllIconengines.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicond.dll
 } else {
@@ -156,7 +168,12 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svg.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
 
-    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/release/WinSparkle.dll
+
+win32-msvc*:contains(QT_ARCH, i386):{
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/bin/release/WinSparkle.dll
+} else {
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/bin/release/WinSparkle.dll
+}
 
     dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
 

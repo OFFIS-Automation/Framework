@@ -16,9 +16,18 @@
 
 baseDir = $$quote($${PWD}/../../)
 CONFIG(debug, debug|release) {
-    targetDir = $${baseDir}/bin/debug
+    win32-msvc*:contains(QT_ARCH, i386):{
+        targetDir = $${baseDir}/bin/x86/debug
+    } else {
+        targetDir = $${baseDir}/bin/x64/debug
+    }
 } else {
-    targetDir = $${baseDir}/bin
+    win32-msvc*:contains(QT_ARCH, i386):{
+        targetDir = $${baseDir}/bin/x86
+    } else {
+        targetDir = $${baseDir}/bin/x64
+    }
+
     DEFINES += QT_NO_DEBUG_OUTPUT=""
 }
 

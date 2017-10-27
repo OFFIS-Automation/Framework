@@ -35,23 +35,40 @@ LIBS += -L$${targetDir}/plugins -lRcUnits
 #}
 
 # Python
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Include
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/PC # Legacy, should be removed soon
-LIBS        += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/libs
+win32-msvc*:contains(QT_ARCH, i386):{
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/Include
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/PC # Legacy, should be removed soon
+    LIBS        += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/libs
+} else {
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/Include
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/PC # Legacy, should be removed soon
+    LIBS        += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/libs
+}
 
 #DEFINES += NO_BUNDLED_PYTHON
 
 !contains(DEFINES, NO_BUNDLED_PYTHON) {
-	pylibs.path      = $${DESTDIR}/hilec/python
-	pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/Lib/*
-	pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/DLLs/*.pyd
-	INSTALLS        += pylibs
+    pylibs.path      = $${DESTDIR}/hilec/python
+    win32-msvc*:contains(QT_ARCH, i386):{
+       pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/Lib/*
+       pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/DLLs/*.pyd
+    } else {
+       pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/Lib/*
+       pylibs.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/DLLs/*.pyd
+    }
+    INSTALLS        += pylibs
 
-	pyDlls.path   = $${DESTDIR}
-	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.dll
-	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.exe
-	pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/python*.pdb
-	INSTALLS     += pyDlls
+    pyDlls.path   = $${DESTDIR}
+    win32-msvc*:contains(QT_ARCH, i386):{
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/python*.dll
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/python*.exe
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x86/python*.pdb
+    } else {
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/python*.dll
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/python*.exe
+        pyDlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/python3/x64/python*.pdb
+    }
+    INSTALLS     += pyDlls
 }
 
 amirlibs.path    = $${DESTDIR}/hilec/python

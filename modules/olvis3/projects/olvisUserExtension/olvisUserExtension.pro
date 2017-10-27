@@ -21,7 +21,7 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 INCLUDEPATH += ../../include
-INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv/include
+INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/include
 
 include(../../../properties/pathes.pro)
 DESTDIR = $${targetDir}/plugins

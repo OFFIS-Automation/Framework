@@ -27,6 +27,8 @@ SUBDIRS += modules/sensorSystem \
     modules/TutorialPlugins
 
 # Print enviroment variables
+message(OAF development files: $$[OFFIS_DEVELOPMENT_ENVIRONMENT])
+
 message(Qt version: $$[QT_VERSION])
 message(Qt is installed in $$[QT_INSTALL_PREFIX])
 message(Qt resources can be found in the following locations:)
@@ -34,13 +36,13 @@ message(Header files: $$[QT_INSTALL_HEADERS])
 message(Library files: $$[QT_INSTALL_LIBS])
 message(Binary files (executables): $$[QT_INSTALL_BINS])
 
-win32-msvc*:contains(QMAKE_TARGET.arch, x86_64):{
-    message("Building for 64 bit Windows")
-} else {
+win32-msvc*:contains(QT_ARCH, i386):{
     message("Building for 32 bit Windows")
+} else {
+    message("Building for 64 bit Windows")
 }
 
-# The following makes sure .pdb files are generated in release mode in order to analyze crash reports:
+# The following makes sure .pdb files are generated in release mode in order to analyze crash reports
 win32-msvc* {
     QMAKE_LFLAGS_RELEASE += /MAP
     QMAKE_CFLAGS_RELEASE += /Zi

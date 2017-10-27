@@ -86,7 +86,7 @@ void Threshold::execute()
     ((Image *)&srcConverted)->convertToGray(CV_8U);
 
     cv::Mat dest;
-    if(mAdaptiveMode > 0){
+    if(mAdaptiveMode >= 0){
         if(mMode == cv::THRESH_BINARY || mMode == cv::THRESH_BINARY_INV){
             cv::adaptiveThreshold(srcConverted, dest, 255, mAdaptiveMode, mMode, mAdaptiveBlockSize, mAdaptiveC);
         } else {

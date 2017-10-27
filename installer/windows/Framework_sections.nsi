@@ -1,9 +1,12 @@
 Section ""
 	SetOutPath "$INSTDIR"
 	File "license.txt"
-	File "$%OFFIS_DEVELOPMENT_ENVIRONMENT%\tools\installer\vcredist_x86.exe"
-	ExecWait "vcredist_x86.exe /q"
-	Delete "vcredist_x86.exe"
+	File "$%OFFIS_DEVELOPMENT_ENVIRONMENT%\tools\installer\vcredist_x64_vs2017.exe"
+	ExecWait "vcredist_x64_vs2017.exe /q"
+	Delete "vcredist_x64_vs2017.exe"
+	File "$%OFFIS_DEVELOPMENT_ENVIRONMENT%\tools\installer\vcredist_x86_vs2017.exe"
+	ExecWait "vcredist_x86_vs2017.exe /q"
+	Delete "vcredist_x86_vs2017.exe"
 SectionEnd
 
 Section "!OFFIS Automation Framework" SecToolbox

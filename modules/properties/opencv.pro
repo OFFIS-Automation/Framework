@@ -18,13 +18,14 @@
 win32-msvc*{
     CVINCLUDEDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/include
 
-contains(QT_ARCH, i386):{
-    CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/lib
-    CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/bin
-} else {
-    CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/lib
-    CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/bin
-}
+    contains(QT_ARCH, i386):{
+        CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/lib
+        CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/bin
+    } else {
+        CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/lib
+        CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/bin
+    }
+
     INCLUDEPATH += $$CVINCLUDEDIR
     DEFINES += _CRT_SECURE_NO_WARNINGS # supress win32 stdlib warnings
     include($$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/opencv_version.pro)

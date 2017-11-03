@@ -16,7 +16,7 @@
 
 include(../../../properties/pathes.pro)
 include(../../../properties/opencv.pro)
-#include(../../../properties/gstreamer.pro)
+include(../../../properties/gstreamer.pro)
 include(../../../properties/origin.pro)
 
 INCLUDEPATH += ../../../sensorSystem/include

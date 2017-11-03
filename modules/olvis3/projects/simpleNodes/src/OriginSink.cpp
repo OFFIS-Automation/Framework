@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define _AFXDLL
+
 #include <afxdisp.h>
 
 #include "OriginSink.h"

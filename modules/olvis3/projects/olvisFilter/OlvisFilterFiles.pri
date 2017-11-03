@@ -51,7 +51,6 @@ SOURCES += \
     src/PortData.cpp \
     src/SrcFilter.cpp
 
-
 HEADERS += \
     src/UserFilterPrivate.h \
     src/OutputPortPrivate.h \

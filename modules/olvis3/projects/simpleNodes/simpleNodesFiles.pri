@@ -84,10 +84,10 @@ SOURCES += \
         src/SimpleCameraCV.cpp \
         src/SimpleCameraQt.cpp \
         src/CameraFrameGrabber.cpp \
-#        src/VideoStreamer.cpp \
-#	 src/VideoReceiver.cpp \
-#	 src/GStreamerInitializer.cpp \
-#        src/OriginSink.cpp \
+        src/VideoStreamer.cpp \
+        src/VideoReceiver.cpp \
+        src/GStreamerInitializer.cpp \
+        src/OriginSink.cpp \
 
 HEADERS += \
 	src/BilateralFilter.h \
@@ -149,10 +149,10 @@ HEADERS += \
         src/SimpleCameraCV.h \
         src/SimpleCameraQt.h \
         src/CameraFrameGrabber.h \
-#	 src/VideoStreamer.h \
-#	 src/VideoReceiver.h \
-#	 src/GStreamerInitializer.h \
-#        src/OriginSink.h \
+        src/VideoStreamer.h \
+        src/VideoReceiver.h \
+        src/GStreamerInitializer.h \
+        src/OriginSink.h \
 
 RESOURCES += \
 	images/images.qrc

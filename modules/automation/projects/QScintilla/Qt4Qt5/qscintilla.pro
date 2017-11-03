@@ -23,8 +23,22 @@
 !win32:VERSION = 13.0.0
 
 TEMPLATE = lib
-TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}
 CONFIG += qt warn_off thread exceptions hide_symbols
+
+CONFIG(debug, debug|release) {
+    mac: {
+        TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}_debug
+    } else {
+        win32: {
+            TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}d
+        } else {
+            TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}
+        }
+    }
+} else {
+    TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}
+}
+
 INCLUDEPATH += . ../include ../lexlib ../src
 
 !CONFIG(staticlib) {
@@ -41,6 +55,11 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
     # Work around QTBUG-39300.
     CONFIG -= android_install
+}
+
+# For old versions of GCC.
+unix:!macx {
+    CONFIG += c++11
 }
 
 # Comment this in if you want the internal Scintilla classes to be placed in a

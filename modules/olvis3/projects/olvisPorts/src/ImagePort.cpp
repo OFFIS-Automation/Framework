@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,9 +18,7 @@
 #include <opencv2/imgproc.hpp>
 
 Q_DECLARE_METATYPE(cv::Mat)
-Q_DECLARE_METATYPE(GrayImage)
-Q_DECLARE_METATYPE(RgbImage)
-Q_DECLARE_METATYPE(RgbaImage)
+Q_DECLARE_METATYPE(Image)
 
 QVariant port::Image::variant(const cv::Mat &val)
 {
@@ -46,7 +44,6 @@ QVariant port::Image::fromString(const QString &) const
     return QVariant();
 }
 
-
 QVariant port::Image::constrainedValue(const QVariant &var) const
 {
     return var;
@@ -58,114 +55,27 @@ QVariant port::Image::toSimpleType(const QVariant &var) const
     return QSizeF(mat.cols, mat.rows);
 }
 
-
-
 in::Image::Image() : port::Image(qMetaTypeId<cv::Mat>(), "Image")
 {
     setIcon(QImage(":/defaultPorts/images/image.png"));
-    addCompatiblePort(qMetaTypeId< ::GrayImage>());
-    addCompatiblePort(qMetaTypeId< ::RgbaImage>());
-    addCompatiblePort(qMetaTypeId< ::RgbImage>());
+    addCompatiblePort(qMetaTypeId< ::Image>(), QObject::tr("Image is converted if neccessary"));
     setName("imageIn");
 }
 
-const cv::Mat in::Image::getValue()
-{
-    return fromVariant(getRawValue());
-}
-
-in::GrayImage::GrayImage() : port::Image(qMetaTypeId< ::GrayImage>(), "GrayImage")
-{
-    setIcon(QImage(":/defaultPorts/images/grayimage.png"));
-    addCompatiblePort(qMetaTypeId<cv::Mat>(), QObject::tr("Image is converted to grayscale if neccessary"));
-    addCompatiblePort(qMetaTypeId< ::RgbImage>(), QObject::tr("Image is converted to grayscale"));
-    addCompatiblePort(qMetaTypeId< ::RgbaImage>(), QObject::tr("Image is converted to grayscale"));
-    setName("imageIn");
-}
-
-const GrayImage in::GrayImage::getValue()
+const Image in::Image::getValue()
 {
     cv::Mat src = fromVariant(getRawValue());
-    return ::GrayImage(src);
+    return ::Image(src);
 }
 
-
-in::RgbImage::RgbImage() : port::Image(qMetaTypeId< ::RgbImage>(), "RGBImage")
-{
-    setIcon(QImage(":/defaultPorts/images/rgbimage.png"));
-    addCompatiblePort(qMetaTypeId<cv::Mat>(), QObject::tr("Image is converted to RGB if neccessary"));
-    addCompatiblePort(qMetaTypeId< ::GrayImage>(), QObject::tr("Image is converted to RGB"));
-    addCompatiblePort(qMetaTypeId< ::RgbaImage>(), QObject::tr("Image is converted to RGB"));
-    setName("imageIn");
-}
-
-const RgbImage in::RgbImage::getValue()
-{
-    cv::Mat src = fromVariant(getRawValue());
-    return ::RgbImage(src);
-}
-
-
-in::RgbaImage::RgbaImage() : port::Image(qMetaTypeId< ::RgbaImage>(), "RGBAImage")
-{
-    setIcon(QImage(":/defaultPorts/images/rgbimage.png"));
-    addCompatiblePort(qMetaTypeId<cv::Mat>(), QObject::tr("Image is converted to RGBA if neccessary"));
-    addCompatiblePort(qMetaTypeId< ::GrayImage>(), QObject::tr("Image is converted to RGBA"));
-    addCompatiblePort(qMetaTypeId< ::RgbImage>(), QObject::tr("Image is converted to RGBA"));
-    setName("imageIn");
-}
-
-const RgbaImage in::RgbaImage::getValue()
-{
-    cv::Mat src = fromVariant(getRawValue());
-    return ::RgbaImage(src);
-}
-
-
-out::Image::Image() : port::Image(qMetaTypeId<cv::Mat>(), "Image")
+out::Image::Image() : port::Image(qMetaTypeId< ::Image>(), "Image")
 {
     setIcon(QImage(":/defaultPorts/images/image.png"));
     setName("imageOut");
 }
 
-void out::Image::send(const cv::Mat &image_)
-{
-    cv::Mat image = image_;
-    if(image.depth() != CV_8U)
-        image_.convertTo(image, CV_8U);
-    sendRaw(variant(image));
-}
-
-out::GrayImage::GrayImage() : port::Image(qMetaTypeId< ::GrayImage>(), "GrayImage")
-{
-    setIcon(QImage(":/defaultPorts/images/grayimage.png"));
-    setName("imageOut");
-}
-
-void out::GrayImage::send(const ::GrayImage &image)
+void out::Image::send(const ::Image &image)
 {
     sendRaw(variant(image));
 }
 
-out::RgbImage::RgbImage() : port::Image(qMetaTypeId< ::RgbImage>(), "RGBImage")
-{
-    setIcon(QImage(":/defaultPorts/images/rgbimage.png"));
-    setName("imageOut");
-}
-
-void out::RgbImage::send(const ::RgbImage &image)
-{
-    sendRaw(variant(image));
-}
-
-
-out::RgbaImage::RgbaImage() : port::Image(qMetaTypeId< ::RgbaImage>(), "RGBAImage")
-{
-    setIcon(QImage(":/defaultPorts/images/rgbimage.png"));
-    setName("imageOut");
-}
-
-void out::RgbaImage::send(const ::RgbaImage &image)
-{
-    sendRaw(variant(image));
-}

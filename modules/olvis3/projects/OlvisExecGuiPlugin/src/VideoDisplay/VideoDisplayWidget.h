@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -64,8 +64,8 @@ public:
 
     virtual void setOffset(int dx, int dy);
     virtual QSize imageSize();
-    virtual QWidget* overlayParentWidget() { return this; }
     virtual double imageRate();
+    virtual QWidget* overlayParentWidget() { return this; }
     virtual void paintContent(QPainter& painter, bool showControls);
 
     static QPoint closestPoint(const QRect& bounds, QPoint point);
@@ -153,6 +153,8 @@ private:
     QFont mFont;
 
     Timer mTimer;
+    Timer mUpdateTimer;
+    double mRate;
 
     VideoControlToolbar* mToolbar;
     QPoint mMouseDownAt;

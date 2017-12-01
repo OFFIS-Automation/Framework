@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,8 +22,9 @@
 #include <QPainter>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include <core/PortId.h>
 #include <QWidget>
+
+#include <core/PortId.h>
 
 class OverlayParent
 {
@@ -40,24 +41,32 @@ class OverlayInterface : public QObject
 public:
     virtual QString name() = 0;
     virtual void setParent(OverlayParent* parent) = 0;
-    virtual PortId portId() = 0;
-    virtual void setPortId(const PortId& id, bool output) = 0;
-    virtual void setInitialPos(const QPoint& p) { Q_UNUSED(p); }
-    virtual QRect boundingRect() = 0;
-    virtual void setValue(const QVariant& var) = 0;
-    virtual bool contains(const QPoint& p) = 0;
-    virtual QList<QPoint> snapPoints() { return QList<QPoint>(); }
-    virtual bool isOutput() { return true; }
+
     virtual void writeCurrentConfig(QXmlStreamWriter& writer){Q_UNUSED(writer);}
     virtual void readConfig(QXmlStreamReader& reader){Q_UNUSED(reader);}
-    virtual void setActive(bool active) { Q_UNUSED(active); }
+
+    virtual PortId portId() = 0;
+    virtual void setPortId(const PortId& id, bool output) = 0;
+    virtual bool isOutput() { return true; }
+
+    virtual void setValue(const QVariant& var) = 0;
+    virtual void setInitialPos(const QPoint& p) { Q_UNUSED(p); }
+
     virtual void paint(QPainter& painter, bool showControls) = 0;
+    virtual QRect boundingRect() = 0;
+
+    virtual void setActive(bool active) { Q_UNUSED(active); }
     virtual void mousePressEvent(QMouseEvent* event) {Q_UNUSED(event);}
     virtual void mouseReleaseEvent(QMouseEvent*  event) {Q_UNUSED(event);}
     virtual void mouseMoveEvent(QMouseEvent*  event, QList<QPoint> snapPoints) {Q_UNUSED(event); Q_UNUSED(snapPoints);}
+
+    virtual bool contains(const QPoint& p) = 0;
+    virtual QList<QPoint> snapPoints() { return QList<QPoint>(); }
+
 protected slots:
     void removeMe() { emit removeOverlay(this); }
     void updated() { emit updated(this); }
+
 signals:
     void removeOverlay(OverlayInterface* overlay);
     void updated(OverlayInterface* overlay);

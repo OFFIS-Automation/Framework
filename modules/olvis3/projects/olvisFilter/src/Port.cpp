@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,147 +17,162 @@
 #include <filter/Port.h>
 #include "PortData.h"
 
-Port::Port(int id, const QString &name, bool isMainType) : d(new PortData())
+Port::Port(int id, const QString &name, bool isMainType) : portData(new PortData())
 {
-    d->in = 0;
-    d->out = 0;
-    d->info.type = id;
-    d->info.isArray = false;
-    d->info.typeName = name;
-    d->info.isMainType = isMainType;
-    d->info.mode = RegularPortMode;
-    d->info.visibility = UserPortVisiblility;
-    d->info.name = name;
+    portData->in = 0;
+    portData->out = 0;
+    portData->info.type = id;
+    portData->info.isArray = false;
+    portData->info.typeName = name;
+    portData->info.isMainType = isMainType;
+    portData->info.mode = RegularPortMode;
+    portData->info.visibility = UserPortVisiblility;
+    portData->info.name = name;
 }
 
 void Port::setName(const QString &name)
 {
-    d->info.name = name;
+    portData->info.name = name;
 }
 
 void Port::setDesc(const QString &desc)
 {
-    d->info.desc = desc;
+    portData->info.desc = desc;
 }
 
 void Port::setIcon(const QImage &icon)
 {
-    d->info.icon = icon;
+    portData->info.icon = icon;
 }
 
 void Port::setMode(InputPortMode mode)
 {
-    d->info.mode = mode;
+    portData->info.mode = mode;
 }
 
 void Port::setVisibility(PortVisibility visibility)
 {
-    d->info.visibility = visibility;
+    portData->info.visibility = visibility;
+}
+
+bool Port::isConnetected()
+{
+    if(portData->in)
+        return portData->in->isConnected();
+    if(portData->out)
+        return portData->out->hasTargets();
+    return false;
+}
+
+bool Port::isOverlayed()
+{
+    if(portData->out)
+        return portData->out->isOverlayed();
+    return false;
 }
 
 PortInfo Port::getInfo() const
 {
-    return d->info;
+    return portData->info;
 }
 
 const QString& Port::name() const
 {
-    return d->info.name;
+    return portData->info.name;
 }
 
 InputPortMode Port::mode() const
 {
-    return d->info.mode;
+    return portData->info.mode;
 }
+
 void Port::setConstraint(const QByteArray &key, const QVariant &value)
 {
-    if(d->info.constraints.value(key) != value)
+    if(portData->info.constraints.value(key) != value)
     {
-        d->info.constraints[key] = value;
-        if(d->in)
-            d->in->newConstraint();
+        portData->info.constraints[key] = value;
+        if(portData->in)
+            portData->in->newConstraint();
     }
 }
 
 void Port::recheck()
 {
-    if(!d->in)
+    if(!portData->in)
         return;
-    d->in->recheck();
+    portData->in->recheck();
 }
 
 void Port::addChoiceRaw(const QVariant &value, const QString &name)
 {
-   d->choiceValues.append(value);
-   d->choiceNames.append(name);
-   setConstraint("choices", d->choiceValues);
-   setConstraint("choiceNames", d->choiceNames);
+   portData->choiceValues.append(value);
+   portData->choiceNames.append(name);
+   setConstraint("choices", portData->choiceValues);
+   setConstraint("choiceNames", portData->choiceNames);
 }
-
 
 // Input port
 bool Port::hasValue()
 {
-    if(!d->in)
+    if(!portData->in)
         return false;
-    return d->in->hasValue();
+    return portData->in->hasValue();
 }
 
 bool Port::isUpdated()
 {
-    if(!d->in)
+    if(!portData->in)
         return false;
-    return d->in->isUpdated();
+    return portData->in->isUpdated();
 }
 
 bool Port::hasChanged()
 {
-    if(!d->in)
+    if(!portData->in)
         return false;
-    return d->in->hasChanged();
+    return portData->in->hasChanged();
 }
 
 QVariant Port::getRawValue()
 {
-    if(!d->in)
+    if(!portData->in)
         return QVariant();
-    return d->in->getRawValue();
+    return portData->in->getRawValue();
 }
 
 QVariant Port::setDefaultValueRaw(const QVariant &var)
 {
-    d->info.defaultValue = var;
-    if(!d->in)
+    portData->info.defaultValue = var;
+    if(!portData->in)
         return var;
-    QVariant var2 = d->in->setDefaultValue(var);
-    return var2;
+    return portData->in->setDefaultValue(var);
 }
 
 void Port::addCompatiblePort(int typeId)
 {
-    d->info.compatibleTypes.insert(typeId);
+    portData->info.compatibleTypes.insert(typeId);
 }
 
 void Port::addCompatiblePort(int typeId, const QString &warningMsg)
 {
-    d->info.partlyCompatibleTypes[typeId] = warningMsg;
+    portData->info.partlyCompatibleTypes[typeId] = warningMsg;
 }
 
 // output port
 void Port::sendRaw(const QVariant &value)
 {
-    if(!d->out)
+    if(!portData->out)
         return;
-    d->out->send(value);
+    portData->out->send(value);
 }
 
 void Port::setTypeName(const QString &typeName)
 {
-    d->info.typeName = typeName;
+    portData->info.typeName = typeName;
 }
 
 void Port::setType(int type)
 {
-    d->info.type = type;
+    portData->info.type = type;
 }
 

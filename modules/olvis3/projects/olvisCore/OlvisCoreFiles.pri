@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ INCLUDEPATH += $${PWD}/../../include
 INCLUDEPATH += $${PWD}/../../../frontend/projects/Notifications/include
 LIBS += -L$${targetDir}/plugins -L$${targetDir} -lolvisFilter -lolvisPorts -lNotifications
 LIBS += -L$${targetDir} -lNotifications
-
 
 CONFIG+=dll
 

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,14 +22,14 @@ REGISTER_FILTER(VideoWriter);
 VideoWriter::VideoWriter()
 {
     setName("VideoOutput");
-    setDesc(QObject::tr("Writes incoming data to an *.avi video file"));
+    setDesc(QObject::tr("Writes incoming data to an *.avi video file<br>Input: 8C1 / 8C3 / 8C4"));
     setGroup("output");
 
     mIn.setName("imageIn");
     mIn.setDesc(QObject::tr("Image input"));
     addInputPort(mIn);
 
-    mFileName.setName("file");
+    mFileName.setName("filePath");
     addInputPort(mFileName);
 
     mFpsIn.setName("fps");
@@ -59,15 +59,18 @@ void VideoWriter::stop()
 
 void VideoWriter::execute()
 {
-    const cv::Mat source = mIn;
+    const cv::Mat src = mIn;
+    cv::Mat srcConverted = src.clone();
+    ((Image *)&srcConverted)->convertToRGB(CV_8U);
+
     if(!mWriter)
         return;
     if(!mWriter->isOpened())
     {
 
         std::string filename = mFileName.getValue().absoluteFilePath().toStdString();
-        mWriter->open(filename, mMode.getValue() ,mFpsIn.getValue(), source.size());
+        mWriter->open(filename, mMode.getValue(), mFpsIn.getValue(), srcConverted.size());
     }
     if(mWriter->isOpened())
-    *mWriter << source.clone();
+    *mWriter << srcConverted.clone();
 }

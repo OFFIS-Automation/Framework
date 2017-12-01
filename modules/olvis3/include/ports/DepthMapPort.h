@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
 
 #ifndef DEPTHMAPPORT_H
 #define DEPTHMAPPORT_H
-
 
 #include "ImagePort.h"
 #include "DepthMap.h"

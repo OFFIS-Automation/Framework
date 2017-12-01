@@ -1,6 +1,6 @@
 # The project file for the QScintilla library.
 #
-# Copyright (c) 2015 Riverbank Computing Limited <info@riverbankcomputing.com>
+# Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 # 
 # This file is part of QScintilla.
 # 
@@ -20,11 +20,11 @@
 
 # This must be kept in sync with Python/configure.py, Python/configure-old.py,
 # example-Qt4Qt5/application.pro and designer-Qt4Qt5/designer.pro.
-!win32:VERSION = 12.0.1
+!win32:VERSION = 13.0.0
 
 TEMPLATE = lib
-TARGET = qscintilla2
-CONFIG += qt warn_off release thread exceptions
+TARGET = qscintilla2_qt$${QT_MAJOR_VERSION}
+CONFIG += qt warn_off thread exceptions hide_symbols
 INCLUDEPATH += . ../include ../lexlib ../src
 
 !CONFIG(staticlib) {
@@ -67,7 +67,11 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 } else {
     features.path = $$[QT_INSTALL_DATA]/mkspecs/features
 }
-features.files = $$PWD/features/qscintilla2.prf
+CONFIG(staticlib) {
+    features.files = $$PWD/features_staticlib/qscintilla2.prf
+} else {
+    features.files = $$PWD/features/qscintilla2.prf
+}
 INSTALLS += features
 
 HEADERS = \
@@ -97,8 +101,10 @@ HEADERS = \
 	./Qsci/qscilexeridl.h \
 	./Qsci/qscilexerjava.h \
 	./Qsci/qscilexerjavascript.h \
+	./Qsci/qscilexerjson.h \
 	./Qsci/qscilexerlua.h \
 	./Qsci/qscilexermakefile.h \
+	./Qsci/qscilexermarkdown.h \
 	./Qsci/qscilexermatlab.h \
 	./Qsci/qscilexeroctave.h \
 	./Qsci/qscilexerpascal.h \
@@ -127,6 +133,7 @@ HEADERS = \
 	ScintillaQt.h \
 	../include/ILexer.h \
 	../include/Platform.h \
+	../include/Sci_Position.h \
 	../include/SciLexer.h \
 	../include/Scintilla.h \
 	../include/ScintillaWidget.h \
@@ -203,8 +210,10 @@ SOURCES = \
 	qscilexeridl.cpp \
 	qscilexerjava.cpp \
 	qscilexerjavascript.cpp \
+	qscilexerjson.cpp \
 	qscilexerlua.cpp \
 	qscilexermakefile.cpp \
+	qscilexermarkdown.cpp \
 	qscilexermatlab.cpp \
 	qscilexeroctave.cpp \
 	qscilexerpascal.cpp \
@@ -246,6 +255,7 @@ SOURCES = \
 	../lexers/LexBaan.cpp \
 	../lexers/LexBash.cpp \
 	../lexers/LexBasic.cpp \
+	../lexers/LexBatch.cpp \
 	../lexers/LexBibTex.cpp \
 	../lexers/LexBullant.cpp \
 	../lexers/LexCaml.cpp \
@@ -259,11 +269,14 @@ SOURCES = \
 	../lexers/LexCsound.cpp \
 	../lexers/LexCSS.cpp \
 	../lexers/LexD.cpp \
+	../lexers/LexDiff.cpp \
 	../lexers/LexDMAP.cpp \
 	../lexers/LexDMIS.cpp \
 	../lexers/LexECL.cpp \
+	../lexers/LexEDIFACT.cpp \
 	../lexers/LexEiffel.cpp \
 	../lexers/LexErlang.cpp \
+	../lexers/LexErrorList.cpp \
 	../lexers/LexEScript.cpp \
 	../lexers/LexFlagship.cpp \
 	../lexers/LexForth.cpp \
@@ -274,6 +287,7 @@ SOURCES = \
 	../lexers/LexHex.cpp \
 	../lexers/LexHTML.cpp \
 	../lexers/LexInno.cpp \
+	../lexers/LexJSON.cpp \
 	../lexers/LexKix.cpp \
 	../lexers/LexKVIrc.cpp \
 	../lexers/LexLaTex.cpp \
@@ -281,6 +295,7 @@ SOURCES = \
 	../lexers/LexLout.cpp \
 	../lexers/LexLua.cpp \
 	../lexers/LexMagik.cpp \
+	../lexers/LexMake.cpp \
 	../lexers/LexMarkdown.cpp \
 	../lexers/LexMatlab.cpp \
 	../lexers/LexMetapost.cpp \
@@ -291,9 +306,9 @@ SOURCES = \
 	../lexers/LexMySQL.cpp \
 	../lexers/LexNimrod.cpp \
 	../lexers/LexNsis.cpp \
+	../lexers/LexNull.cpp \
 	../lexers/LexOpal.cpp \
 	../lexers/LexOScript.cpp \
-	../lexers/LexOthers.cpp \
 	../lexers/LexPascal.cpp \
 	../lexers/LexPB.cpp \
 	../lexers/LexPerl.cpp \
@@ -303,6 +318,7 @@ SOURCES = \
 	../lexers/LexPowerPro.cpp \
 	../lexers/LexPowerShell.cpp \
 	../lexers/LexProgress.cpp \
+	../lexers/LexProps.cpp \
 	../lexers/LexPS.cpp \
 	../lexers/LexPython.cpp \
 	../lexers/LexR.cpp \

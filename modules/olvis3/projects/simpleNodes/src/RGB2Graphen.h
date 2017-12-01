@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ protected:
     };
 
     // image input
-    in::RgbImage mIn;
+    in::Image mIn;
     // mode option
     in::Integer mMode;
     in::Integer mTarget;
@@ -68,7 +68,7 @@ protected:
     in::Integer mChannel;
 
     // output image
-    out::GrayImage mOut;
+    out::Image mOut;
 
 private:
     // variables to hold the configured RGB values and
@@ -87,6 +87,5 @@ private:
     // to reduce string coversions to a minimum
     void loadRGBConfig();
 };
-
 
 #endif // RGB2GRAPHEN_H

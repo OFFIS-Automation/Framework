@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ signals:
     void restoreRequested();
     void saveRequested();
     void setNumDisplays(int numOfDisplays);
-    void setTraceEnabled(bool enable);
+
 public slots:
     bool check();
 
@@ -67,11 +67,7 @@ private slots:
     void onNumDisplaysChanged();
 
     void on_actionRestore_triggered();
-
     void on_actionSave_triggered();
-
-
-    void on_actionEnableTracing_triggered(bool checked);
 
 private:
     Ui::MainToolBar *ui;

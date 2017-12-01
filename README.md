@@ -36,6 +36,9 @@ QScintilla is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.ht
 <h3><a href="https://www.qt.io/">Qt</a></h3>
 Qt is licensed under <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">GNU Lesser General Public License (LGPL) v3</a>.
 
+<h3><a href="https://github.com/wk8/qt-breakpad">qt-breakpad</a></h3>
+qt-breakpad is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License (GPL) v3</a>.
+
 <h3><a href="https://github.com/OFFIS-Automation/qt-remote-signals">qt-remote-signals</a></h3>
 qt-remote-signals is licensed under <a href="https://opensource.org/licenses/MIT">MIT License (MIT)</a>.
 
@@ -43,7 +46,7 @@ qt-remote-signals is licensed under <a href="https://opensource.org/licenses/MIT
 Silk Icons are licensed under <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
 
 <h3><a href="https://winsparkle.org/">WinSparkle</a></h3>
-No license was given for WinSparkle. 
+WinSparkle is licensed under <a href="https://opensource.org/licenses/MIT">MIT License (MIT)</a>.
 
 # Scientific publications
 
@@ -64,7 +67,7 @@ No license was given for WinSparkle.
 
 OFFIS Automation Framework
 
-Copyright (C) 2013-2016 OFFIS e.V.
+Copyright (C) 2013-2017 OFFIS e.V.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

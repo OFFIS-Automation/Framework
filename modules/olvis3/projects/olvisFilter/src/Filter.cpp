@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,14 +28,12 @@ void Filter::initialize(int id, const QString &name, int processorId)
     mInitialized = true;
 }
 
-
 Filter::Filter()
 {
     mProcessorId = 0;
     mId = 0;
     mInitialized = false;
 }
-
 
 void Filter::connect(const QString &portId, Filter *targetFilter, const QString &targetPortId)
 {

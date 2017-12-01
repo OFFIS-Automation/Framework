@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,9 +16,13 @@
 
 #include "TelecontrolGamepadWidget.h"
 #include "ui_TelecontrolGamepadWidget.h"
+
 #include <QCheckBox>
 #include <QDebug>
 #include <cmath>
+
+#include "../HilecSingleton.h"
+#include <core/RcUnitHelp.h>
 
 TelecontrolGamepadWidget::TelecontrolGamepadWidget(const QString& unitName, const TelecontrolConfig::TcMove &method, QWidget *parent) :
     QWidget(parent),
@@ -72,9 +76,13 @@ void TelecontrolGamepadWidget::sendUpdate(int sliderPosition)
 
 void TelecontrolGamepadWidget::changeSlider(const QString &deviceName, const QString &unit, bool increase)
 {
-    Q_UNUSED(deviceName)
     if(unit != mUnit)
         return;
+
+    TelecontrolConfig help = HilecSingleton::hilec()->getUnitHelp(unit);
+    if(help.tcDeviceName != deviceName)
+        return;
+
     int current = ui->slider->value();
     if(increase)
         current++;

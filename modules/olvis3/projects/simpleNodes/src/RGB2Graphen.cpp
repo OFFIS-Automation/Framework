@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ REGISTER_FILTER(Rgb2Graphen);
 Rgb2Graphen::Rgb2Graphen()
 {
     setName("RGB2Graphen");
-    setDesc(QObject::tr("Extracts graphene layers from an RGB image"));
+    setDesc(QObject::tr("Extracts graphene layers from an RGB image<br>Input: 8C3"));
     setGroup("application/graphene");
 
     // define image input
@@ -163,8 +163,10 @@ cv::Mat Rgb2Graphen::gauss(cv::Mat matrix, double s, double m)
 
 void Rgb2Graphen::execute()
 {
-    const cv::Mat input = mIn;
-    GrayImage dest(input.rows, input.cols);
+    Image input = mIn;
+    input.convertToRGB(CV_8U);
+
+    cv::Mat dest(input.rows, input.cols, CV_8UC1);
     int mode = mMode;
     int target = mTarget;
 

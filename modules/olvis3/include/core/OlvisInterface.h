@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,49 +41,59 @@ class QXmlStreamWriter;
 class OlvisInterface : public QObject
 {
 public:
-    // READING INTERFACE
     /**
-    * returns a list of all filters that can be used. FilterTypeInfo.h must be included, @see FilterTypeInfo for more infos
-    */
+     * returns a list of all filters that can be used. FilterTypeInfo.h must be included, @see FilterTypeInfo for more infos
+     */
     virtual QList<FilterTypeInfo> getAllFilterTypes() const = 0;
 
     /**
-    * returns a FilterTypeInfofor the given filter type name
-    */
+     * returns a FilterTypeInfofor the given filter type name
+     */
     virtual FilterTypeInfo getFilterType(const QString& uid) const = 0;
 
     /**
-    * returns a list of all configured processors
-    */
+     * returns a list of all configured processors
+     */
     virtual QList<ProcessorInfo> getProcessors() const = 0;
 
     /**
-    * returns the info struct of a processor
-    */
+     * returns the info struct of a processor
+     */
     virtual ProcessorInfo getProcessor(int id) const = 0;
     virtual ProcessorInfo getProcessor(const QString& name) const = 0;
 
-    /** returns all configured joins */
+    /**
+     * returns all configured joins
+     */
     virtual QList<JoinInfo> getJoins() const = 0;
 
-    /** returns a specific join */
+    /**
+     * returns a specific join
+     */
     virtual JoinInfo getJoin(int id) const = 0;
     virtual JoinInfo getJoin(const QString& name) const = 0;
 
-    /** returns all configured dataBuffers */
+    /**
+     * returns all configured dataBuffers
+     */
     virtual QList<BufferInfo> getDataBuffers() const = 0;
 
-    /** returns a specific data buffer */
+    /**
+     * returns a specific data buffer
+     */
     virtual BufferInfo getDataBuffer(int id) const = 0;
     virtual BufferInfo getDataBuffer(const QString& name) const = 0;
 
-    /** return the type of a specific processingElement */
+    /**
+     * return the type of a specific processingElement
+     */
     virtual ProcessingElementType processingElementType(int id) const = 0;
     virtual ProcessingElementType processingElementType(const QString& name) const = 0;
 
-    /** returns all connections of processing elements */
+    /**
+     * returns all connections of processing elements
+     */
     virtual QList<ProcessingElementConnection> processingElementConnections() const = 0;
-
 
     /**
     * returns all filters of a processor
@@ -92,94 +102,101 @@ public:
     virtual QList<FilterInfo> getFilters(int processorId) const = 0;
 
     /**
-    * returns all filters of the system
-    */
+     * returns all filters of the system
+     */
     virtual QList<FilterInfo> getFilters() const = 0;
 
     /**
-    * returns information struct of a filter id
-    */
+     * returns information struct of a filter id
+     */
     virtual FilterInfo getFilter(int id) const = 0;
 
     /**
-    * returns information struct of a filter name
-    */
+     * returns information struct of a filter name
+     */
     virtual FilterInfo getFilter(const QString& name) const = 0;
-
 
     virtual QList<FilterGroupInfo> getMakroFilters() const = 0;
     virtual FilterGroupInfo getMakroFilter(int id) const = 0;
 
     /**
-    * returns the PortInfo struct of a given filter/port pair
-    */
+     * returns the PortInfo struct of a given filter/port pair
+     */
     virtual PortInfo getPortInfo(const PortId& portId) const = 0;
     inline PortInfo getPortInfo(int filterId, const QString& portId) const { return getPortInfo(PortId(filterId, portId)); }
     virtual PortInfo getPortInfo(const QString& filterTypeUid, const QString &portId) const = 0;
 
     /**
-    * for input ports, this returns the current default value for this port
-    * for output ports, this returns the last value that was send by the output port
-    */
+     * for input ports, this returns the current default value for this port
+     * for output ports, this returns the last value that was send by the output port
+     */
     virtual QVariant getPortValue(const PortId& portId) const = 0;
     inline QVariant getPortValue(int filter, const QString& port) const { return getPortValue(PortId(filter, port)); }
 
     /**
-    * for input ports, this returns whether the input port has a default value set
-    * for output ports, this returns whether a last output exists for this port
-    */
+     * for input ports, this returns whether the input port has a default value set
+     * for output ports, this returns whether a last output exists for this port
+     */
     inline bool hasPortValue(const PortId& id) const { return hasPortValue(id.filter, id.port); }
     inline bool hasPortValue(int filterId, const QString& portId) const { return getPortValue(filterId, portId).isValid(); }
 
     /**
-    * checks whether a filter ouptup port is configured as processor output port
-    */
+     * checks whether a filter ouptup port is configured as processor output port
+     */
     virtual bool canBeProcessorOutput(const PortId& portId) const = 0;
     inline bool canBeProcessorOutput(int filterId, const QString& portId) const { return canBeProcessorOutput(PortId(filterId, portId)); }
 
     /**
-    * returns all ids of Filter ports that are outputs of a processor
-    */
+     * returns all ids of Filter ports that are outputs of a processor
+     */
     virtual QList<FilterGroupPort> processorOutputs(int processorId) const = 0;
 
     /** checks if the current setup is complete.
-    * inserts the unconnected ports the need to be connected or a value assigned into @a unconnectedPorts. the list is cleared by the function
-    * @return true if the setup is complete
-    */
+     * inserts the unconnected ports the need to be connected or a value assigned into @a unconnectedPorts. the list is cleared by the function
+     * @return true if the setup is complete
+     */
     virtual bool check(QList<PortId>& unconnectedPorts) const = 0;
     inline bool check() const { QList<PortId> dummy; return check(dummy); }
 
     /**
-    * checks whether a port is connected
-    */
+     * checks whether a port is connected
+     */
     virtual bool isConnected(const PortId& portId) const = 0;
     inline bool isConnected(int nodeId, const QString& portId) const { return isConnected(PortId(nodeId, portId)); }
 
     /**
-    * checks whether a port can be connected
-    * if there is a warning for the connection, its written into @a warning
-    */
+     * checks whether a port can be connected
+     * if there is a warning for the connection, its written into @a warning
+     */
     virtual bool canConnect(const PortId& source, const PortId& target, QString& warning) const = 0;
     virtual bool canConnectInput(const QString& inputName, const PortId& target, QString& warning) const = 0;
     virtual bool canConnect(int sourceFilter, const QString& sourcePort, int targetfilter, const QString& targetPort, QString& warning) const
         { return canConnect(PortId(sourceFilter, sourcePort), PortId(targetfilter, targetPort), warning); }
 
-
     /** checks whether a filter can be moved in front of another one
-    @a before filter can be <1 if the filter should be moved to the end */
+     * @a before filter can be <1 if the filter should be moved to the end
+     */
     virtual bool canMove(int filterId, int beforeFilter = 0) const = 0;
 
-    /** returns all connections between filters */
+    /**
+     * returns all connections between filters
+     */
     virtual QList<FilterConnection> getConnections() const = 0;
 
-    /** returns all connections between filters */
+    /**
+     * returns all connections between filters
+     */
     virtual QList<FilterConnection> getConnections(int processor) const = 0;
 
-    /** returns the source connection of a specific target port */
+    /**
+     * returns the source connection of a specific target port
+     */
     virtual PortId getSource(const PortId& target) const = 0;
     inline PortId getSource(int filter, const QString& port) const { return getSource(PortId(filter, port)); }
 
-    /** returns all targets of a specific source port */
+    /**
+     * returns all targets of a specific source port
+     */
     virtual QList<PortId> getTargets(const PortId& source) const = 0;
     inline QList<PortId> getTargets(int filter, const QString& port) const { return getTargets(PortId(filter, port)); }
 
@@ -193,13 +210,12 @@ public:
     virtual QVariant constrainedValue(const PortId& portId, const QVariant& var) const = 0;
     inline QVariant constrainedValue(int filterId, const QString& portId, const QVariant& var) const { return constrainedValue(PortId(filterId, portId), var); }
 
-
     virtual bool isEmpty() const = 0;
     virtual bool isRunning() const = 0;
 
     virtual bool clearUpdateFlag() = 0;
     virtual bool testUpdateFlag() const = 0;
-    // MODIFYING INTERFACE
+
 public slots:
 
     /**
@@ -207,22 +223,23 @@ public slots:
      * @param enabled
      */
     virtual void setTracingEnabled(bool enabled) = 0;
+
     /**
-    * creates a new processor named @a name
-    * @emits processorCreated
-    */
+     * creates a new processor named @a name
+     * @emits processorCreated
+     */
     virtual int createProcessor(const QString& name) = 0;
 
     /**
-    * delets the processor named @a name
-    * @emits processorDeleted
-    */
+     * delets the processor named @a name
+     * @emits processorDeleted
+     */
     virtual void deleteProcessor(int id) = 0;
 
     /**
-    * renames a processor
-    * @emits processorRenamed, proceccorUpdated
-    */
+     * renames a processor
+     * @emits processorRenamed, proceccorUpdated
+     */
     virtual void renameProcessor(int id, const QString& newName) = 0;
     virtual void renameProcessor(const QString& oldName, const QString& newName) = 0;
 
@@ -253,88 +270,92 @@ public slots:
 
 
     /**
-    * creates a data buffer to buffer data between processors
-    * @emits @see dataBufferCreated
-    */
+     * creates a data buffer to buffer data between processors
+     * @emits @see dataBufferCreated
+     */
     virtual int createDataBuffer(int size = 10, const QString& name = QString()) = 0;
 
     /**
-    * assings a new size to the buffer identified by @a id
-    * @emits @see dataBufferSizeChanged
-    */
+     * assings a new size to the buffer identified by @a id
+     * @emits @see dataBufferSizeChanged
+     */
     virtual void resizeDataBuffer(int id, int newSize) = 0;
 
     /**
-    * removes the data buffer identified by @a id
-    * @emits @see dataBufferDeleted
-    */
+     * removes the data buffer identified by @a id
+     * @emits @see dataBufferDeleted
+     */
     virtual void deleteDataBuffer(int id) = 0;
 
     /**
-    * creates a join to cleanly concatenate time invariant data of different processors
-    * @emits @see joinCreated
-    */
+     * creates a join to cleanly concatenate time invariant data of different processors
+     * @emits @see joinCreated
+     */
     virtual int createJoin(const QString& name = QString()) = 0;
 
     /**
-    * sets the mode of the join identified by @a id.
-    * @a joinMode must be of type JoinMode.
-    * @a master is only used for JoinMasterMode. Then @a master must be a valid id of a connected input processor
-    * @emits @see joinModeChanged
-    */
+     * sets the mode of the join identified by @a id.
+     * @a joinMode must be of type JoinMode.
+     * @a master is only used for JoinMasterMode. Then @a master must be a valid id of a connected input processor
+     * @emits @see joinModeChanged
+     */
     virtual void setJoinMode(int id, int joinMode, int master) = 0;
     inline void setJoinMode(int id, int joinMode) { setJoinMode(id, joinMode, 0); }
 
     /**
-    * Removes the join identified by @a id
-    * @emits @see joinDeleted
-    */
+     * Removes the join identified by @a id
+     * @emits @see joinDeleted
+     */
     virtual void deleteJoin(int id) = 0;
 
-    /** checks whether processors/joins/buffers may be connected to one another */
+    /**
+     * checks whether processors/joins/buffers may be connected to one another
+     */
     virtual bool canConnectProcessors(int source, int target, QString& errorMsg) const = 0;
     inline bool canConnectProcessors(int source, int target) const{ QString msg; return canConnectProcessors(source, target, msg); }
 
     /**
-    * creates a connection between processors/joins/buffers
-    * its not possible to connect a buffer into anything else than a processor, all other combinations are valid
-    * @emits @asee processorConnected(int, int) always,
-    * @emits one of the other @see processorConnected signals
-    */
+     * creates a connection between processors/joins/buffers
+     * its not possible to connect a buffer into anything else than a processor, all other combinations are valid
+     * @emits @asee processorConnected(int, int) always,
+     * @emits one of the other @see processorConnected signals
+     */
     virtual void connectProcessor(int source, int target) = 0;
 
     /**
-    * removes a connection between processors/joins/buffers
-    * @emits @asee processorDisconnected(int, int) always,
-    * @emits one of the other @see processorDisconnected signals
-    */
+     * removes a connection between processors/joins/buffers
+     * @emits @asee processorDisconnected(int, int) always,
+     * @emits one of the other @see processorDisconnected signals
+     */
     virtual void disconnectProcessor(int source, int target) = 0;
 
     /**
-    * adds a filter to a processor
-    * @emits filterCreated
-    */
+     * adds a filter to a processor
+     * @emits filterCreated
+     */
     virtual int addFilter(int processor, const QString& filterTypeUid, const QString& name = QString(), int insertBefore = 0) = 0;
     virtual int addFilter(int processor, const QString& filterTypeUid, int insertBefore){ return addFilter(processor, filterTypeUid, QString(), insertBefore); }
 
     /**
-    * removes a filter from a processor
-    * @emits filterDeleted
-    */
+     * removes a filter from a processor
+     * @emits filterDeleted
+     */
     virtual void deleteFilter(int id) = 0;
 
     /** renames a filter
-    * @emits filterRenamed
-    */
+     * @emits filterRenamed
+     */
     virtual void renameFilter(int id, const QString& newName) = 0;
 
-    /** moves a filter to a new position */
+    /**
+     * moves a filter to a new position
+     */
     virtual void moveFilter(int id, int moveBefore = 0) = 0;
 
     /**
-    * creates a connection between the ports of the two filters
-    * @emits filterConnected
-    */
+     * creates a connection between the ports of the two filters
+     * @emits filterConnected
+     */
     virtual void connectFilter(const PortId& source, const PortId& target) = 0;
     inline void connectFilter(int sourceFilter, const QString& sourcePort, int targetFilter, const QString& targetPort)
         { connectFilter(PortId(sourceFilter, sourcePort), PortId(targetFilter, targetPort)); }
@@ -344,27 +365,31 @@ public slots:
         { connectProcessorInput(source, PortId(targetFilter, targetPort)); }
 
     virtual void renameInput(const PortId& target, const QString& newName) = 0;
-    /** disconnects the connection to the target filter
-      * @emits filterDisconnected
-    */
+
+    /**
+     * disconnects the connection to the target filter
+     * @emits filterDisconnected
+     */
     virtual void disconnectFilter(const PortId& target) = 0;
     inline void disconnectFilter(int targetFilter, const QString& targetPort){ disconnectFilter(PortId(targetFilter, targetPort)); }
 
-    /** disconnects all connection from the source filter
-      * @emits filterDisconnected multiple times
-    */
+    /**
+     * disconnects all connection from the source filter
+     * @emits filterDisconnected multiple times
+     */
     virtual void disconnectFilters(const PortId& target) = 0;
     inline void disconnectFilters(int sourceFilter, const QString& sourcePort){ disconnectFilters(PortId(sourceFilter, sourcePort)); }
 
-    /** sets a default value to a port
-    */
+    /**
+     * sets a default value to a port
+     */
     virtual void setPortValue(const PortId& portId, const QVariant& value) = 0;
     inline void setPortValue(int filter, const QString& port, const QVariant& value) { setPortValue(PortId(filter, port), value); }
 
 
     /**
-    * makes an output port of a node an output port of the processor
-    */
+     * makes an output port of a node an output port of the processor
+     */
     virtual void createProcessorOutput(const PortId& portId, const QString& name = QString()) = 0;
     inline void createProcessorOutput(int filterId, const QString& portId, const QString& name = QString())
         { return createProcessorOutput(PortId(filterId, portId), name); }
@@ -378,20 +403,27 @@ public slots:
 
     virtual void scanPluginDir(const QString& pluginDir = QString()) = 0;
 
-    /** adds a lsitener to a specific output port */
+    /**
+     * adds a lsitener to a specific output port
+     */
     virtual bool addPortListener(const PortId& portId, PortListener* listener) = 0;
     inline bool addPortListener(int filterId, const QString& portId, PortListener* listener) { return addPortListener(PortId(filterId, portId), listener); }
 
-    /** removes a listener from a specific output port */
+    /**
+     * removes a listener from a specific output port
+     */
     virtual void removePortListener(const PortId& portId, PortListener* listener) = 0;
     inline void removePortListener(int filterId, const QString& portId, PortListener* listener) { return removePortListener(PortId(filterId, portId), listener); }
 
-    /** creates all filters and starts the system */
+    /**
+     * creates all filters and starts the system
+     */
     virtual void start() = 0;
 
-    /** stops the system execution
+    /**
+     * stops the system execution
      * The method returns immideatly, use the signal executionFinished or the blocking method waitforStop
-    */
+     */
 
     virtual void stop() = 0;
     /**
@@ -413,7 +445,9 @@ public slots:
     virtual void deleteMakroFilter(int id) = 0;
 
 signals:
-    /** emmited when a new plugin was loaded or a plugin was reloaded */
+    /**
+     * emmited when a new plugin was loaded or a plugin was reloaded
+     */
     void filterTypesChanged();
 
     void processorCreated(const ProcessorInfo& info);

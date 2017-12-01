@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 using namespace cv;
 
 REGISTER_FILTER(HistogramNode);
-
 HistogramNode::HistogramNode()
 {
     setGroup("image/analysis");
@@ -39,9 +38,9 @@ HistogramNode::HistogramNode()
 
 void HistogramNode::execute()
 {
-    const cv::Mat img = mIn;
+    const cv::Mat src = mIn;
     std::vector<cv::Mat> images;
-    cv::split(img, images);
+    cv::split(src, images);
     std::vector<cv::Mat> hists(images.size());
     for(unsigned i=0; i<images.size(); i++)
     {
@@ -51,10 +50,10 @@ void HistogramNode::execute()
         const float* ranges[] = { range };
         calcHist(&images[i], 1, channels, Mat(), hists[i], 1, sizes, ranges);
     }
-    Mat result;
+    Mat dest;
     if(hists.size() == 1)
-        result = hists[0];
+        dest = hists[0];
     else if(hists.size()>1)
-        cv::merge(hists, result);
-    mOut.send(result);
+        cv::merge(hists, dest);
+    mOut.send(dest);
 }

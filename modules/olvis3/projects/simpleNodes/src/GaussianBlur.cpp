@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 
 #include "GaussianBlur.h"
 #include <opencv2/imgproc.hpp>
-REGISTER_FILTER(GaussianBlur);
 
+REGISTER_FILTER(GaussianBlur);
 GaussianBlur::GaussianBlur()
 {
     setName("Gaussian");

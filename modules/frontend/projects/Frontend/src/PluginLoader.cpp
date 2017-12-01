@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ void PluginLoader::load(QSplashScreen *splash)
     while(models.hasNext())
     {
         ModelPluginInterface* model = models.next().value();
-        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(model->getName()), Qt::AlignHCenter);
+        splash->showMessage(QApplication::translate("SplashScreen", "Initializing model plugin: %1").arg(model->getName()), Qt::AlignHCenter);
         QApplication::processEvents();
 
         model->initialize(mPath);
@@ -94,7 +94,7 @@ void PluginLoader::load(QSplashScreen *splash)
     while(guis.hasNext())
     {
         GuiPluginInterface* gui = guis.next().value();
-        splash->showMessage(QApplication::translate("SplashScreen", "Initializing plugin: %1").arg(gui->getName()), Qt::AlignHCenter);
+        splash->showMessage(QApplication::translate("SplashScreen", "Initializing GUI plugin: %1").arg(gui->getName()), Qt::AlignHCenter);
         QApplication::processEvents();
         models.toFront();
         while(models.hasNext())

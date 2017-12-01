@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,13 +37,20 @@ public:
     virtual void finish(){}
     PortInfo getInfo();
     QString name() const;
+
     void addTarget(PortListener* inputPort);
     void removeTarget(PortListener* inputPort);
+    bool hasTargets();
+
     bool hasFired() const { return mFired; }
     void resetFired() { mFired = false; }
+
+    bool isOverlayed();
+
     QVariant lastValue();
     void setTracer(SubTracer* tracer);
     bool isNormalType() const;
+
 protected:
     OutputPort(Port& parent, bool isArray);
     Port& mParent;

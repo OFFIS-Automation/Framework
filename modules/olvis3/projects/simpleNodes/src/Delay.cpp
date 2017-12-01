@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
 #include "Delay.h"
 
 REGISTER_FILTER(Delay);
-
 Delay::Delay()
 {
     setName("Delay");
     setGroup("helper");
     setDesc(QObject::tr("Insert a specific delay into your image processing chain"));
+
     mDelay.setName("delayTime");
     mDelay.setDesc(QObject::tr("Delay time in ms"));
     mDelay.setRange(1,10000);

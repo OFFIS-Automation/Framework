@@ -1,6 +1,6 @@
 // This defines the interface to the QsciLexerDiff class.
 //
-// Copyright (c) 2015 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -20,10 +20,6 @@
 
 #ifndef QSCILEXERDIFF_H
 #define QSCILEXERDIFF_H
-
-#ifdef __APPLE__
-extern "C++" {
-#endif
 
 #include <QObject>
 
@@ -95,9 +91,5 @@ private:
     QsciLexerDiff(const QsciLexerDiff &);
     QsciLexerDiff &operator=(const QsciLexerDiff &);
 };
-
-#ifdef __APPLE__
-}
-#endif
 
 #endif

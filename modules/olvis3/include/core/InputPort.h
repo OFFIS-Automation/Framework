@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -51,9 +51,11 @@ public:
     virtual bool hasValue() { return mValue.isValid(); }
     virtual void recheck();
     void newConstraint();
+
 signals:
     void portValueChanged(const QString& name, const QVariant& value);
     void portConstraintsUpdated(const QString& name);
+
 protected:
     Port& mParent;
     QMutex mMutex;

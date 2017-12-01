@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ HilecGuiToolbar::HilecGuiToolbar(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->actionAutomationRunning->setVisible(false);
+
     connect(ui->actionQuit, SIGNAL(triggered()), HilecSingleton::hilec(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->actionPause, SIGNAL(triggered()), HilecSingleton::hilec(), SLOT(pause()), Qt::QueuedConnection);
     connect(ui->actionStepInto, SIGNAL(triggered()), HilecSingleton::hilec(), SLOT(stepInto()), Qt::QueuedConnection);
@@ -48,15 +49,15 @@ HilecGuiToolbar::~HilecGuiToolbar()
 
 void HilecGuiToolbar::on_actionResume_triggered()
 {
-    if(!mRunning)
-        emit aboutToRunFile(mFile);
     emit runFile(mFile);
 }
 
 void HilecGuiToolbar::createMenu(QMenu *menu)
 {
     if(menu->actions().size() > 0)
+    {
         menu->addSeparator();
+    }
     menu->addAction(ui->actionCreateRcUnit);
     menu->addAction(ui->actionAddRcUnit);
     menu->addAction(ui->actionAddRcServer);
@@ -65,7 +66,8 @@ void HilecGuiToolbar::createMenu(QMenu *menu)
 
 void HilecGuiToolbar::addHelpToMenu(QMenu *menu)
 {
-    if(menu->actions().size() > 0){
+    if(menu->actions().size() > 0)
+    {
         menu->insertAction(menu->actions().first(), ui->actionLolecHelp);
         menu->addSeparator();
     } else {

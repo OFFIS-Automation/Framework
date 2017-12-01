@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,13 +35,13 @@ opencv_video.path    = $${DESTDIR}/../
 opencv_video.files  += $${CVBINDIR}/opencv_ffmpeg*.dll
 INSTALLS            += opencv_video
 
-gstreamerdlls.path  += $${DESTDIR}
-gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/*.dll
-INSTALLS            += gstreamerdlls
+#gstreamerdlls.path  += $${DESTDIR}
+#gstreamerdlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/bin/*.dll
+#INSTALLS            += gstreamerdlls
 
-gstreamerplugindlls.path  += $${DESTDIR}/gstreamer-plugins/
-gstreamerplugindlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0/*.dll
-INSTALLS            += gstreamerplugindlls
+#gstreamerplugindlls.path  += $${DESTDIR}/gstreamer-plugins/
+#gstreamerplugindlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0/*.dll
+#INSTALLS            += gstreamerplugindlls
 
 HEADERS += \
 	src/OlvisModelPlugin.h \

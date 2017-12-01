@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ public:
     ImageInput();
     virtual void start();
     virtual void execute();
+	
 protected:
     in::ReadFile mIn;
     in::Boolean mAlwaysRead;

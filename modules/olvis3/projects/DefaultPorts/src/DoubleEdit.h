@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,8 +27,9 @@ class DoubleEdit : public AbstractPortEditWidget
 public:
     explicit DoubleEdit(QWidget *parent = 0);
     virtual ~DoubleEdit();
-    virtual void onStartEdit();
+    virtual void setInfo(const PortInfo &info);
     virtual QString asString();
+    virtual void onStartEdit();
     virtual QVariant editValue(bool& ok);
 
 private:

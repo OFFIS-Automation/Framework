@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include "BrighnessContrast.h"
 #include <opencv2/imgproc.hpp>
 
 REGISTER_FILTER(BrighnessContrast);
-
 BrighnessContrast::BrighnessContrast()
 {
     setName("BrightnessContrast");
@@ -34,11 +32,11 @@ BrighnessContrast::BrighnessContrast()
     mOut.setDesc(QObject::tr("Image output"));
     addOutputPort(mOut);
 
-    mBrighness.setName("brightnessFactor");
-    mBrighness.setDesc(QObject::tr("Adjust the brightness"));
-    mBrighness.setDefault(0);
-    mBrighness.setRange(-100, 100);
-    addInputPort(mBrighness);
+    mBrightness .setName("brightnessFactor");
+    mBrightness .setDesc(QObject::tr("Adjust the brightness"));
+    mBrightness .setDefault(0);
+    mBrightness .setRange(-100, 100);
+    addInputPort(mBrightness );
 
     mContrast.setName("contrastFactor");
     mContrast.setDesc(QObject::tr("Adjust the contrast"));
@@ -49,20 +47,17 @@ BrighnessContrast::BrighnessContrast()
 
 void BrighnessContrast::execute()
 {
-
-    double brighness = mBrighness.getValue();
+    double brightness = mBrightness .getValue();
     double contrast = mContrast.getValue();
     contrast /= 100;
-    brighness *=255/100;
-    cv::Mat source = mIn;
-    cv::Mat wide;
-    source.convertTo(wide, CV_16S, 1.0, -127);
-    if(source.channels() == 4)
-    {
-        RgbImage rgb(source);
-        source = rgb;
-    }
-    cv::Mat target;
-    wide.convertTo(target,-1,1.0 + contrast, brighness + 127);
-    mOut.send(target);
+    brightness *=65535/100;
+
+    cv::Mat src = mIn;
+    cv::Mat workingImage;
+    src.convertTo(workingImage, CV_16U);
+
+    cv::Mat dest;
+    workingImage.convertTo(dest, -1, 1.0 + contrast, brightness);
+
+    mOut.send(dest);
 }

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,6 +37,12 @@ void port::Real::setRange(double min, double max)
     mMax = max;
     setConstraint("min", min);
     setConstraint("max", max);
+}
+
+void port::Real::setDecimals(int decimals)
+{
+    mDecimals = decimals;
+    setConstraint("decimals", decimals);
 }
 
 void port::Real::addChoice(double value)

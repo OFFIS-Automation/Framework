@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,15 @@
 
 win32-msvc*{
     CVINCLUDEDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/include
-    CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc14/lib
-    CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc14/bin
+
+    contains(QT_ARCH, i386):{
+        CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/lib
+        CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x86/vc15/bin
+    } else {
+        CVLIBDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/lib
+        CVBINDIR = $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/x64/vc15/bin
+    }
+
     INCLUDEPATH += $$CVINCLUDEDIR
     DEFINES += _CRT_SECURE_NO_WARNINGS # supress win32 stdlib warnings
     include($$(OFFIS_DEVELOPMENT_ENVIRONMENT)/opencv3/opencv_version.pro)

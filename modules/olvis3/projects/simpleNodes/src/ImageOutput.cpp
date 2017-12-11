@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include <opencv2/highgui.hpp>
 
 REGISTER_FILTER(ImageOutput);
-
 ImageOutput::ImageOutput()
 {
     setName("ImageOutput");
@@ -29,7 +28,7 @@ ImageOutput::ImageOutput()
     mImage.setDesc(QObject::tr("Image input"));
     addInputPort(mImage);
 
-    mFile.setName("file");
+    mFile.setName("filePath");
     mFile.setDesc(QObject::tr("File to write"));
     mFile.setFilter("*.jpg *.png *.bmp");
     addInputPort(mFile);

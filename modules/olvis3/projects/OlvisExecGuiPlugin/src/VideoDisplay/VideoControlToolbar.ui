@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
-    <height>30</height>
+    <width>263</width>
+    <height>28</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,7 +70,7 @@
     <string>SaveImage</string>
    </property>
    <property name="toolTip">
-    <string>Save image as picture (jpg, png, ...)</string>
+    <string>Save image as picture (jpg, png, …)</string>
    </property>
   </action>
   <action name="actionSaveVideo">

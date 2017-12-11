@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,17 +17,25 @@
 #ifndef FILEEDIT_H
 #define FILEEDIT_H
 
-#include "AbstractPortEdit.h"
+#include "AbstractPortEditWidget.h"
+#include <QPushButton>
 
-class FileEdit : public QObject, public AbstractPortEdit
+class FileEdit : public AbstractPortEditWidget
 {
+    Q_OBJECT
 public:
-    FileEdit();
+    explicit FileEdit(QWidget *parent = 0);
+    virtual ~FileEdit();
     virtual QString asString();
     virtual void onStartEdit();
-    // setAutoSubmit is here for virtual reasons,
-    // widget is autoSubmit by default
-    virtual void setAutoSubmit(bool autoSubmit) { Q_UNUSED(autoSubmit); }
+    virtual QVariant editValue(bool&);
+
+private slots:
+    void on_select_file_clicked();
+
+protected:
+    QPushButton* mSelectFileButton;
+    QLineEdit* mLineEdit;
 };
 
 #endif // FILEEDIT_H

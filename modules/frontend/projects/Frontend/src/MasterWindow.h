@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,8 +33,10 @@ public:
     explicit MasterWindow(QWidget *parent = 0);
     ~MasterWindow();
     QMenu* getMenu(QString name);
+    virtual void showEvent(QShowEvent *event);
 
 signals:
+    void windowWasShown();
     void openProject(const QString& projectPath);
     void closeProject();
     void showStartScreen();
@@ -42,6 +44,7 @@ signals:
     void showHelpWidget();
 
 public slots:
+    void initWinSparkle();
     virtual void setVisible(bool visible);
 
 private slots:

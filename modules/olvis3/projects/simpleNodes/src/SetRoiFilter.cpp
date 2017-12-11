@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,9 +23,15 @@ SetRoiFilter::SetRoiFilter()
     setName("ImageRoi");
     setDesc(QObject::tr("Extracts a region of interest from an image"));
     setGroup("image/reshape");
-    mImageOut.setName("imageIn");
-    mImageIn.setDesc(QObject::tr("image input"));
-    addInputPort(mImageIn);
+
+    mIn.setName("imageIn");
+    mIn.setDesc(QObject::tr("image input"));
+    addInputPort(mIn);
+
+    mOut.setName("imageOut");
+    mOut.setDesc(QObject::tr("image output"));
+    addOutputPort(mOut);
+
     mOffsetIn.setName("offsetIn");
     mOffsetIn.setDesc(QObject::tr("adjust the position of the ROI using this input port"));
     mOffsetIn.setMode(OptionalPortMode);
@@ -38,7 +44,6 @@ SetRoiFilter::SetRoiFilter()
     mOffsetModeIn.addChoice(CenterOffset, "center");
     mOffsetModeIn.setVisibility(AdvancedPortVisibility);
     mOffsetModeIn.setDefault(TopLeftOffset);
-
     addInputPort(mOffsetModeIn);
 
     mRoiIn.setName("roi");
@@ -46,9 +51,7 @@ SetRoiFilter::SetRoiFilter()
     mRoiIn.setMode(OptionalPortMode);
     mRoiIn.setDisplayVisibility(false);
     addInputPort(mRoiIn);
-    mImageOut.setName("imageOut");
-    mImageOut.setDesc(QObject::tr("image output"));
-    addOutputPort(mImageOut);
+
     mOffsetOut.setName("imageOffset");
     mOffsetOut.setDesc(QObject::tr("Image top left offset point"));
     addOutputPort(mOffsetOut);
@@ -56,8 +59,8 @@ SetRoiFilter::SetRoiFilter()
 
 void SetRoiFilter::execute()
 {
-    const cv::Mat input = mImageIn;
-    cv::Mat img = input;
+    const cv::Mat src = mIn;
+    cv::Mat dest = src.clone();
     cv::Point offset(0, 0);
     if (mRoiIn.hasValue()) {
         cv::Rect rect = mRoiIn;
@@ -72,9 +75,9 @@ void SetRoiFilter::execute()
                 rect.y = offsetIn.y - rect.height / 2;
             }
         }
-        img = cv::Mat(input, rect).clone();
+        dest = cv::Mat(src, rect).clone();
         offset = rect.tl();
     }
-    mImageOut.send(img);
+    mOut.send(dest);
     mOffsetOut.send(offset);
 }

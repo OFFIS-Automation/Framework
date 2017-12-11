@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -47,81 +47,82 @@ FilterSearchWidget::~FilterSearchWidget()
 
 void FilterSearchWidget::createNodes()
 {
-        ui->filterTree->clear();
-        mFilterList.clear();
-        mFilterTypeList.clear();
+    ui->filterTree->clear();
+    mFilterList.clear();
+    mFilterTypeList.clear();
 
-        QList<FilterTypeInfo> list = mInterface.getAllFilterTypes();
-        QMap<QString, QTreeWidgetItem*> groups;
+    QList<FilterTypeInfo> list = mInterface.getAllFilterTypes();
+    QMap<QString, QTreeWidgetItem*> groups;
 
-        bool descIsChecked = ui->checkDesc->isChecked();
-        QString search = ui->searchBox->text();
+    bool descIsChecked = ui->checkDesc->isChecked();
+    QString search = ui->searchBox->text();
 
-        // Add groups
-        // for all nodes
-        for (int i = 0; i < list.count(); i++)
+    // Add groups
+    // for all nodes
+    for (int i = 0; i < list.count(); i++)
+    {
+        FilterTypeInfo& info = list[i];
+        if (((info.desc.contains(search, Qt::CaseInsensitive)
+            && descIsChecked) || (info.name.contains(search, Qt::CaseInsensitive))
+            || (search.isEmpty())))
         {
-            FilterTypeInfo& info = list[i];
-            if (((info.desc.contains(search, Qt::CaseInsensitive)
-                && descIsChecked) || (info.name.contains(search, Qt::CaseInsensitive))
-                || (search.isEmpty())))
+            if(info.group.empty())
+                info.group << tr("Default", "Group name");
+            QString baseGroup = info.group[0];
+            if(!groups.contains(baseGroup))
             {
-                if(info.group.empty())
-                    info.group << tr("Default", "Group name");
-                QString baseGroup = info.group[0];
-                if(!groups.contains(baseGroup))
-                {
-                    QTreeWidgetItem *item = new QTreeWidgetItem();
-                    item->setText(0, baseGroup);
-                    groups[baseGroup] = item;
-                    item->setData(0,Qt::UserRole, true);
-                }
-                QTreeWidgetItem* parent = groups[baseGroup];
-
-                // for every group of this node, except the base node
-                for (int k = 1; k < info.group.size(); k++)
-                {
-                    bool existing = false;
-                    int maxChildren = parent->childCount();
-                    for(int childId = 0; childId < maxChildren; childId ++)
-                    {
-                        QTreeWidgetItem* child = parent->child(childId);
-                        if((child->text(0) == info.group[k])
-                            && child->data(0, Qt::UserRole).toBool())
-                        {
-                            parent = parent->child(childId);
-                            existing = true;
-                            break;
-                        }
-
-                    }
-                    if (!existing)
-                    {
-                        QTreeWidgetItem *group = new QTreeWidgetItem();
-                        group->setText(0, info.group.at(k));
-                        group->setData(0,Qt::UserRole, true);
-                        parent->addChild(group);
-                        parent = group;
-                    }
-                }
-
-                FilterSearchTreeItem *item = new FilterSearchTreeItem();
-                item->setText(0, info.name);
-                item->setFilterType(info);
-                item->setToolTip(0, info.desc);
-                item->setData(0,Qt::UserRole, false);
-                parent->addChild(item);
-                mFilterList.append(item);
-                mFilterTypeList.append(info);
+                QTreeWidgetItem *item = new QTreeWidgetItem();
+                item->setText(0, baseGroup);
+                groups[baseGroup] = item;
+                item->setData(0,Qt::UserRole, true);
             }
-        }
+            QTreeWidgetItem* parent = groups[baseGroup];
 
-        ui->filterTree->addTopLevelItems(groups.values());
+            // for every group of this node, except the base node
+            for (int k = 1; k < info.group.size(); k++)
+            {
+                bool existing = false;
+                int maxChildren = parent->childCount();
+                for(int childId = 0; childId < maxChildren; childId ++)
+                {
+                    QTreeWidgetItem* child = parent->child(childId);
+                    if((child->text(0) == info.group[k])
+                        && child->data(0, Qt::UserRole).toBool())
+                    {
+                        parent = parent->child(childId);
+                        existing = true;
+                        break;
+                    }
+
+                }
+                if (!existing)
+                {
+                    QTreeWidgetItem *group = new QTreeWidgetItem();
+                    group->setText(0, info.group.at(k));
+                    group->setData(0,Qt::UserRole, true);
+                    parent->addChild(group);
+                    parent = group;
+                }
+            }
+
+            FilterSearchTreeItem *item = new FilterSearchTreeItem();
+            item->setText(0, info.name);
+            item->setFilterType(info);
+            item->setToolTip(0, info.desc);
+            item->setData(0,Qt::UserRole, false);
+            parent->addChild(item);
+            mFilterList.append(item);
+            mFilterTypeList.append(info);
+        }
+    }
+
+    ui->filterTree->addTopLevelItems(groups.values());
 }
 
 
 void FilterSearchWidget::filterSearch(QString search)
 {
+    // Filter
     bool descIsChecked = ui->checkDesc->isChecked();
 
     //hide all parent nodes
@@ -159,13 +160,15 @@ void FilterSearchWidget::filterSearch(QString search)
             filter->setHidden(true);
         }
     }
+
+    // Expand list
+    ui->filterTree->expandAll();
 }
 
 void FilterSearchWidget::emptyFilterSearch()
 {
     this->filterSearch(ui->searchBox->text());
 }
-
 
 void FilterSearchWidget::on_createMakroFilter_clicked()
 {

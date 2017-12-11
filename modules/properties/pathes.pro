@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +16,18 @@
 
 baseDir = $$quote($${PWD}/../../)
 CONFIG(debug, debug|release) {
-    targetDir = $${baseDir}/bin/debug
+    win32-msvc*:contains(QT_ARCH, i386):{
+        targetDir = $${baseDir}/bin/x86/debug
+    } else {
+        targetDir = $${baseDir}/bin/x64/debug
+    }
 } else {
-    targetDir = $${baseDir}/bin
+    win32-msvc*:contains(QT_ARCH, i386):{
+        targetDir = $${baseDir}/bin/x86
+    } else {
+        targetDir = $${baseDir}/bin/x64
+    }
+
     DEFINES += QT_NO_DEBUG_OUTPUT=""
 }
 

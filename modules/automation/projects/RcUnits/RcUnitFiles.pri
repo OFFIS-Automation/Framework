@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -61,11 +61,16 @@ HEADERS += src/RcUnit.h \
     src/telecontrol/WindowsTelecontrolFactory.h \
     src/telecontrol/RemoteGamepad.h
 
-win32*{
+win32-msvc*{
     INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/include
 
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/directx/lib/x86 -ldinput8 -ldxguid
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/lib -lsiapp -lspwmath -lspwmathMT
+    contains(QT_ARCH, i386):{
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/directx/x86/lib -ldinput8 -ldxguid
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/x86/lib -lsiapp -lspwmath -lspwmathMT
+    } else {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/directx/x64/lib -ldinput8 -ldxguid
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/telecontrol/3dxWare/x64/lib -lsiapp -lspwmath -lspwmathMT
+    }
 
     HEADERS += src/telecontrol/WindowsGamepad.h \
         src/telecontrol/WindowsConnexionGamepad.h \

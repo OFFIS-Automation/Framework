@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -82,11 +82,6 @@ QList<QPoint> Overlay::snapPoints()
     return QList<QPoint>();
 }
 
-double Overlay::rate()
-{
-    return mRate;
-}
-
 void Overlay::setPortId(const PortId &portId, bool output)
 {
     mIsOutput = output;
@@ -117,7 +112,6 @@ void Overlay::setValue(const QVariant &value)
 {
     if(!mMutex.tryLock(50))
         return;
-    //QMutexLocker lock(&mMutex);
     mLastValue = value;
     mMutex.unlock();
     emit updated();

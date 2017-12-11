@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ class BackgroundSubstraction : public UserFilter
 public:
     BackgroundSubstraction();
     void execute();
+
 protected:
     enum Mode
     {
@@ -39,6 +40,7 @@ protected:
     in::Integer mMode;
     out::Image mBackgroundOut;
     out::Image mForegroundOut;
+	
 private:
     cv::Ptr<cv::BackgroundSubtractorKNN> mKNN;
     cv::Ptr<cv::BackgroundSubtractorMOG2> mMog2;

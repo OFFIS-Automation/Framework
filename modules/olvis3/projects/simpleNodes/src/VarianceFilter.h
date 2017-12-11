@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public:
     virtual void execute();
 
 protected:
-    in::GrayImage mIn;
+    in::Image mIn;
     in::Rect mRoiIn;
     out::Real mVarianceOut;
     out::Real mMeanOut;

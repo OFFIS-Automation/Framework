@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ DoubleEdit::DoubleEdit(QWidget *parent) : AbstractPortEditWidget(parent)
 {
     mSpinBox = new QDoubleSpinBox(this);
     mSpinBox->setObjectName("spinBox");
+
     ui->layout->insertWidget(0, mSpinBox);
 }
 
@@ -27,17 +28,32 @@ DoubleEdit::~DoubleEdit()
 {
 }
 
-void DoubleEdit::onStartEdit()
+void DoubleEdit::setInfo(const PortInfo &info)
 {
-    double min = mInfo.constraints.value("min", QVariant(INT_MAX)).toDouble();
-    double max = mInfo.constraints.value("max", QVariant(INT_MAX)).toDouble();
-    mSpinBox->setRange(min, max);
-    mSpinBox->setValue(mValue.toDouble());
+    double min = info.constraints.value("min", QVariant(INT_MAX)).toDouble();
+    double max = info.constraints.value("max", QVariant(INT_MAX)).toDouble();
+    if(min != mSpinBox->minimum() || max != mSpinBox->maximum()){
+       AbstractPortEditWidget::setInfo(info);
+       mSpinBox->setRange(min, max);
+    }
+
+    int decimals = info.constraints.value("decimals", QVariant(2)).toInt();
+    if(decimals != mSpinBox->decimals()){
+        AbstractPortEditWidget::setInfo(info);
+        mSpinBox->setDecimals(decimals);
+    }
 }
 
 QString DoubleEdit::asString()
 {
     return QString::number(mValue.toDouble());
+}
+
+void DoubleEdit::onStartEdit()
+{
+    bool oldState = mSpinBox->blockSignals(true);
+    mSpinBox->setValue(mValue.toDouble());
+    mSpinBox->blockSignals(oldState);
 }
 
 QVariant DoubleEdit::editValue(bool&)

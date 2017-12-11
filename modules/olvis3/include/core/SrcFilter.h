@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,9 +43,11 @@ public:
     InputPort* getInput(const QString& name) const;
     OutputPort* getOutput(const QString& name) const;
     virtual Port* getPort(const QString& name) const;
+
 private slots:
     void onUserPortValueChanged(const QString& portId, const QVariant& value);
     void onUserConstraintChanged(const QString& portId);
+
 private:
     void processBufferedUpdates();
     UserFilter* mUserFilter;

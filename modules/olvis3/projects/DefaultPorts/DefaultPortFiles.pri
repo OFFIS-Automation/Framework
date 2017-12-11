@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ CONFIG+=dll
 HEADERS += \
     ../../include/gui/PortEditInterface.h \
     ../../include/gui/OlvisGuiPluginInterface.h \
+    ../../include/gui/OverlayInterface.h \
     src/DefaultPorts.h \
     src/BoolEdit.h \
     src/AbstractPortEditWidget.h \
@@ -49,7 +50,6 @@ HEADERS += \
     src/RectEdit.h \
     src/PointEdit.h \
     src/DateTimeEdit.h \
-    ../../include/gui/OverlayInterface.h \
     src/overlays/RectOverlay.h \
     src/overlays/StringOverlay.h \
     src/overlays/ImagePortOverlay.h \

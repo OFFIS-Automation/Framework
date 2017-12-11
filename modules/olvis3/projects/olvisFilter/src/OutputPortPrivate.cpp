@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,21 +15,26 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "OutputPortPrivate.h"
+#include "PortData.h"
+
 #include <core/PortListener.h>
 #include <core/Tracer.h>
-#include "PortData.h"
 #include <filter/Port.h>
+#include <gui/OverlayInterface.h>
+
+#include <QDebug>
+#include <typeinfo>
 
 OutputPort::OutputPort(Port &parent) : mParent(parent)
 {
-    parent.d->out = this;
+    parent.portData->out = this;
     mFired = false;
 }
 
 OutputPort::OutputPort(Port &parent, bool isList) : mParent(parent)
 {
-    parent.d->out = this;
-    parent.d->info.isArray = isList;
+    parent.portData->out = this;
+    parent.portData->info.isArray = isList;
     mFired = false;
 }
 
@@ -41,7 +46,6 @@ QString OutputPort::name() const
 
 void OutputPort::send(const QVariant &val)
 {
-    static QString firedString("fired");
     mLastValueMutex.lock();
     mLastValue = val;
     if(mTracer)
@@ -72,6 +76,25 @@ void OutputPort::removeTarget(PortListener *inputPort)
 {
     QMutexLocker lock(&mMutex);
     mTargets.remove(inputPort);
+}
+
+bool OutputPort::hasTargets()
+{
+    QMutexLocker lock(&mMutex);
+    return mTargets.size() > 1;
+}
+
+bool OutputPort::isOverlayed()
+{
+    QMutexLocker lock(&mMutex);
+    QSetIterator<PortListener*> targets(mTargets);
+    while(targets.hasNext()){
+        OverlayInterface *interface = dynamic_cast<OverlayInterface *>(targets.next());
+        if(interface){
+            return true;
+        }
+    }
+    return false;
 }
 
 QVariant OutputPort::lastValue()

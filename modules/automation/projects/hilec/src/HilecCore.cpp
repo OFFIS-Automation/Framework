@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ HilecCore::HilecCore(const QString &configDir) : mPython(configDir)
 
     connect(RcUnits::instance(), SIGNAL(telecontrolAssignmentUpdated(QString,QString)), SIGNAL(telecontrolAssignmentUpdated(QString,QString)));
     connect(RcUnits::instance(), SIGNAL(gamepadUpdated(QString, QString, bool)), SIGNAL(gamepadUpdated(QString, QString, bool)));
+    connect(RcUnits::instance(), SIGNAL(gamepadSensitivityUpdated(QString,QString)), SIGNAL(gamepadSensitivityUpdated(QString, QString)));
     connect(RcUnits::instance(), SIGNAL(gamepadSensitivityChangeRequested(QString, QString, bool)), SIGNAL(gamepadSensitivityChangeRequested(QString, QString, bool)));
     connect(RcUnits::instance(), SIGNAL(gamepadSwitchRequested(QString, QString, bool)), SIGNAL(gamepadSwitchRequested(QString, QString, bool)));
     connect(RcUnits::instance(), SIGNAL(gamepadButtonToggled(QString,int,bool)), SIGNAL(gamepadButtonToggled(QString,int,bool)));

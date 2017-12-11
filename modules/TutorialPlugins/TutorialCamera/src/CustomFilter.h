@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public:
 public slots:
     void onNewImage(const QImage& data);
 protected:
-    out::RgbImage mOut;
+    out::Image mOut;
     QMutex mMutex;
     QImage mImg;
     QWaitCondition mWait;

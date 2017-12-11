@@ -1,16 +1,16 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
-// 
+// Copyright (C) 2013-2017 OFFIS e.V.
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -781,6 +781,7 @@ bool OlvisCoreInterface::canConnect(const PortId &sourceId, const PortId &target
         return false;
     return canConnectSub(sourceId, targetId, warning);
 }
+
 bool OlvisCoreInterface::canConnectSub(const PortId &sourceId, const PortId &targetId, QString &warning) const
 {
     FilterInfo source = getFilter(sourceId.filter);
@@ -1035,12 +1036,12 @@ void OlvisCoreInterface::setPortValueThrow(const PortId &port, const QVariant &v
             foreach(QVariant child, value.toList())
             {
                 if(typeInfo.portType(port.port) != child.userType())
-				{
-					QString type1 = QMetaType::typeName(child.userType());
-					QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
+                {
+                    QString type1 = QMetaType::typeName(child.userType());
+                    QString type2 = QMetaType::typeName(typeInfo.portType(port.port));
                     QString errStr = tr("List element is of type %1, type %2 expected").arg(type1, type2);
-					throw std::runtime_error(errStr.toStdString());
-				}
+                    throw std::runtime_error(errStr.toStdString());
+                }
             }
         }
         else if(!typeInfo.isMode(port.port, OptionalPortMode) || value.isValid()) // dont return if optional ports is set to invalid
@@ -1381,12 +1382,12 @@ void OlvisCoreInterface::start()
         return;
     if(!check())
         return;
-    qDebug() << "starting";
+    qDebug() << tr("Trying to start processor …");
     mTraceId++;
     Tracer::instance().trace(Tracer::SystemStarted, 0, 0, mTraceId);
     foreach(Processor* p, mProcessors)
         p->start();
-    qDebug() << "started";
+    qDebug() << tr("Processor started …");
     QMutexLocker lock(&mStopWaitMutex);
     mIsRunning = true;
     emit executionStarted();
@@ -1398,7 +1399,7 @@ void OlvisCoreInterface::stop()
         return;
     foreach(Processor* p, mProcessors)
         p->stop();
-    qDebug() << "Stopping ...";
+    qDebug() << tr("Stopping image processing …");
 }
 
 bool OlvisCoreInterface::waitForStop(uint timeout)
@@ -1421,7 +1422,7 @@ void OlvisCoreInterface::onProcessorFinished()
     if(!allFinished)
         return;
     Tracer::instance().trace(Tracer::SystemStopped, 0, 0, mTraceId);
-    qDebug() << "Execution has ended";
+    qDebug() << tr("Processor execution has ended");
     QMutexLocker lock(&mStopWaitMutex);
     mIsRunning = false;
     mStopWait.wakeAll();

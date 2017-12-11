@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -75,9 +75,8 @@ public:
 signals:
     void portValueChanged(int filterId, const QString& portId, const QVariant &value);
     void constraintsUpdated(int filterId, const QString& portId);
+
 protected:
-
-
     int mId, mProcessorId;
     QString mName;
     bool mInitialized;

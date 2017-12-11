@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ protected:
     out::Rect mFastSearchOut;
     out::Point mPositionOut;
     out::Real mScoreOut;
-    out::GrayImage mResultOut;
+    out::Image mResultOut;
     out::Point mResultOffset;
 
     cv::Point mLastPos;

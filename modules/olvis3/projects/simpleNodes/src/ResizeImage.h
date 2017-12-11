@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,19 +27,19 @@ class ResizeImage : public UserFilter
 public:
     ResizeImage();
     void execute();
+	
 protected:
     in::Image mIn;
     in::Integer mAspectRatio;
     in::Integer mWidth, mHeight;
+	out::Image mOut;
 
     enum SizeContraint
     {
         IgnoreAspectRatio,
         KeepAspectRatioByWidth,
         KeepAspectRatioByHeight
-    };
-
-    out::Image mOut;
+    }; 
 };
 
 #endif // RESIZEIMAGE_H

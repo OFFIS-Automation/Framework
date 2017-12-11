@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,12 +28,13 @@ class SetRoiFilter : public UserFilter
 public:
     SetRoiFilter();
     virtual void execute();
+	
 protected:
-    in::Image mImageIn;
+    in::Image mIn;
     in::Rect mRoiIn;
     in::Point mOffsetIn;
     in::Integer mOffsetModeIn;
-    out::Image mImageOut;
+    out::Image mOut;
     out::Point mOffsetOut;
 
     enum OffsetTypes

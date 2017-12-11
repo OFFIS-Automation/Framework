@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -167,9 +167,10 @@ void TelecontrolWidget::onTelecontrolAssignmentUpdate(const QString& deviceName,
 
 void TelecontrolWidget::onGamepadSwitchRequested(const QString& deviceName, const QString& unitName, bool down)
 {
-    Q_UNUSED(deviceName);
+    Q_UNUSED(deviceName)
+    Q_UNUSED(unitName)
 
-    int currentIndex = mUnitIndexes.key(unitName, 0);
+    int currentIndex = ui->tabWidget->currentIndex();
     int newIndex = down ? currentIndex+1 : currentIndex-1;
 
     // Bound to range

@@ -176,7 +176,7 @@ int WindowsConnexionGamepad::buttonNumberToButtonId(int buttonNumber)
         buttonID = Tc::Connexion::EscButton;
     } else if(buttonNumber == V3DK_ENTER){
         buttonID = Tc::Connexion::EnterButton;
-    } else if(buttonNumber == V3DK_DEL){
+    } else if(buttonNumber == V3DK_DELETE){
         buttonID = Tc::Connexion::DeleteButton;
     } else if(buttonNumber == V3DK_SPACE){
         buttonID = Tc::Connexion::SpaceButton;
@@ -206,11 +206,11 @@ int WindowsConnexionGamepad::buttonNumberToButtonId(int buttonNumber)
             buttonID = Tc::Connexion::ElevenButton;
     } else if(buttonNumber == V3DK_12){
         buttonID = Tc::Connexion::TwelveButton;
-    } else if(buttonNumber == V3DK_V1){
+    } else if(buttonNumber == V3DK_VIEW_1){
         buttonID = Tc::Connexion::View1Button;
-    } else if(buttonNumber == V3DK_V2){
+    } else if(buttonNumber == V3DK_VIEW_2){
             buttonID = Tc::Connexion::View2Button;
-    } else if(buttonNumber == V3DK_V3){
+    } else if(buttonNumber == V3DK_VIEW_3){
         buttonID = Tc::Connexion::View3Button;
     }
     return buttonID;

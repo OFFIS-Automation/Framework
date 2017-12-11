@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ class BrighnessContrast : public UserFilter
 public:
     BrighnessContrast();
     virtual void execute();
+	
 protected:
-    in::RgbImage mIn;
-    out::RgbImage mOut;
-    in::Integer mBrighness, mContrast;
+    in::Image mIn;
+    out::Image mOut;
+    in::Integer mBrightness , mContrast;
 };
-
 
 #endif // BRIGHNESSCONTRAST_H

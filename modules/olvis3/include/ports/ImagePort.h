@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,10 +19,7 @@
 
 #include "DefaultPortsGlobal.h"
 #include <opencv2/core.hpp>
-#include "GrayImage.h"
-#include "RgbImage.h"
-#include "RgbaImage.h"
-
+#include "Image.h"
 
 namespace port
 {
@@ -45,32 +42,7 @@ namespace out
     {
     public:
         Image();
-        virtual void send(const cv::Mat& image);
-
-    };
-
-    class DEFAULTPORTSSHARED_EXPORT GrayImage : public port::Image
-    {
-    public:
-        GrayImage();
-        virtual void send(const ::GrayImage& image);
-
-    };
-
-    class DEFAULTPORTSSHARED_EXPORT RgbImage : public port::Image
-    {
-    public:
-        RgbImage();
-        virtual void send(const ::RgbImage& image);
-
-    };
-
-    class DEFAULTPORTSSHARED_EXPORT RgbaImage : public port::Image
-    {
-    public:
-        RgbaImage();
-        virtual void send(const ::RgbaImage& image);
-
+        virtual void send(const ::Image& image);
     };
 }
 
@@ -80,34 +52,10 @@ namespace in
     {
     public:
         Image();
-        const cv::Mat getValue();
-        inline operator const cv::Mat() { return getValue(); }
-
+        const ::Image getValue();
+        inline operator const ::Image() { return getValue(); }
     };
 
-    class DEFAULTPORTSSHARED_EXPORT GrayImage : public port::Image
-    {
-    public:
-        GrayImage();
-        const ::GrayImage getValue();
-        inline operator const ::GrayImage() { return getValue(); }
-    };
-
-    class DEFAULTPORTSSHARED_EXPORT RgbImage : public port::Image
-    {
-    public:
-        RgbImage();
-        const ::RgbImage getValue();
-        inline operator const ::RgbImage() { return getValue(); }
-    };
-
-    class DEFAULTPORTSSHARED_EXPORT RgbaImage : public port::Image
-    {
-    public:
-        RgbaImage();
-        const ::RgbaImage getValue();
-        inline operator const ::RgbaImage() { return getValue(); }
-    };
 }
 
 

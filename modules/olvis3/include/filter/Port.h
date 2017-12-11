@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ public:
      * @param name the port name
      */
     void setName(const QString &name);
+
     /**
      * @brief setDesc sets a description for the port that is displayed to the
      * user.
@@ -53,7 +54,7 @@ public:
      * RegularPortMode: default bahavior, port must always have a value
      * OptionalPortMode: port may or may not have a value. The filter must
      * check with hasValue()
-     * SingleShotPortMode: port may or may not have a value. IF a value is
+     * SingleShotPortMode: port may or may not have a value. If a value is
      * assigned, it is only valid for one execution of the
      * filter. After the execution, it is automatically reset to NoValue
      */
@@ -68,6 +69,20 @@ public:
      * @param visibility
      */
     void setVisibility(PortVisibility visibility);
+
+    /**
+     * @brief Check if port is connected to another port within the
+     * processing pipeline.
+     * @return true if port is connected
+     */
+    bool isConnetected();
+
+    /**
+     * @brief isShown
+     * @return true if port is drawn on image display widget
+     */
+    bool isOverlayed();
+
     /**
      * Returns whether this port holds a valid value. For default ports that are
      * not lists, the return value is always true For list ports, this commands
@@ -75,12 +90,12 @@ public:
      * You can iterate through the input list using
      * while(hasValue()) getValue();
      * getValue returns one element of the list and increments the list id
-    */
+     */
     bool hasValue();
 
     /**
      * Returns whether the port was updated since the last execution
-    */
+     */
     bool isUpdated();
 
     /**
@@ -90,35 +105,37 @@ public:
     bool hasChanged();
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     PortInfo getInfo() const;
+
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     const QString &name() const;
+
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     InputPortMode mode() const;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QString toString(const QVariant &var) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant fromString(const QString &str) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant constrainedValue(const QVariant &var) const = 0;
 
     /**
-     Method for the frameowrk to gather port information
+     * Method for the framework to gather port information
      */
     virtual QVariant toSimpleType(const QVariant &var) const { return var; }
 
@@ -139,7 +156,7 @@ protected:
     void setType(int type);
 
 protected:
-    PortData *d;
+    PortData *portData;
     friend class Filter;
     friend class InputPort;
     friend class OutputPort;

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,41 +16,88 @@
 
 #include "FileEdit.h"
 #include <ports/FilePort.h>
-#include <QFileDialog>
 
-FileEdit::FileEdit()
+#include <QFileDialog>
+#include <QLineEdit>
+
+FileEdit::FileEdit(QWidget *parent):  AbstractPortEditWidget(parent)
 {
+    mLineEdit = new QLineEdit(this);
+    mLineEdit->setObjectName("lineEdit");
+    mLineEdit->setDisabled(true);
+
+    QPalette *palette = new QPalette();
+    palette->setColor(QPalette::Base, Qt::white);
+    palette->setColor(QPalette::Text, Qt::black);
+    mLineEdit->setPalette(*palette);
+
+    mSelectFileButton = new QPushButton(tr("Select file"), this);
+    mSelectFileButton->setObjectName("select_file");
+    mSelectFileButton->setCheckable(false);
+
+    ui->layout->insertWidget(0, mLineEdit);
+    ui->layout->insertWidget(1, mSelectFileButton);
+    QMetaObject::connectSlotsByName(this);
 }
 
+FileEdit::~FileEdit()
+{
+}
 
 QString FileEdit::asString()
 {
-    if(mValue.isValid())
-        return port::File::fromVariant(mValue).absoluteFilePath();
-    else
+    if(mValue.isValid()){
+        QFileInfo fileInfo = port::File::fromVariant(mValue);
+        return fileInfo.absoluteFilePath();
+    } else {
         return QString();
+    }
 }
 
 void FileEdit::onStartEdit()
+{
+    if(mValue.isValid()){
+       QFileInfo fileInfo = port::File::fromVariant(mValue);
+       mLineEdit->setText(fileInfo.fileName());
+       mLineEdit->setToolTip(fileInfo.absoluteFilePath());
+    } else {
+        mLineEdit->clear();
+        mLineEdit->setToolTip("");
+    }
+}
+
+QVariant FileEdit::editValue(bool &)
+{
+    return mValue;
+}
+
+void FileEdit::on_select_file_clicked()
 {
     QString file;
     bool readMode = mInfo.constraints.value("readMode").toBool();
     QString current = port::File::fromVariant(mValue).absolutePath();
     QString filter;
     QStringList filterList = mInfo.constraints.value("filter").toStringList();
-    if(!filterList.isEmpty())
-    {
+    if(!filterList.isEmpty()){
         QStringList types;
-        types << tr("Supported files (%1)", "extensions are automatically added").arg(filterList.join(" "));
+        types << tr("Supported files (%1)", "File extensions are automatically added").arg(filterList.join(" "));
         types << tr("All Files (*.*)");
         filter = types.join(";;");
     }
-    if(readMode)
-        file = QFileDialog::getOpenFileName(0, "Select file to read from", current, filter);
-    else
-        file = QFileDialog::getSaveFileName(0, "Select file to write to", current, filter);
-    if(file.isEmpty())
-        editCanceled();
-    else
-        editFinished( port::File::variant(QFileInfo(file)));
+    if(readMode){
+        file = QFileDialog::getOpenFileName(0, "Select source file", current, filter);
+    } else {
+        file = QFileDialog::getSaveFileName(0, "Select destination file", current, filter);
+    }
+    if(!file.isEmpty()){
+        // Update value, submit if necessary
+        QFileInfo fileInfo(file);
+        mValue = port::File::variant(fileInfo);
+        mLineEdit->setText(fileInfo.fileName());
+        mLineEdit->setToolTip(fileInfo.absoluteFilePath());
+
+        if(mAutoSubmit){
+            editFinished(mValue);
+        }
+    }
 }

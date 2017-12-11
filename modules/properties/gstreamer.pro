@@ -1,5 +1,5 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
+# Copyright (C) 2013-2017 OFFIS e.V.
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,15 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
 
+win32-msvc*:contains(QT_ARCH, i386):{
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x86/include/gstreamer-1.0
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x86/include/glib-2.0
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x86/lib/glib-2.0/include
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x86/lib/gstreamer-1.0/include
 
-win32-msvc*{
-	INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/include/gstreamer-1.0
-	INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/include/glib-2.0
-	INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/glib-2.0/include
-	INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0/include
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x86/lib -lgstreamer-1.0 -lgstapp-1.0 -lglib-2.0 -lgobject-2.0
+} else {
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x64/include/gstreamer-1.0
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x64/include/glib-2.0
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x64/lib/glib-2.0/include
+    INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x64/lib/gstreamer-1.0/include
 
-	LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstreamer-1.0.lib
-	LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gstapp-1.0.lib
-	LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/glib-2.0.lib
-	LIBS += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/1.0/x86/lib/gobject-2.0.lib
+    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/gstreamer/x64/lib -lgstreamer-1.0 -lgstapp-1.0 -lglib-2.0 -lgobject-2.0
 }

@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include <stdexcept>
 
 REGISTER_FILTER(VideoInput);
-
 VideoInput::VideoInput()
 {
     setName("VideoInput");
@@ -29,7 +28,7 @@ VideoInput::VideoInput()
     setGroup("input");
 
     // Inputs
-    mIn.setName("fileName");
+    mIn.setName("filePath");
     mIn.setDesc(QObject::tr("File to read video data stream from"));
     mIn.setFilter("*.avi *.wmv *.m4v *.mp4 *.mov");
     addInputPort(mIn);

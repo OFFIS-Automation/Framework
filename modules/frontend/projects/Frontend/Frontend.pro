@@ -1,24 +1,18 @@
 # OFFIS Automation Framework
-# Copyright (C) 2013-2016 OFFIS e.V.
-# 
+# Copyright (C) 2013-2017 OFFIS e.V.
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http:#www.gnu.org/licenses/>.
-
-#-------------------------------------------------
-#
-# Project created by QtCreator 2011-03-01T15:29:08
-#
-#-------------------------------------------------
 
 QT       += core gui widgets
 
@@ -33,6 +27,7 @@ win32-msvc*{
 }
 
 include(../../../properties/pathes.pro)
+include(../qt-breakpad/qt-breakpad.pri)
 
 BUILD_NUMBER_EXISTS=$$(BUILD_NUMBER)
 isEmpty(BUILD_NUMBER_EXISTS){
@@ -42,18 +37,26 @@ isEmpty(BUILD_NUMBER_EXISTS){
 }
 
 DESTDIR = $${targetDir}
-
-INCLUDEPATH += $${PWD}
 INCLUDEPATH += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/include
+INCLUDEPATH += $${PWD}
 INCLUDEPATH += ../Notifications/include
 INCLUDEPATH += ../../include
 INCLUDEPATH += ../../projects/LogWidget
 
 LIBS += -L$${targetDir} -L$${targetDir}/plugins -lLogWidget -lNotifications
-CONFIG(debug, debug|release) {
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/debug -lWinSparkle
+
+win32-msvc*:contains(QT_ARCH, i386):{
+    CONFIG(debug, debug|release) {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/lib/debug -lWinSparkle
+    } else {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/lib/release -lWinSparkle
+    }
 } else {
-    LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/lib/release -lWinSparkle
+    CONFIG(debug, debug|release) {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/lib/debug -lWinSparkle
+    } else {
+        LIBS += -L$$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/lib/release -lWinSparkle
+    }
 }
 
 SOURCES += src/main.cpp\
@@ -75,7 +78,6 @@ HEADERS  += src/MainWindow.h \
     ../../include/interfaces/GuiPluginInterface.h \
     ../../include/interfaces/ModelPluginInterface.h \
     src/PluginLoader.h \
-    ../../include/interfaces/logging.h \
     src/DockWidgetTitle.h \
     src/PerspectiveControl.h \
     src/Application.h \
@@ -129,19 +131,23 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svgd.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgetsd.dll
 
-    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/debug/WinSparkle.dll
+win32-msvc*:contains(QT_ARCH, i386):{
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/bin/debug/WinSparkle.dll
+} else {
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/bin/debug/WinSparkle.dll
+}
 
-    dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
+    dllPlatforms.files += $$[QT_INSTALL_PLUGINS]/platforms/qwindowsd.dll
 
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
-    dllImageformats.files  += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qddsd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qgifd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qicnsd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qicod.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/jpegd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qtgad.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qtiffd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qwbmpd.dll
+    dllImageformats.files += $$[QT_INSTALL_PLUGINS]/imageformats/qwebpd.dll
 
     dllIconengines.files  += $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicond.dll
 } else {
@@ -162,7 +168,12 @@ CONFIG(debug, debug|release) {
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Svg.dll
     dlls.files += $$[QT_INSTALL_BINS]/Qt5Widgets.dll
 
-    dlls.files    += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/bin/release/WinSparkle.dll
+
+win32-msvc*:contains(QT_ARCH, i386):{
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x86/bin/release/WinSparkle.dll
+} else {
+    dlls.files += $$(OFFIS_DEVELOPMENT_ENVIRONMENT)/winSparkle/x64/bin/release/WinSparkle.dll
+}
 
     dllPlatforms.files  += $$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll
 

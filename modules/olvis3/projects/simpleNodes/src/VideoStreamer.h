@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013-2016 OFFIS e.V.
+// Copyright (C) 2013-2017 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ class VideoStreamer : public UserFilter
 		in::String m_tune;
 		in::String m_speed_preset;
 
-		in::RgbImage m_frameIn;
+        in::Image m_frameIn;
 
 		// Member
 		bool m_initialized = false;

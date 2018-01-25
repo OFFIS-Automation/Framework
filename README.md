@@ -58,11 +58,11 @@ WinSparkle is licensed under <a href="https://opensource.org/licenses/MIT">MIT L
 ## Authors
 ### Current Authors
 - [Tobias Tiemerding](https://github.com/honkmaster/)
-- [Marius Knaust](https://github.com/mariusknaust/)
 
 ### Former Authors
 - [Claas Diederichs](https://github.com/claasd/)
 - [Daniel Jasper](mailto:djasper@google.com)
+- [Marius Knaust](https://github.com/mariusknaust/)
 
 ## License
 

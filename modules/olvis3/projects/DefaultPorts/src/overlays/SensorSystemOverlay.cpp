@@ -69,12 +69,9 @@ void SensorSystemOverlay::readElement(QXmlStreamReader &reader)
         GraphOverlay::readElement(reader);
 }
 
-
-
 void SensorSystemOverlay::onNewValue(QVariant value)
 {
     setValue(SensorTraceExport::convertToDouble(value));
-
 }
 
 #endif

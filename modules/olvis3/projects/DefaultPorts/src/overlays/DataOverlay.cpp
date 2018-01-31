@@ -52,16 +52,20 @@ DataOverlay::DataOverlay(QString name)
 void DataOverlay::writeCurrentConfig(QXmlStreamWriter &writer)
 {
     RectOverlay::writeCurrentConfig(writer);
-    writer.writeStartElement("color");
-    writer.writeCharacters(mPen.color().name());
+    writer.writeStartElement("pen");
+    writer.writeAttribute("color", mPen.color().name());
+    writer.writeAttribute("widthF", QString::number(mPen.widthF()));
     writer.writeEndElement();
 }
 
 void DataOverlay::readElement(QXmlStreamReader &reader)
 {
-    if (reader.name() == "color") {
-        QString colorString = reader.readElementText();
+    if (reader.name() == "pen") {
+        QString colorString = reader.attributes().value("color").toString();
         mPen.setColor(QColor(colorString));
+
+        double widthF = reader.attributes().value("widthF").toDouble();
+        mPen.setWidthF(widthF);
     } else {
         RectOverlay::readElement(reader);
     }
@@ -72,9 +76,10 @@ void DataOverlay::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton) {
         event->accept();
         QColor color = QColorDialog::getColor(mPen.color(), mWidget, tr("Select new overlay color"));
-        if(color.isValid())
+        if(color.isValid()) {
             mPen.setColor(color);
-    } else {
+        }
+    } else {  
         RectOverlay::mousePressEvent(event);
     }
 }
@@ -83,13 +88,14 @@ void DataOverlay::paintContent(QPainter &painter)
 {
     painter.fillRect(mRect, QColor(0, 0, 0, 160));
     painter.setPen(mPen);
-
     painter.setViewTransformEnabled(false);
+
     QRect textRect = mTransform.mapRect(mRect);
     textRect.setLeft(textRect.left() + textRect.height());
     mFont.setPixelSize(textRect.height() * 7/8);
     painter.setFont(mFont);
     painter.drawText(textRect, Qt::AlignVCenter, legendString());
+
     QRect symbolRect = mTransform.mapRect(mRect);
     symbolRect.setRight(symbolRect.left() + symbolRect.height());
     painter.setViewTransformEnabled(true);

@@ -25,11 +25,16 @@ public:
     SimpleShapeOverlay(QString name);
     virtual void paint(QPainter& painter, bool showControls);
     virtual void paintElement(QPainter& painter, const QVariant& element);
-    virtual void setPortId(const PortId &portId, bool output);
     virtual void paintLegendSymbol(QPainter& painter, const QRect& rect);
+
+    virtual void setPortId(const PortId &portId, bool output);
+
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual bool contains(const QPoint &pos);
 
 protected:
     QString mPortTypeName;
+    QPointF mPoint;
 };
 
 #endif // SIMPLESHAPEOVERLAY_H

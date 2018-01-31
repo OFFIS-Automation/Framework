@@ -701,11 +701,9 @@ void VideoDisplayWidget::mouseMoveEvent(QMouseEvent *event)
     OverlayInterface* overlay = mActiveOverlay;
     if (mToolbar->currentAction()) {
         PortInfo p = mToolbar->currentPortInfo();
-        if(p.typeName == "PhysicalSize")
-        {
+        if(p.typeName == "PhysicalSize") {
             overlay = getOverlay(mToolbar->currentPortId(), false);
-        }
-        else if (p.typeName == "Rect" || p.typeName == "Point") {
+        } else if (p.typeName == "Rect" || p.typeName == "Point") {
             overlay = getOverlay(mToolbar->currentPortId());
         } else if (mNumberDragInput != NoNumberDrag) {
             PortId portId = mToolbar->currentPortId();

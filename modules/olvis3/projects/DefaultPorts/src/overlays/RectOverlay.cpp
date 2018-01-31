@@ -77,7 +77,6 @@ void RectOverlay::paintContent(QPainter &p)
 
 void RectOverlay::paint(QPainter& p, bool showControls)
 {
-
     p.setViewTransformEnabled(true);
     mTransform = p.combinedTransform();
     paintContent(p);
@@ -97,7 +96,7 @@ void RectOverlay::paint(QPainter& p, bool showControls)
     p.setViewTransformEnabled(false);
     realRect = mTransform.mapRect(mRect);
 
-    if (mState == Idle && showControls && mActive) {
+    if (mState == Idle && mActive) {
         // Draw handle
         QRectF handle(-3, -3, 7, 7);
         p.setBrush(Qt::black);

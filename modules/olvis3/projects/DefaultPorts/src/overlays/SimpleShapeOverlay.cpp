@@ -17,6 +17,8 @@
 #include "SimpleShapeOverlay.h"
 
 #include <QList>
+#include <QMessageBox>
+#include <QInputDialog>
 
 #include <ports/PolygonPort.h>
 #include <ports/PosePort.h>
@@ -25,6 +27,7 @@
 SimpleShapeOverlay::SimpleShapeOverlay(QString name)
     : DataOverlay(name)
 {
+    mPen.setWidthF(1.0);
 }
 
 void SimpleShapeOverlay::paint(QPainter &painter, bool showControls)
@@ -38,8 +41,11 @@ void SimpleShapeOverlay::paint(QPainter &painter, bool showControls)
         else
             rects.append(mLastValue);
         mMutex.unlock();
+
         painter.setViewTransformEnabled(true);
         painter.setPen(mPen);
+        mTransform = painter.combinedTransform();
+
         foreach (const QVariant& v, rects) {
             paintElement(painter, v);
         }
@@ -60,11 +66,34 @@ void SimpleShapeOverlay::paintElement(QPainter &painter, const QVariant &element
     if (mPortTypeName == "Rect") {
         painter.drawRect(element.toRectF().translated(QPointF(0.5, 0.5)));
     } else if (mPortTypeName == "Point") {
-        QPointF point = element.toPointF();
-        //drawText(painter, QString("(%1,%2)").arg(point.x()).arg(point.y()));
-        point += QPointF(0.5, 0.5);
-        painter.drawLine(point - QPointF(0, 5), point + QPointF(0, 5));
-        painter.drawLine(point - QPointF(5, 0), point + QPointF(5, 0));
+        mPoint = element.toPointF();
+        int distance = 5 * mPen.widthF();
+
+        if (mState == Idle && mActive) {
+            QPen pen;
+            pen.setJoinStyle(Qt::MiterJoin);
+            pen.setCosmetic(true);
+
+            // Draw bounding rect
+            pen.setColor(QColor(Qt::transparent));
+
+            QPoint topLeft = (mPoint - QPoint(distance, distance)).toPoint();
+            QPoint bottomRight = (mPoint + QPoint(distance, distance)).toPoint();
+
+            QRect boundingRect(topLeft, bottomRight);
+            painter.setBrush(QColor(0, 0, 0, 160));
+            painter.setPen(pen);
+            painter.drawRect(boundingRect);
+        }
+
+        // Draw marker
+        mPoint += QPointF(0.5, 0.5);
+        painter.setPen(mPen);
+        painter.drawLine(mPoint - QPointF(0, distance), mPoint + QPointF(0, distance));
+        painter.drawLine(mPoint - QPointF(distance, 0), mPoint + QPointF(distance, 0));
+
+        painter.setViewTransformEnabled(true);
+
     } else if (mPortTypeName == "Polygon") {
         QPolygonF poly = port::Polygon::fromVariant(element).translated(QPointF(0.5, 0.5));
         if(poly.isClosed()){
@@ -79,8 +108,7 @@ void SimpleShapeOverlay::paintElement(QPainter &painter, const QVariant &element
         painter.drawLine(point - QPointF(0, 5), point + QPointF(0, 5));
         painter.drawLine(point - QPointF(5, 0), point + QPointF(5, 0));
         painter.drawLine(point, head);
-    } else if(mPortTypeName == "Line")
-    {
+    } else if(mPortTypeName == "Line") {
         painter.drawLine(element.toLineF());
     }
 }
@@ -91,3 +119,53 @@ void SimpleShapeOverlay::setPortId(const PortId &portId, bool output)
     mPortTypeName = mVisionInterface->getPortInfo(portId).typeName;
 }
 
+void SimpleShapeOverlay::mousePressEvent(QMouseEvent *event)
+{
+    if (mPortTypeName == "Point") {
+        // Check descriptive text
+        QPoint pos = event->pos();
+        if(RectOverlay::contains(pos)){
+            DataOverlay::mousePressEvent(event);
+        } else {
+            // Check shape
+            int distance = 5 * mPen.widthF();
+
+            QPoint topLeft = (mPoint - QPoint(distance, distance)).toPoint();
+            QPoint bottomRight = (mPoint + QPoint(distance, distance)).toPoint();
+            QRect rect(topLeft, bottomRight);
+
+            QRect visibleRect = mTransform.mapRect(rect);
+
+            if(visibleRect.contains(pos)){
+                bool ok;
+                double d = QInputDialog::getDouble(0, tr("Scaling"), 0, mPen.widthF(), 0, 10, 1, &ok);
+                if(ok){
+                    mPen.setWidthF(d);
+                }
+            }
+        }
+    } else {
+        DataOverlay::mousePressEvent(event);
+    }
+}
+
+bool SimpleShapeOverlay::contains(const QPoint &pos)
+{
+    if (mPortTypeName == "Point") {
+        // Check descriptive text
+        bool text = RectOverlay::contains(pos);
+
+        // Check shape
+        int distance = 5 * mPen.widthF();
+
+        QPoint topLeft = (mPoint - QPoint(distance, distance)).toPoint();
+        QPoint bottomRight = (mPoint + QPoint(distance, distance)).toPoint();
+        QRect rect(topLeft, bottomRight);
+
+        QRect visibleRect = mTransform.mapRect(rect);
+        bool point = visibleRect.contains(pos);
+
+        return text || point;
+    }
+    return false;
+}

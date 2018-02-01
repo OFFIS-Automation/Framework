@@ -121,7 +121,7 @@ void MasterWindow::initWinSparkle()
     wchar_t charVersion[256];
     swprintf_s(charVersion, L"%d", Version::BUILD_VERSION_NUMBER);
 
-    win_sparkle_set_appcast_url("http://134.106.47.173:8080/userContent/Framework/Framework.rss");
+    win_sparkle_set_appcast_url("http://134.106.47.224:8080/userContent/Framework/Framework.rss");
     win_sparkle_set_app_details(L"OFFIS", L"OFFIS Automation Framework", charVersion);
     win_sparkle_set_can_shutdown_callback(canShutdownCallback);
     win_sparkle_set_shutdown_request_callback(shutdownRequestCallback);

@@ -4,7 +4,7 @@ The OFFIS Automation Framework enables rapid prototyping of vision-based automat
 
 ## Pre-built binary (for Microsoft Windows 7 / 8 / 10)
 
-Download [here](http://134.106.47.173:8080/userContent/Framework/latest/OFFIS-Automation-Framework-Setup-nightly-build.exe).
+Download [here](http://134.106.47.224:8080/userContent/Framework/latest/OFFIS-Automation-Framework-Setup-nightly-build.exe).
 
 ## Compiling
 

@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     application.setLibraryPaths(application.libraryPaths() << application.applicationDirPath() + "/plugins");
     application.setOrganizationName("OFFIS - Institut fuer Informatik");
     application.setApplicationName("OFFIS Automation Framework");
-    application.setOrganizationDomain("http://www.uni-oldenburg.de/amir");
+    application.setOrganizationDomain("http://amir.uni-oldenburg.de");
     if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
         application.setStyle(QStyleFactory::create("Fusion"));
     }

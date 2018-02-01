@@ -61,7 +61,6 @@ SOURCES += \
 	src/RotateImage.cpp \
 	src/ScaleImage.cpp \
         src/ScaleImage2.cpp \
-        src/ScaleImage3.cpp \
 	src/SetRoiFilter.cpp \
         src/Sharp.cpp \
 	src/SimpleNodes.cpp \
@@ -126,7 +125,6 @@ HEADERS += \
 	src/RotateImage.h \
 	src/ScaleImage.h \
         src/ScaleImage2.h \
-        src/ScaleImage3.h \
 	src/SetRoiFilter.h \
         src/Sharp.h \
 	src/SimpleNodes.h \

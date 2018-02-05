@@ -57,9 +57,6 @@ int main(int argc, char *argv[])
     application.setOrganizationName("OFFIS - Institut fuer Informatik");
     application.setApplicationName("OFFIS Automation Framework");
     application.setOrganizationDomain("http://amir.uni-oldenburg.de");
-    if(QSysInfo::windowsVersion() < QSysInfo::WV_10_0){
-        application.setStyle(QStyleFactory::create("Fusion"));
-    }
 
     // Initialize translator
     TranslationLoader translator;
